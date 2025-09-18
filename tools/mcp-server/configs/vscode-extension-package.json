@@ -1,0 +1,64 @@
+{
+    "name": "spec-kit-mcp",
+    "displayName": "Spec-Kit Constitutional Framework",
+    "description": "MCP server for constitutional development framework with TDD enforcement and multi-agent orchestration",
+    "version": "1.0.0",
+    "publisher": "plaesy",
+    "main": "./dist/extension.js",
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "Spec-Kit MCP",
+            "properties": {
+                "spec-kit-mcp.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Spec-Kit MCP server integration"
+                },
+                "spec-kit-mcp.frameworkPath": {
+                    "type": "string",
+                    "description": "Path to the Spec-Kit framework root directory"
+                },
+                "spec-kit-mcp.autoDetectContext": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Automatically detect and load context based on file content"
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "spec-kit-mcp.detectContext",
+                "title": "Detect and Load Context",
+                "category": "Spec-Kit"
+            },
+            {
+                "command": "spec-kit-mcp.switchPersona",
+                "title": "Switch Agent Persona",
+                "category": "Spec-Kit"
+            },
+            {
+                "command": "spec-kit-mcp.validateCompliance",
+                "title": "Validate Constitutional Compliance",
+                "category": "Spec-Kit"
+            }
+        ]
+    },
+    "scripts": {
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.74.0",
+        "@types/node": "16.x",
+        "typescript": "^4.9.4"
+    }
+}

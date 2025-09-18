@@ -1,0 +1,13 @@
+{
+    "mcpServers": {
+        "spec-kit": {
+            "command": "node",
+            "args": [
+                "/path/to/spec-kit/tools/mcp-server/dist/index.js"
+            ],
+            "env": {
+                "SPEC_KIT_ROOT": "/path/to/spec-kit"
+            }
+        }
+    }
+}
