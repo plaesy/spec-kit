@@ -1,0 +1,218 @@
+# Plaesy Spec-Kit: Constitutional Development Framework
+
+> A revolutionary constitutional specification-driven development framework that transforms raw ideas into production solutions through AI-orchestrated, disciplined practices across any technology stack.
+
+**Last updated: 2025-09-18**
+**Version: 1.0.0**
+**Repository: https://github.com/plaesy/spec-kit**
+
+## 🏛️ Framework Overview
+
+Spec-Kit is a meta-framework that enforces constitutional compliance through automated workflows, ensuring quality, security, and maintainability from ideation to implementation. It operates platform-agnostically across web, mobile, desktop, embedded, and serverless environments.
+
+### Core Pipeline: Idea → Specify → Plan → Tasks → Implementation
+
+**Key Principles:**
+- Constitutional enforcement (non-negotiable rules)
+- Real dependencies testing (no mocks rule)
+- TDD-first development (RED-GREEN-REFACTOR)
+- Interface contracts with semantic versioning
+- AI-orchestrated role-based collaboration
+
+Internal AI orchestration/config files and hidden directories are intentionally excluded from this index.
+
+## 📚 Essential Documentation
+
+### Project Foundations
+- [📖 Main README](README.md): Comprehensive project overview, quick start guide, architecture walkthrough, and adoption metrics
+- [🔒 Security Policy](SECURITY.md): Vulnerability reporting, security handling procedures, and compliance requirements
+- [👥 Code of Conduct](CODE_OF_CONDUCT.md): Community guidelines, interaction standards, and contribution expectations
+- [⚖️ License](LICENSE): MIT license terms and usage permissions
+
+### Getting Started Resources
+- [🚀 Quick Start Guide](README.md#-quick-start): Zero-to-productive setup in minutes
+- [🎯 Interactive Demo](README.md#-interactive-demo): Hands-on framework exploration
+- [📊 Performance Metrics](README.md#-adoption--performance-metrics): ROI and adoption statistics
+
+## 🏛️ Constitutional Framework Core
+
+### Foundation & Governance
+- [📜 Constitution](memory/constitution.md): **NON-NEGOTIABLE** framework rules, principles, and enforcement mechanisms
+- [🧠 Context Instructions](instructions/context.instructions.md): Dynamic context loading patterns and AI orchestration
+- [🔴 TDD Enforcement](instructions/tdd-enforcement.instructions.md): Mandatory RED-GREEN-REFACTOR cycle with git commit patterns
+- [📚 Knowledge Base](memory/knowledge-base.md): Comprehensive development principles and best practices
+- [🧪 Test Levels Framework](memory/test-levels-framework.md): Testing taxonomy and validation strategies
+- [⚡ Test Priorities Matrix](memory/test-priorities-matrix.md): Risk-based testing prioritization
+
+### Constitutional Domain Extensions
+- [🏥 Healthcare Constitution](memory/constitution/healthcare.constitution.md): Medical software compliance and safety
+- [💰 Fintech Constitution](memory/constitution/fintech.constitution.md): Financial regulations and security standards
+- [🔐 Security Constitution](memory/constitution/security.constitution.md): Security-first development practices
+- [🎯 Performance Constitution](memory/constitution/performance.constitution.md): Scalability and optimization requirements
+- [🌐 Web3 Constitution](memory/constitution/web3-blockchain.constitution.md): Blockchain and decentralized systems
+- [🤖 AI/ML Constitution](memory/constitution/ai-ml.constitution.md): Machine learning governance and ethics
+
+## 🛠️ Technology-Specific Instructions
+
+### Security & DevOps
+- [🔐 Security & OWASP](instructions/security-and-owasp.instructions.md): Comprehensive security requirements, OWASP compliance, and threat modeling
+- [⚡ Performance Optimization](instructions/performance-optimization.instructions.md): Performance engineering principles and optimization strategies
+- [☸️ Kubernetes Deployment](instructions/kubernetes-deployment-best-practices.instructions.md): Container orchestration and cloud-native deployment
+- [🔧 DevOps Core Principles](instructions/devops-core-principles.instructions.md): CI/CD, infrastructure as code, and automation practices
+- [🏗️ Terraform](instructions/terraform.instructions.md): Infrastructure automation and cloud resource management
+
+### Frontend Technologies
+- [⚛️ React.js](instructions/reactjs.instructions.md): Modern React development with hooks, context, and performance optimization
+- [🌟 Next.js](instructions/nextjs.instructions.md): Full-stack React framework with SSR, SSG, and API routes
+- [🅰️ Angular](instructions/angular.instructions.md): Enterprise Angular applications with TypeScript and RxJS
+- [📱 React Native](instructions/react-native.instructions.md): Cross-platform mobile development
+- [🎯 Flutter/Dart](instructions/dart-n-flutter.instructions.md): Cross-platform UI development with Dart
+
+### Backend Technologies
+- [🟢 Node.js/NestJS](instructions/nestjs.instructions.md): Enterprise Node.js applications with dependency injection
+- [☕ Java](instructions/java.instructions.md): Enterprise Java development patterns and frameworks
+- [🍃 Spring Boot](instructions/springboot.instructions.md): Production-ready Spring applications
+- [🦀 Rust](instructions/rust.instructions.md): Systems programming with memory safety and performance
+- [🐹 Go](instructions/go.instructions.md): Concurrent programming and microservices development
+- [🔷 C#/.NET](instructions/csharp.instructions.md): Modern .NET development and enterprise patterns
+- [💎 Ruby on Rails](instructions/ruby-on-rails.instructions.md): Rapid web application development
+
+### Database & Infrastructure
+- [🗄️ SQL](instructions/sql.instructions.md): Database design, optimization, and best practices
+- [🤖 AI Copilot Integration](instructions/copilot-instructions.md): AI-assisted development workflows and prompts
+- [📝 Conventional Commits](instructions/conventional-commit.prompt.md): Standardized commit messages and versioning
+
+## 🎯 Structured Development Prompts
+
+### Core Workflow Pipeline
+- [💡 Idea Prompt](prompts/idea.prompt.md): **Step 1** - Capture and structure initial concepts with constitutional validation
+- [📋 Specify Prompt](prompts/specify.prompt.md): **Step 2** - Define detailed business requirements and acceptance criteria
+- [🏗️ Plan Prompt](prompts/plan.prompt.md): **Step 3** - Architecture design and technical planning with constitutional compliance
+- [✅ Tasks Prompt](prompts/tasks.prompt.md): **Step 4** - Implementation task breakdown with TDD requirements
+
+### AI & Documentation Management
+- [🤖 LLMs Prompt](prompts/llms.prompt.md): Instructions for maintaining and updating this comprehensive index
+- [🧠 Remember Prompt](prompts/remember.prompt.md): Context persistence and knowledge retention strategies
+- [📐 Spec From Project](prompts/spec-from-project.prompt.md): Reverse-engineer specifications from existing codebases
+- [🔍 Suggest Next Feature](prompts/suggestme-for-next-feature.prompt.md): AI-powered feature recommendation system
+
+## 👥 AI Agent Chatmodes (Role-Based Development)
+
+### Technical Leadership Roles
+- [🏗️ Systems Architect (SA)](chatmodes/sa.chatmode.md): Architecture design, system integration, and technical decision making
+- [👨‍💻 Developer (Dev)](chatmodes/dev.chatmode.md): Implementation context, coding standards, and technical execution
+- [🔒 Security Engineer](chatmodes/security.chatmode.md): Security reviews, threat modeling, and compliance validation
+- [⚙️ DevOps Engineer](chatmodes/devops.chatmode.md): Deployment strategies, infrastructure automation, and operations
+
+### Product & Business Roles
+- [📊 Product Manager (PM)](chatmodes/pm.chatmode.md): Product strategy, roadmap planning, and stakeholder alignment
+- [📝 Business Analyst (BA)](chatmodes/ba.chatmode.md): Requirements elicitation, process analysis, and business logic
+- [🎯 Product Owner (PO)](chatmodes/po.chatmode.md): User story management, backlog prioritization, and acceptance criteria
+- [👔 Business Owner (BO)](chatmodes/bo.chatmode.md): Business strategy, ROI analysis, and executive decision support
+
+### Quality Assurance & Documentation
+- [🧪 QA Engineer](chatmodes/qa.chatmode.md): Testing strategy, quality gates, and validation frameworks
+- [🎨 UX/UI Designer](chatmodes/designer.chatmode.md): User experience design, interface patterns, and usability
+- [📚 Technical Writer (TW)](chatmodes/tw.chatmode.md): Documentation standards, API docs, and knowledge management
+
+### Agile & Project Management
+- [🏃 Scrum Master (SM)](chatmodes/sm.chatmode.md): Agile facilitation, process improvement, and team coaching
+- [⚡ Platform Engineer (PE)](chatmodes/pe.chatmode.md): Developer experience, tooling, and platform optimization
+- [📖 Chatmode Overview](chatmodes/README.md): Complete role-based development guide and usage patterns
+
+## ✅ Quality Assurance Checklists
+
+### Development Lifecycle Gates
+- [📝 Story Draft Checklist](checklists/story-draft.checklist.md): Pre-development readiness validation and requirement completeness
+- [✅ Story Done Checklist](checklists/story-done.checklist.md): Definition of Done with constitutional compliance verification
+- [🔄 Update Checklist](checklists/update.checklist.md): Change management and quality gate validation
+
+### Role-Specific Quality Gates
+- [📊 PM Quality Checklist](checklists/pm.checklist.md): Product management deliverable validation and stakeholder alignment
+- [🎯 PO Quality Checklist](checklists/po.checklist.md): User story quality, acceptance criteria, and backlog management
+- [🏗️ SA Quality Checklist](checklists/sa.checklist.md): Architecture review, design validation, and technical debt assessment
+- [🧪 QA Quality Checklist](checklists/qa.checklist.md): Testing completeness, coverage analysis, and risk validation
+
+## 📋 Document Templates & Standards
+
+### Core Specification Templates
+- [📐 Specification Template](templates/spec.template.md): Comprehensive specification writing with constitutional compliance
+- [🏗️ System Design Document (SDD)](templates/sdd.template.md): Architecture documentation and technical specifications
+- [📋 Product Requirements (PRD)](templates/prd.template.md): Product vision, features, and business requirements
+- [📊 Business Requirements (BRD)](templates/brd.template.md): Business logic, processes, and stakeholder needs
+- [📝 Software Requirements (SRS)](templates/srs.template.md): Technical requirements and system specifications
+
+### Testing & Quality Templates
+- [🧪 Test Strategy Template](templates/test-strategy.template.md): Comprehensive testing approach and coverage plans
+- [🎯 Test Plan Template](templates/test-plan.template.md): Detailed test execution and validation procedures
+- [⚡ Performance Test Template](templates/performance-test.template.md): Load, stress, and scalability testing framework
+
+### Operations & Security Templates
+- [📖 Runbook Template](templates/runbook.template.md): Operational procedures, troubleshooting, and incident response
+- [🛡️ Threat Model Template](templates/threat-model.template.md): Security analysis, risk assessment, and mitigation strategies
+- [🏗️ Architecture Decision Record (ADR)](templates/adr.template.md): Technical decision documentation and rationale
+- [📚 API Documentation Template](templates/api-documentation.template.md): RESTful API specs with OpenAPI standards
+
+### Project Management Templates
+- [📋 Change Request Template](templates/change-request.template.md): Formal change management and impact analysis
+- [📊 Communication Plan](templates/communication-plan.template.md): Stakeholder communication and reporting frameworks
+- [🗄️ Data Governance Template](templates/data-governance.template.md): Data management, privacy, and compliance
+- [🚀 Deployment Guide Template](templates/deployment-guide.template.md): Environment setup and release procedures
+
+### Cloud & Infrastructure Templates
+- [☁️ Cloud Templates Directory](templates/cloud/): AWS, Azure, GCP-specific deployment and architecture templates
+- [📱 Application Template](templates/application.template.md): Multi-platform application scaffolding and structure
+- [🔧 Complete Template Library](templates/): Full collection of 50+ professional templates for all development phases
+
+## 🔧 Automation Scripts & Tools
+
+### Feature Creation & Scaffolding
+- [💡 Create New Idea](scripts/create-new-idea.sh): **Automated** idea artifact scaffolding with constitutional templates
+- [📋 Create New Plan](scripts/create-new-plan.sh): **Automated** plan artifact generation with architecture validation
+- [⚡ Create New Feature](scripts/create-new-feature.sh): **Automated** feature scaffolding with TDD structure and constitutional compliance
+
+### Context & Validation Management
+- [🔄 Update Agent Context](scripts/update-agent-context.sh): **Automated** AI agent context refresh and synchronization
+- [🔍 Detect Secrets (Local)](scripts/detect-secrets-local.sh): **Automated** local secret scanning and security validation
+- [✅ Validate LLMs Index](scripts/validate-llms.sh): **Automated** `llms.txt` format validation and link verification
+- [📋 Check Task Prerequisites](scripts/check-task-prerequisites.sh): **Automated** pre-development validation and dependency checking
+
+### Platform-Specific Scripts
+- [🐧 Bash Scripts](scripts/bash/): Linux/Unix automation and CI/CD integration scripts
+- [🪟 PowerShell Scripts](scripts/powershell/): Windows automation and enterprise integration tools
+- [🔧 Common Utilities](scripts/common.sh): Shared functions and utility libraries for all automation scripts
+
+### Advanced Tooling
+- [🗂️ Get Feature Paths](scripts/get-feature-paths.sh): **Automated** project structure analysis and path resolution
+- [🎯 Constitutional Validator](scripts/): Real-time constitutional compliance checking and enforcement
+
+## 🧠 Advanced Knowledge Resources
+
+### Framework Intelligence
+- [📚 Knowledge Base](memory/knowledge-base.md): Comprehensive development principles, patterns, and constitutional best practices
+- [🧪 Test Levels Framework](memory/test-levels-framework.md): Complete testing taxonomy with unit, integration, system, and acceptance testing
+- [⚡ Test Priorities Matrix](memory/test-priorities-matrix.md): Risk-based testing prioritization with coverage optimization strategies
+- [🎯 Brainstorming Techniques](memory/brainstorming-techniques.md): Structured ideation and problem-solving methodologies
+
+### Advanced Guides & References
+- [👥 Chatmode Usage Guide](chatmodes/README.md): Complete role-based development patterns and AI agent collaboration
+- [☁️ Cloud Infrastructure](templates/cloud/): Enterprise-grade cloud deployment templates for AWS, Azure, and GCP
+- [📖 Complete Documentation Index](./): Comprehensive framework reference with 200+ files and constitutional guidance
+
+## 🚀 Getting Started Fast
+
+### For New Users
+1. **Start Here**: [Main README](README.md) → [Constitution](memory/constitution.md) → [Context Instructions](instructions/context.instructions.md)
+2. **First Project**: Use [Create New Idea](scripts/create-new-idea.sh) → Follow [Idea Prompt](prompts/idea.prompt.md) workflow
+3. **Technology Setup**: Choose your stack from [Technology Instructions](instructions/) → Load appropriate [Chatmode](chatmodes/)
+
+### For Teams & Organizations
+1. **Framework Adoption**: [Constitutional Training](memory/constitution.md) → [Role Assignment](chatmodes/) → [Quality Gates](checklists/)
+2. **Enterprise Integration**: [DevOps Practices](instructions/devops-core-principles.instructions.md) → [Security Compliance](instructions/security-and-owasp.instructions.md)
+3. **Scaling Patterns**: [Performance Optimization](instructions/performance-optimization.instructions.md) → [Architecture Templates](templates/)
+
+---
+
+**💡 Pro Tip**: This framework is designed for AI-human collaboration. Start with the [Constitution](memory/constitution.md), then let the context-aware system guide you through the appropriate workflow based on your current task and technology stack.
+
+**🔗 Quick Links**: [Repository](https://github.com/plaesy/spec-kit) | [Issues](https://github.com/plaesy/spec-kit/issues) | [Discussions](https://github.com/plaesy/spec-kit/discussions) | [Context7 Benchmark](https://context7.com/plaesy/spec-kit)

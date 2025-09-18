@@ -1,0 +1,50 @@
+# Whitelist for Plaesy Constitutional Framework
+
+# This file contains patterns to whitelist from security scanning
+
+# JavaScript SDK - Client response and auth patterns
+
+ClientResponseError._message
+this\.message._=._"._"
+message._="._"
+
+# JavaScript SDK - Authorization headers and tokens
+
+Authorization.*this\.client\.authStore\.token
+headers.*Authorization.\*token
+authStore\.token
+
+# JavaScript SDK - placeholders and examples
+
+plaesy*c*\d+
+_pc_\d+
+"plaesy_auth"
+
+# JavaScript SDK - error message templates
+
+Failed to connect to the Plaesy server
+You can find more info in https://github.com/plaesy
+ECONNREFUSED ::1
+
+# Go SDK - test patterns
+
+api._key._=._test
+secret._=.\*test
+
+# Configuration files that may contain placeholder secrets
+
+_.example._
+_template_
+_.sample_
+
+# Dart SDK - similar patterns as JS
+
+plaesy*c*\d+
+_pc_\d+
+
+# Development and testing
+
+_test_
+_mock_
+_dummy_
+node_modules\*
