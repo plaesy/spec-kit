@@ -1,0 +1,208 @@
+name: 🔒 Security Issue
+description: Report a security vulnerability in the Plaesy Spec-Kit framework
+title: "[Security]: "
+labels: ["security", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **IMPORTANT SECURITY NOTICE** ⚠️
+        
+        If this is a **serious security vulnerability** that could be exploited, please **DO NOT** file a public issue. 
+        
+        Use this template only for:
+        - Security best practice suggestions
+        - Non-exploitable security improvements
+        - Security documentation issues
+        - General security questions
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Security Issue Confirmation
+      description: Please confirm this is appropriate for a public issue
+      options:
+        - label: This is NOT an exploitable vulnerability (I've read the security policy)
+          required: true
+        - label: This is a suggestion for security improvement or best practice
+          required: true
+        - label: I understand that exploitable vulnerabilities should be reported privately
+          required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Security Issue Type
+      description: What type of security issue is this?
+      options:
+        - Security best practice suggestion
+        - Security documentation improvement
+        - Security tooling enhancement
+        - Compliance requirement addition
+        - Security testing improvement
+        - Security configuration suggestion
+        - Other security enhancement
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Security Issue Description
+      description: Describe the security concern or improvement
+      placeholder: |
+        Describe the security issue or improvement suggestion:
+        - What security aspect needs attention?
+        - Which OWASP category does this relate to?
+        - How does this impact the framework's security posture?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: owasp
+    attributes:
+      label: OWASP Category
+      description: Which OWASP Top 10 category does this relate to?
+      options:
+        - A01 - Broken Access Control
+        - A02 - Cryptographic Failures
+        - A03 - Injection
+        - A04 - Insecure Design
+        - A05 - Security Misconfiguration
+        - A06 - Vulnerable and Outdated Components
+        - A07 - Identification and Authentication Failures
+        - A08 - Software and Data Integrity Failures
+        - A09 - Security Logging and Monitoring Failures
+        - A10 - Server-Side Request Forgery (SSRF)
+        - Not OWASP related
+        - Multiple categories
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Security State
+      description: What is the current security implementation?
+      placeholder: |
+        Describe how security is currently handled:
+        - What exists today?
+        - What gaps do you see?
+        - What could be improved?
+
+  - type: textarea
+    id: recommendation
+    attributes:
+      label: Security Recommendation
+      description: What security improvement do you recommend?
+      placeholder: |
+        Provide your security recommendation:
+        - Specific changes or additions
+        - Best practices to implement
+        - Tools or processes to add
+        - Configuration improvements
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Security Impact
+      description: What is the security impact of this issue/improvement?
+      placeholder: |
+        Describe the security impact:
+        - What risks does this address?
+        - How does this improve security posture?
+        - Who would benefit from this improvement?
+        - What happens if this isn't addressed?
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Security Severity
+      description: How severe is this security concern?
+      options:
+        - Low (minor security improvement)
+        - Medium (moderate security enhancement)
+        - High (important security gap)
+        - Critical (urgent security requirement)
+    validations:
+      required: true
+
+  - type: textarea
+    id: standards
+    attributes:
+      label: Security Standards Compliance
+      description: Which security standards or frameworks does this relate to?
+      placeholder: |
+        Relevant security standards:
+        - OWASP guidelines
+        - NIST framework
+        - ISO 27001
+        - SOC 2
+        - GDPR/CCPA
+        - Industry-specific requirements
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Suggestions
+      description: How could this security improvement be implemented?
+      placeholder: |
+        Implementation ideas:
+        - Code changes needed
+        - Configuration updates
+        - New tools or processes
+        - Documentation updates
+        - Testing requirements
+
+  - type: checkboxes
+    id: affected
+    attributes:
+      label: Affected Components
+      description: Which framework components are affected?
+      options:
+        - label: Constitutional framework rules
+        - label: CI/CD pipeline and workflows
+        - label: Documentation and templates
+        - label: Scripts and automation tools
+        - label: Security policies and procedures
+        - label: Development environment setup
+        - label: Testing and validation processes
+
+  - type: textarea
+    id: testing
+    attributes:
+      label: Security Testing
+      description: How should this security improvement be tested?
+      placeholder: |
+        Testing recommendations:
+        - Security test cases to add
+        - Validation procedures
+        - Compliance checks
+        - Penetration testing considerations
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Security Resources
+      description: Include relevant security resources or references
+      placeholder: |
+        Helpful resources:
+        - OWASP documentation links
+        - Security best practice guides
+        - Relevant CVE references
+        - Industry security standards
+        - Example implementations
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Can you help implement this security improvement?
+      options:
+        - label: I can help implement the security changes
+        - label: I can help with security testing
+        - label: I can help with security documentation
+        - label: I can provide security expertise
+        - label: I can help with compliance validation

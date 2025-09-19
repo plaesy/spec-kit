@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(../scripts/bash/plaesy-init.sh:*)",
+      "Read(//home/mahbubzulkarnain/.plaesy/**)",
+      "Read(//tmp/test-plaesy-init/**)",
+      "Bash(/home/mahbubzulkarnain/Repository/github.com/plaesy/spec-kit/scripts/bash/plaesy-init.sh:*)",
+      "Bash(timeout:*)",
+      "Bash(ls:*)",
+      "Bash(/tmp/test-claude-setup.sh:*)",
+      "Bash(/tmp/debug-for-loop.sh:*)",
+      "Bash(pwsh:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

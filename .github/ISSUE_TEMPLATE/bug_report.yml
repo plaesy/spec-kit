@@ -1,0 +1,155 @@
+name: 🐛 Bug Report
+description: Report a bug in the Plaesy Spec-Kit framework
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please fill out this form to help us understand and reproduce the issue.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please check all applicable items before submitting
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have read the [documentation](../README.md) and [troubleshooting guide](../SUPPORT.md)
+          required: true
+        - label: I have verified this is not a security vulnerability (use [security reporting](../SECURITY.md) instead)
+          required: true
+        - label: I have reproduced the issue in the latest version
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Describe what went wrong...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear description of what you expected to happen
+      placeholder: Describe what should have happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: A clear description of what actually happened
+      placeholder: Describe what actually happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the issue
+      placeholder: |
+        1. Create a new specification with...
+        2. Run the command...
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Information about your environment
+      placeholder: |
+        - OS: [e.g., Ubuntu 22.04, macOS 14.0, Windows 11]
+        - Shell: [e.g., bash, zsh, PowerShell]
+        - Python version: [e.g., 3.11.0]
+        - Node.js version: [e.g., 20.0.0]
+        - Spec-Kit version: [e.g., 1.0.0]
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Messages and Logs
+      description: Include relevant error messages, stack traces, or log output
+      placeholder: Paste error messages or logs here...
+      render: shell
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Configuration Files
+      description: Include relevant configuration files (sanitize any secrets!)
+      placeholder: |
+        ```yaml
+        # .github/workflows/ci-cd.yml
+        # Relevant configuration...
+        ```
+      render: yaml
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity Level
+      description: How severe is this bug?
+      options:
+        - Critical (blocks all work)
+        - High (blocks major functionality)
+        - Medium (workaround available)
+        - Low (minor issue)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequency
+      description: How often does this occur?
+      options:
+        - Always (100%)
+        - Often (>75%)
+        - Sometimes (25-75%)
+        - Rarely (<25%)
+        - Once
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: If you found a workaround, please describe it
+      placeholder: Describe any temporary workaround you found...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here
+      placeholder: |
+        - Screenshots
+        - Related issues
+        - Background information
+        - Potential solutions
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Are you willing to help fix this issue?
+      options:
+        - label: I'm willing to submit a pull request to fix this issue
+        - label: I can help test the fix
+        - label: I can provide additional information if needed

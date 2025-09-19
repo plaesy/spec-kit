@@ -1,0 +1,202 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for the Plaesy Spec-Kit framework
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new feature! Please provide detailed information to help us understand your request.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please check all applicable items before submitting
+      options:
+        - label: I have searched existing issues and discussions to avoid duplicates
+          required: true
+        - label: I have read the [documentation](../README.md) and understand the framework's philosophy
+          required: true
+        - label: This feature aligns with the constitutional framework principles
+          required: true
+        - label: I have considered if this could be implemented as a separate library first
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: What type of feature is this?
+      options:
+        - Framework Core (constitutional rules, templates)
+        - Automation (scripts, workflows, CI/CD)
+        - Documentation (guides, templates, examples)
+        - Security (scanning, policies, compliance)
+        - Quality Gates (testing, validation, metrics)
+        - Developer Experience (tooling, integrations)
+        - AI/Agent Integration (chatmodes, prompts)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: |
+        Describe the problem or pain point that this feature would address...
+        
+        Example:
+        - Current workflow is inefficient because...
+        - Users struggle with... 
+        - The framework lacks...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution in detail
+      placeholder: |
+        Describe how you envision this feature working...
+        
+        Include:
+        - What the feature would do
+        - How users would interact with it
+        - How it fits into the existing framework
+        - Any constitutional compliance considerations
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Have you considered alternative approaches?
+      placeholder: |
+        Describe alternative solutions you've considered:
+        - Option 1: ...
+        - Option 2: ...
+        - Why the proposed solution is preferred...
+
+  - type: textarea
+    id: usecases
+    attributes:
+      label: Use Cases
+      description: Provide specific examples of how this feature would be used
+      placeholder: |
+        Example use cases:
+        
+        1. As a developer, I want to... so that...
+        2. As a team lead, I need to... because...
+        3. When working on..., this feature would help by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What defines "done" for this feature?
+      placeholder: |
+        Define what success looks like:
+        
+        - [ ] Feature does X when Y condition is met
+        - [ ] Documentation is updated with examples
+        - [ ] Constitutional compliance is maintained
+        - [ ] Tests are written and passing
+        - [ ] Security considerations are addressed
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature?
+      options:
+        - Critical (framework is incomplete without this)
+        - High (significantly improves framework value)
+        - Medium (nice to have, improves workflow)
+        - Low (minor improvement)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Estimated Effort
+      description: How complex do you think this feature is?
+      options:
+        - Small (few hours to 1 day)
+        - Medium (1-3 days)
+        - Large (1-2 weeks)
+        - Extra Large (more than 2 weeks)
+        - Unknown
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact Assessment
+      description: What impact would this feature have?
+      placeholder: |
+        Consider:
+        - Who would benefit from this feature?
+        - How many users would be affected?
+        - What other parts of the framework might be impacted?
+        - Any breaking changes or migration concerns?
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Ideas
+      description: Do you have ideas about how this could be implemented?
+      placeholder: |
+        If you have technical implementation ideas:
+        - Which files/directories would be affected?
+        - What new templates or scripts might be needed?
+        - Any specific technologies or tools to consider?
+        - Constitutional compliance requirements?
+
+  - type: checkboxes
+    id: constitutional
+    attributes:
+      label: Constitutional Framework Alignment
+      description: How does this feature align with framework principles?
+      options:
+        - label: Supports specification-first development
+        - label: Maintains library-first architecture
+        - label: Enforces TDD practices
+        - label: Enhances security posture
+        - label: Improves quality gates
+        - label: Simplifies complex workflows
+        - label: Supports automation and CI/CD
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other information that would be helpful
+      placeholder: |
+        Add any other context:
+        - Screenshots or mockups
+        - Related issues or discussions
+        - External resources or examples
+        - Potential challenges or concerns
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Are you willing to help implement this feature?
+      options:
+        - label: I'm willing to submit a pull request for this feature
+        - label: I can help with design and specification
+        - label: I can help with testing and validation
+        - label: I can provide domain expertise
+        - label: I can help with documentation
