@@ -1,0 +1,356 @@
+{
+  "version": "1.0",
+  "description": "Platform detection and file mapping for Plaesy Spec-Kit",
+  "plaesy": {
+    "base_directory": ".plaesy",
+    "core_directories": [
+      "memory",
+      "roles",
+      "analysis",
+      "tasks",
+      "scripts"
+    ],
+    "project_directories": [
+      "docs",
+      "specs"
+    ],
+    "mapping": {
+      "core": {
+        "value": "instructions/agents.instructions.md"
+      },
+      "memory": {
+        "value": "memory/*",
+        "excludes": []
+      },
+      "roles": {
+        "value": "roles/*",
+        "excludes": [],
+        "description": "Chatmodes copied to .plaesy/roles (platform-agnostic development storage)"
+      },
+      "tasks": {
+        "value": "tasks/*",
+        "excludes": [],
+        "description": "Task management system - universal across all platforms"
+      },
+      "instructions": {
+        "value": "instructions/*",
+        "excludes": [
+          "agents.instructions.md"
+        ]
+      },
+      "prompts": {
+        "value": "prompts/*",
+        "excludes": []
+      },
+      "chatmodes": {
+        "value": "chatmodes/*",
+        "excludes": []
+      },
+      "templates": {
+        "value": "templates/*",
+        "excludes": []
+      },
+      "checklists": {
+        "value": "checklists/*",
+        "excludes": []
+      },
+      "scripts": {
+        "value": "scripts/*",
+        "excludes": []
+      }
+    }
+  },
+  "platforms": {
+    "claude_code": {
+      "name": "Claude Code",
+      "provider": "Anthropic",
+      "category": "cli_tools",
+      "detection": [
+        ".claude/settings.local.json",
+        ".claude/commands"
+      ],
+      "mapping": {
+        "core": "CLAUDE.md",
+        "instructions": ".claude/instructions",
+        "prompts": ".claude/commands",
+        "chatmodes": ".claude/roles"
+      }
+    },
+    "cursor_ai": {
+      "name": "Cursor AI",
+      "provider": "Cursor",
+      "category": "ide_tools",
+      "detection": [
+        ".cursorrules",
+        ".cursor/rules",
+        ".cursor"
+      ],
+      "mapping": {
+        "core": ".cursor/rules/plaesy.mdc",
+        "instructions": ".cursor/instructions",
+        "prompts": ".cursor/rules"
+      }
+    },
+    "github_copilot": {
+      "name": "GitHub Copilot",
+      "provider": "GitHub",
+      "category": "ide_tools",
+      "detection": [
+        ".github/copilot-instructions.md",
+        ".github/prompts"
+      ],
+      "mapping": {
+        "core": ".github/copilot-instructions.md",
+        "instructions": ".github/instructions",
+        "prompts": ".github/prompts",
+        "chatmodes": ".github/chatmodes"
+      }
+    },
+    "cline": {
+      "name": "Cline",
+      "provider": "Cline AI",
+      "category": "vscode_extension",
+      "detection": [
+        ".cline/instructions.md",
+        ".cline/prompts"
+      ],
+      "mapping": {
+        "core": ".cline/instructions.md",
+        "instructions": ".cline/instructions",
+        "prompts": ".cline/prompts",
+        "chatmodes": ".cline/chatmodes"
+      }
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "provider": "DeepSeek AI",
+      "category": "api_based",
+      "detection": [
+        ".deepseek/instructions.md",
+        "deepseek.config.json"
+      ],
+      "mapping": {
+        "core": ".deepseek/instructions.md",
+        "instructions": ".deepseek/instructions",
+        "prompts": ".deepseek/prompts",
+        "chatmodes": ".deepseek/chatmodes"
+      }
+    },
+    "kilo_code": {
+      "name": "Kilo Code",
+      "provider": "Kilo Code",
+      "category": "api_based",
+      "detection": [
+        ".kilorules",
+        ".kilo/rules",
+        ".kilo"
+      ],
+      "mapping": {
+        "core": ".kilocode/rules/plaesy.mdc",
+        "prompts": ".kilocode/workflows"
+      }
+    },
+    "qoder": {
+      "name": "Qoder AI",
+      "provider": "Qoder",
+      "category": "api_based",
+      "detection": [
+        ".qoderrules",
+        ".qoder/rules",
+        ".qoder"
+      ],
+      "mapping": {
+        "core": ".qoder/rules/plaesy.mdc",
+        "instructions": ".qoder/instructions",
+        "prompts": ".qoder/rules",
+        "chatmodes": ".qoder/rules"
+      }
+    },
+    "trae_ai": {
+      "name": "Trae AI",
+      "provider": "Trae Labs",
+      "category": "api_based",
+      "detection": [
+        ".trae/instructions.md",
+        "trae.config.yaml"
+      ],
+      "mapping": {
+        "core": ".trae/instructions.md",
+        "instructions": ".trae/instructions",
+        "prompts": ".trae/prompts",
+        "chatmodes": ".trae/chatmodes"
+      }
+    },
+    "windsurf_ai": {
+      "name": "Windsurf AI",
+      "provider": "Windsurf",
+      "category": "multi_agent",
+      "detection": [
+        ".windsurf/workflow.yaml",
+        ".windsurfrules"
+      ],
+      "mapping": {
+        "core": ".windsurf/instructions.md",
+        "instructions": ".windsurf/instructions",
+        "prompts": ".windsurf/prompts",
+        "chatmodes": ".windsurf/chatmodes"
+      }
+    },
+    "continue_dev": {
+      "name": "Continue.dev",
+      "provider": "Continue",
+      "category": "vscode_extension",
+      "detection": [
+        ".continue/config.json",
+        ".continuerc",
+        ".continue-instructions.md"
+      ],
+      "mapping": {
+        "core": ".continue/config.json",
+        "instructions": ".continue/instructions",
+        "prompts": ".continue/prompts",
+        "chatmodes": ".continue/chatmodes"
+      }
+    },
+    "tabnine": {
+      "name": "Tabnine",
+      "provider": "Tabnine",
+      "category": "ide_tools",
+      "detection": [
+        ".tabnine-config.json",
+        ".tabnine/settings.json",
+        ".tabnine"
+      ],
+      "mapping": {
+        "core": ".tabnine/config.json",
+        "instructions": ".tabnine/instructions",
+        "prompts": ".tabnine/prompts",
+        "chatmodes": ".tabnine/chatmodes"
+      }
+    },
+    "codeium": {
+      "name": "Codeium",
+      "provider": "Codeium",
+      "category": "ide_tools",
+      "detection": [
+        ".codeium/config.json",
+        ".codeiumrc",
+        ".codeium"
+      ],
+      "mapping": {
+        "core": ".codeium/config.json",
+        "instructions": ".codeium/instructions",
+        "prompts": ".codeium/prompts",
+        "chatmodes": ".codeium/chatmodes"
+      }
+    },
+    "codewhisperer": {
+      "name": "Amazon CodeWhisperer",
+      "provider": "Amazon",
+      "category": "ide_tools",
+      "detection": [
+        ".codewhisperer/config.json",
+        ".aws/codewhisperer",
+        ".codewhisperer"
+      ],
+      "mapping": {
+        "core": ".codewhisperer/config.json",
+        "instructions": ".codewhisperer/instructions",
+        "prompts": ".codewhisperer/prompts",
+        "chatmodes": ".codewhisperer/chatmodes"
+      }
+    },
+    "studio_bot": {
+      "name": "Google Studio Bot",
+      "provider": "Google",
+      "category": "ide_tools",
+      "detection": [
+        ".studio-bot/config.json",
+        ".android/studio-bot",
+        ".studiobot"
+      ],
+      "mapping": {
+        "core": ".studio-bot/config.json",
+        "instructions": ".studio-bot/instructions",
+        "prompts": ".studio-bot/prompts",
+        "chatmodes": ".studio-bot/chatmodes"
+      }
+    },
+    "replit_ghostwriter": {
+      "name": "Replit Ghostwriter",
+      "provider": "Replit",
+      "category": "cloud_ide",
+      "detection": [
+        ".replit/config.json",
+        "ghostwriter.config.json",
+        ".replit-ghostwriter"
+      ],
+      "mapping": {
+        "core": ".replit/config.json",
+        "instructions": ".replit/instructions",
+        "prompts": ".replit/prompts",
+        "chatmodes": ".replit/chatmodes"
+      }
+    },
+    "llama_index": {
+      "name": "LlamaIndex",
+      "provider": "LlamaIndex",
+      "category": "framework",
+      "detection": [
+        ".llamaindex/config.json",
+        "llama.config.json",
+        ".llama-index"
+      ],
+      "mapping": {
+        "core": ".llamaindex/config.json",
+        "instructions": ".llamaindex/instructions",
+        "prompts": ".llamaindex/prompts",
+        "chatmodes": ".llamaindex/chatmodes"
+      }
+    },
+    "ollama": {
+      "name": "Ollama",
+      "provider": "Ollama",
+      "category": "local_ai",
+      "detection": [
+        ".ollama/config.json",
+        "ollama.config.json",
+        ".ollama"
+      ],
+      "mapping": {
+        "core": ".ollama/config.json",
+        "instructions": ".ollama/instructions",
+        "prompts": ".ollama/prompts",
+        "chatmodes": ".ollama/chatmodes"
+      }
+    },
+    "lm_studio": {
+      "name": "LM Studio",
+      "provider": "LM Studio",
+      "category": "local_ai",
+      "detection": [
+        ".lm-studio/config.json",
+        "lmstudio.config.json",
+        ".lm-studio"
+      ],
+      "mapping": {
+        "core": ".lm-studio/config.json",
+        "instructions": ".lm-studio/instructions",
+        "prompts": ".lm-studio/prompts",
+        "chatmodes": ".lm-studio/chatmodes"
+      }
+    },
+    "generic_ai": {
+      "name": "Generic AI",
+      "provider": "Various",
+      "category": "fallback",
+      "detection": [],
+      "mapping": {
+        "core": "AI-INSTRUCTIONS.md",
+        "instructions": "ai-config/instructions",
+        "prompts": "ai-config/prompts",
+        "chatmodes": "ai-config/chatmodes"
+      }
+    }
+  }
+}

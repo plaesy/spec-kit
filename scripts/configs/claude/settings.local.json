@@ -1,0 +1,20 @@
+{
+    "permissions": {
+        "allow": [
+            "mcp__context7__resolve-library-id",
+            "mcp__context7__get-library-docs",
+            "SlashCommand(/analyze)",
+            "SlashCommand(/clarify)",
+            "SlashCommand(/continue)",
+            "SlashCommand(/fix)",
+            "SlashCommand(/implement)",
+            "SlashCommand(/optimize)",
+            "SlashCommand(/research)",
+            "SlashCommand(/review)",
+            "SlashCommand(/save)",
+            "SlashCommand(/start)"
+        ],
+        "deny": [],
+        "ask": []
+    }
+}

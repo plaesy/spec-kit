@@ -1,0 +1,194 @@
+{
+  "description": "Mapping of technology keywords to instruction files for auto-loading context-aware instructions",
+  "version": "1.0.0",
+  "mappings": {
+    "always_load": [
+      "plaesy.instructions.md",
+      "plaesy-trim.instructions.md",
+      "plaesy-graph.instructions.md",
+      "tasks.instructions.md",
+      "quality-gates.instructions.md",
+      "error-recovery.instructions.md",
+      "date-system.instructions.md",
+      "assess.instructions.md",
+      "continue.instructions.md",
+      "doc.instructions.md",
+      "fix.instructions.md",
+      "implement.instructions.md",
+      "optimize.instructions.md",
+      "save.instructions.md",
+      "start.instructions.md"
+    ],
+    "frameworks": {
+      "nextjs": {
+        "file": "nextjs.instructions.md",
+        "keywords": ["next.js", "nextjs", "app router", "server component", "next/"],
+        "patterns": ["import.*from ['\"](next/|@next/)"]
+      },
+      "nestjs": {
+        "file": "nestjs.instructions.md",
+        "keywords": ["nestjs", "nest.js", "@nestjs", "nest framework"],
+        "patterns": ["import.*from ['\"]@nestjs/"]
+      },
+      "react": {
+        "file": "reactjs.instructions.md",
+        "keywords": ["react", "jsx", "tsx", "usestate", "useeffect", "react-dom", "react-scripts"],
+        "patterns": ["import.*from ['\"]react"]
+      },
+      "react-native": {
+        "file": "react-native.instructions.md",
+        "keywords": ["react native", "react-native"],
+        "patterns": ["import.*from ['\"]react-native"]
+      },
+      "angular": {
+        "file": "angular.instructions.md",
+        "keywords": ["angular", "@angular", "angular component"],
+        "patterns": ["import.*from ['\"]@angular/"]
+      },
+      "flutter": {
+        "file": "dart-n-flutter.instructions.md",
+        "keywords": ["flutter", "widget", "stateless", "stateful"],
+        "patterns": ["import ['\"]package:flutter/"]
+      },
+      "spring-boot": {
+        "file": "springboot.instructions.md",
+        "keywords": ["spring boot", "springboot", "spring framework", "@springboot"],
+        "patterns": ["import.*springframework"]
+      },
+      "rails": {
+        "file": "ruby-on-rails.instructions.md",
+        "keywords": ["rails", "ruby on rails", "activerecord", "rack"],
+        "patterns": ["require ['\"]rails"]
+      }
+    },
+    "languages": {
+      "go": {
+        "file": "go.instructions.md",
+        "keywords": ["golang", "go lang", "go module"],
+        "patterns": ["package main", "import \\("]
+      },
+      "java": {
+        "file": "java.instructions.md",
+        "keywords": ["java", "jvm", "maven", "gradle"],
+        "patterns": ["public class.*\\{", "import java\\."]
+      },
+      "csharp": {
+        "file": "csharp.instructions.md",
+        "keywords": ["c#", "csharp", ".net", "dotnet", "asp.net"],
+        "patterns": ["using System;", "namespace.*\\{"]
+      },
+      "rust": {
+        "file": "rust.instructions.md",
+        "keywords": ["rust", "cargo", "rustc"],
+        "patterns": ["fn main\\(\\)", "use std::"]
+      },
+      "dart": {
+        "file": "dart-n-flutter.instructions.md",
+        "keywords": ["dart", "dart language"],
+        "patterns": ["import ['\"]package:", "void main\\(\\)", "class .*\\{"]
+      }
+    },
+    "cross_cutting": {
+      "git": {
+        "file": "git.instructions.md",
+        "keywords": ["git", "github", "gitlab", "version control", "branching", "merge", "commit", "pull request", "pr", "gitflow"],
+        "patterns": ["^[a-z]+/[a-z-]+$"]
+      },
+      "performance-measurement": {
+        "file": "performance-baseline.instructions.md",
+        "keywords": ["performance", "baseline", "profiling", "benchmark", "measure", "metrics", "monitoring"],
+        "triggers": ["performance requirement", "load testing", "profiling", "benchmark", "establish baseline"]
+      },
+      "performance-optimization": {
+        "file": "performance-optimization.instructions.md",
+        "keywords": ["optimize", "optimization", "performance", "scalability", "scale", "caching", "cache", "slow", "latency", "throughput", "bottleneck", "tuning"],
+        "triggers": ["performance optimization", "optimize code", "improve performance", "speed up"]
+      },
+      "security-coding": {
+        "file": "security-and-owasp.instructions.md",
+        "keywords": ["secure coding", "security", "owasp", "authentication", "authorization", "encryption", "vulnerability", "xss", "csrf", "sql injection", "deprecated libraries"],
+        "triggers": ["secure code", "security requirement", "prevent vulnerability", "code review security"]
+      },
+      "security-audit": {
+        "file": "security-audit.instructions.md",
+        "keywords": ["security", "security audit", "audit", "owasp", "compliance", "checklist", "wcag", "accessibility"],
+        "triggers": ["security audit", "compliance", "gdpr", "hipaa", "accessibility", "wcag", "verify security"]
+      },
+      "devops": {
+        "file": "devops-core-principles.instructions.md",
+        "keywords": ["devops", "ci/cd", "cicd", "continuous integration", "continuous deployment", "pipeline", "jenkins", "github actions", "gitlab ci"],
+        "triggers": ["deployment", "infrastructure"]
+      },
+      "kubernetes": {
+        "file": "kubernetes-deployment-best-practices.instructions.md",
+        "keywords": ["kubernetes", "k8s", "kubectl", "helm", "deployment", "service mesh", "istio"],
+        "triggers": ["container orchestration", "microservices deployment"]
+      },
+      "terraform": {
+        "file": "terraform.instructions.md",
+        "keywords": ["terraform", "infrastructure as code", "iac", "tf file", "hcl"],
+        "triggers": ["cloud infrastructure", "provisioning"]
+      },
+      "testing": {
+        "file": "testing-strategy.instructions.md",
+        "keywords": ["testing", "test strategy", "unit test", "integration test", "e2e test", "e2e", "test coverage", "test pyramid", "ci/cd testing"],
+        "triggers": ["test requirement", "quality assurance", "test coverage", "testing strategy"]
+      },
+      "tdd": {
+        "file": "tdd-enforcement.instructions.md",
+        "keywords": ["tdd", "test driven development", "unit test", "integration test", "e2e test", "testing", "jest", "mocha", "pytest", "junit"],
+        "triggers": ["test requirement", "quality assurance", "test coverage"]
+      },
+      "sql": {
+        "file": "sql.instructions.md",
+        "keywords": ["sql", "database", "postgresql", "mysql", "oracle", "mssql", "query optimization", "index"],
+        "triggers": ["database design", "data model"]
+      },
+      "tech-validation": {
+        "file": "tech-validation.instructions.md",
+        "keywords": ["technology validation", "tech stack", "framework selection", "library choice", "dependency", "fallback"],
+        "triggers": ["technology decision", "framework selection", "context7 unavailable"]
+      }
+    },
+    "methodologies": {
+      "brainstorming": {
+        "file": "brainstorming-techniques.instructions.md",
+        "keywords": ["brainstorm", "ideation", "problem solving", "creative", "innovation"],
+        "triggers": ["requirements unclear", "solution exploration"]
+      },
+      "changelog": {
+        "file": "changelog.instructions.md",
+        "keywords": ["changelog", "semantic versioning", "release notes", "version management", "release", "breaking changes"],
+        "triggers": ["preparing release", "version bump", "release management"]
+      },
+      "markdown": {
+        "file": "how-to-create-markdown-document.instructions.md",
+        "keywords": ["markdown", "documentation", "readme", "docs"],
+        "triggers": ["create documentation", "write readme"]
+      }
+    }
+  },
+  "detection_rules": {
+    "priority": [
+      "always_load",
+      "frameworks",
+      "languages",
+      "cross_cutting",
+      "methodologies"
+    ],
+    "case_insensitive": true,
+    "scan_locations": [
+      "specs/[number]-[feature-name]/context.md",
+      "specs/[number]-[feature-name]/requirements.md",
+      "specs/[number]-[feature-name]/architecture.md",
+      "specs/[number]-[feature-name]/design.md",
+      ".plaesy/analysis/project.json",
+      "package.json",
+      "go.mod",
+      "pom.xml",
+      "Cargo.toml",
+      "pubspec.yaml"
+    ],
+    "deduplication": true
+  }
+}

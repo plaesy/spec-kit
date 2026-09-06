@@ -1,0 +1,1 @@
+At the beginning of every AI session, read `.plaesy/memory/plaesy.md`

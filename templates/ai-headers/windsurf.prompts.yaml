@@ -1,0 +1,5 @@
+header_content: |
+  ---
+  description: "{{DESCRIPTION}}"
+  auto_execution_mode: 3
+  ---

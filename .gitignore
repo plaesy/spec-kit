@@ -1,0 +1,20 @@
+reload.sh
+.clinerules/byterover-rules.md
+.kilocode/rules/byterover-rules.md
+.roo/rules/byterover-rules.md
+.windsurf/rules/byterover-rules.md
+.cursor/rules/byterover-rules.mdc
+.kiro/steering/byterover-rules.md
+.qoder/rules/byterover-rules.md
+.augment/rules/byterover-rules.md
+
+
+# Plaesy framework dirs (globally ignored by ~/.gitignore_global; re-include here)
+!.claude/
+!.claude/commands/
+!.claude/roles/
+!.claude/instructions/
+!.plaesy/
+!CLAUDE.md
+# Node
+node_modules/

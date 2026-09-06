@@ -1,0 +1,5 @@
+header_content: |
+  ---
+  description: "{{DESCRIPTION}}"
+  trigger: always_on
+  ---

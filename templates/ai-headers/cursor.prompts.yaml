@@ -1,0 +1,6 @@
+header_content: |
+  ---
+  description: "{{DESCRIPTION}}"
+  globs: ["**/*"]
+  alwaysApply: false
+  ---

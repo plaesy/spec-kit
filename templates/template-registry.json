@@ -1,0 +1,569 @@
+{
+  "templateRegistry": {
+    "version": "1.0",
+    "lastUpdated": "2024-12-19",
+    "description": "Comprehensive registry of all framework templates with validation metadata",
+    "categories": {
+      "core": {
+        "description": "Essential templates for basic framework operation",
+        "templates": [
+          {
+            "id": "spec",
+            "name": "Feature Specification",
+            "path": "templates/spec.template.md",
+            "required": true,
+            "phase": "specify",
+            "tags": ["core", "specification", "requirements"]
+          },
+          {
+            "id": "plan",
+            "name": "Implementation Plan",
+            "path": "templates/plan.template.md",
+            "required": true,
+            "phase": "plan",
+            "tags": ["core", "planning", "implementation"]
+          },
+          {
+            "id": "tasks",
+            "name": "Task Breakdown",
+            "path": "templates/tasks.template.md",
+            "required": true,
+            "phase": "tasks",
+            "tags": ["core", "tasks", "execution"]
+          },
+          {
+            "id": "status",
+            "name": "Status Dashboard",
+            "path": "templates/status.template.md",
+            "required": true,
+            "phase": "all",
+            "tags": ["core", "status", "tracking"]
+          }
+        ]
+      },
+      "documentation": {
+        "description": "Templates for various types of documentation",
+        "templates": [
+          {
+            "id": "srs",
+            "name": "Software Requirements Specification",
+            "path": "templates/srs.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["documentation", "requirements", "specification"]
+          },
+          {
+            "id": "sdd",
+            "name": "Software Design Document",
+            "path": "templates/sdd.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["documentation", "design", "architecture"]
+          },
+          {
+            "id": "adr",
+            "name": "Architecture Decision Record",
+            "path": "templates/adr.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["documentation", "decisions", "architecture"]
+          },
+          {
+            "id": "api-documentation",
+            "name": "API Documentation",
+            "path": "templates/api-documentation.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["documentation", "api", "interface"]
+          },
+          {
+            "id": "user-documentation",
+            "name": "User Documentation",
+            "path": "templates/user-documentation.template.md",
+            "required": false,
+            "phase": "implement",
+            "tags": ["documentation", "user", "help"]
+          },
+          {
+            "id": "user-training-guide",
+            "name": "User Training Guide",
+            "path": "templates/user-training-guide.template.md",
+            "required": false,
+            "phase": "implement",
+            "tags": ["documentation", "training", "user"]
+          }
+        ]
+      },
+      "quality": {
+        "description": "Templates for quality assurance and testing",
+        "templates": [
+          {
+            "id": "test-plan",
+            "name": "Test Plan",
+            "path": "templates/test-plan.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["quality", "testing", "plan"]
+          },
+          {
+            "id": "test-strategy",
+            "name": "Test Strategy",
+            "path": "templates/test-strategy.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["quality", "testing", "strategy"]
+          },
+          {
+            "id": "performance-testing-strategy",
+            "name": "Performance Testing Strategy",
+            "path": "templates/performance-testing-strategy.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["quality", "performance", "testing"]
+          },
+          {
+            "id": "sqap",
+            "name": "Software Quality Assurance Plan",
+            "path": "templates/sqap.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["quality", "assurance", "plan"]
+          },
+          {
+            "id": "vv-plan",
+            "name": "Verification and Validation Plan",
+            "path": "templates/vv-plan.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["quality", "verification", "validation"]
+          },
+          {
+            "id": "rtm",
+            "name": "Requirements Traceability Matrix",
+            "path": "templates/rtm.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["quality", "traceability", "requirements"]
+          }
+        ]
+      },
+      "security": {
+        "description": "Templates for security and compliance",
+        "templates": [
+          {
+            "id": "security-assessment",
+            "name": "Security Assessment",
+            "path": "templates/security-assessment.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["security", "assessment", "risk"]
+          },
+          {
+            "id": "threat-model",
+            "name": "Threat Model",
+            "path": "templates/threat-model.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["security", "threat", "model"]
+          },
+          {
+            "id": "dpia",
+            "name": "Data Protection Impact Assessment",
+            "path": "templates/dpia.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["security", "privacy", "compliance"]
+          },
+          {
+            "id": "ci-cd-security",
+            "name": "CI/CD Security Pipeline",
+            "path": "templates/ci-cd-security.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["security", "cicd", "automation"]
+          }
+        ]
+      },
+      "operations": {
+        "description": "Templates for operations and deployment",
+        "templates": [
+          {
+            "id": "deployment-guide",
+            "name": "Deployment Guide",
+            "path": "templates/deployment-guide.template.md",
+            "required": false,
+            "phase": "implement",
+            "tags": ["operations", "deployment", "guide"]
+          },
+          {
+            "id": "runbook",
+            "name": "Operations Runbook",
+            "path": "templates/runbook.template.md",
+            "required": false,
+            "phase": "implement",
+            "tags": ["operations", "runbook", "procedures"]
+          },
+          {
+            "id": "monitoring-playbook",
+            "name": "Monitoring Playbook",
+            "path": "templates/monitoring-playbook.template.md",
+            "required": false,
+            "phase": "implement",
+            "tags": ["operations", "monitoring", "observability"]
+          },
+          {
+            "id": "release-plan",
+            "name": "Release Plan",
+            "path": "templates/release-plan.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["operations", "release", "deployment"]
+          },
+          {
+            "id": "migration-plan",
+            "name": "Migration Plan",
+            "path": "templates/migration-plan.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["operations", "migration", "transition"]
+          },
+          {
+            "id": "orr-checklist",
+            "name": "Operational Readiness Review Checklist",
+            "path": "templates/orr-checklist.template.md",
+            "required": false,
+            "phase": "implement",
+            "tags": ["operations", "readiness", "checklist"]
+          }
+        ]
+      },
+      "project-management": {
+        "description": "Templates for project management and planning",
+        "templates": [
+          {
+            "id": "spmp",
+            "name": "Software Project Management Plan",
+            "path": "templates/spmp.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["project-management", "planning", "management"]
+          },
+          {
+            "id": "communication-plan",
+            "name": "Communication Plan",
+            "path": "templates/communication-plan.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["project-management", "communication", "stakeholders"]
+          },
+          {
+            "id": "risk-register",
+            "name": "Risk Register",
+            "path": "templates/risk-register.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["project-management", "risk", "mitigation"]
+          },
+          {
+            "id": "raci-matrix",
+            "name": "RACI Matrix",
+            "path": "templates/raci-matrix.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["project-management", "roles", "responsibilities"]
+          },
+          {
+            "id": "stakeholder-register",
+            "name": "Stakeholder Register",
+            "path": "templates/stakeholder-register.template.md",
+            "required": false,
+            "phase": "idea",
+            "tags": ["project-management", "stakeholders", "communication"]
+          }
+        ]
+      },
+      "business": {
+        "description": "Templates for business analysis and requirements",
+        "templates": [
+          {
+            "id": "brd",
+            "name": "Business Requirements Document",
+            "path": "templates/brd.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["business", "requirements", "analysis"]
+          },
+          {
+            "id": "prd",
+            "name": "Product Requirements Document",
+            "path": "templates/prd.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["business", "product", "requirements"]
+          },
+          {
+            "id": "project-charter",
+            "name": "Project Charter",
+            "path": "templates/project-charter.template.md",
+            "required": false,
+            "phase": "idea",
+            "tags": ["business", "charter", "initiation"]
+          },
+          {
+            "id": "brainstorming",
+            "name": "Brainstorming Session",
+            "path": "templates/brainstorming.template.md",
+            "required": false,
+            "phase": "idea",
+            "tags": ["business", "brainstorming", "creativity"]
+          }
+        ]
+      },
+      "compliance": {
+        "description": "Templates for compliance and governance",
+        "templates": [
+          {
+            "id": "data-governance",
+            "name": "Data Governance Plan",
+            "path": "templates/data-governance.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["compliance", "data", "governance"]
+          },
+          {
+            "id": "sla",
+            "name": "Service Level Agreement",
+            "path": "templates/sla.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["compliance", "sla", "agreement"]
+          },
+          {
+            "id": "scmp",
+            "name": "Software Configuration Management Plan",
+            "path": "templates/scmp.template.md",
+            "required": false,
+            "phase": "plan",
+            "tags": ["compliance", "configuration", "management"]
+          }
+        ]
+      },
+      "technical": {
+        "description": "Templates for technical specifications and design",
+        "templates": [
+          {
+            "id": "fsd",
+            "name": "Functional Specification Document",
+            "path": "templates/fsd.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["technical", "functional", "specification"]
+          },
+          {
+            "id": "icd",
+            "name": "Interface Control Document",
+            "path": "templates/icd.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["technical", "interface", "control"]
+          },
+          {
+            "id": "dfd-and-context",
+            "name": "Data Flow Diagram and Context",
+            "path": "templates/dfd-and-context.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["technical", "dataflow", "context"]
+          },
+          {
+            "id": "sbom-template",
+            "name": "Software Bill of Materials",
+            "path": "templates/sbom-template.json",
+            "required": false,
+            "phase": "implement",
+            "tags": ["technical", "sbom", "security"]
+          }
+        ]
+      },
+      "specialized": {
+        "description": "Specialized templates for specific domains",
+        "templates": [
+          {
+            "id": "mobile-app",
+            "name": "Mobile Application Template",
+            "path": "templates/mobile-app.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["specialized", "mobile", "application"]
+          },
+          {
+            "id": "service",
+            "name": "Service Template",
+            "path": "templates/service.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["specialized", "service", "microservice"]
+          },
+          {
+            "id": "application",
+            "name": "Application Template",
+            "path": "templates/application.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["specialized", "application", "webapp"]
+          },
+          {
+            "id": "tool",
+            "name": "Tool Template",
+            "path": "templates/tool.template.md",
+            "required": false,
+            "phase": "specify",
+            "tags": ["specialized", "tool", "cli"]
+          }
+        ]
+      }
+    },
+    "chatmodes": {
+      "description": "Available chatmodes for role-specific expertise",
+      "modes": [
+        {
+          "id": "dev",
+          "name": "Technical Implementation Expert",
+          "path": "chatmodes/dev.chatmode.md",
+          "expertise": ["coding", "architecture", "tdd", "implementation"]
+        },
+        {
+          "id": "qa",
+          "name": "Quality Assurance Specialist",
+          "path": "chatmodes/qa.chatmode.md",
+          "expertise": ["testing", "quality", "validation", "automation"]
+        },
+        {
+          "id": "sa",
+          "name": "Solution Architect",
+          "path": "chatmodes/sa.chatmode.md",
+          "expertise": ["architecture", "design", "integration", "scalability"]
+        },
+        {
+          "id": "security",
+          "name": "Security Specialist",
+          "path": "chatmodes/security.chatmode.md",
+          "expertise": ["security", "compliance", "risk", "threat-modeling"]
+        },
+        {
+          "id": "devops",
+          "name": "DevOps Engineer",
+          "path": "chatmodes/devops.chatmode.md",
+          "expertise": ["deployment", "automation", "infrastructure", "cicd"]
+        },
+        {
+          "id": "ba",
+          "name": "Business Analyst",
+          "path": "chatmodes/ba.chatmode.md",
+          "expertise": ["requirements", "analysis", "stakeholders", "processes"]
+        },
+        {
+          "id": "pm",
+          "name": "Product Manager",
+          "path": "chatmodes/pm.chatmode.md",
+          "expertise": ["strategy", "roadmap", "prioritization", "stakeholders"]
+        },
+        {
+          "id": "po",
+          "name": "Product Owner",
+          "path": "chatmodes/po.chatmode.md",
+          "expertise": ["backlog", "user-stories", "acceptance", "delivery"]
+        },
+        {
+          "id": "bo",
+          "name": "Business Owner",
+          "path": "chatmodes/bo.chatmode.md",
+          "expertise": ["strategy", "governance", "investment", "roi"]
+        },
+        {
+          "id": "designer",
+          "name": "UX/UI Designer",
+          "path": "chatmodes/designer.chatmode.md",
+          "expertise": ["design", "user-experience", "interface", "usability"]
+        },
+        {
+          "id": "sm",
+          "name": "Scrum Master",
+          "path": "chatmodes/sm.chatmode.md",
+          "expertise": ["agile", "facilitation", "process", "teams"]
+        },
+        {
+          "id": "tw",
+          "name": "Technical Writer",
+          "path": "chatmodes/tw.chatmode.md",
+          "expertise": ["documentation", "writing", "communication", "clarity"]
+        },
+        {
+          "id": "compliance",
+          "name": "Compliance Officer",
+          "path": "chatmodes/compliance.chatmode.md",
+          "expertise": ["compliance", "audit", "regulations", "governance"]
+        },
+        {
+          "id": "devsecops",
+          "name": "DevSecOps Engineer",
+          "path": "chatmodes/devsecops.chatmode.md",
+          "expertise": ["security", "automation", "compliance", "infrastructure"]
+        },
+        {
+          "id": "ai-architect",
+          "name": "AI Architect",
+          "path": "chatmodes/ai-architect.chatmode.md",
+          "expertise": ["ai", "ml", "architecture", "intelligence"]
+        },
+        {
+          "id": "sre",
+          "name": "Site Reliability Engineer",
+          "path": "chatmodes/sre.chatmode.md",
+          "expertise": ["reliability", "observability", "slo", "incident-response"]
+        },
+        {
+          "id": "data-engineer",
+          "name": "Data Engineer",
+          "path": "chatmodes/data-engineer.chatmode.md",
+          "expertise": ["data", "pipelines", "analytics", "governance"]
+        },
+        {
+          "id": "privacy-legal",
+          "name": "Privacy/Legal Counsel",
+          "path": "chatmodes/privacy-legal.chatmode.md",
+          "expertise": ["privacy", "legal", "compliance", "gdpr"]
+        },
+        {
+          "id": "mlops",
+          "name": "MLOps Engineer",
+          "path": "chatmodes/mlops.chatmode.md",
+          "expertise": ["ml", "ops", "deployment", "monitoring"]
+        },
+        {
+          "id": "accessibility",
+          "name": "Accessibility Specialist",
+          "path": "chatmodes/accessibility.chatmode.md",
+          "expertise": ["accessibility", "wcag", "inclusive-design", "compliance"]
+        }
+      ]
+    },
+    "validation": {
+      "requiredSections": [
+        "Executive Summary",
+        "Constitutional Context",
+        "Quality Gates"
+      ],
+      "fileChecks": {
+        "templates": {
+          "extension": ".template.md",
+          "directory": "templates/"
+        },
+        "chatmodes": {
+          "extension": ".chatmode.md",
+          "directory": "chatmodes/"
+        }
+      }
+    }
+  }
+}
