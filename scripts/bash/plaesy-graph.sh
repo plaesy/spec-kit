@@ -4,10 +4,10 @@
 # no external dependency (no jq/python) - pure bash + grep/find/awk.
 #
 # Emits:
-#   .plaesy/memory/analysis/project.graph.json    - nodes + edges
-#   .plaesy/memory/analysis/project.html    - self-contained force-directed viz
-#   .plaesy/memory/analysis/reports.md - plain-language summary
-#   .plaesy/memory/analysis/.nodes.tsv, .edges.tsv - internal cache used by
+#   .plaesy/analysis/project.graph.json    - nodes + edges
+#   .plaesy/analysis/project.html    - self-contained force-directed viz
+#   .plaesy/analysis/reports.md - plain-language summary
+#   .plaesy/analysis/.nodes.tsv, .edges.tsv - internal cache used by
 #     --query/--explain/--path-query/--impact-check (avoids writing a JSON
 #     parser in bash; project.graph.json remains the canonical published artifact)
 #
@@ -30,7 +30,7 @@
 set -u
 
 REPO_PATH="."
-OUT_DIR=".plaesy/memory/analysis"
+OUT_DIR=".plaesy/analysis"
 QUERY=""
 PATH_FROM=""
 PATH_TO=""

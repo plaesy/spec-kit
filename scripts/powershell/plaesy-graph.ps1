@@ -2,9 +2,9 @@
 # Version: 1.0.0 - Compatible with PowerShell 5.1+
 # Scans chatmodes/instructions/checklists/templates/scripts/docs/prompts for
 # markdown links and script source/call references, then emits:
-#   .plaesy/memory/analysis/project.graph.json    - nodes + edges
-#   .plaesy/memory/analysis/project.html    - self-contained force-directed viz (no CDN)
-#   .plaesy/memory/analysis/reports.md - plain-language summary
+#   .plaesy/analysis/project.graph.json    - nodes + edges
+#   .plaesy/analysis/project.html    - self-contained force-directed viz (no CDN)
+#   .plaesy/analysis/reports.md - plain-language summary
 #
 # Usage:
 #   plaesy-graph.ps1                              # build graph for repo root
@@ -19,7 +19,7 @@
 #   plaesy-graph.ps1 -IfChanged                                   # rebuild only if source files changed since last build
 #
 # Semantic pass (no external API key): -SemanticQueue writes
-# .plaesy/memory/analysis/semantic-queue.json, a plain list of {source,target,type}
+# .plaesy/analysis/semantic-queue.json, a plain list of {source,target,type}
 # for every INFERRED edge. Hand that file to your AI assistant (e.g. this
 # session's Claude) with the prompt "explain why each of these files is
 # related, one sentence each" - it should return a JSON array of
@@ -28,7 +28,7 @@
 
 param(
     [string]$Path = ".",
-    [string]$OutDir = ".plaesy/memory/analysis",
+    [string]$OutDir = ".plaesy/analysis",
     [string]$Query,
     [string]$PathFrom,
     [string]$PathTo,
