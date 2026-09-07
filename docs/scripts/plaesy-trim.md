@@ -44,12 +44,12 @@ scripts\powershell\plaesy-trim.ps1 report
 - `full` (default for mid-traffic files) — `lite` + merge short redundant sentences, trim hedging
 - `ultra` — `full` + telegram-style fragments (readability drops — low-traffic files only)
 
-Level is auto-selected per file from its `plaesy-graph` in-degree (`degree` field in `.plaesy/memory/analysis/project.graph.json`) when `-Level`/`--level` is omitted; falls back to `full` if that file doesn't exist yet (run `plaesy-graph` first).
+Level is auto-selected per file from its `plaesy-graph` in-degree (`degree` field in `.plaesy/analysis/project.graph.json`) when `-Level`/`--level` is omitted; falls back to `full` if that file doesn't exist yet (run `plaesy-graph` first).
 
 Every `compress` run backs up the original as `<file>.bak` and logs to `.plaesy/memory/token-stats.json`; `report` reads that log.
 
 ## LLM-mode round-trip (Layer 2)
 
-1. `llm-queue -Path <file>` splits the file on fenced code blocks and writes prose segments ≥40 chars to `.plaesy/memory/analysis/trim-queue.json`.
+1. `llm-queue -Path <file>` splits the file on fenced code blocks and writes prose segments ≥40 chars to `.plaesy/analysis/trim-queue.json`.
 2. Hand that file to the calling assistant to rewrite each segment denser, same meaning, without touching code/commands/paths.
 3. Save the reply as `annotations.json`, then `apply-llm -Path <file> -Annotations annotations.json` — segment indices must match the same, unmodified source file used for `llm-queue`.

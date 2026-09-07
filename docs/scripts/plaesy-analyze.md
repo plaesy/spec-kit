@@ -101,8 +101,8 @@ Analyze also builds the dependency graph as part of its output. See [plaesy-grap
 ### **Quality Assurance Workflow:**
 ```bash
 # Optional: Validate analysis quality
-ls -la .plaesy/memory/analysis/  # Verify all files generated (summary + graph)
-cat .plaesy/memory/analysis/project.json | jq '.project_summary.type'  # Verify project type
+ls -la .plaesy/analysis/  # Verify all files generated (summary + graph)
+cat .plaesy/analysis/project.json | jq '.project_summary.type'  # Verify project type
 ```
 
 ### **No Additional Steps Required:**
@@ -307,8 +307,8 @@ Automatically detects 50+ project types including:
 ./bash/plaesy-analyze.sh
 
 # Read analysis results
-cat .plaesy/memory/analysis/project.json | jq '.project_summary'
-cat .plaesy/memory/analysis/project.structure.json | jq '.key_directories'
+cat .plaesy/analysis/project.json | jq '.project_summary'
+cat .plaesy/analysis/project.structure.json | jq '.key_directories'
 
 # Use insights for development
 # - Understand project type and technology stack
@@ -323,10 +323,10 @@ cat .plaesy/memory/analysis/project.structure.json | jq '.key_directories'
 ./bash/plaesy-analyze.sh
 
 # Review project insights
-cat .plaesy/memory/analysis/project.json | jq '.ai_insights'
+cat .plaesy/analysis/project.json | jq '.ai_insights'
 
 # Identify areas for improvement
-cat .plaesy/memory/analysis/project.json | jq '.ai_insights.recommendations'
+cat .plaesy/analysis/project.json | jq '.ai_insights.recommendations'
 ```
 
 ## 🆘 Troubleshooting
@@ -337,7 +337,7 @@ cat .plaesy/memory/analysis/project.json | jq '.ai_insights.recommendations'
 chmod +x ./bash/plaesy-analyze.sh
 
 # No analysis directory created
-mkdir -p .plaesy/memory/analysis
+mkdir -p .plaesy/analysis
 
 # JSON parsing errors
 # Check for special characters in file names

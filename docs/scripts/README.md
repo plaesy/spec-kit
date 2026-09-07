@@ -64,9 +64,9 @@
 
 ### **Critical Files for AI Understanding**
 
-1. **`.plaesy/memory/analysis/project.json`** - AI-optimized project summary
-2. **`.plaesy/memory/analysis/project.structure.json`** - Complete project structure
-3. **`.plaesy/memory/analysis/project.graph.json`** - Dependency graph (nodes + edges; built by `plaesy-analyze` automatically, queryable via `plaesy-graph`)
+1. **`.plaesy/analysis/project.json`** - AI-optimized project summary
+2. **`.plaesy/analysis/project.structure.json`** - Complete project structure
+3. **`.plaesy/analysis/project.graph.json`** - Dependency graph (nodes + edges; built by `plaesy-analyze` automatically, queryable via `plaesy-graph`)
 4. **`specs/[feature-name]/plan.md`** - Current feature implementation plan
 5. **Platform-specific AI contexts** (`CLAUDE.md`, `.github/copilot-instructions.md`, etc.)
 

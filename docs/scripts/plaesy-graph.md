@@ -10,10 +10,10 @@ Builds a graph of nodes (instructions, chatmodes, checklists, templates, scripts
 
 ## Output
 
-- `.plaesy/memory/analysis/project.graph.json` — nodes + edges (canonical artifact)
-- `.plaesy/memory/analysis/project.html` — self-contained force-directed visualization
-- `.plaesy/memory/analysis/reports.md` — plain-language summary
-- `.plaesy/memory/analysis/.nodes.tsv`, `.edges.tsv` — internal cache used by query/explain/path/impact commands
+- `.plaesy/analysis/project.graph.json` — nodes + edges (canonical artifact)
+- `.plaesy/analysis/project.html` — self-contained force-directed visualization
+- `.plaesy/analysis/reports.md` — plain-language summary
+- `.plaesy/analysis/.nodes.tsv`, `.edges.tsv` — internal cache used by query/explain/path/impact commands
 
 ## Quick Start
 
@@ -50,7 +50,7 @@ Builds a graph of nodes (instructions, chatmodes, checklists, templates, scripts
 | Bash | PowerShell | Purpose |
 |------|------------|---------|
 | `--path <dir>` | `-Path <dir>` | Directory to scan (default: repo root) |
-| `--outdir <dir>` | `-OutDir <dir>` | Output directory (default: `.plaesy/memory/analysis`) |
+| `--outdir <dir>` | `-OutDir <dir>` | Output directory (default: `.plaesy/analysis`) |
 | `--query <text>` | `-Query <text>` | Keyword search across nodes |
 | `--path-query <a> <b>` | `-PathQuery <a>,<b>` | Shortest path between two nodes |
 | `--explain <node>` | `-Explain <node>` | Show a node's edges and context |

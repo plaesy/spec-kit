@@ -69,7 +69,8 @@ plaesy init --ai claude_code --target .\project
 - **Mapping-Based Configuration**: Uses `config-manager.ps1`/`config-manager.sh`
 - **Core AI Config**: Creates `CLAUDE.md` at project root from `agents.instructions.md`
 - **Instruction File Copy**: Copies selected instructions to `.plaesy/memory/` (flat structure) for per-project documentation
-- **Prompt & Chatmode Copy**: Copies prompts and chatmodes to platform-specific locations
+- **Chatmode Copy**: Copies all chatmodes to `.plaesy/roles/` (flat structure, platform-agnostic)
+- **Prompt Copy**: Copies prompts to platform-specific locations (`.claude/commands/`, `.cursor/rules/`, etc.)
 - **Exclude Pattern Support**: Respects exclude patterns in mapping
 - **Dynamic Structure Creation**: Creates directories based on configuration
 
