@@ -1,8 +1,8 @@
 ---
-title: "Current Context"
+title: "Session Context"
 updatedAt: "2006-01-02T15:04:05.999Z"
-phase: [research|clarify|design|flow|implement|assess|optimize|fix]
-status: [backlog|todo|doing|done|blocked] 
+phase: [start|assess|implement|optimize|fix|doc|save]
+status: [backlog|todo|doing|done|blocked]
 ---
 
 ## Context
