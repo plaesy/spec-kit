@@ -89,9 +89,9 @@ When scope is specified via `/assess:{scope}` format:
 | **design** | assess-design.md | `.plaesy/roles/designer.md`, `.plaesy/roles/accessibility.md` | UI/UX, WCAG compliance, design systems |
 | **business** | assess-business.md | `.plaesy/roles/ba.md`, `.plaesy/roles/pm.md` | Market fit, business model, viability |
 | **marketing** | assess-business.md | `.plaesy/roles/market-research-analyst.md`, `.plaesy/roles/pm.md` | Positioning, messaging, GTM |
-| **legal** | N/A - consult chatmode | `.plaesy/roles/privacy-legal.md`, `.plaesy/roles/compliance.md` | Regulatory, compliance, data privacy |
+| **legal** | assess-legal.md | `.plaesy/roles/privacy-legal.md`, `.plaesy/roles/compliance.md` | Regulatory, compliance, data privacy, risk |
 | **financial** | assess-business.md | `.plaesy/roles/ba.md`, `.plaesy/roles/pm.md` | Pricing, cost structure, profitability, funding |
-| **operations** | N/A - consult chatmode | `.plaesy/roles/devops.md`, `.plaesy/roles/sa.md` | Deployment, infrastructure, team capacity |
+| **operations** | assess-operations.md | `.plaesy/roles/devops.md`, `.plaesy/roles/sa.md` | Deployment, infrastructure, team capacity, reliability |
 | **product** | assess-business.md | `.plaesy/roles/pm.md`, `.plaesy/roles/ba.md` | Feature set, roadmap, competitive advantage |
 
 **Multiple scopes**: Comma-separated scopes run in parallel (e.g., `/assess:technical,design`)
