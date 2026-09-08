@@ -1,23 +1,23 @@
 ---
-description: "Universal assessment orchestrator - any project dimension (technical, design, business, legal, financial, operations)"
+description: "Universal assessment orchestrator - any project dimension (technical, design, business, legal, financial, management, product)"
 execution: "ultracode"
 ---
 
 # /assess
 
-Universal assessment orchestrator - assess ANY project dimension.
+Universal assessment orchestrator - assess ANY project dimension across 8 assessment dimensions.
 
 ## Usage
 
 ```
 /assess                    # Interactive: choose dimension
-/assess:technical          # Code quality, tests, security, performance
+/assess:technical          # Code quality, tests, security, infrastructure, deployment
 /assess:design             # UI/UX, accessibility, design systems
 /assess:business           # Market fit, business model, revenue
 /assess:marketing          # Positioning, messaging, go-to-market
 /assess:legal              # Regulatory, compliance, data privacy
 /assess:financial          # Pricing, cost structure, profitability
-/assess:operations         # Deployment, team capacity, infrastructure
+/assess:management         # Team capacity, project management, processes
 /assess:product            # Features, roadmap, competitive advantage
 /assess:technical,design   # Multiple dimensions (comma-separated)
 ```

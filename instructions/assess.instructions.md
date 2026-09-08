@@ -10,18 +10,18 @@ description: "Universal assessment orchestrator - delegates to specialized asses
 
 ```bash
 /assess                          # Orchestrator mode - choose dimension interactively
-/assess:technical                # Assess code quality, architecture, tests, security
+/assess:technical                # Assess code quality, architecture, tests, security, infrastructure, deployment
 /assess:design                   # Assess UI/UX, accessibility, design systems
 /assess:business                 # Assess market fit, business model, revenue
 /assess:marketing                # Assess positioning, messaging, go-to-market
 /assess:legal                    # Assess regulatory compliance, data privacy, risks
 /assess:financial                # Assess cost structure, pricing, profitability
-/assess:operations               # Assess team capacity, deployment readiness
+/assess:management               # Assess team capacity, project management, processes
 /assess:product                  # Assess feature set, roadmap, competitive advantage
 
 # Multiple dimensions in one run
 /assess:technical,design         # Technical + Design assessment
-/assess:business,financial       # Business + Financial assessment
+/assess:business,management      # Business + Management assessment
 /assess:technical,business,design # Tech, Business, & Design assessment
 ```
 
@@ -30,14 +30,14 @@ description: "Universal assessment orchestrator - delegates to specialized asses
 Universal assessment orchestrator - assesses ANY aspect of a project across THREE modes:
 
 **Assessment Dimensions** (can assess any combination):
-- 🔧 **Technical**: Code quality, architecture, performance, security, tests
+- 🔧 **Technical**: Code quality, architecture, performance, security, tests, infrastructure, deployment
 - 🎨 **Design**: UI/UX, accessibility, design system, consistency, user experience
 - 💼 **Business**: Market fit, viability, business model, revenue potential, ROI
 - 📢 **Marketing**: Positioning, messaging, audience fit, competitive advantage, go-to-market
 - 📊 **Product**: Feature set, roadmap, competitive analysis, user needs fit
 - ⚖️ **Legal/Compliance**: Regulatory compliance, legal risks, data privacy, accessibility standards
 - 💰 **Financial**: Cost structure, pricing, profitability, funding needs
-- 🏢 **Operations**: Process efficiency, team capacity, deployment readiness, support model
+- 🏢 **Management**: Team capacity, project management, process efficiency, organizational health
 
 **Three Modes of Operation**:
 1. **RESEARCH MODE** (Phase 1, upfront): Explore options, validate choices, resolve uncertainties (any dimension)
@@ -85,14 +85,14 @@ When scope is specified via `/assess:{scope}` format:
 
 | Scope | Loads | Delegates To | Use Case |
 |-------|-------|--------------|----------|
-| **technical** | assess-technical.md | `.plaesy/roles/dev.md`, `.plaesy/roles/devsecops.md` | Code quality, tests, security, performance |
+| **technical** | assess-technical.md | `.plaesy/roles/dev.md`, `.plaesy/roles/devsecops.md` | Code quality, tests, security, performance, infrastructure, deployment |
 | **design** | assess-design.md | `.plaesy/roles/designer.md`, `.plaesy/roles/accessibility.md` | UI/UX, WCAG compliance, design systems |
 | **business** | assess-business.md | `.plaesy/roles/ba.md`, `.plaesy/roles/pm.md` | Market fit, business model, viability |
 | **marketing** | assess-business.md | `.plaesy/roles/market-research-analyst.md`, `.plaesy/roles/pm.md` | Positioning, messaging, GTM |
 | **legal** | assess-legal.md | `.plaesy/roles/privacy-legal.md`, `.plaesy/roles/compliance.md` | Regulatory, compliance, data privacy, risk |
 | **financial** | assess-business.md | `.plaesy/roles/ba.md`, `.plaesy/roles/pm.md` | Pricing, cost structure, profitability, funding |
-| **operations** | assess-operations.md | `.plaesy/roles/devops.md`, `.plaesy/roles/sa.md` | Deployment, infrastructure, team capacity, reliability |
-| **product** | assess-business.md | `.plaesy/roles/pm.md`, `.plaesy/roles/ba.md` | Feature set, roadmap, competitive advantage |
+| **management** | assess-management.md | `.plaesy/roles/pm.md`, `.plaesy/roles/team-lead.md` | Team capacity, project management, processes, organizational health |
+| **product** | assess-product.md | `.plaesy/roles/pm.md`, `.plaesy/roles/ba.md` | Feature set, roadmap, competitive advantage |
 
 **Multiple scopes**: Comma-separated scopes run in parallel (e.g., `/assess:technical,design`)
 
