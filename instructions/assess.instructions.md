@@ -6,6 +6,25 @@ description: "Universal assessment orchestrator - delegates to specialized asses
 
 ⚡ **Run with**: `ultracode` (multi-agent parallel execution)
 
+## Usage Format
+
+```bash
+/assess                          # Orchestrator mode - choose dimension interactively
+/assess:technical                # Assess code quality, architecture, tests, security
+/assess:design                   # Assess UI/UX, accessibility, design systems
+/assess:business                 # Assess market fit, business model, revenue
+/assess:marketing                # Assess positioning, messaging, go-to-market
+/assess:legal                    # Assess regulatory compliance, data privacy, risks
+/assess:financial                # Assess cost structure, pricing, profitability
+/assess:operations               # Assess team capacity, deployment readiness
+/assess:product                  # Assess feature set, roadmap, competitive advantage
+
+# Multiple dimensions in one run
+/assess:technical,design         # Technical + Design assessment
+/assess:business,financial       # Business + Financial assessment
+/assess:technical,business,design # Tech, Business, & Design assessment
+```
+
 ## Objective
 
 Universal assessment orchestrator - assesses ANY aspect of a project across THREE modes:
@@ -60,21 +79,24 @@ Universal assessment orchestrator - assesses ANY aspect of a project across THRE
 
 ---
 
-## Specialized Assessment Delegation
+## Scope Resolution
 
-For deeper expertise on specific dimensions, load specialized instruction files:
+When scope is specified via `/assess:{scope}` format:
 
-| Dimension | Load File | When Needed |
-|-----------|-----------|------------|
-| **Technical** | `.plaesy/memory/assess-technical.md` | Code quality, architecture, tests, security |
-| **Design** | `.plaesy/memory/assess-design.md` | UI/UX, accessibility, design systems |
-| **Business** | `.plaesy/memory/assess-business.md` | Market fit, business models, revenue |
-| **Marketing** | `.plaesy/memory/assess-business.md` (section) | Positioning, messaging, GTM |
-| **Legal/Compliance** | Ask `.plaesy/roles/privacy-legal.md` | Regulatory, compliance, data privacy |
-| **Financial** | `.plaesy/memory/assess-business.md` (section) | Pricing, cost structure, profitability |
-| **Operations** | Ask `.plaesy/roles/devops.md` | Deployment, infrastructure, team capacity |
+| Scope | Loads | Delegates To | Use Case |
+|-------|-------|--------------|----------|
+| **technical** | assess-technical.md | `.plaesy/roles/dev.md`, `.plaesy/roles/devsecops.md` | Code quality, tests, security, performance |
+| **design** | assess-design.md | `.plaesy/roles/designer.md`, `.plaesy/roles/accessibility.md` | UI/UX, WCAG compliance, design systems |
+| **business** | assess-business.md | `.plaesy/roles/ba.md`, `.plaesy/roles/pm.md` | Market fit, business model, viability |
+| **marketing** | assess-business.md | `.plaesy/roles/market-research-analyst.md`, `.plaesy/roles/pm.md` | Positioning, messaging, GTM |
+| **legal** | N/A - consult chatmode | `.plaesy/roles/privacy-legal.md`, `.plaesy/roles/compliance.md` | Regulatory, compliance, data privacy |
+| **financial** | assess-business.md | `.plaesy/roles/ba.md`, `.plaesy/roles/pm.md` | Pricing, cost structure, profitability, funding |
+| **operations** | N/A - consult chatmode | `.plaesy/roles/devops.md`, `.plaesy/roles/sa.md` | Deployment, infrastructure, team capacity |
+| **product** | assess-business.md | `.plaesy/roles/pm.md`, `.plaesy/roles/ba.md` | Feature set, roadmap, competitive advantage |
 
-**How to use**: Load relevant instruction file based on assessment dimension needed
+**Multiple scopes**: Comma-separated scopes run in parallel (e.g., `/assess:technical,design`)
+
+**No scope**: Interactive orchestrator mode - choose dimension during execution
 
 ---
 
