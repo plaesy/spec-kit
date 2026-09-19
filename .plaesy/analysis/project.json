@@ -1,0 +1,36 @@
+{
+    "project_summary": {
+        "name": ".",
+        "type": "spec-kit",
+        "confidence": "high",
+        "description": "Plaesy Spec-Kit framework for AI-assisted development",
+        "purpose": "AI-optimized development project",
+        "complexity": "Large",
+        "classification": "single",
+        "total_files": 309,
+        "analysis_timestamp": "2026-09-17T21:10:57+07:00"
+    },
+    "frameworks_detected": [{"framework":"spec-kit","confidence":"high"}],
+    "ai_insights": {"overview": "Plaesy Spec-Kit framework for AI-assisted development", "recommendations": ["Add more AI platform integrations"]},
+    "technology_stack": {
+        "primary_languages": ["Shell"],
+        "frameworks": ["spec-kit"],
+        "development_tools": ["Git","GitHub Actions"],
+        "build_systems": ["Make"]
+    },
+    "structure": {
+        "files": {
+            "total": 309,
+            "code": 45,
+            "documentation": 234,
+            "configuration": 21
+        }
+    },
+    "framework_version": "0.0.1",
+    "analysis_files": {
+        "project_structure": "project.structure.json",
+        "context_file": "../context.md",
+        "overview": "overview.md",
+        "generated_by": "Plaesy Spec-Kit v0.0.1"
+    }
+}

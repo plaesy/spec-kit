@@ -1,0 +1,1458 @@
+{
+    "directories": {
+        "chatmodes": {
+            "file_count": 23,
+            "description": "Project directory"
+        },
+        "checklists": {
+            "file_count": 7,
+            "description": "Project directory"
+        },
+        "docs": {
+            "file_count": 1,
+            "description": "Documentation files"
+        },
+        "docs/chatmodes": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "docs/checklists": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "docs/instructions": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "docs/prompts": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "docs/scripts": {
+            "file_count": 15,
+            "description": "Project directory"
+        },
+        "docs/tasks": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "docs/templates": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "docs/testing": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "instructions": {
+            "file_count": 54,
+            "description": "Project directory"
+        },
+        "prompts": {
+            "file_count": 10,
+            "description": "Project directory"
+        },
+        "prompts/assess": {
+            "file_count": 8,
+            "description": "Project directory"
+        },
+        "prompts/fix": {
+            "file_count": 8,
+            "description": "Project directory"
+        },
+        "prompts/implement": {
+            "file_count": 8,
+            "description": "Project directory"
+        },
+        "prompts/improve": {
+            "file_count": 10,
+            "description": "Project directory"
+        },
+        "prompts/loop": {
+            "file_count": 8,
+            "description": "Project directory"
+        },
+        "prompts/optimize": {
+            "file_count": 8,
+            "description": "Project directory"
+        },
+        "scripts": {
+            "file_count": 0,
+            "description": "Build and utility scripts"
+        },
+        "scripts/bash": {
+            "file_count": 21,
+            "description": "Project directory"
+        },
+        "scripts/configs": {
+            "file_count": 2,
+            "description": "Project directory"
+        },
+        "scripts/configs/claude": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/powershell": {
+            "file_count": 22,
+            "description": "Project directory"
+        },
+        "scripts/powershell/docs": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "scripts/powershell/specs": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "specs": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "templates": {
+            "file_count": 64,
+            "description": "Project directory"
+        },
+        "templates/ai-headers": {
+            "file_count": 10,
+            "description": "Project directory"
+        },
+        "templates/cloud": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "templates/cloud/aws": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "templates/cloud/aws/kubernetes": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "templates/cloud/aws/terraform": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "templates/cloud/azure": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "templates/cloud/gcp": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "templates/cloud/gcp/terraform": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "testing": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "testing/bash": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "testing/powershell": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "testing/smoke": {
+            "file_count": 2,
+            "description": "Project directory"
+        }
+    },
+    "key_files": {
+        ".markdownlint.json": {
+            "size_bytes": 861,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "AGENTS.md": {
+            "size_bytes": 6157,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "CHANGELOG.md": {
+            "size_bytes": 458,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/accessibility.chatmode.md": {
+            "size_bytes": 4816,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/ai-architect.chatmode.md": {
+            "size_bytes": 5042,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/ba.chatmode.md": {
+            "size_bytes": 3865,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/bo.chatmode.md": {
+            "size_bytes": 3893,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/compliance.chatmode.md": {
+            "size_bytes": 4873,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/data-engineer.chatmode.md": {
+            "size_bytes": 5320,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/designer.chatmode.md": {
+            "size_bytes": 3739,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/dev.chatmode.md": {
+            "size_bytes": 3762,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/devops.chatmode.md": {
+            "size_bytes": 4680,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/devsecops.chatmode.md": {
+            "size_bytes": 5144,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/market-research-analyst.chatmode.md": {
+            "size_bytes": 3536,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/mlops.chatmode.md": {
+            "size_bytes": 4937,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/nara.chatmode.md": {
+            "size_bytes": 5081,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/pe.chatmode.md": {
+            "size_bytes": 4384,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/pm.chatmode.md": {
+            "size_bytes": 4304,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/po.chatmode.md": {
+            "size_bytes": 4151,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/privacy-legal.chatmode.md": {
+            "size_bytes": 4783,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/qa.chatmode.md": {
+            "size_bytes": 4095,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/sa.chatmode.md": {
+            "size_bytes": 4273,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/security.chatmode.md": {
+            "size_bytes": 4993,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/sm.chatmode.md": {
+            "size_bytes": 2961,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/sre.chatmode.md": {
+            "size_bytes": 5641,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "chatmodes/tw.chatmode.md": {
+            "size_bytes": 3671,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/pm.checklist.md": {
+            "size_bytes": 11054,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/po.checklist.md": {
+            "size_bytes": 13781,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/qa.checklist.md": {
+            "size_bytes": 7915,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/sa.checklist.md": {
+            "size_bytes": 14980,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/story-done.checklist.md": {
+            "size_bytes": 5146,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/story-draft.checklist.md": {
+            "size_bytes": 4263,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "checklists/update.checklist.md": {
+            "size_bytes": 6729,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "CLAUDE.md": {
+            "size_bytes": 75,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "CODE_OF_CONDUCT.md": {
+            "size_bytes": 1921,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "CONTRIBUTING.md": {
+            "size_bytes": 2305,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/chatmodes/README.md": {
+            "size_bytes": 17506,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/checklists/README.md": {
+            "size_bytes": 2347,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/instructions/README.md": {
+            "size_bytes": 19275,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/prompts/README.md": {
+            "size_bytes": 16916,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/README.md": {
+            "size_bytes": 1327,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/scripts/check-task-prerequisites.md": {
+            "size_bytes": 4894,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/common.md": {
+            "size_bytes": 5765,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/config-manager.md": {
+            "size_bytes": 7011,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/create-new-feature.md": {
+            "size_bytes": 4462,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/get-feature-paths.md": {
+            "size_bytes": 3197,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/inject-ai-headers.md": {
+            "size_bytes": 5756,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/install.md": {
+            "size_bytes": 12093,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/plaesy-analyze.md": {
+            "size_bytes": 12349,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/plaesy-clean.md": {
+            "size_bytes": 18950,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/plaesy-graph.md": {
+            "size_bytes": 3665,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/plaesy-init.md": {
+            "size_bytes": 23622,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/plaesy-trim.md": {
+            "size_bytes": 3330,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/platform-detector.md": {
+            "size_bytes": 5628,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/scripts/README.md": {
+            "size_bytes": 17808,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/scripts/update-agent-context.md": {
+            "size_bytes": 4684,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "docs/tasks/README.md": {
+            "size_bytes": 3062,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/templates/README.md": {
+            "size_bytes": 12613,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "docs/testing/README.md": {
+            "size_bytes": 5908,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "instructions/agents.instructions.md": {
+            "size_bytes": 75,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/angular.instructions.md": {
+            "size_bytes": 4160,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-business.instructions.md": {
+            "size_bytes": 7874,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-design.instructions.md": {
+            "size_bytes": 9327,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-financial.instructions.md": {
+            "size_bytes": 8322,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-legal.instructions.md": {
+            "size_bytes": 7214,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-management.instructions.md": {
+            "size_bytes": 8050,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-marketing.instructions.md": {
+            "size_bytes": 7792,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-product.instructions.md": {
+            "size_bytes": 7710,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/assess-technical.instructions.md": {
+            "size_bytes": 8551,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/brainstorming-techniques.instructions.md": {
+            "size_bytes": 1894,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/brandkit.instructions.md": {
+            "size_bytes": 16788,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/changelog.instructions.md": {
+            "size_bytes": 8886,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/csharp.instructions.md": {
+            "size_bytes": 3763,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/dart-n-flutter.instructions.md": {
+            "size_bytes": 19843,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/date-system.instructions.md": {
+            "size_bytes": 2146,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/devops-core-principles.instructions.md": {
+            "size_bytes": 9346,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/dimension-mapping.instructions.md": {
+            "size_bytes": 4458,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/error-recovery.instructions.md": {
+            "size_bytes": 9228,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/error-recovery-predictive.instructions.md": {
+            "size_bytes": 11127,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/excel.instructions.md": {
+            "size_bytes": 6655,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/git.instructions.md": {
+            "size_bytes": 7646,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/go.instructions.md": {
+            "size_bytes": 6354,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/how-to-create-agentsmd.instructions.md": {
+            "size_bytes": 3587,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/how-to-create-markdown-document.instructions.md": {
+            "size_bytes": 5925,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/java.instructions.md": {
+            "size_bytes": 4549,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/kubernetes-deployment-best-practices.instructions.md": {
+            "size_bytes": 9797,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/mapping.json": {
+            "size_bytes": 13007,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "instructions/nestjs.instructions.md": {
+            "size_bytes": 10474,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/nextjs.instructions.md": {
+            "size_bytes": 5402,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/output-validation.instructions.md": {
+            "size_bytes": 900,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/performance-baseline.instructions.md": {
+            "size_bytes": 6913,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/performance-optimization.instructions.md": {
+            "size_bytes": 15447,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/plaesy.instructions.md": {
+            "size_bytes": 14871,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/plaesy-graph.instructions.md": {
+            "size_bytes": 13855,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/plaesy-trim.instructions.md": {
+            "size_bytes": 7243,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/powerpoint.instructions.md": {
+            "size_bytes": 7488,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/quality-gates.instructions.md": {
+            "size_bytes": 2605,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/reactjs.instructions.md": {
+            "size_bytes": 5252,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/react-native.instructions.md": {
+            "size_bytes": 15041,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/redesign.instructions.md": {
+            "size_bytes": 15191,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/ruby-on-rails.instructions.md": {
+            "size_bytes": 6774,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/rust.instructions.md": {
+            "size_bytes": 7022,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/security-and-owasp.instructions.md": {
+            "size_bytes": 5065,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/security-audit.instructions.md": {
+            "size_bytes": 5110,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/springboot.instructions.md": {
+            "size_bytes": 1823,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/sql.instructions.md": {
+            "size_bytes": 2276,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/tasks.instructions.md": {
+            "size_bytes": 4594,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/tdd-enforcement.instructions.md": {
+            "size_bytes": 27348,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/tech-validation.instructions.md": {
+            "size_bytes": 4796,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/terraform.instructions.md": {
+            "size_bytes": 3854,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/testing-strategy.instructions.md": {
+            "size_bytes": 5136,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/universal-orchestrator.instructions.md": {
+            "size_bytes": 14825,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/word.instructions.md": {
+            "size_bytes": 6712,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "LICENSE": {
+            "size_bytes": 1062,
+            "type": "text",
+            "purpose": "Project license"
+        },
+        "prompts/assess.md": {
+            "size_bytes": 15817,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/business.md": {
+            "size_bytes": 811,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/design.md": {
+            "size_bytes": 820,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/financial.md": {
+            "size_bytes": 829,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/legal.md": {
+            "size_bytes": 827,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/management.md": {
+            "size_bytes": 860,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/marketing.md": {
+            "size_bytes": 828,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/product.md": {
+            "size_bytes": 820,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/assess/technical.md": {
+            "size_bytes": 893,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/continue.md": {
+            "size_bytes": 8047,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/doc.md": {
+            "size_bytes": 14483,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix.md": {
+            "size_bytes": 12046,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/business.md": {
+            "size_bytes": 569,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/design.md": {
+            "size_bytes": 573,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/financial.md": {
+            "size_bytes": 612,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/legal.md": {
+            "size_bytes": 566,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/management.md": {
+            "size_bytes": 661,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/marketing.md": {
+            "size_bytes": 584,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/product.md": {
+            "size_bytes": 616,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/fix/technical.md": {
+            "size_bytes": 600,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement.md": {
+            "size_bytes": 16452,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/business.md": {
+            "size_bytes": 587,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/design.md": {
+            "size_bytes": 583,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/financial.md": {
+            "size_bytes": 636,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/legal.md": {
+            "size_bytes": 570,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/management.md": {
+            "size_bytes": 685,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/marketing.md": {
+            "size_bytes": 584,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/product.md": {
+            "size_bytes": 640,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/implement/technical.md": {
+            "size_bytes": 588,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve.md": {
+            "size_bytes": 13652,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/adoption.md": {
+            "size_bytes": 436,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/business.md": {
+            "size_bytes": 638,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/design.md": {
+            "size_bytes": 652,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/financial.md": {
+            "size_bytes": 607,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/legal.md": {
+            "size_bytes": 615,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/management.md": {
+            "size_bytes": 610,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/marketing.md": {
+            "size_bytes": 631,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/product.md": {
+            "size_bytes": 623,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/spec.md": {
+            "size_bytes": 402,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/improve/technical.md": {
+            "size_bytes": 649,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop.md": {
+            "size_bytes": 13953,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/business.md": {
+            "size_bytes": 629,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/design.md": {
+            "size_bytes": 631,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/financial.md": {
+            "size_bytes": 616,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/legal.md": {
+            "size_bytes": 644,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/management.md": {
+            "size_bytes": 665,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/marketing.md": {
+            "size_bytes": 656,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/product.md": {
+            "size_bytes": 620,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/loop/technical.md": {
+            "size_bytes": 678,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize.md": {
+            "size_bytes": 12993,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/business.md": {
+            "size_bytes": 573,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/design.md": {
+            "size_bytes": 617,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/financial.md": {
+            "size_bytes": 632,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/legal.md": {
+            "size_bytes": 576,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/management.md": {
+            "size_bytes": 609,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/marketing.md": {
+            "size_bytes": 592,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/product.md": {
+            "size_bytes": 608,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/optimize/technical.md": {
+            "size_bytes": 632,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/save.md": {
+            "size_bytes": 3562,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "prompts/start.md": {
+            "size_bytes": 5718,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "README.md": {
+            "size_bytes": 6612,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "scripts/configs/claude/settings.local.json": {
+            "size_bytes": 522,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "scripts/configs/plaesy-trim-rules.json": {
+            "size_bytes": 1796,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "scripts/configs/platform.json": {
+            "size_bytes": 9727,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "SECURITY.md": {
+            "size_bytes": 1125,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/adr.template.md": {
+            "size_bytes": 3384,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/agent-file-template.md": {
+            "size_bytes": 3144,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/ai-automation-workflow.yaml": {
+            "size_bytes": 9163,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/claude.header.yaml": {
+            "size_bytes": 62,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/claude.prompts.yaml": {
+            "size_bytes": 62,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/copilot.header.yaml": {
+            "size_bytes": 62,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/copilot.prompts.yaml": {
+            "size_bytes": 62,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/cursor.header.yaml": {
+            "size_bytes": 100,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/cursor.prompts.yaml": {
+            "size_bytes": 101,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/manual.header.yaml": {
+            "size_bytes": 62,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/README.md": {
+            "size_bytes": 6884,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "templates/ai-headers/windsurf.header.yaml": {
+            "size_bytes": 83,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/ai-headers/windsurf.prompts.yaml": {
+            "size_bytes": 87,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/api-documentation.template.md": {
+            "size_bytes": 12421,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/application.template.md": {
+            "size_bytes": 11827,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/brainstorming.template.md": {
+            "size_bytes": 7333,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/brd.template.md": {
+            "size_bytes": 1825,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/change-request.template.md": {
+            "size_bytes": 776,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/chatmode.template.md": {
+            "size_bytes": 722,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/ci-cd-security.template.md": {
+            "size_bytes": 25186,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/cloud/aws/kubernetes/deployment.yaml": {
+            "size_bytes": 14812,
+            "type": "yaml",
+            "purpose": "Project file"
+        },
+        "templates/cloud/azure/arm-template.json": {
+            "size_bytes": 16896,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "templates/cloud/README.md": {
+            "size_bytes": 13125,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "templates/communication-plan.template.md": {
+            "size_bytes": 16655,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/constitution.template.md": {
+            "size_bytes": 2193,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/context.template.md": {
+            "size_bytes": 387,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/data-governance.template.md": {
+            "size_bytes": 1206,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/deployment-guide.template.md": {
+            "size_bytes": 18053,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/design.template.md": {
+            "size_bytes": 3223,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/dfd-and-context.template.md": {
+            "size_bytes": 661,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/dpia.template.md": {
+            "size_bytes": 821,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/fsd.template.md": {
+            "size_bytes": 1828,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/icd.template.md": {
+            "size_bytes": 1408,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/integration-examples.template.md": {
+            "size_bytes": 46372,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/iso25010-quality-model.template.md": {
+            "size_bytes": 1472,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/memory.template.md": {
+            "size_bytes": 1291,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/migration-plan.template.md": {
+            "size_bytes": 1060,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/mobile-app.template.md": {
+            "size_bytes": 6454,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/monitoring-playbook.template.md": {
+            "size_bytes": 10072,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/orr-checklist.template.md": {
+            "size_bytes": 887,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/performance-testing-strategy.template.md": {
+            "size_bytes": 4533,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/plan.template.md": {
+            "size_bytes": 10158,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/prd.template.md": {
+            "size_bytes": 1374,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/project-charter.template.md": {
+            "size_bytes": 2122,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/raci-matrix.template.md": {
+            "size_bytes": 630,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/README.md": {
+            "size_bytes": 6531,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "templates/release-plan.template.md": {
+            "size_bytes": 975,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/research.template.md": {
+            "size_bytes": 14171,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/risk-register.template.md": {
+            "size_bytes": 449,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/rtm.template.md": {
+            "size_bytes": 9314,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/runbook.template.md": {
+            "size_bytes": 954,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/sbom-template.json": {
+            "size_bytes": 8385,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "templates/scmp.template.md": {
+            "size_bytes": 1221,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/sdd.template.md": {
+            "size_bytes": 1887,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/security-assessment.template.md": {
+            "size_bytes": 11290,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/service.template.md": {
+            "size_bytes": 17021,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/sla.template.md": {
+            "size_bytes": 1465,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/spec.template.md": {
+            "size_bytes": 6003,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/spec-structure-folder.template.md": {
+            "size_bytes": 15062,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/spmp.template.md": {
+            "size_bytes": 1433,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/sqap.template.md": {
+            "size_bytes": 1327,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/srs.template.md": {
+            "size_bytes": 38163,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/stakeholder-register.template.md": {
+            "size_bytes": 678,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/state.template.json": {
+            "size_bytes": 618,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "templates/status.template.md": {
+            "size_bytes": 5862,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/task-readme.template.md": {
+            "size_bytes": 1963,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/tasks.template.md": {
+            "size_bytes": 7446,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/task-status.template.json": {
+            "size_bytes": 938,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "templates/task-structure-guide.template.md": {
+            "size_bytes": 11022,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/template-registry.json": {
+            "size_bytes": 23317,
+            "type": "json",
+            "purpose": "Project file"
+        },
+        "templates/test-plan.template.md": {
+            "size_bytes": 16164,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/test-strategy.template.md": {
+            "size_bytes": 1089,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/threat-model.template.md": {
+            "size_bytes": 3503,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/tool.template.md": {
+            "size_bytes": 12110,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/user-documentation.template.md": {
+            "size_bytes": 21999,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/user-training-guide.template.md": {
+            "size_bytes": 12887,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/vv-plan.template.md": {
+            "size_bytes": 1260,
+            "type": "markdown",
+            "purpose": "Project file"
+        }
+    },
+    "file_types": {
+        "source_code": 45,
+        "documentation": 234,
+        "configuration": 21
+    },
+    "analysis_timestamp": "2026-09-17T21:10:58+07:00",
+    "related_files": {
+        "project_summary": "project.json",
+        "context_file": "../context.md",
+        "overview": "overview.md"
+    },
+    "generated_by": "Plaesy Spec-Kit v0.0.1"
+}
