@@ -1,0 +1,362 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:{uuid}",
+  "version": 1,
+  "metadata": {
+    "timestamp": "{timestamp}",
+    "tools": [
+      {
+        "vendor": "Plaesy",
+        "name": "Spec-Kit SBOM Generator",
+        "version": "2025.1"
+      }
+    ],
+    "authors": [
+      {
+        "name": "{author_name}",
+        "email": "{author_email}"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "{project_name}",
+      "name": "{project_name}",
+      "version": "{project_version}",
+      "description": "{project_description}",
+      "licenses": [
+        {
+          "license": {
+            "id": "{license_id}",
+            "name": "{license_name}"
+          }
+        }
+      ],
+      "supplier": {
+        "name": "{supplier_name}",
+        "contact": [
+          {
+            "email": "{supplier_email}"
+          }
+        ]
+      }
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "{component_id}",
+      "name": "{component_name}",
+      "version": "{component_version}",
+      "description": "{component_description}",
+      "licenses": [
+        {
+          "license": {
+            "id": "{license_id}",
+            "name": "{license_name}",
+            "text": {
+              "content": "{license_text}"
+            }
+          }
+        }
+      ],
+      "purl": "pkg:{package_url}",
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "{component_website}"
+        },
+        {
+          "type": "vcs",
+          "url": "{version_control_url}"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "{issue_tracker_url}"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "{sha256_hash}"
+        },
+        {
+          "alg": "SHA-1",
+          "content": "{sha1_hash}"
+        }
+      ],
+      "supplier": {
+        "name": "{supplier_name}",
+        "contact": [
+          {
+            "email": "{supplier_email}"
+          }
+        ]
+      },
+      "evidence": {
+        "licenses": [
+          {
+            "license": {
+              "id": "{license_id}"
+            }
+          }
+        ]
+      },
+      "properties": [
+        {
+          "name": "security:scan:status",
+          "value": "scanned|not_scanned|failed"
+        },
+        {
+          "name": "security:vulnerabilities:critical",
+          "value": "{critical_count}"
+        },
+        {
+          "name": "security:vulnerabilities:high",
+          "value": "{high_count}"
+        },
+        {
+          "name": "security:vulnerabilities:medium",
+          "value": "{medium_count}"
+        },
+        {
+          "name": "security:vulnerabilities:low",
+          "value": "{low_count}"
+        },
+        {
+          "name": "compliance:approved",
+          "value": "true|false"
+        },
+        {
+          "name": "compliance:reviewed_date",
+          "value": "{review_date}"
+        },
+        {
+          "name": "ai:risk_assessment",
+          "value": "LOW|MEDIUM|HIGH|CRITICAL"
+        },
+        {
+          "name": "ai:confidence_score",
+          "value": "{0-100}"
+        }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "bom-ref": "{service_id}",
+      "name": "{service_name}",
+      "version": "{service_version}",
+      "description": "{service_description}",
+      "endpoints": [
+        "{endpoint_url_1}",
+        "{endpoint_url_2}"
+      ],
+      "authenticated": true,
+      "x-trust-boundary": true,
+      "data": [
+        {
+          "flow": "inbound",
+          "classification": "PUBLIC|INTERNAL|CONFIDENTIAL|RESTRICTED"
+        },
+        {
+          "flow": "outbound",
+          "classification": "PUBLIC|INTERNAL|CONFIDENTIAL|RESTRICTED"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "{license_id}",
+            "name": "{license_name}"
+          }
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "website",
+          "url": "{service_website}"
+        },
+        {
+          "type": "documentation",
+          "url": "{api_documentation_url}"
+        }
+      ],
+      "properties": [
+        {
+          "name": "security:authentication:method",
+          "value": "oauth2|jwt|api_key|basic|none"
+        },
+        {
+          "name": "security:encryption:in_transit",
+          "value": "tls_1_3|tls_1_2|none"
+        },
+        {
+          "name": "security:encryption:at_rest",
+          "value": "aes_256|aes_128|none"
+        },
+        {
+          "name": "monitoring:sla:availability",
+          "value": "{availability_percentage}"
+        },
+        {
+          "name": "monitoring:sla:response_time",
+          "value": "{response_time_ms}"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "{component_id}",
+      "dependsOn": [
+        "{dependency_id_1}",
+        "{dependency_id_2}"
+      ]
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "bom-ref": "{vulnerability_id}",
+      "id": "{cve_id}",
+      "source": {
+        "name": "NVD",
+        "url": "https://nvd.nist.gov/"
+      },
+      "ratings": [
+        {
+          "source": {
+            "name": "NVD",
+            "url": "https://nvd.nist.gov/"
+          },
+          "score": {
+            "base": 7.5,
+            "impact": 3.6,
+            "exploitability": 3.9,
+            "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "severity": "HIGH",
+          "method": "CVSSv31"
+        }
+      ],
+      "cwes": [
+        {
+          "id": "CWE-89",
+          "name": "SQL Injection"
+        }
+      ],
+      "description": "{vulnerability_description}",
+      "detail": "{detailed_vulnerability_information}",
+      "recommendation": "{remediation_recommendation}",
+      "published": "{published_date}",
+      "updated": "{updated_date}",
+      "affects": [
+        {
+          "ref": "{component_id}",
+          "versions": [
+            {
+              "version": "{affected_version}",
+              "status": "affected"
+            },
+            {
+              "version": "{fixed_version}",
+              "status": "unaffected"
+            }
+          ]
+        }
+      ],
+      "analysis": {
+        "state": "exploitable|in_triage|false_positive|not_affected|resolved",
+        "justification": "code_not_present|code_not_reachable|requires_configuration|requires_dependency|requires_environment|protected_by_compiler|protected_at_runtime|protected_at_perimeter|protected_by_mitigating_control",
+        "response": [
+          "can_not_fix",
+          "will_not_fix",
+          "update",
+          "rollback",
+          "workaround_available"
+        ],
+        "detail": "{analysis_detail}"
+      },
+      "properties": [
+        {
+          "name": "security:exploitability",
+          "value": "LOW|MEDIUM|HIGH|CRITICAL"
+        },
+        {
+          "name": "security:patch_available",
+          "value": "true|false"
+        },
+        {
+          "name": "security:mitigation_implemented",
+          "value": "true|false"
+        },
+        {
+          "name": "ai:risk_score",
+          "value": "{0-100}"
+        },
+        {
+          "name": "ai:priority_score",
+          "value": "{0-100}"
+        }
+      ]
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "complete",
+      "assemblies": [
+        "{project_name}"
+      ]
+    }
+  ],
+  "properties": [
+    {
+      "name": "build:timestamp",
+      "value": "{build_timestamp}"
+    },
+    {
+      "name": "build:environment",
+      "value": "development|staging|production"
+    },
+    {
+      "name": "build:commit_hash",
+      "value": "{git_commit_hash}"
+    },
+    {
+      "name": "build:branch",
+      "value": "{git_branch}"
+    },
+    {
+      "name": "security:scan:timestamp",
+      "value": "{scan_timestamp}"
+    },
+    {
+      "name": "security:scan:tools",
+      "value": "{scanning_tools_used}"
+    },
+    {
+      "name": "compliance:approved",
+      "value": "true|false"
+    },
+    {
+      "name": "compliance:reviewer",
+      "value": "{reviewer_name}"
+    },
+    {
+      "name": "compliance:review_date",
+      "value": "{review_date}"
+    },
+    {
+      "name": "ai:overall_risk_score",
+      "value": "{0-100}"
+    },
+    {
+      "name": "ai:confidence_level",
+      "value": "{0-100}"
+    },
+    {
+      "name": "ai:analysis_version",
+      "value": "2025.1"
+    }
+  ]
+}

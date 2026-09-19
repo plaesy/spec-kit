@@ -1,0 +1,580 @@
+# Spec-Kit Kubernetes Deployment Configuration
+# Constitutional compliance monitoring and application deployment
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app
+    app.kubernetes.io/version: "1.0.0"
+    spec-kit.io/constitutional-monitoring: "enabled"
+
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spec-kit-config
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app
+    app.kubernetes.io/component: config
+data:
+  # Constitutional compliance configuration
+  CONSTITUTIONAL_MONITORING_ENABLED: "true"
+  TDD_ENFORCEMENT: "true"
+  LIBRARY_FIRST_VALIDATION: "true"
+  CLI_INTERFACE_REQUIRED: "true"
+  
+  # Application configuration
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+  METRICS_PORT: "9090"
+  HEALTH_CHECK_PORT: "8080"
+  
+  # Performance monitoring
+  PERFORMANCE_DASHBOARD_ENABLED: "true"
+  DEPENDENCY_SCANNER_ENABLED: "true"
+  VULNERABILITY_SCAN_INTERVAL: "3600"
+
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: spec-kit-secrets
+  namespace: spec-kit-app
+type: Opaque
+stringData:
+  # Database credentials (use external secret management in production)
+  DATABASE_URL: "postgresql://app_user:${DATABASE_PASSWORD}@${DATABASE_ENDPOINT}:5432/${DATABASE_NAME}"
+  REDIS_URL: "redis://:${REDIS_AUTH_TOKEN}@${REDIS_ENDPOINT}:6379"
+  JWT_SECRET: "${JWT_SECRET}"
+  
+  # AWS credentials for S3 access
+  AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+  AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+  S3_BUCKET_NAME: "${S3_BUCKET_NAME}"
+
+---
+# Service Account with IRSA for AWS integration
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spec-kit-app
+  namespace: spec-kit-app
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::${AWS_ACCOUNT_ID}:role/spec-kit-app-role"
+  labels:
+    app.kubernetes.io/name: spec-kit-app
+
+---
+# Main Application Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spec-kit-app
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app
+    app.kubernetes.io/component: application
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spec-kit-app
+      app.kubernetes.io/component: application
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: spec-kit-app
+        app.kubernetes.io/component: application
+      annotations:
+        # Constitutional compliance annotations
+        spec-kit.io/tdd-compliance: "required"
+        spec-kit.io/library-first: "enforced"
+        spec-kit.io/cli-interface: "available"
+        # Prometheus monitoring
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: spec-kit-app
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: app
+        image: ${ECR_REPOSITORY_URL}:${IMAGE_TAG}
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        - name: health
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "3000"
+        envFrom:
+        - configMapRef:
+            name: spec-kit-config
+        - secretRef:
+            name: spec-kit-secrets
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: health
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: health
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: spec-kit-config-volume
+          mountPath: /.spec-kit
+          readOnly: true
+      # Constitutional monitoring sidecar
+      - name: constitutional-monitor
+        image: ${ECR_REPOSITORY_URL}/constitutional-monitor:${IMAGE_TAG}
+        ports:
+        - name: monitor-metrics
+          containerPort: 9091
+          protocol: TCP
+        env:
+        - name: MONITOR_PORT
+          value: "9091"
+        - name: APPLICATION_PORT
+          value: "3000"
+        - name: SCAN_INTERVAL
+          value: "300"
+        envFrom:
+        - configMapRef:
+            name: spec-kit-config
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: spec-kit-config-volume
+        configMap:
+          name: spec-kit-config
+
+---
+# Constitutional Monitoring Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spec-kit-constitutional-monitor
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-constitutional-monitor
+    app.kubernetes.io/component: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spec-kit-constitutional-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: spec-kit-constitutional-monitor
+        app.kubernetes.io/component: monitoring
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9092"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: spec-kit-app
+      containers:
+      - name: constitutional-monitor
+        image: ${ECR_REPOSITORY_URL}/constitutional-dashboard:${IMAGE_TAG}
+        ports:
+        - name: dashboard
+          containerPort: 5000
+          protocol: TCP
+        - name: metrics
+          containerPort: 9092
+          protocol: TCP
+        env:
+        - name: DASHBOARD_PORT
+          value: "5000"
+        - name: METRICS_PORT
+          value: "9092"
+        - name: PROJECT_ROOT
+          value: "/app"
+        - name: KUBERNETES_MODE
+          value: "true"
+        envFrom:
+        - configMapRef:
+            name: spec-kit-config
+        - secretRef:
+            name: spec-kit-secrets
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "512Mi"
+            cpu: "400m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: dashboard
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: dashboard
+          initialDelaySeconds: 10
+          periodSeconds: 10
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: spec-kit-app
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app
+    app.kubernetes.io/component: application
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: metrics
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: spec-kit-app
+    app.kubernetes.io/component: application
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spec-kit-constitutional-monitor
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-constitutional-monitor
+spec:
+  type: ClusterIP
+  ports:
+  - name: dashboard
+    port: 5000
+    targetPort: dashboard
+    protocol: TCP
+  - name: metrics
+    port: 9092
+    targetPort: metrics
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: spec-kit-constitutional-monitor
+
+---
+# Ingress for external access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spec-kit-ingress
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/healthcheck-port: "8080"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # Constitutional compliance headers
+    alb.ingress.kubernetes.io/response-headers: |
+      X-Spec-Kit-Constitutional-Compliance: "enforced"
+      X-Spec-Kit-TDD-Required: "true"
+      X-Spec-Kit-Library-First: "true"
+spec:
+  rules:
+  - host: ${DOMAIN_NAME}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: spec-kit-app
+            port:
+              number: 80
+      - path: /constitutional-dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: spec-kit-constitutional-monitor
+            port:
+              number: 5000
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: spec-kit-app-hpa
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: spec-kit-app
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+
+---
+# Pod Disruption Budget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: spec-kit-app-pdb
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app-pdb
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spec-kit-app
+      app.kubernetes.io/component: application
+
+---
+# Network Policy for security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: spec-kit-network-policy
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: spec-kit-app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: spec-kit-constitutional-monitor
+    ports:
+    - protocol: TCP
+      port: 3000
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 9090
+  egress:
+  - {} # Allow all egress traffic (can be restricted based on requirements)
+
+---
+# ServiceMonitor for Prometheus monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spec-kit-app-metrics
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-app-metrics
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spec-kit-app
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s
+  - port: metrics
+    path: /constitutional-metrics
+    interval: 60s
+    scrapeTimeout: 15s
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spec-kit-constitutional-metrics
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-constitutional-metrics
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: spec-kit-constitutional-monitor
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s
+
+---
+# PrometheusRule for constitutional compliance alerts
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: spec-kit-constitutional-alerts
+  namespace: spec-kit-app
+  labels:
+    app.kubernetes.io/name: spec-kit-constitutional-alerts
+spec:
+  groups:
+  - name: spec-kit.constitutional.rules
+    rules:
+    - alert: ConstitutionalComplianceBelow80Percent
+      expr: spec_kit_constitutional_compliance_percentage < 80
+      for: 5m
+      labels:
+        severity: warning
+        component: constitutional-monitor
+      annotations:
+        summary: "Constitutional compliance below 80%"
+        description: "Spec-Kit constitutional compliance is {{ $value }}%, which is below the 80% threshold"
+    
+    - alert: TDDComplianceFailure
+      expr: spec_kit_tdd_compliance == 0
+      for: 2m
+      labels:
+        severity: critical
+        component: tdd
+      annotations:
+        summary: "TDD compliance failure detected"
+        description: "Test-driven development compliance check is failing"
+    
+    - alert: LibraryFirstViolation
+      expr: spec_kit_library_first_compliance == 0
+      for: 5m
+      labels:
+        severity: warning
+        component: architecture
+      annotations:
+        summary: "Library-first architecture violation"
+        description: "Library-first architecture principle is being violated"
+    
+    - alert: CLIInterfaceMissing
+      expr: spec_kit_cli_interface_count == 0
+      for: 10m
+      labels:
+        severity: warning
+        component: cli
+      annotations:
+        summary: "No CLI interfaces detected"
+        description: "No command-line interfaces found in the application"
+    
+    - alert: DependencyVulnerabilitiesHigh
+      expr: spec_kit_dependency_vulnerabilities_high > 0
+      for: 1m
+      labels:
+        severity: critical
+        component: security
+      annotations:
+        summary: "High severity dependency vulnerabilities detected"
+        description: "{{ $value }} high severity vulnerabilities found in dependencies"
+    
+    - alert: TestCoverageBelowThreshold
+      expr: spec_kit_test_coverage_percentage < 85
+      for: 5m
+      labels:
+        severity: warning
+        component: testing
+      annotations:
+        summary: "Test coverage below 85%"
+        description: "Test coverage is {{ $value }}%, which is below the required 85% threshold"

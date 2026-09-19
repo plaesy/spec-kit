@@ -1,0 +1,8 @@
+# Whitelist for Plaesy Constitutional Framework
+# This file contains patterns to whitelist from security scanning
+
+# Development and testing
+_test_
+_mock_
+_dummy_
+node_modules\*

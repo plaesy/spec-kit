@@ -1,0 +1,34 @@
+{
+  "description": "Rules for plaesy-trim: Layer 1 (command output) thresholds and Layer 2 (prose compression) filler patterns.",
+  "version": "1.0.0",
+  "layer1_commands": {
+    "_default": { "max_lines": 40, "dedupe_consecutive": true },
+    "git status": { "max_lines": 25, "dedupe_consecutive": true },
+    "git push": { "max_lines": 10, "dedupe_consecutive": true },
+    "git log": { "max_lines": 30, "dedupe_consecutive": false },
+    "npm install": { "max_lines": 15, "dedupe_consecutive": true },
+    "npm test": { "max_lines": 50, "dedupe_consecutive": true, "mode": "test-results" },
+    "cargo test": { "max_lines": 40, "dedupe_consecutive": true, "mode": "test-results" },
+    "cargo build": { "max_lines": 20, "dedupe_consecutive": true },
+    "pytest": { "max_lines": 50, "dedupe_consecutive": true, "mode": "test-results" },
+    "dotnet build": { "max_lines": 25, "dedupe_consecutive": true },
+    "dotnet test": { "max_lines": 40, "dedupe_consecutive": true, "mode": "test-results" },
+    "docker build": { "max_lines": 20, "dedupe_consecutive": true }
+  },
+  "layer2_filler_patterns": [
+    { "find": "\\bIt is important to note that\\b", "replace": "" },
+    { "find": "\\bPlease note that\\b", "replace": "" },
+    { "find": "\\bYou should\\b", "replace": "" },
+    { "find": "\\bYou will need to\\b", "replace": "Need to" },
+    { "find": "\\bin order to\\b", "replace": "to" },
+    { "find": "\\bmake sure to\\b", "replace": "" },
+    { "find": "\\bshould be considered as\\b", "replace": "is" },
+    { "find": "\\bthere is a need to\\b", "replace": "must" },
+    { "find": "\\bas well as\\b", "replace": "and" },
+    { "find": "\\bdue to the fact that\\b", "replace": "because" }
+  ],
+  "layer2_degree_thresholds": {
+    "lite_min_degree": 5,
+    "full_min_degree": 1
+  }
+}
