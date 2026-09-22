@@ -70,3 +70,19 @@ Follow idiomatic Go: [Effective Go](https://go.dev/doc/effective_go), [Go Code R
 
 ## Common Pitfalls to Avoid
 Not checking errors; ignoring race conditions; goroutine leaks; skipping `defer` for cleanup; concurrent map writes; confusing nil interfaces with nil pointers; unclosed resources (files, connections); unnecessary globals; over-using `interface{}`; ignoring a type's zero value.
+
+## Usage Example
+
+```go
+type UserRepository interface {
+    FindByID(ctx context.Context, id string) (*User, error)
+}
+
+func GetUser(ctx context.Context, repo UserRepository, id string) (*User, error) {
+    user, err := repo.FindByID(ctx, id)
+    if err != nil {
+        return nil, fmt.Errorf("get user %s: %w", id, err)
+    }
+    return user, nil
+}
+```

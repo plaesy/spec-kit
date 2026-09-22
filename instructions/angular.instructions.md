@@ -100,3 +100,22 @@ High-quality Angular apps with TypeScript, using Angular Signals for state, per 
 - Built-in i18n if specified
 - DRY via reusable utilities and shared modules
 - Use signals consistently for state management
+
+## Usage Example
+
+```typescript
+// user.service.ts
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+  private usersSignal = signal<User[]>([]);
+  users = this.usersSignal.asReadonly();
+  activeCount = computed(() => this.usersSignal().filter(u => u.active).length);
+
+  loadUsers() {
+    this.http.get<User[]>('/api/users').pipe(
+      catchError(err => { console.error(err); return of([]); })
+    ).subscribe(users => this.usersSignal.set(users));
+  }
+}
+```

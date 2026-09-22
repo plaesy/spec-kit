@@ -1,6 +1,7 @@
-# Plaesy Spec-Kit Analyzer Functional Smoke Test (PowerShell)
+# Plaesy Constitution Kit Analyzer Functional Smoke Test (PowerShell)
 # Validates that plaesy-analyze.ps1 produces expected output artifacts
-# and that -IfChanged correctly skips regeneration when nothing changed.
+# and that regeneration is skipped by default when nothing changed (fingerprint
+# fast path is default behavior; -Force bypasses it).
 
 $ErrorActionPreference = "Stop"
 
@@ -76,8 +77,8 @@ if ($projectJson -match "JavaScript") {
 }
 
 Write-Host ""
-Write-Host "=== Test 2: -IfChanged skips regeneration when nothing changed ==="
-& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph -IfChanged
+Write-Host "=== Test 2: default run skips regeneration when nothing changed ==="
+& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph
 
 $fpPath = Join-Path "$FIXTURE/.plaesy/analysis" ".analysis-fingerprint"
 if (Test-Path $fpPath) {
@@ -92,8 +93,8 @@ $mtimeStructBefore = (Get-Item "$FIXTURE/.plaesy/analysis/project.structure.json
 
 Start-Sleep -Seconds 1
 
-# Second run with -IfChanged should skip (fingerprint matches)
-& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph -IfChanged
+# Second run (default, no switch) should skip (fingerprint matches)
+& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph
 
 $mtimeJsonAfter = (Get-Item "$FIXTURE/.plaesy/analysis/project.json").LastWriteTime
 $mtimeStructAfter = (Get-Item "$FIXTURE/.plaesy/analysis/project.structure.json").LastWriteTime
@@ -101,25 +102,25 @@ $mtimeStructAfter = (Get-Item "$FIXTURE/.plaesy/analysis/project.structure.json"
 if ($mtimeJsonBefore -eq $mtimeJsonAfter) {
     Write-Host "  PASS: project.json not regenerated (skipped correctly)"
 } else {
-    Write-Host "  FAIL: project.json was regenerated despite -IfChanged"
+    Write-Host "  FAIL: project.json was regenerated despite unchanged fingerprint"
     $FAILURES++
 }
 
 if ($mtimeStructBefore -eq $mtimeStructAfter) {
     Write-Host "  PASS: project.structure.json not regenerated (skipped correctly)"
 } else {
-    Write-Host "  FAIL: project.structure.json was regenerated despite -IfChanged"
+    Write-Host "  FAIL: project.structure.json was regenerated despite unchanged fingerprint"
     $FAILURES++
 }
 
 Write-Host ""
-Write-Host "=== Test 3: -Force overrides -IfChanged ==="
-& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph -IfChanged -Force
+Write-Host "=== Test 3: -Force overrides the default skip ==="
+& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph -Force
 $mtimeJsonForce = (Get-Item "$FIXTURE/.plaesy/analysis/project.json").LastWriteTime
 if ($mtimeJsonAfter -ne $mtimeJsonForce) {
-    Write-Host "  PASS: -Force regenerated despite -IfChanged"
+    Write-Host "  PASS: -Force regenerated despite unchanged fingerprint"
 } else {
-    Write-Host "  FAIL: -Force did not override -IfChanged"
+    Write-Host "  FAIL: -Force did not override the default skip"
     $FAILURES++
 }
 
@@ -127,7 +128,7 @@ Write-Host ""
 Write-Host "=== Test 4: Modifying a source file invalidates fingerprint ==="
 Start-Sleep -Seconds 1
 Add-Content -Path "$FIXTURE/src/lib.js" -Value "// modified"
-& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph -IfChanged
+& "$ROOT/scripts/powershell/plaesy-analyze.ps1" -ProjectPath $FIXTURE -NoGraph
 $mtimeJsonMod = (Get-Item "$FIXTURE/.plaesy/analysis/project.json").LastWriteTime
 if ($mtimeJsonForce -ne $mtimeJsonMod) {
     Write-Host "  PASS: source modification triggered regeneration"

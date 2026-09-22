@@ -52,3 +52,16 @@ Follow Google's Java style guide: `UpperCamelCase` for classes/interfaces, `lowe
 ## Build and Verification
 
 After changes, verify the build: `mvn clean install` (Maven) or `./gradlew build` / `gradlew.bat build` (Gradle, Windows). Ensure all tests pass.
+
+## Usage Example
+
+```java
+public record UserId(long value) {}
+
+public Optional<User> findUser(UserId id) {
+    return switch (repository.findById(id)) {
+        case Optional<User> u when u.isPresent() -> u;
+        default -> Optional.empty();
+    };
+}
+```

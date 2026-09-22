@@ -31,3 +31,16 @@ Every phase output MUST validate against these criteria:
 - Could output be misinterpreted?
 - Are all references/links valid?
 - Would I confidently deliver this?
+
+## Usage Example
+
+```
+Phase output: assess-technical-2026-09-22.md
+
+1. Completeness: all 6 dimension scores present ✓, no empty findings array ✓
+2. Format: dates ISO 8601 (2026-09-22) ✓, headings consistent ✓
+3. Coherence: score table matches the findings listed below it ✓
+4. Quality: every code reference resolves to a real file:line ✓
+5. Self-audit: findings re-verified against source before delivery ✓
+→ Passes validation; safe to hand off to /save
+```

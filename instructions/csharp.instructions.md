@@ -64,3 +64,20 @@ Caching strategies (in-memory, distributed, response caching); async patterns an
 
 ## Deployment and DevOps
 Containerize via .NET's built-in container support (`dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer`) vs manual Dockerfile; CI/CD pipelines; deployment to Azure App Service/Container Apps/other hosts; health checks and readiness probes; environment-specific configuration per deployment stage.
+
+## Usage Example
+
+```csharp
+public sealed class UserService(IUserRepository repo, ILogger<UserService> logger)
+{
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct)
+    {
+        var user = await repo.FindAsync(id, ct);
+        if (user is null)
+        {
+            logger.LogWarning("User {UserId} not found", id);
+        }
+        return user;
+    }
+}
+```

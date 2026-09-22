@@ -1,12 +1,15 @@
 # Plaesy AI-Optimized Project Analyzer - Enhanced Version (PowerShell)
 # Comprehensive project analysis with AI-friendly documentation generation
-# Usage: ./plaesy-analyze.ps1 [project_path] [-NoGraph] [-Force] [-IfChanged]
+# Usage: ./plaesy-analyze.ps1 [project_path] [-NoGraph] [-Force]
 #   -NoGraph  skip dependency graph build entirely
-#   -Force    force a full graph rebuild even if no source files changed
-#             (default: graph rebuild is skipped when nothing changed since
-#             the last run)
-#   -IfChanged  skip all analysis regeneration if project fingerprint matches
-#               the last run (file count + newest mtime + framework version)
+#   -Force    force a full regeneration (analysis + graph) even if the
+#             project fingerprint (file count + newest mtime + framework
+#             version) matches the last run
+#
+# Default behavior: regeneration is SKIPPED when the fingerprint is unchanged
+# since the last run — this is the default, not opt-in (`-IfChanged` used to
+# be required to get this fast path; it is now always-on and the switch is a
+# no-op kept for backward compatibility). Pass -Force to bypass the check.
 
 param(
     [string]$ProjectPath = ".",
@@ -1226,10 +1229,10 @@ function Main {
         exit 1
     }
 
-    # -IfChanged fast path: skip all regeneration if project fingerprint matches
-    # the last run's fingerprint. -Force overrides this (forces full regeneration).
-    if ($IfChanged -and (-not $Force) -and (Test-AnalysisUnchanged)) {
-        Write-Success "Analysis unchanged since last run (-IfChanged). Skipping regeneration."
+    # Fingerprint fast path (default, not opt-in): skip all regeneration if the
+    # project fingerprint matches the last run. -Force bypasses this.
+    if ((-not $Force) -and (Test-AnalysisUnchanged)) {
+        Write-Success "Analysis unchanged since last run. Skipping regeneration (use -Force to override)."
         Write-Info "Analysis files (in $AnalysisDir):"
         Write-Info "   - project.json - AI-optimized project summary (cached)"
         Write-Info "   - project.structure.json - Detailed project structure (cached)"

@@ -112,3 +112,21 @@ High-quality ReactJS apps with modern patterns, hooks, and best practices per ht
 
 ## Common Patterns
 Higher-Order Components (cross-cutting concerns), render props (composition), compound components (related functionality), Provider pattern (context-based state sharing), Container/Presentational separation, custom hooks (reusable logic extraction).
+
+## Usage Example
+
+```tsx
+function useUsers() {
+  return useQuery({
+    queryKey: ['users'],
+    queryFn: () => fetch('/api/users').then(r => r.json()),
+  });
+}
+
+export function UserList() {
+  const { data, isLoading, error } = useUsers();
+  if (isLoading) return <Skeleton rows={5} />;
+  if (error) return <ErrorState message="Couldn't load users" />;
+  return <ul>{data.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+}
+```

@@ -1,14 +1,18 @@
 <div align="center" style="background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
-  <img src="https://raw.githubusercontent.com/plaesy/.github/refs/heads/main/assets/img/Logo.svg" alt="Plaesy Logo - AI Development Framework" />
+  <img src="https://raw.githubusercontent.com/plaesy/.github/refs/heads/main/assets/img/Logo.svg" alt="Plaesy Constitution Kit - AI Development Framework" />
 </div>
 
-# Spec-Kit: Constitutional Development Framework
+# Plaesy: Constitution Kit
 
 **Version: 0.0.1**
 
-## What is Plaesy Spec-Kit?
+## What is Plaesy Constitution Kit?
 
-Plaesy Spec-Kit is a **state-of-the-art AI prompt framework** featuring **true workflow automation** from idea to production-ready code. It provides zero-ambiguity prompts with anti-hallucination protocols that enforce disciplined development through mandatory full automation—ensuring quality, security, and maintainability without manual intervention.
+Plaesy Constitution Kit is an AI prompt framework built around a project **constitution** — a single governing source of truth (`.plaesy/memory/constitution.md`) that every phase (`/assess`, `/implement`, `/optimize`, `/fix`, `/improve`) reads before acting. Unlike spec-driven tools scoped to code alone, Plaesy drives all eight dimensions of a project from that constitution — technical, design, business, legal, marketing, financial, management, and product — through workflow automation from idea to production-ready deliverable, with anti-hallucination protocols enforcing evidence-backed output at each phase.
+
+## Why Plaesy Constitution Kit (vs. other spec-driven tools)
+
+Most spec-driven development tools — including GitHub's own `spec-kit` — scope the "spec" to code: a technical plan for an AI coding agent to implement. Plaesy Constitution Kit treats the **constitution**, not the spec, as the source of truth, and applies it beyond code: an `/assess:business` or `/assess:legal` run is governed by the same constitution as `/implement:technical`. If your project needs more than code specified — pricing model, compliance posture, go-to-market messaging — those live in the same governed workflow, not a separate tool.
 
 ## Quick Start
 
@@ -16,7 +20,7 @@ Plaesy Spec-Kit is a **state-of-the-art AI prompt framework** featuring **true w
 
 **Linux/macOS:**
 ```bash
-# Install Plaesy Spec-Kit (download, inspect, then run — safer than piping curl into bash)
+# Install Plaesy Constitution Kit (download, inspect, then run — safer than piping curl into bash)
 curl -fsSL https://raw.githubusercontent.com/plaesy/spec-kit/main/scripts/bash/install.sh -o install.sh
 bash install.sh
 
@@ -29,7 +33,7 @@ plaesy init . --ai claude_code
 
 **Windows (PowerShell):**
 ```powershell
-# Install Plaesy Spec-Kit
+# Install Plaesy Constitution Kit
 iwr -useb https://raw.githubusercontent.com/plaesy/spec-kit/main/scripts/powershell/install.ps1 | iex
 
 # Initialize new project (interactive AI selection)
@@ -81,7 +85,7 @@ plaesy clean                   # Clean current directory
 plaesy upgrade                 # Upgrade framework
 plaesy status                  # Check installation status and system information
 plaesy repair                  # Fix missing components and scripts
-plaesy uninstall               # Remove Plaesy Spec-Kit completely
+plaesy uninstall               # Remove Plaesy Constitution Kit completely
 ```
 
 ```powershell
@@ -94,7 +98,7 @@ plaesy clean <directory> # Clean specified directory (default: current)
 plaesy upgrade           # Upgrade framework
 plaesy status            # Check installation status and system information
 plaesy repair            # Fix missing components and scripts
-plaesy uninstall         # Remove Plaesy Spec-Kit completely
+plaesy uninstall         # Remove Plaesy Constitution Kit completely
 ```
 
 ### Popular AI Platforms

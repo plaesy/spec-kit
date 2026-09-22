@@ -71,3 +71,17 @@ Follow idiomatic Rust: [The Rust Book](https://doc.rust-lang.org/book/), [Rust A
 
 ## Common Pitfalls to Avoid
 Overusing `unwrap()`/`expect()` in non-test code; fighting the borrow checker with excessive `clone()` instead of restructuring; `unsafe` without a documented safety justification; blocking calls inside `async fn`; ignoring `clippy` lints; stringly-typed data where an enum or newtype belongs; panicking on recoverable errors.
+
+## Usage Example
+
+```rust
+#[derive(Debug, thiserror::Error)]
+enum UserError {
+    #[error("user {0} not found")]
+    NotFound(UserId),
+}
+
+async fn find_user(id: UserId, repo: &impl UserRepository) -> Result<User, UserError> {
+    repo.find(id).await?.ok_or(UserError::NotFound(id))
+}
+```

@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Plaesy Spec-Kit Analyzer Functional Smoke Test
+# Plaesy Constitution Kit Analyzer Functional Smoke Test
 # Validates that plaesy-analyze.sh produces expected output artifacts
-# and that --if-changed correctly skips regeneration when nothing changed.
+# and that regeneration is skipped by default when nothing changed (fingerprint
+# fast path is default behavior; --force bypasses it).
 
 set -u
 
@@ -75,9 +76,9 @@ else
 fi
 
 echo ""
-echo "=== Test 2: --if-changed skips regeneration when nothing changed ==="
-# First run with --if-changed should regenerate (no prior fingerprint)
-bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph --if-changed
+echo "=== Test 2: default run skips regeneration when nothing changed ==="
+# First run (default) should regenerate (no prior fingerprint)
+bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph
 if [[ -f "$FIXTURE/.plaesy/analysis/.analysis-fingerprint" ]]; then
     echo "  PASS: fingerprint file created"
 else
@@ -89,9 +90,9 @@ fi
 MTIME_JSON_BEFORE=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null || stat -f %m "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null)
 MTIME_STRUCT_BEFORE=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.structure.json" 2>/dev/null || stat -f %m "$FIXTURE/.plaesy/analysis/project.structure.json" 2>/dev/null)
 
-# Second run with --if-changed should skip (fingerprint matches)
+# Second run (default, no flag) should skip (fingerprint matches)
 sleep 1
-bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph --if-changed
+bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph
 
 MTIME_JSON_AFTER=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null || stat -f %m "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null)
 MTIME_STRUCT_AFTER=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.structure.json" 2>/dev/null || stat -f %m "$FIXTURE/.plaesy/analysis/project.structure.json" 2>/dev/null)
@@ -99,25 +100,25 @@ MTIME_STRUCT_AFTER=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.structure.jso
 if [[ "$MTIME_JSON_BEFORE" == "$MTIME_JSON_AFTER" ]]; then
     echo "  PASS: project.json not regenerated (skipped correctly)"
 else
-    echo "  FAIL: project.json was regenerated despite --if-changed"
+    echo "  FAIL: project.json was regenerated despite unchanged fingerprint"
     FAILURES=$((FAILURES + 1))
 fi
 
 if [[ "$MTIME_STRUCT_BEFORE" == "$MTIME_STRUCT_AFTER" ]]; then
     echo "  PASS: project.structure.json not regenerated (skipped correctly)"
 else
-    echo "  FAIL: project.structure.json was regenerated despite --if-changed"
+    echo "  FAIL: project.structure.json was regenerated despite unchanged fingerprint"
     FAILURES=$((FAILURES + 1))
 fi
 
 echo ""
-echo "=== Test 3: --force overrides --if-changed ==="
-bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph --if-changed --force
+echo "=== Test 3: --force overrides the default skip ==="
+bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph --force
 MTIME_JSON_FORCE=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null || stat -f %m "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null)
 if [[ "$MTIME_JSON_AFTER" != "$MTIME_JSON_FORCE" ]]; then
-    echo "  PASS: --force regenerated despite --if-changed"
+    echo "  PASS: --force regenerated despite unchanged fingerprint"
 else
-    echo "  FAIL: --force did not override --if-changed"
+    echo "  FAIL: --force did not override the default skip"
     FAILURES=$((FAILURES + 1))
 fi
 
@@ -125,7 +126,7 @@ echo ""
 echo "=== Test 4: Modifying a source file invalidates fingerprint ==="
 sleep 1
 echo "// modified" >> "$FIXTURE/src/lib.js"
-bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph --if-changed
+bash "$ROOT/scripts/bash/plaesy-analyze.sh" "$FIXTURE" --no-graph
 MTIME_JSON_MOD=$(stat -c %Y "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null || stat -f %m "$FIXTURE/.plaesy/analysis/project.json" 2>/dev/null)
 if [[ "$MTIME_JSON_FORCE" != "$MTIME_JSON_MOD" ]]; then
     echo "  PASS: source modification triggered regeneration"

@@ -60,3 +60,21 @@ applyTo: '**/*.sql'
 - Avoid long-running, table-locking transactions
 - Batch processing for large data operations
 - `SET NOCOUNT ON` in data-modifying stored procedures
+
+## Usage Example
+
+```sql
+CREATE PROCEDURE usp_GetCustomerOrders
+    @customerId INT,
+    @limit INT = 50
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT o.id, o.created_at, o.total_amount
+    FROM orders AS o
+    WHERE o.customer_id = @customerId
+    ORDER BY o.created_at DESC
+    LIMIT @limit;
+END
+```

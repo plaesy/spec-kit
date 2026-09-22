@@ -36,6 +36,22 @@ updatedAt: "2026-09-22T06:28:50Z"
 - PowerShell CLI dispatch forwards the `analyze` token as a project path.
 - Prompt routers do not gate re-analysis on freshness.
 
+## Follow-up (2026-09-23)
+
+- Fixed the cache-tracking inconsistency: `.edges.tsv`/`.nodes.tsv`/`.analysis-fingerprint`
+  are now gitignored (untracked from git) — only human-reviewable output
+  (`overview.md`, `project.json`, `project.structure.json`) stays tracked.
+- Gated `/continue` and `/assess` on analysis freshness: both now call
+  `plaesy analyze` before citing `.plaesy/analysis/overview.md` as evidence.
+- Flipped the analyzer's default: the fingerprint fast-path (skip regeneration
+  when nothing changed) is now the DEFAULT for both `plaesy-analyze.sh` and
+  `.ps1` — matching `plaesy-graph.sh`'s existing default (skip-unless-`--force`).
+  `--if-changed`/`-IfChanged` is kept as an accepted no-op flag for backward
+  compatibility; `--force`/`-Force` is now the only way to force full
+  regeneration. This closes the inconsistency Graft's "byte-identical rebuild
+  invariant" pattern flagged: graph build and analyze regeneration now share
+  the same default (skip-unless-changed, force to override).
+
 ## Decisions and next phase
 - Prioritize a shared portable fingerprint plus analyzer `--if-changed`, then parity tests and CI wiring.
 - Treat Graft telemetry, security-policy, version, and benchmark discrepancies as assessment caveats, not Spec-Kit requirements.

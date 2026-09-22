@@ -62,3 +62,12 @@ dimension-routing decision (see `/improve`).
   `assess-management.instructions.md`, `assess-product.instructions.md` —
   per-dimension assessment criteria (what gets measured, not routed)
 - `error-recovery-predictive.instructions.md` — Predictive error prevention
+
+## Usage Example
+
+```
+Finding: "Pricing page claims '50% cheaper than competitors' with no source."
+Dimension: Marketing (unsourced claim)
+→ Lookup row: Marketing | Optimize (top priority) = claim sourcing
+→ Route to: /optimize:marketing --focus claim-sourcing
+```

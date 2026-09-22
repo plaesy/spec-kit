@@ -737,6 +737,7 @@ Use references as quality training, not as templates.
 
 Use this structure internally:
 
+```
 Create a premium brand-kit overview image for "[BRAND NAME]".
 
 Brand strategy:
@@ -774,6 +775,7 @@ readable, minimal, high hierarchy, no tiny fake text.
 
 Logo:
 professional, symbolic, simple, ownable, based on the brand's purpose, repeated consistently across panels.
+```
 
 ---
 

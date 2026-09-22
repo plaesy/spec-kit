@@ -68,3 +68,22 @@ When in doubt, omit.
 Prefer short sections and bullets. If the repo is simple, keep the file simple. If the repo is large, summarize the few structural facts that actually change how an agent should work.
 
 If `AGENTS.md` already exists, improve it in place rather than rewriting blindly. Preserve verified useful guidance, delete fluff or stale claims, and reconcile it with the current codebase.
+
+## Usage Example
+
+```markdown
+# AGENTS.md
+
+## Commands
+- Test one file: `npm test -- path/to/file.test.ts`
+- Lint → typecheck → test, in that order (CI fails fast on lint)
+
+## Architecture
+- `packages/api` and `packages/web` are independent workspaces; shared types
+  live in `packages/shared` and must be built (`npm run build -w shared`)
+  before either consumer typechecks.
+
+## Gotchas
+- DB migrations run automatically in `npm run dev` but NOT in `npm test` —
+  run `npm run db:migrate:test` once before the first test run.
+```

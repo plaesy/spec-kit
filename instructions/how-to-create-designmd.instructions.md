@@ -107,3 +107,29 @@ same change, not as a follow-up. `/assess:design` (Design Spine, Mode 1) generat
 updates this file; `/assess:design` (Mode 2) audits code against it; any UI-affecting
 `/implement` run reads it first. A change here is a design decision, not a typo fix —
 route non-trivial changes through `/optimize:design` so the audit re-runs.
+
+## Usage Example
+
+```yaml
+---
+name: "Acme Dashboard"
+version: "alpha"
+colors:
+  primary: "#1D4ED8"
+  surface: "#0A0A0A"
+spacing:
+  sm: "8px"
+  md: "16px"
+rounded:
+  card: "12px"
+components:
+  button:
+    borderColor: "{colors.primary}"
+---
+
+## Overview
+Architectural minimalism meets journalistic gravitas.
+
+## Colors
+`primary` drives all interactive elements; `surface` is the base dark canvas.
+```

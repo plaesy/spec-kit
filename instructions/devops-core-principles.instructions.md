@@ -116,6 +116,21 @@ Empirically linked to higher organizational performance (profitability, producti
 ## Conclusion
 DevOps is culture and continuous improvement driven by feedback and metrics, not just tools. Guide developers via CALMS and DORA improvement toward reliable, scalable, efficient delivery pipelines - every code change, infrastructure change, and pipeline modification should align with delivering high-quality software rapidly and reliably.
 
+## Usage Example
+
+```yaml
+# .github/workflows/deploy.yml — small, frequent, observable deployments (DF + LTFC)
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    steps:
+      - run: npm test               # CFR: block bad changes before they ship
+      - run: npm run build
+      - run: ./scripts/deploy.sh --canary   # MTTR: canary first, full rollout after health check
+```
+
 ---
 
 <!-- End of DevOps Core Principles Instructions -->

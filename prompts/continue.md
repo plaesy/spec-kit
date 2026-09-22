@@ -72,6 +72,14 @@ Auto-detect current project state → Execute remaining phases → Complete
 4. **Content Analysis**: Check completion status of existing files
 5. **Gap Identification**: Identify missing components
 6. **Task assignment check**: If todo/doing tasks exist for current phase, route to appropriate phase handler
+7. **Analysis freshness check**: If `.plaesy/analysis/overview.md` exists and state
+   detection is about to rely on it (e.g. routing decisions that cite tech stack,
+   file counts, or detected tools), run `plaesy analyze` first — regeneration is
+   skipped automatically (default behavior) when the project fingerprint hasn't
+   changed since the last run, so this is cheap to call unconditionally; it only
+   does real work when the project has actually drifted. Never route off
+   `overview.md` content without this call; a stale analysis silently produces
+   wrong routing decisions (missing new dependencies, deleted files, changed stack).
 
 ### Project States
 

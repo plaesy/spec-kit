@@ -2,13 +2,16 @@
 
 # Plaesy AI-Optimized Project Analyzer - Enhanced Version
 # Comprehensive project analysis with AI-friendly documentation generation
-# Usage: ./plaesy-analyze.sh [project_path] [--no-graph] [--force] [--if-changed]
+# Usage: ./plaesy-analyze.sh [project_path] [--no-graph] [--force]
 #   --no-graph  skip dependency graph build entirely
-#   --force     force a full graph rebuild even if no source files changed
-#               (default: graph rebuild is skipped when nothing changed since
-#               the last run)
-#   --if-changed  skip all analysis regeneration if project fingerprint matches
-#                 the last run (file count + newest mtime + framework version)
+#   --force     force a full regeneration (analysis + graph) even if the
+#               project fingerprint (file count + newest mtime + framework
+#               version) matches the last run
+#
+# Default behavior: regeneration is SKIPPED when the fingerprint is unchanged
+# since the last run — this is the default, not opt-in (`--if-changed` used to
+# be required to get this fast path; it is now always-on and the flag is a
+# no-op kept for backward compatibility). Pass --force to bypass the check.
 
 set -euo pipefail
 
@@ -1592,10 +1595,10 @@ main() {
     log_info "Project path: $PROJECT_PATH"
     log_info "Analysis directory: $ANALYSIS_DIR"
 
-    # --if-changed fast path: skip all regeneration if project fingerprint matches
-    # the last run's fingerprint. --force overrides this (forces full regeneration).
-    if [[ "$IF_CHANGED" -eq 1 ]] && [[ "$FORCE_ANALYZE" -eq 0 ]] && should_skip_analysis; then
-        log_success 'Analysis unchanged since last run (--if-changed). Skipping regeneration.'
+    # Fingerprint fast path (default, not opt-in): skip all regeneration if the
+    # project fingerprint matches the last run. --force bypasses this.
+    if [[ "$FORCE_ANALYZE" -eq 0 ]] && should_skip_analysis; then
+        log_success 'Analysis unchanged since last run. Skipping regeneration (use --force to override).'
         log_info 'Analysis files (in '$ANALYSIS_DIR'):'
         log_info '   - project.json - AI-optimized project summary (cached)'
         log_info '   - project.structure.json - Detailed project structure (cached)'

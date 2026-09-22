@@ -45,3 +45,21 @@ applyTo: '**/*.java, **/*.kt'
 
 ## Build and Verification
 After changes, verify the build: `mvn clean install` (Maven) or `./gradlew build` / `gradlew.bat build` (Gradle, Windows). Ensure all tests pass.
+
+## Usage Example
+
+```java
+@Service
+public class UserService {
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
+
+    public User findById(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -> new UserNotFoundException(id));
+    }
+}
+```

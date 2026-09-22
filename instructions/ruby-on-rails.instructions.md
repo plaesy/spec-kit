@@ -122,3 +122,31 @@ applyTo: '**/*.rb'
 - Avoid brittle tests - don't rely on specific timestamps/randomized data/order unless necessary
 - Integration tests for end-to-end flows across model/view/controller
 - Keep tests fast, reliable, as DRY as production code
+
+## Usage Example
+
+```ruby
+# app/services/users/deactivate.rb
+class Users::Deactivate
+  def initialize(user)
+    @user = user
+  end
+
+  def call
+    return false if @user.blank?
+
+    @user.update!(active: false, deactivated_at: Time.current)
+    UserMailer.deactivated(@user).deliver_later
+    true
+  end
+end
+
+# app/controllers/api/v1/users_controller.rb
+def deactivate
+  if Users::Deactivate.new(current_user).call
+    head :no_content
+  else
+    render json: { error: "User not found" }, status: :unprocessable_entity
+  end
+end
+```

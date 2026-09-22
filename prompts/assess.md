@@ -238,6 +238,13 @@ Before running assessment:
 - ✅ Technology stack identified
 - ✅ Required tools/dependencies available
 - ✅ Project accessible and readable
+- ✅ **Analysis freshness**: if the assessment will cite `.plaesy/analysis/overview.md`
+  (tech stack, file counts, detected tools) as evidence, run `plaesy analyze` first —
+  regeneration is skipped automatically when the project fingerprint is unchanged, so
+  this is cheap to call unconditionally; it only regenerates when the project has
+  actually drifted since the last run. Never score or cite `overview.md` content
+  without this call; a stale analysis produces findings against a project state that
+  no longer exists.
 
 ---
 

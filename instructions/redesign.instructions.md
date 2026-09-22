@@ -176,3 +176,18 @@ Apply changes in this order for maximum visual impact with minimum risk:
 - If the project uses Tailwind, check the version (v3 vs v4) before modifying config.
 - If the project has no framework, use vanilla CSS.
 - Keep changes reviewable and focused. Small, targeted improvements over big rewrites.
+
+## Usage Example
+
+```
+1. Scan: Next.js + Tailwind v3, three equal-width feature cards, Inter everywhere.
+2. Diagnose: generic 3-card layout, pure #000 background, no hover states,
+   purple/blue AI gradient hero.
+3. Fix (Fix Priority order):
+   - Swap Inter → Geist for headings
+   - Replace #000 → #0a0a0a, drop the purple/blue gradient for a single
+     desaturated accent
+   - Add hover/active states to all buttons (200ms transition)
+   - Break the 3-card row into a 2-column zig-zag
+→ Same Tailwind stack, no functionality changed, tested after each step.
+```

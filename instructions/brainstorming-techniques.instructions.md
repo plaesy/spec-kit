@@ -34,3 +34,17 @@
 18. **Resource Constraints**: "What if you had only $10 and 1 hour?"
 19. **Metaphor Mapping**: Use extended metaphors to explore solutions
 20. **Question Storming**: Generate questions instead of answers first
+
+## Usage Example
+
+```
+User: We need to brainstorm ways to reduce onboarding drop-off.
+
+Facilitator (Five Whys):
+"Why do new users drop off during onboarding?"
+User: "The form feels too long."
+"Why does it feel too long?"
+User: "It asks for billing info before they've seen any value."
+→ Root cause found after 2 whys; move to "What If Scenarios" to explore
+  deferring billing entirely.
+```

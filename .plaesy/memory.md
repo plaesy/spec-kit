@@ -19,6 +19,7 @@ updatedAt: "2026-09-22T06:28:50Z"
 - [Technical Assessment 2026-09-22](assess-technical-2026-09-22.md) — Multi-dimensional technical assessment: code quality, tests, security, performance, CI, analyzer gaps.
 - [Design Assessment 2026-09-22](assess-design-2026-09-22.md) — Prompt/instruction/template quality, orphaned files, CLI ergonomics, docs UX.
 - [Business/Product Assessment 2026-09-22](assess-business-product-2026-09-22.md) — Viability, completeness, marketing readiness, roadmap, adoption signals.
+- [Marketing Assessment 2026-09-23](assess-marketing-2026-09-23.md) — CRITICAL: name collision with github/spec-kit (138k★), no stated wedge; 53/100 Grade D.
 - [Analyzer Implementation Fixes 2026-09-22](analyzer-implementation-fixes-2026-09-22.md) — `--if-changed` fast path, portable stat, PowerShell parity, functional tests, CI wiring.
 - [Plaesy Analyze Overview Refactor](analysis-overview-md-refactor-2026-09-16.md) — Analyzer writes only analysis/overview.md and never context.md/memory.md.
 - [Assess Dimension Coverage](assess-dimension-coverage.md) — Financial/marketing assess coverage and mapping registration fix.

@@ -21,3 +21,10 @@ CLAUDE.md
 
 # Node
 node_modules/
+
+# plaesy analyze/graph regenerated cache artifacts — never hand-reviewed, always
+# rebuilt from source; only human-reviewable output (overview.md, project.json,
+# project.structure.json) stays tracked. See .plaesy/memory/graft-assessment-and-analyzer-gaps-2026-09-22.md
+.plaesy/analysis/.analysis-fingerprint
+.plaesy/analysis/.nodes.tsv
+.plaesy/analysis/.edges.tsv

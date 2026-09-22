@@ -57,3 +57,25 @@ applyTo: '**/*.tf'
 - Tests for config functionality, `.tftest.hcl` extension
 - Cover both positive and negative scenarios
 - Idempotent tests, safe to run repeatedly without side effects
+
+## Usage Example
+
+```hcl
+variable "environment" {
+  description = "Deployment environment (dev, staging, prod)"
+  type        = string
+}
+
+resource "aws_s3_bucket" "assets" {
+  bucket = "acme-${var.environment}-assets"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+output "bucket_arn" {
+  description = "ARN of the assets bucket"
+  value       = aws_s3_bucket.assets.arn
+}
+```

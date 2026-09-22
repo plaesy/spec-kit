@@ -97,3 +97,21 @@ Jekyll, plain HTML).
   identical regardless of which page was shared
 - ❌ Unsized images causing layout shift, or full-resolution source images
   served untouched
+
+## Usage Example
+
+```html
+<!-- Every page: its own title/description, sized images, OG tags -->
+<head>
+  <title>Case studies — Acme Studio</title>
+  <meta name="description" content="Selected client work from Acme Studio.">
+  <meta property="og:image" content="/og/case-studies.webp">
+  <link rel="canonical" href="https://acme.studio/case-studies">
+</head>
+<body>
+  <main>
+    <img src="/img/project-hero.webp" width="1200" height="630"
+         loading="lazy" alt="Dashboard redesign for Acme client, dark theme">
+  </main>
+</body>
+```
