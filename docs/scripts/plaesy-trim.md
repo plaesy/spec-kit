@@ -1,6 +1,6 @@
-# plaesy-trim.sh / plaesy-trim.ps1
+# plaesy trim
 
-**Token and context compression for command output and memory/instruction files.** No external dependencies, no network calls.
+**Token and context compression for command output and memory/instruction files.** Go standard library only, no network calls.
 
 Full usage guide: [instructions/plaesy-trim.instructions.md](../../instructions/plaesy-trim.instructions.md).
 
@@ -14,29 +14,18 @@ Code blocks, shell commands, error messages/stack traces, and structured data (J
 
 ## Quick Start
 
-### Bash
 ```bash
-scripts/bash/plaesy-trim.sh run git status
-scripts/bash/plaesy-trim.sh compress --path instructions/plaesy.instructions.md
-scripts/bash/plaesy-trim.sh compress --path instructions --recurse
-scripts/bash/plaesy-trim.sh compress --path instructions --dry-run
-scripts/bash/plaesy-trim.sh compress --path README.md --level ultra
-scripts/bash/plaesy-trim.sh llm-queue --path instructions/plaesy.instructions.md
-scripts/bash/plaesy-trim.sh apply-llm --path instructions/plaesy.instructions.md --annotations ann.json
-scripts/bash/plaesy-trim.sh report
+plaesy trim run git status
+plaesy trim compress --path instructions/plaesy.instructions.md
+plaesy trim compress --path instructions --recurse
+plaesy trim compress --path instructions --dry-run
+plaesy trim compress --path README.md --level ultra
+plaesy trim llm-queue --path instructions/plaesy.instructions.md
+plaesy trim apply-llm --path instructions/plaesy.instructions.md --annotations ann.json
+plaesy trim report
 ```
 
-### Windows PowerShell
-```powershell
-scripts\powershell\plaesy-trim.ps1 run git status
-scripts\powershell\plaesy-trim.ps1 compress -Path instructions\plaesy.instructions.md
-scripts\powershell\plaesy-trim.ps1 compress -Path instructions -Recurse
-scripts\powershell\plaesy-trim.ps1 compress -Path instructions -DryRun
-scripts\powershell\plaesy-trim.ps1 compress -Path README.md -Level ultra
-scripts\powershell\plaesy-trim.ps1 llm-queue -Path instructions\plaesy.instructions.md
-scripts\powershell\plaesy-trim.ps1 apply-llm -Path instructions\plaesy.instructions.md -Annotations ann.json
-scripts\powershell\plaesy-trim.ps1 report
-```
+Run `plaesy trim --help` or `plaesy trim <subcommand> --help` for the exact current flag set (source of truth: `scripts/cmd/plaesy/trim.go`).
 
 ## Compression levels (Layer 2)
 
@@ -44,7 +33,7 @@ scripts\powershell\plaesy-trim.ps1 report
 - `full` (default for mid-traffic files) — `lite` + merge short redundant sentences, trim hedging
 - `ultra` — `full` + telegram-style fragments (readability drops — low-traffic files only)
 
-Level is auto-selected per file from its `plaesy-graph` in-degree (`degree` field in `.plaesy/analysis/project.graph.json`) when `-Level`/`--level` is omitted; falls back to `full` if that file doesn't exist yet (run `plaesy-graph` first).
+Level is auto-selected per file from its `plaesy graph` in-degree (`degree` field in `.plaesy/analysis/project.graph.json`) when `--level` is omitted; falls back to `full` if that file doesn't exist yet (run `plaesy graph` first).
 
 Every `compress` run backs up the original as `<file>.bak` and logs to `.plaesy/memory/token-stats.json`; `report` reads that log.
 

@@ -5,10 +5,28 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 )
 
 var featureBranchRE = regexp.MustCompile(`^[0-9]{3}-`)
+
+// msysDriveRE matches an MSYS2/Git-Bash style drive prefix like "/c/" or "/D/".
+var msysDriveRE = regexp.MustCompile(`^/([a-zA-Z])/`)
+
+// toNativePath converts a path returned by git (which on Windows may use
+// MSYS2/Git-Bash Unix-style paths such as "/c/Users/...") into a native
+// OS path so that filepath.Join and os.Stat work correctly.
+func toNativePath(p string) string {
+	if runtime.GOOS == "windows" {
+		if m := msysDriveRE.FindStringSubmatch(p); len(m) > 1 {
+			// /c/Users/... → C:\Users\...
+			p = strings.ToUpper(m[1]) + ":\\" + p[3:]
+		}
+		p = filepath.FromSlash(p)
+	}
+	return p
+}
 
 // GetRepoRoot mirrors get_repo_root: git rev-parse --show-toplevel.
 func GetRepoRoot() (string, error) {
@@ -16,7 +34,7 @@ func GetRepoRoot() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("not a git repository: %w", err)
 	}
-	return strings.TrimSpace(string(out)), nil
+	return toNativePath(strings.TrimSpace(string(out))), nil
 }
 
 // GetCurrentBranch mirrors get_current_branch: git rev-parse --abbrev-ref HEAD.

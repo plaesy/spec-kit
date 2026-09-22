@@ -29,7 +29,7 @@
             "description": "Project directory"
         },
         "docs/scripts": {
-            "file_count": 15,
+            "file_count": 14,
             "description": "Project directory"
         },
         "docs/tasks": {
@@ -81,11 +81,15 @@
             "description": "Project directory"
         },
         "scripts": {
-            "file_count": 0,
+            "file_count": 2,
             "description": "Build and utility scripts"
         },
-        "scripts/bash": {
-            "file_count": 22,
+        "scripts/cmd": {
+            "file_count": 0,
+            "description": "Project directory"
+        },
+        "scripts/cmd/plaesy": {
+            "file_count": 20,
             "description": "Project directory"
         },
         "scripts/configs": {
@@ -96,16 +100,68 @@
             "file_count": 1,
             "description": "Project directory"
         },
-        "scripts/powershell": {
-            "file_count": 23,
-            "description": "Project directory"
-        },
-        "scripts/powershell/docs": {
+        "scripts/internal": {
             "file_count": 0,
             "description": "Project directory"
         },
-        "scripts/powershell/specs": {
-            "file_count": 0,
+        "scripts/internal/agentcontext": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/aiheaders": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/analyze": {
+            "file_count": 7,
+            "description": "Project directory"
+        },
+        "scripts/internal/cleaner": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/common": {
+            "file_count": 5,
+            "description": "Project directory"
+        },
+        "scripts/internal/config": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/detectstack": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/featurepath": {
+            "file_count": 2,
+            "description": "Project directory"
+        },
+        "scripts/internal/graph": {
+            "file_count": 9,
+            "description": "Project directory"
+        },
+        "scripts/internal/imagegen": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/installer": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/scaffold": {
+            "file_count": 6,
+            "description": "Project directory"
+        },
+        "scripts/internal/taskmanage": {
+            "file_count": 1,
+            "description": "Project directory"
+        },
+        "scripts/internal/trimmer": {
+            "file_count": 5,
+            "description": "Project directory"
+        },
+        "scripts/internal/validate": {
+            "file_count": 5,
             "description": "Project directory"
         },
         "specs": {
@@ -147,22 +203,6 @@
         "templates/cloud/gcp/terraform": {
             "file_count": 1,
             "description": "Project directory"
-        },
-        "testing": {
-            "file_count": 0,
-            "description": "Project directory"
-        },
-        "testing/bash": {
-            "file_count": 1,
-            "description": "Project directory"
-        },
-        "testing/powershell": {
-            "file_count": 1,
-            "description": "Project directory"
-        },
-        "testing/smoke": {
-            "file_count": 4,
-            "description": "Project directory"
         }
     },
     "key_files": {
@@ -171,13 +211,38 @@
             "type": "json",
             "purpose": "Project file"
         },
-        "AGENTS.md": {
-            "size_bytes": 75,
+        "CHANGELOG.md": {
+            "size_bytes": 1412,
             "type": "markdown",
             "purpose": "Project file"
         },
-        "CHANGELOG.md": {
-            "size_bytes": 776,
+        "CLAUDE.md": {
+            "size_bytes": 531,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "CODE_OF_CONDUCT.md": {
+            "size_bytes": 1921,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "CONTRIBUTING.md": {
+            "size_bytes": 2502,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "LICENSE": {
+            "size_bytes": 1062,
+            "type": "text",
+            "purpose": "Project license"
+        },
+        "README.md": {
+            "size_bytes": 7612,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
+        "SECURITY.md": {
+            "size_bytes": 1125,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -331,15 +396,10 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "CODE_OF_CONDUCT.md": {
-            "size_bytes": 1921,
+        "docs/README.md": {
+            "size_bytes": 1327,
             "type": "markdown",
-            "purpose": "Project file"
-        },
-        "CONTRIBUTING.md": {
-            "size_bytes": 2305,
-            "type": "markdown",
-            "purpose": "Project file"
+            "purpose": "Project documentation"
         },
         "docs/chatmodes/README.md": {
             "size_bytes": 17506,
@@ -347,7 +407,7 @@
             "purpose": "Project documentation"
         },
         "docs/checklists/README.md": {
-            "size_bytes": 2347,
+            "size_bytes": 2302,
             "type": "markdown",
             "purpose": "Project documentation"
         },
@@ -357,57 +417,57 @@
             "purpose": "Project documentation"
         },
         "docs/prompts/README.md": {
-            "size_bytes": 17030,
+            "size_bytes": 17026,
             "type": "markdown",
             "purpose": "Project documentation"
         },
-        "docs/README.md": {
-            "size_bytes": 1327,
+        "docs/scripts/README.md": {
+            "size_bytes": 11873,
             "type": "markdown",
             "purpose": "Project documentation"
         },
         "docs/scripts/check-task-prerequisites.md": {
-            "size_bytes": 4894,
+            "size_bytes": 4193,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/common.md": {
-            "size_bytes": 5765,
+            "size_bytes": 3823,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/config-manager.md": {
-            "size_bytes": 7011,
+            "size_bytes": 5372,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/create-new-feature.md": {
-            "size_bytes": 4462,
+            "size_bytes": 4171,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/get-feature-paths.md": {
-            "size_bytes": 3197,
+            "size_bytes": 3017,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/inject-ai-headers.md": {
-            "size_bytes": 5756,
+            "size_bytes": 4414,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/install.md": {
-            "size_bytes": 12093,
+            "size_bytes": 4627,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/plaesy-analyze.md": {
-            "size_bytes": 12591,
+            "size_bytes": 12801,
             "type": "markdown",
             "purpose": "Project file"
         },
         "docs/scripts/plaesy-clean.md": {
-            "size_bytes": 18950,
+            "size_bytes": 7013,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -417,7 +477,7 @@
             "purpose": "Project file"
         },
         "docs/scripts/plaesy-init.md": {
-            "size_bytes": 23598,
+            "size_bytes": 10254,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -426,18 +486,8 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "docs/scripts/platform-detector.md": {
-            "size_bytes": 5628,
-            "type": "markdown",
-            "purpose": "Project file"
-        },
-        "docs/scripts/README.md": {
-            "size_bytes": 17904,
-            "type": "markdown",
-            "purpose": "Project documentation"
-        },
         "docs/scripts/update-agent-context.md": {
-            "size_bytes": 4684,
+            "size_bytes": 3686,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -457,12 +507,12 @@
             "purpose": "Project documentation"
         },
         "instructions/agents.instructions.md": {
-            "size_bytes": 75,
+            "size_bytes": 531,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/angular.instructions.md": {
-            "size_bytes": 4160,
+            "size_bytes": 4670,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -507,12 +557,12 @@
             "purpose": "Project file"
         },
         "instructions/brainstorming-techniques.instructions.md": {
-            "size_bytes": 1894,
+            "size_bytes": 2288,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/brandkit.instructions.md": {
-            "size_bytes": 16788,
+            "size_bytes": 16798,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -522,7 +572,7 @@
             "purpose": "Project file"
         },
         "instructions/csharp.instructions.md": {
-            "size_bytes": 3763,
+            "size_bytes": 4146,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -537,17 +587,12 @@
             "purpose": "Project file"
         },
         "instructions/devops-core-principles.instructions.md": {
-            "size_bytes": 9346,
+            "size_bytes": 9727,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/dimension-mapping.instructions.md": {
-            "size_bytes": 4458,
-            "type": "markdown",
-            "purpose": "Project file"
-        },
-        "instructions/error-recovery.instructions.md": {
-            "size_bytes": 9228,
+            "size_bytes": 4728,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -556,8 +601,13 @@
             "type": "markdown",
             "purpose": "Project file"
         },
+        "instructions/error-recovery.instructions.md": {
+            "size_bytes": 9228,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
         "instructions/excel.instructions.md": {
-            "size_bytes": 6655,
+            "size_bytes": 6450,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -567,17 +617,17 @@
             "purpose": "Project file"
         },
         "instructions/go.instructions.md": {
-            "size_bytes": 6354,
+            "size_bytes": 6709,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/how-to-create-agentsmd.instructions.md": {
-            "size_bytes": 3587,
+            "size_bytes": 4145,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/how-to-create-designmd.instructions.md": {
-            "size_bytes": 6395,
+            "size_bytes": 6796,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -587,7 +637,7 @@
             "purpose": "Project file"
         },
         "instructions/java.instructions.md": {
-            "size_bytes": 4549,
+            "size_bytes": 4808,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -597,7 +647,7 @@
             "purpose": "Project file"
         },
         "instructions/mapping.json": {
-            "size_bytes": 14476,
+            "size_bytes": 14513,
             "type": "json",
             "purpose": "Project file"
         },
@@ -612,7 +662,7 @@
             "purpose": "Project file"
         },
         "instructions/output-validation.instructions.md": {
-            "size_bytes": 900,
+            "size_bytes": 1375,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -626,23 +676,23 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "instructions/plaesy.instructions.md": {
-            "size_bytes": 14871,
-            "type": "markdown",
-            "purpose": "Project file"
-        },
         "instructions/plaesy-graph.instructions.md": {
-            "size_bytes": 13855,
+            "size_bytes": 10615,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/plaesy-trim.instructions.md": {
-            "size_bytes": 7243,
+            "size_bytes": 6297,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "instructions/plaesy.instructions.md": {
+            "size_bytes": 14867,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/powerpoint.instructions.md": {
-            "size_bytes": 7488,
+            "size_bytes": 7289,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -651,28 +701,28 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "instructions/reactjs.instructions.md": {
-            "size_bytes": 5252,
-            "type": "markdown",
-            "purpose": "Project file"
-        },
         "instructions/react-native.instructions.md": {
             "size_bytes": 15041,
             "type": "markdown",
             "purpose": "Project file"
         },
+        "instructions/reactjs.instructions.md": {
+            "size_bytes": 5676,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
         "instructions/redesign.instructions.md": {
-            "size_bytes": 15191,
+            "size_bytes": 15778,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/ruby-on-rails.instructions.md": {
-            "size_bytes": 6774,
+            "size_bytes": 7307,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/rust.instructions.md": {
-            "size_bytes": 7022,
+            "size_bytes": 7311,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -687,22 +737,22 @@
             "purpose": "Project file"
         },
         "instructions/springboot.instructions.md": {
-            "size_bytes": 1823,
+            "size_bytes": 2179,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/sql.instructions.md": {
-            "size_bytes": 2276,
+            "size_bytes": 2574,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/static-site.instructions.md": {
-            "size_bytes": 5401,
+            "size_bytes": 5942,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/tasks.instructions.md": {
-            "size_bytes": 4594,
+            "size_bytes": 4578,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -717,7 +767,7 @@
             "purpose": "Project file"
         },
         "instructions/terraform.instructions.md": {
-            "size_bytes": 3854,
+            "size_bytes": 4234,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -727,22 +777,17 @@
             "purpose": "Project file"
         },
         "instructions/universal-orchestrator.instructions.md": {
-            "size_bytes": 14825,
+            "size_bytes": 14823,
             "type": "markdown",
             "purpose": "Project file"
         },
         "instructions/word.instructions.md": {
-            "size_bytes": 6712,
+            "size_bytes": 6537,
             "type": "markdown",
             "purpose": "Project file"
         },
-        "LICENSE": {
-            "size_bytes": 1062,
-            "type": "text",
-            "purpose": "Project license"
-        },
         "prompts/assess.md": {
-            "size_bytes": 15832,
+            "size_bytes": 16363,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -787,12 +832,12 @@
             "purpose": "Project file"
         },
         "prompts/continue.md": {
-            "size_bytes": 8062,
+            "size_bytes": 8709,
             "type": "markdown",
             "purpose": "Project file"
         },
         "prompts/doc.md": {
-            "size_bytes": 14520,
+            "size_bytes": 14589,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -847,12 +892,12 @@
             "purpose": "Project file"
         },
         "prompts/generate/images.md": {
-            "size_bytes": 5506,
+            "size_bytes": 5412,
             "type": "markdown",
             "purpose": "Project file"
         },
         "prompts/implement.md": {
-            "size_bytes": 16489,
+            "size_bytes": 16517,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -1051,10 +1096,10 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "README.md": {
-            "size_bytes": 6612,
-            "type": "markdown",
-            "purpose": "Project documentation"
+        "scripts/cmd/plaesy/main.go": {
+            "size_bytes": 489,
+            "type": "go",
+            "purpose": "Application entry point"
         },
         "scripts/configs/claude/settings.local.json": {
             "size_bytes": 522,
@@ -1071,10 +1116,15 @@
             "type": "json",
             "purpose": "Project file"
         },
-        "SECURITY.md": {
-            "size_bytes": 1125,
+        "scripts/go.mod": {
+            "size_bytes": 196,
+            "type": "text",
+            "purpose": "Go module configuration"
+        },
+        "templates/README.md": {
+            "size_bytes": 6493,
             "type": "markdown",
-            "purpose": "Project file"
+            "purpose": "Project documentation"
         },
         "templates/adr.template.md": {
             "size_bytes": 3384,
@@ -1082,7 +1132,7 @@
             "purpose": "Project file"
         },
         "templates/agent-file-template.md": {
-            "size_bytes": 0,
+            "size_bytes": 3144,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -1090,6 +1140,11 @@
             "size_bytes": 9163,
             "type": "yaml",
             "purpose": "Project file"
+        },
+        "templates/ai-headers/README.md": {
+            "size_bytes": 6840,
+            "type": "markdown",
+            "purpose": "Project documentation"
         },
         "templates/ai-headers/claude.header.yaml": {
             "size_bytes": 62,
@@ -1125,11 +1180,6 @@
             "size_bytes": 62,
             "type": "yaml",
             "purpose": "Project file"
-        },
-        "templates/ai-headers/README.md": {
-            "size_bytes": 6884,
-            "type": "markdown",
-            "purpose": "Project documentation"
         },
         "templates/ai-headers/windsurf.header.yaml": {
             "size_bytes": 83,
@@ -1176,6 +1226,11 @@
             "type": "markdown",
             "purpose": "Project file"
         },
+        "templates/cloud/README.md": {
+            "size_bytes": 13125,
+            "type": "markdown",
+            "purpose": "Project documentation"
+        },
         "templates/cloud/aws/kubernetes/deployment.yaml": {
             "size_bytes": 14812,
             "type": "yaml",
@@ -1185,11 +1240,6 @@
             "size_bytes": 16896,
             "type": "json",
             "purpose": "Project file"
-        },
-        "templates/cloud/README.md": {
-            "size_bytes": 13125,
-            "type": "markdown",
-            "purpose": "Project documentation"
         },
         "templates/communication-plan.template.md": {
             "size_bytes": 16655,
@@ -1282,7 +1332,7 @@
             "purpose": "Project file"
         },
         "templates/plan.template.md": {
-            "size_bytes": 10158,
+            "size_bytes": 10077,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -1300,11 +1350,6 @@
             "size_bytes": 630,
             "type": "markdown",
             "purpose": "Project file"
-        },
-        "templates/README.md": {
-            "size_bytes": 6531,
-            "type": "markdown",
-            "purpose": "Project documentation"
         },
         "templates/release-plan.template.md": {
             "size_bytes": 975,
@@ -1361,13 +1406,13 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "templates/spec.template.md": {
-            "size_bytes": 6003,
+        "templates/spec-structure-folder.template.md": {
+            "size_bytes": 15062,
             "type": "markdown",
             "purpose": "Project file"
         },
-        "templates/spec-structure-folder.template.md": {
-            "size_bytes": 15062,
+        "templates/spec.template.md": {
+            "size_bytes": 6003,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -1406,11 +1451,6 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "templates/tasks.template.md": {
-            "size_bytes": 7446,
-            "type": "markdown",
-            "purpose": "Project file"
-        },
         "templates/task-status.template.json": {
             "size_bytes": 938,
             "type": "json",
@@ -1418,6 +1458,11 @@
         },
         "templates/task-structure-guide.template.md": {
             "size_bytes": 11022,
+            "type": "markdown",
+            "purpose": "Project file"
+        },
+        "templates/tasks.template.md": {
+            "size_bytes": 7446,
             "type": "markdown",
             "purpose": "Project file"
         },
@@ -1463,11 +1508,11 @@
         }
     },
     "file_types": {
-        "source_code": 49,
-        "documentation": 237,
+        "source_code": 67,
+        "documentation": 236,
         "configuration": 21
     },
-    "analysis_timestamp": "2026-09-22T23:16:50+07:00",
+    "analysis_timestamp": "2026-09-23T03:50:25+07:00",
     "related_files": {
         "project_summary": "project.json",
         "context_file": "../context.md",

@@ -1,28 +1,42 @@
 {
     "project_summary": {
-        "name": ".",
-        "type": "spec-kit",
-        "confidence": "high",
-        "description": "Plaesy Spec-Kit framework for AI-assisted development",
+        "name": "spec-kit",
+        "type": "generic",
+        "confidence": "low",
+        "description": "Generic project structure",
         "purpose": "AI-optimized development project",
         "complexity": "Large",
         "classification": "single",
-        "total_files": 316,
-        "analysis_timestamp": "2026-09-22T23:15:07+07:00"
+        "total_files": 334,
+        "analysis_timestamp": "2026-09-23T03:50:25+07:00"
     },
-    "frameworks_detected": [{"framework":"spec-kit","confidence":"high"}],
-    "ai_insights": {"overview": "Plaesy Spec-Kit framework for AI-assisted development", "recommendations": ["Add more AI platform integrations"]},
+    "frameworks_detected": null,
+    "ai_insights": {
+        "overview": "Generic project structure",
+        "recommendations": [
+            "Add README.md with project documentation",
+            "Consider adding automated testing",
+            "Implement proper version control practices"
+        ]
+    },
     "technology_stack": {
-        "primary_languages": ["Shell"],
-        "frameworks": ["spec-kit"],
-        "development_tools": ["Git","GitHub Actions"],
-        "build_systems": ["Make"]
+        "primary_languages": [
+            "Go"
+        ],
+        "frameworks": [],
+        "development_tools": [
+            "Git",
+            "GitHub Actions"
+        ],
+        "build_systems": [
+            "Make"
+        ]
     },
     "structure": {
         "files": {
-            "total": 316,
-            "code": 49,
-            "documentation": 237,
+            "total": 334,
+            "code": 67,
+            "documentation": 236,
             "configuration": 21
         }
     },

@@ -3,20 +3,20 @@
 *This file is regenerated (replaced, not appended) on every `plaesy analyze` run.
 Manual notes belong in `.plaesy/context.md` / `.plaesy/memory.md`, which analyze no longer touches.*
 
-**Generated**: 2026-09-22T23:16:53+07:00
+**Generated**: 2026-09-23T03:50:25+07:00
 **Project**: spec-kit
-**Description**: Plaesy Spec-Kit framework for AI-assisted development workflow automation
+**Description**: This is an AI-generated project context document for development assistance
 
 ## Technology Stack
-- **Languages**: Shell
-- **Framework**: spec-kit
+- **Languages**: Go
+- **Framework**: generic
 - **Tools**: Git, Plaesy CLI
 
 ## File Structure
 | File Type | Count |
 |-----------|-------|
-| Source Code | 49 |
-| Documentation | 237 |
+| Source Code | 67 |
+| Documentation | 236 |
 | Config | 21 |
 
 ## Recommendations

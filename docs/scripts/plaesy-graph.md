@@ -1,6 +1,6 @@
-# plaesy-graph.sh / plaesy-graph.ps1
+# plaesy graph
 
-**Lightweight knowledge-graph builder for the Plaesy Spec-Kit repo.** No external dependencies (no jq/python on bash; native `ConvertTo-Json` on PowerShell).
+**Lightweight knowledge-graph builder for the Plaesy Spec-Kit repo.** Go standard library only — no external dependencies.
 
 Full usage guide: [instructions/plaesy-graph.instructions.md](../../instructions/plaesy-graph.instructions.md).
 
@@ -13,52 +13,44 @@ Builds a graph of nodes (instructions, chatmodes, checklists, templates, scripts
 - `.plaesy/analysis/project.graph.json` — nodes + edges (canonical artifact)
 - `.plaesy/analysis/project.html` — self-contained force-directed visualization
 - `.plaesy/analysis/reports.md` — plain-language summary
-- `.plaesy/analysis/.nodes.tsv`, `.edges.tsv` — internal cache used by query/explain/path/impact commands
+- `.plaesy/analysis/.fingerprint` — internal cache used to skip rebuilds when nothing changed
 
 ## Quick Start
 
-### Bash
 ```bash
-./scripts/bash/plaesy-graph.sh                              # build graph for repo root
-./scripts/bash/plaesy-graph.sh --path <dir>                  # build graph for a specific dir
-./scripts/bash/plaesy-graph.sh --query "common.ps1"           # keyword query
-./scripts/bash/plaesy-graph.sh --path-query "a.md" "b.md"     # shortest path
-./scripts/bash/plaesy-graph.sh --explain "go.instructions.md" # explain one node
-./scripts/bash/plaesy-graph.sh --impact-check "common.ps1" --impact-depth 1
-./scripts/bash/plaesy-graph.sh --semantic-queue                # export INFERRED edges for LLM rewrite
-./scripts/bash/plaesy-graph.sh --apply-semantic annotations.json  # merge rationale back
-./scripts/bash/plaesy-graph.sh --watch                         # rebuild automatically on source changes
-./scripts/bash/plaesy-graph.sh --watch --watch-interval 5       # poll every 5s instead of the 3s default
-```
-
-### Windows PowerShell
-```powershell
-.\scripts\powershell\plaesy-graph.ps1
-.\scripts\powershell\plaesy-graph.ps1 -Path <dir>
-.\scripts\powershell\plaesy-graph.ps1 -Query "common.ps1"
-.\scripts\powershell\plaesy-graph.ps1 -PathQuery "a.md","b.md"
-.\scripts\powershell\plaesy-graph.ps1 -Explain "go.instructions.md"
-.\scripts\powershell\plaesy-graph.ps1 -ImpactCheck "common.ps1" -ImpactDepth 1
-.\scripts\powershell\plaesy-graph.ps1 -SemanticQueue
-.\scripts\powershell\plaesy-graph.ps1 -ApplySemantic annotations.json
-.\scripts\powershell\plaesy-graph.ps1 -Watch
-.\scripts\powershell\plaesy-graph.ps1 -Watch -WatchInterval 5
+plaesy graph                                              # build graph for repo root
+plaesy graph --path <dir>                                 # build graph for a specific dir
+plaesy graph --query "common.md"                          # keyword query
+plaesy graph --fuzzy-query "common"                        # fuzzy/substring search
+plaesy graph --path-query-from "a.md" --path-query-to "b.md"  # shortest path
+plaesy graph --explain "go.instructions.md"                # explain one node
+plaesy graph --impact-check "common.md" --impact-depth 1
+plaesy graph --semantic-queue                              # export INFERRED edges for LLM rewrite
+plaesy graph --apply-semantic annotations.json              # merge rationale back
+plaesy graph --watch                                       # rebuild automatically on source changes
+plaesy graph --watch --watch-interval 5                     # poll every 5s instead of the 3s default
 ```
 
 ## Options
 
-| Bash | PowerShell | Purpose |
-|------|------------|---------|
-| `--path <dir>` | `-Path <dir>` | Directory to scan (default: repo root) |
-| `--outdir <dir>` | `-OutDir <dir>` | Output directory (default: `.plaesy/analysis`) |
-| `--query <text>` | `-Query <text>` | Keyword search across nodes |
-| `--path-query <a> <b>` | `-PathQuery <a>,<b>` | Shortest path between two nodes |
-| `--explain <node>` | `-Explain <node>` | Show a node's edges and context |
-| `--impact-check <node>` | `-ImpactCheck <node>` | Files affected if `<node>` changes |
-| `--impact-depth <n>` | `-ImpactDepth <n>` | Traversal depth for impact check (default 2) |
-| `--semantic-queue` | `-SemanticQueue` | Export INFERRED-confidence edges for an LLM to annotate |
-| `--apply-semantic <file>` | `-ApplySemantic <file>` | Merge LLM-provided rationale back into the graph |
-| `--watch` | `-Watch` | Rebuild automatically on source file changes |
-| `--watch-interval <n>` | `-WatchInterval <n>` | Poll interval in seconds for `--watch` (default 3) |
+| Flag | Purpose |
+|------|---------|
+| `--path <dir>` | Directory to scan (default: `.`) |
+| `--outdir <dir>` | Output directory, relative to `--path` (default: `.plaesy/analysis`) |
+| `--if-changed` | Rebuild only if source files changed since the last build |
+| `--query <text>` | Keyword search across node ids |
+| `--fuzzy-query <text>` | Fuzzy/substring search against node ids |
+| `--search-depth <n>` | Search depth for `--fuzzy-query` (display only, default 2) |
+| `--path-query-from <a>` / `--path-query-to <b>` | Shortest path between two nodes |
+| `--explain <node>` | Show a node's edges and context |
+| `--impact-check <node>` | Files affected if `<node>` changes |
+| `--impact-depth <n>` | Traversal depth for `--impact-check` (default 2) |
+| `--impact-visualize` | Write `impact-visualization.html` instead of printing |
+| `--semantic-queue` | Export INFERRED-confidence edges for an LLM to annotate |
+| `--apply-semantic <file>` | Merge a `{source,target,rationale}[]` annotations file back into `reports.md` |
+| `--business-logic` | Export INFERRED edges to `business-logic-queue.json` |
+| `--generate-paths` | Write a `learning-paths.json` stub |
+| `--watch` | Rebuild automatically on source file changes |
+| `--watch-interval <n>` | Poll interval in seconds for `--watch` (default 3) |
 
-Included file types: `.md .ps1 .sh .js .jsx .ts .tsx .py .go`. Excluded: `.git, node_modules, .plaesy, dist, build, __pycache__, vendor, .venv`.
+Run `plaesy graph --help` for the exact current flag set (source of truth: `scripts/cmd/plaesy/graph.go`).

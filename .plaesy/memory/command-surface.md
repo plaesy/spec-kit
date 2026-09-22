@@ -5,8 +5,8 @@ updatedAt: "2026-09-16T00:00:00.000Z"
 
 # Command Surface & Architecture Decisions
 
-## Current prompts (10 total, in `prompts/`)
-`start`, `assess`, `implement`, `optimize`, `improve`, `loop`, `fix`, `continue`, `save`, `doc`.
+## Current prompts (11 total, in `prompts/`)
+`start`, `assess`, `implement`, `optimize`, `improve`, `loop`, `fix`, `continue`, `save`, `doc`, `generate`.
 
 ## Repo-wide fix, round 3: multi-platform awareness + docs/ + templates/ (2026-09-16)
 User reminded that Plaesy Spec-Kit supports 20 AI platforms (`scripts/configs/

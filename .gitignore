@@ -1,4 +1,6 @@
 reload.sh
+plaesy
+plaesy-test
 .clinerules/byterover-rules.md
 .kilocode/rules/byterover-rules.md
 .roo/rules/byterover-rules.md
@@ -26,5 +28,10 @@ node_modules/
 # rebuilt from source; only human-reviewable output (overview.md, project.json,
 # project.structure.json) stays tracked. See .plaesy/memory/graft-assessment-and-analyzer-gaps-2026-09-22.md
 .plaesy/analysis/.analysis-fingerprint
+.plaesy/analysis/.fingerprint
 .plaesy/analysis/.nodes.tsv
 .plaesy/analysis/.edges.tsv
+.plaesy/analysis/project.graph.json
+.plaesy/analysis/project.html
+.plaesy/analysis/reports.md
+.plaesy/memory/token-stats.json

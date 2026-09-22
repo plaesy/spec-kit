@@ -71,9 +71,9 @@ The `layer` field helps visualize architectural boundaries and dependency violat
   file. Note: `chatmodes/*.chatmode.md` and `instructions/*.instructions.md` are *not* filename-preserving
   mirrors — both get their suffix stripped on copy (`X.chatmode.md` → `.plaesy/roles/X.md`,
   `X.instructions.md` → `.plaesy/instructions/X.md`), so this edge type won't catch those by plain
-  filename match; verify against `plaesy-init.sh`'s actual copy functions before assuming a mirror exists,
+  filename match; verify against `plaesy init`'s actual copy functions (Go binary, `scripts/internal/scaffold/copy.go`) before assuming a mirror exists,
   not against `platform.json` alone — it defines a `chatmodes` → `.claude/roles` mapping that
-  `plaesy-init.sh` never actually reads (dead config, same class of bug as the `"instructions"` dead
+  `plaesy init` never actually reads (dead config, same class of bug as the `"instructions"` dead
   path noted elsewhere in this repo's memory). Cut this repo's orphan count from 87 to 23.
 - `mentions` (INFERRED) — plain-text path mention, weaker signal
 

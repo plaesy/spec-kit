@@ -201,8 +201,9 @@ Detection is already implemented once, in the `plaesy detect-stack` command
    framework/language)
 2. **Name transform**: each printed name has the source-repo suffix
    (`go.instructions.md`); the per-project copy under `.plaesy/instructions/` has
-   it stripped (`go.md`) — this is the same rename `plaesy-init`'s `copy_instructions`
-   does (`basename "$file" .instructions.md` → `$basename.md`). Strip the suffix
+   it stripped (`go.md`) — this is the same rename `plaesy init` does
+   (`<name>.instructions.md` → `<name>.md`), handled by the Go binary's
+   `scaffold` package. Strip the suffix
    before checking `.plaesy/instructions/`
 3. For each detected instruction: if `.plaesy/instructions/<name>.md` already exists,
    load it as-is; if it's missing (tech added after the project's last `plaesy init`),
@@ -231,8 +232,8 @@ Detection is already implemented once, in the `plaesy detect-stack` command
    components (same job, different name) are a design-system-adoption finding in
    `/assess:design`, not just a style nit
 6. New technologies are added by editing `instructions/mapping.json` in the spec-kit
-   source, never by adding another hardcoded branch here or in `detect-stack.sh`'s
-   caller — this step keeps working unchanged as the registry grows
+   source, never by adding another hardcoded branch here or in `detect-stack`'s (Go,
+   `scripts/internal/detectstack`) caller — this step keeps working unchanged as the registry grows
 
 ### Step 2: Execute Per Loaded Instructions
 

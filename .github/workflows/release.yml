@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: Build cross-platform binaries
+        working-directory: scripts
+        run: |
+          mkdir -p ../dist
+          targets=(
+            "linux/amd64"
+            "linux/arm64"
+            "darwin/amd64"
+            "darwin/arm64"
+            "windows/amd64"
+          )
+          for target in "${targets[@]}"; do
+            IFS='/' read -r goos goarch <<< "$target"
+            suffix=""
+            if [ "$goos" = "windows" ]; then
+              suffix=".exe"
+            fi
+            GOOS="$goos" GOARCH="$goarch" CGO_ENABLED=0 go build \
+              -ldflags "-X github.com/plaesy/spec-kit/internal/common.Version=${GITHUB_REF#refs/tags/v}" \
+              -o "../dist/plaesy-${goos}-${goarch}${suffix}" \
+              ./cmd/plaesy
+          done
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/plaesy-linux-amd64
+            dist/plaesy-linux-arm64
+            dist/plaesy-darwin-amd64
+            dist/plaesy-darwin-arm64
+            dist/plaesy-windows-amd64.exe
+          generate_release_notes: true

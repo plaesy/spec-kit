@@ -43,7 +43,7 @@ should not be dropped from scope.
 ## 1. Quality Standards (Technical)
 
 - **Test coverage minimum**: 90%
-- **Performance target**: Shell scripts (bash/powershell) complete detection/init routines in <2s on a typical repo
+- **Performance target**: Go binary (`plaesy`) completes detection/init routines in <2s on a typical repo
 - **Security bar**: zero known vulnerabilities at Sev-High or above
 - **Documentation bar**: complete for all public interfaces (prompts, instructions, scripts)
 
@@ -64,8 +64,9 @@ should not be dropped from scope.
 
 ## 2. Technology Constraints
 
-- **Approved stack**: Shell (Bash + PowerShell parity required), Markdown-based prompt/instruction templates, Git
-- **Forbidden/deprecated**: none identified yet
+- **Approved stack**: Go (cross-platform binary), Markdown-based prompt/instruction templates, Git
+- **Approved tools**: `spf13/cobra` CLI framework, Go stdlib (no other third-party deps)
+- **Forbidden/deprecated**: Shell scripts for project automation (replaced by Go binary as of 2026-09)
 - **Validation source**: Context7 (or equivalent) citation required for any new dependency
 
 ## 3. Process Rules
@@ -75,7 +76,7 @@ should not be dropped from scope.
   the implementing agent/session) checks the diff against the spec — see `/implement`.
 - **Ambiguity handling**: unresolved ambiguity blocks `/implement`; run `/assess` first
   (Mode 1 resolves spec ambiguity, not just external research).
-- **Bash/PowerShell parity**: any bug fixed or feature added on one side must be fixed/added on the other.
+- **Cross-platform parity**: the single Go binary works identically on Linux, macOS, and Windows — no per-shell implementation needed.
 
 ## 4. Non-Negotiables (Hard Stops)
 
