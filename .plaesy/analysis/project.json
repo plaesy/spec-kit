@@ -7,8 +7,8 @@
         "purpose": "AI-optimized development project",
         "complexity": "Large",
         "classification": "single",
-        "total_files": 309,
-        "analysis_timestamp": "2026-09-17T21:10:57+07:00"
+        "total_files": 316,
+        "analysis_timestamp": "2026-09-22T23:15:07+07:00"
     },
     "frameworks_detected": [{"framework":"spec-kit","confidence":"high"}],
     "ai_insights": {"overview": "Plaesy Spec-Kit framework for AI-assisted development", "recommendations": ["Add more AI platform integrations"]},
@@ -20,9 +20,9 @@
     },
     "structure": {
         "files": {
-            "total": 309,
-            "code": 45,
-            "documentation": 234,
+            "total": 316,
+            "code": 49,
+            "documentation": 237,
             "configuration": 21
         }
     },

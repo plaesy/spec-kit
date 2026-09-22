@@ -99,7 +99,7 @@ COMPLETION + RECOMMENDATIONS
 
 > **No standalone design command.** Design production and audit are folded into
 > `/assess`'s **Design Spine** (see `prompts/assess.md` Mode 1 and Mode 2); redesign or
-> refactor is handled by `/optimize --design`. The spine covers five dimensions —
+> refactor is handled by `/optimize:design`. The spine covers five dimensions —
 > UI/UX, architecture, business model, org structure, process — with one pattern:
 > components → tokens (no hardcoding) → states/edge cases → mandatory audit (hard
 > stop: WCAG for UI, failure modes for architecture, unit economics for business
@@ -108,7 +108,7 @@ COMPLETION + RECOMMENDATIONS
 >
 > ```bash
 > /assess:design       # Mode 1: produce mockups, component library, design tokens
-> /optimize --design   # Redesign/refactor when Mode 2's audit fails
+> /optimize:design     # Redesign/refactor when Mode 2's audit fails
 > ```
 
 ---
@@ -434,7 +434,7 @@ reviewing each fix manually
 /assess ./legacy-dashboard
 
 # If design quality low:
-/optimize --design Refactor dashboard for modern design system and accessibility
+/optimize:design Refactor dashboard for modern design system and accessibility
 
 # Then:
 /implement Apply design improvements (TDD)

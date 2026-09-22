@@ -2,11 +2,13 @@
 
 # Plaesy AI-Optimized Project Analyzer - Enhanced Version
 # Comprehensive project analysis with AI-friendly documentation generation
-# Usage: ./plaesy-analyze.sh [project_path] [--no-graph] [--force]
+# Usage: ./plaesy-analyze.sh [project_path] [--no-graph] [--force] [--if-changed]
 #   --no-graph  skip dependency graph build entirely
 #   --force     force a full graph rebuild even if no source files changed
 #               (default: graph rebuild is skipped when nothing changed since
 #               the last run)
+#   --if-changed  skip all analysis regeneration if project fingerprint matches
+#                 the last run (file count + newest mtime + framework version)
 
 set -euo pipefail
 
@@ -19,19 +21,21 @@ readonly NC='\033[0m'
 # Global variables
 BUILD_GRAPH=1
 FORCE_GRAPH=0
+FORCE_ANALYZE=0
+IF_CHANGED=0
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_PATH=""
 for arg in "$@"; do
     case "$arg" in
         --no-graph) BUILD_GRAPH=0 ;;
-        --force) FORCE_GRAPH=1 ;;
+        --force) FORCE_GRAPH=1; FORCE_ANALYZE=1 ;;
+        --if-changed) IF_CHANGED=1 ;;
         *) [[ -z "$PROJECT_PATH" ]] && PROJECT_PATH="$arg" ;;
     esac
 done
 PROJECT_PATH="${PROJECT_PATH:-$(pwd)}"
 ANALYSIS_DIR="$PROJECT_PATH/.plaesy/analysis"
 MEMORY_DIR="$PROJECT_PATH/.plaesy/memory"
-SCRIPTS_DIR="$PROJECT_PATH/scripts"
 FRAMEWORK_VERSION="$(cat "$SCRIPT_DIR/../../VERSION" 2>/dev/null || echo "0.0.1")"
 
 # Ensure directories exist
@@ -1529,27 +1533,57 @@ EOF
     log_success 'analysis/overview.md replaced with latest snapshot'
 }
 
-# Function to generate project scripts
-generate_project_scripts() {
-    log_info "Generating project scripts..."
+# Portable stat format detection for the analyzer's own fingerprint.
+# Reuses the same pattern as plaesy-graph.sh: detect once, use everywhere.
+_ANALYZER_STAT_FMT=""
+detect_analyzer_stat_format() {
+    if [[ -n "$_ANALYZER_STAT_FMT" ]]; then return; fi
+    if stat -c %Y /dev/null >/dev/null 2>&1; then
+        _ANALYZER_STAT_FMT="gnu"
+    elif stat -f %m /dev/null >/dev/null 2>&1; then
+        _ANALYZER_STAT_FMT="bsd"
+    else
+        _ANALYZER_STAT_FMT="none"
+    fi
+}
 
-    cat > "$SCRIPTS_DIR/test-runner.sh" << 'EOF'
-#!/bin/bash
-echo "Running tests..."
-if [[ -f "package.json" ]]; then
-    npm test
-elif [[ -f "requirements.txt" ]]; then
-    python -m pytest
-elif [[ -f "go.mod" ]]; then
-    go test ./...
-else
-    echo "No test framework detected"
-fi
-echo "Test execution completed"
-EOF
+# Compute a fingerprint of the project: file count + newest mtime + framework version.
+# Used by --if-changed to skip regeneration when nothing changed since last run.
+# Excludes .plaesy/ to avoid circular dependency (analysis writes its own output there).
+# Output: <count>|<maxmtime>|<framework_version>
+analyze_fingerprint() {
+    detect_analyzer_stat_format
+    local count maxmtime
+    local -a ext_names=(-name '*.md' -o -name '*.ps1' -o -name '*.sh' -o -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' -o -name '*.py' -o -name '*.go' -o -name '*.dart' -o -name '*.java' -o -name '*.kt' -o -name '*.kts' -o -name '*.swift' -o -name '*.c' -o -name '*.h' -o -name '*.cc' -o -name '*.cpp' -o -name '*.hpp' -o -name '*.cs' -o -name '*.rs' -o -name '*.rb' -o -name '*.php' -o -name '*.json' -o -name '*.yaml' -o -name '*.yml' -o -name '*.toml' -o -name '*.xml' -o -name '*.ini' -o -name '*.cfg')
+    # Exclusions must be OUTSIDE the \( \) OR-group so they AND with it,
+    # not become part of the OR chain (which would always match).
+    count="$(cd "$PROJECT_PATH" && find . -type f \( "${ext_names[@]}" \) ! -path '*/.*/*' ! -path '*/node_modules/*' ! -path '*/.plaesy/*' -print 2>/dev/null | wc -l)"
+    if [[ "$_ANALYZER_STAT_FMT" == "gnu" ]]; then
+        maxmtime="$(cd "$PROJECT_PATH" && find . -type f \( "${ext_names[@]}" \) ! -path '*/.*/*' ! -path '*/node_modules/*' ! -path '*/.plaesy/*' -printf '%T@\n' 2>/dev/null | sort -rn | head -1)"
+    else
+        # macOS/BSD: use stat -f %m via find -exec (no -printf available)
+        maxmtime="$(cd "$PROJECT_PATH" && find . -type f \( "${ext_names[@]}" \) ! -path '*/.*/*' ! -path '*/node_modules/*' ! -path '*/.plaesy/*' -exec stat -f '%m' {} + 2>/dev/null | sort -rn | head -1)"
+    fi
+    printf '%s|%s|%s' "$count" "${maxmtime:-0}" "$FRAMEWORK_VERSION"
+}
 
-    chmod +x "$SCRIPTS_DIR/test-runner.sh"
-    log_success "Project scripts generated"
+# Check if the project has changed since the last analysis run.
+# Returns 0 if unchanged (safe to skip), 1 if changed (must regenerate).
+should_skip_analysis() {
+    local fp_file="$ANALYSIS_DIR/.analysis-fingerprint"
+    local current_fp
+    current_fp="$(analyze_fingerprint)"
+    if [[ -f "$fp_file" ]]; then
+        local last_fp
+        last_fp="$(cat "$fp_file" 2>/dev/null || true)"
+        if [[ "$current_fp" == "$last_fp" ]]; then
+            return 0  # unchanged — skip
+        fi
+        log_info "Fingerprint changed: '$current_fp' != '$last_fp'"
+    fi
+    # Changed or no prior fingerprint — save and return 1 (must regenerate)
+    printf '%s' "$current_fp" > "$fp_file"
+    return 1
 }
 
 # Main execution function
@@ -1557,6 +1591,22 @@ main() {
     log_info "Starting comprehensive project analysis..."
     log_info "Project path: $PROJECT_PATH"
     log_info "Analysis directory: $ANALYSIS_DIR"
+
+    # --if-changed fast path: skip all regeneration if project fingerprint matches
+    # the last run's fingerprint. --force overrides this (forces full regeneration).
+    if [[ "$IF_CHANGED" -eq 1 ]] && [[ "$FORCE_ANALYZE" -eq 0 ]] && should_skip_analysis; then
+        log_success 'Analysis unchanged since last run (--if-changed). Skipping regeneration.'
+        log_info 'Analysis files (in '$ANALYSIS_DIR'):'
+        log_info '   - project.json - AI-optimized project summary (cached)'
+        log_info '   - project.structure.json - Detailed project structure (cached)'
+        log_info '   - overview.md - Analysis snapshot (cached)'
+        if [[ "$BUILD_GRAPH" -eq 1 ]]; then
+            log_info '   - project.graph.json - Dependency graph (cached)'
+            log_info '   - project.html - Interactive graph visualization (cached)'
+            log_info '   - reports.md - Graph report (cached)'
+        fi
+        return 0
+    fi
 
     # Run comprehensive analysis functions
     # Detect languages & project type once; reuse across generators (each
@@ -1599,7 +1649,7 @@ main() {
         log_info '   - reports.md - Graph report (communities, god nodes, orphans)'
     fi
     log_info '   - overview.md - Analysis snapshot (replaced every run)'
-    log_info 'Topic memory files (in '$MEMORY_DIR'):'
+    log_info 'No topic memory files are generated by analyze.'
 }
 
 # Run main function

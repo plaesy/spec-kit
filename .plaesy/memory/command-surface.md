@@ -295,7 +295,7 @@ here since there's no running init/upgrade in this session).
   safe defaults labeled `ASSUMED`, hard forks escalate).
 - **`/design`** — folded into `/assess`'s **Design Spine** (Mode 1 production, Mode 2
   audit) across 5 dimensions (UI/UX, architecture, business model, org structure,
-  process); redesign/refactor when the audit fails goes to `/optimize --design`.
+  process); redesign/refactor when the audit fails goes to `/optimize:design`.
 - **`/research`** — folded into `/assess` Mode 1 (web/Context7-backed evidence
   requirement, citation-mandatory, anti-hallucination).
 - **`/evolve`** — never existed as a real command; its job (pop backlog task, advance

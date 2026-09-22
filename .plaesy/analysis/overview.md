@@ -3,7 +3,7 @@
 *This file is regenerated (replaced, not appended) on every `plaesy analyze` run.
 Manual notes belong in `.plaesy/context.md` / `.plaesy/memory.md`, which analyze no longer touches.*
 
-**Generated**: 2026-09-17T21:10:59+07:00
+**Generated**: 2026-09-22T23:16:53+07:00
 **Project**: spec-kit
 **Description**: Plaesy Spec-Kit framework for AI-assisted development workflow automation
 
@@ -15,8 +15,8 @@ Manual notes belong in `.plaesy/context.md` / `.plaesy/memory.md`, which analyze
 ## File Structure
 | File Type | Count |
 |-----------|-------|
-| Source Code | 45 |
-| Documentation | 234 |
+| Source Code | 49 |
+| Documentation | 237 |
 | Config | 21 |
 
 ## Recommendations

@@ -1,47 +1,57 @@
 ---
 title: "Session Context"
-updatedAt: "2026-09-20T00:00:00.000Z"
-phase: [improve:technical - plaesy analyze]
-status: [in_progress]
+updatedAt: "2026-09-22T16:06:00Z"
+phase: [save]
+status: [checkpoint]
 ---
 
-## Current Session (2026-09-20)
+## Current Session (2026-09-22)
 
-**Task**: `/improve:technical` - plaesy-analyze command improvements  
-**Scope**: Fix macOS support, optimize performance, improve code quality  
-**Status**: Bash fixes complete & committed (189597e), PowerShell + docs remaining
+**Task**: `/continue` → multi-dimensional assessment → `/implement` analyzer fixes → `/save` checkpoint.
 
-**Work Completed**:
-1. ✅ Analyzed plaesy-analyze command - identified 5 technical findings
-2. ✅ Fixed bash script (4 findings):
-   - A: macOS -printf support (portable -print + stat fallback)
-   - B: Eliminate 3× file-type counting (extract to single cached function)
-   - C: Fix cache ordering (prevent redundant framework detection)
-   - D: Remove empty directory creation (generate_project_scripts dead code)
-3. ✅ Committed bash improvements (189597e)
-4. ✅ Documented progress & next steps in memory + scratchpad
+**Status**: Implementation phase complete. All analyzer fixes implemented and tested. Routing to `/save` for persistence.
 
-**In Flight**:
-- PowerShell fixes (same improvements as bash)
-- Documentation update (remove stale context.md/memory.md references)
-- Cross-platform testing (bash + PS1 parity verification)
+**Recent decisions**:
+1. Technical assessment: 65/100 → routed to `/implement` for analyzer fixes
+2. Design assessment: 73/100 → routed to `/optimize:design` (pending)
+3. Business/Product assessment: 71/100 → routed to `/assess:marketing` (pending)
+4. All fixes implemented with TDD: tests written, CI wired, smoke tests passing
 
-## Doing
-- Nothing in flight (improvements complete, committed)
+**Work completed**:
+- Multi-dimensional assessment (technical, design, business/product) → 3 reports in `.plaesy/memory/`
+- Fixed GNU-only `find -printf` in `plaesy-graph.sh` with portable macOS fallback (`detect_stat_format`)
+- Added `--if-changed` fast path to `plaesy-analyze.sh` (bash) with fingerprint-based skip
+- Added `-IfChanged` fast path to `plaesy-analyze.ps1` (PowerShell) with fingerprint-based skip
+- Fixed PowerShell analyzer hardcoded dev tools/build systems → now mirrors bash `detect_development_tools`/`detect_build_systems`
+- Added `testing/smoke/smoke-analyze.sh` and `testing/smoke/smoke-analyze.ps1` functional tests
+- Wired CI: analyzer functional smoke test + Bash/PowerShell parity job in `.github/workflows/ci.yml`
+- All smoke tests pass: `smoke-analyze.sh` (4/4), `smoke-e2e.sh` (PASS), `testing/bash/run.sh` (7/7)
 
-## Next
-- **Deferred testing**: Cross-platform parity test with fixture project (bash + PS1)
-  - Create throwaway test project, run both scripts, compare JSON outputs
-  - Verify stat fallback works on macOS if available
-  - Optional: Performance measurement (cache fix impact)
+**In-Flight Tasks**:
+- Run `/optimize:design` for prompt/instruction/template quality improvements
+- Run `/assess:marketing` for README positioning and competitive differentiation
+- Run `/loop` for remaining autonomous fixes (orphaned docs, stale docs)
 
-## Commits (Session 2026-09-20)
-1. **189597e** - Bash improvements (macOS, performance, cache, dead code)
-2. **6e53e9b** - PowerShell improvements (dead code, duplication)
-3. **6b27122** - Docs update (clarify generated vs curated files)
+**Doing**
+- Implementation fixes complete; assessments verify; routing to save
 
-## Analysis Reference
-Project stats (file counts, tech stack, components) live in
-`.plaesy/analysis/{overview.md,project.json,project.structure.json}` —
-`plaesy analyze` fully replaces `overview.md` each run, never writes here or to
-`memory.md` (see [[analysis-overview-md-refactor-2026-09-16]]).
+**Next**
+- `/optimize:design` — add missing usage examples, fix stale docs, standardize templates
+- `/assess:marketing` — clarify positioning, add differentiation section
+- `/loop` — batch remaining autonomous fixes
+- `/save` — persist final state
+
+**Quality Gate Snapshot**
+- Build: N/A (shell scripts)
+- Tests: smoke-analyze.sh 4/4 PASS, smoke-e2e.sh PASS, bash run.sh 7/7 PASS
+- Security: No known vulnerabilities
+- Lint: bash syntax OK, PowerShell syntax OK
+
+**Commits**
+- None in this phase; 12 files modified (uncommitted)
+
+**Memory Reference**
+- Technical: `assess-technical-2026-09-22.md`
+- Design: `assess-design-2026-09-22.md`
+- Business/Product: `assess-business-product-2026-09-22.md`
+- Prior: `graft-assessment-and-analyzer-gaps-2026-09-22.md`

@@ -1,24 +1,26 @@
 # Plaesy AI-Optimized Project Analyzer - Enhanced Version (PowerShell)
 # Comprehensive project analysis with AI-friendly documentation generation
-# Usage: ./plaesy-analyze.ps1 [project_path] [-NoGraph] [-Force]
+# Usage: ./plaesy-analyze.ps1 [project_path] [-NoGraph] [-Force] [-IfChanged]
 #   -NoGraph  skip dependency graph build entirely
 #   -Force    force a full graph rebuild even if no source files changed
 #             (default: graph rebuild is skipped when nothing changed since
 #             the last run)
+#   -IfChanged  skip all analysis regeneration if project fingerprint matches
+#               the last run (file count + newest mtime + framework version)
 
 param(
     [string]$ProjectPath = ".",
     [switch]$NoGraph,
-    [switch]$Force
+    [switch]$Force,
+    [switch]$IfChanged
 )
 
 # Configuration
 $AnalysisDir = Join-Path $ProjectPath ".plaesy/analysis"
 $MemoryDir = Join-Path $ProjectPath ".plaesy/memory"
-$ScriptsDir = Join-Path $ProjectPath "scripts"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$FrameworkVersion = if (Test-Path (Join-Path $ScriptDir "..\..\VERSION")) {
-    (Get-Content (Join-Path $ScriptDir "..\..\VERSION")).Trim()
+$FrameworkVersion = if (Test-Path (Join-Path $ScriptDir ".." ".." "VERSION")) {
+    (Get-Content (Join-Path $ScriptDir ".." ".." "VERSION")).Trim()
 } else {
     "0.0.1"
 }
@@ -26,6 +28,14 @@ $FrameworkVersion = if (Test-Path (Join-Path $ScriptDir "..\..\VERSION")) {
 # Create required directories (only analysis and memory, not unused scripts dir)
 New-Item -ItemType Directory -Force -Path $AnalysisDir | Out-Null
 New-Item -ItemType Directory -Force -Path $MemoryDir | Out-Null
+
+# Cached detection results (computed once in Main, reused by all generators).
+# Order matters: AllFrameworksCache must be set before ProjectTypeCache
+# (Get-ProjectType reads the cached frameworks string when present).
+$script:AllFrameworksCache = $null
+$script:ProjectTypeCache = $null
+$script:AllLanguagesCache = $null
+$script:FileTypeCounts = $null
 
 # Logging functions
 function Write-Info {
@@ -39,7 +49,10 @@ function Write-Success {
 }
 
 # Function to detect all frameworks in the project
+# Cached result is stored in $script:AllFrameworksCache so downstream
+# generators reuse a single detection pass instead of re-scanning.
 function Get-AllFrameworks {
+    if ($script:AllFrameworksCache -ne $null) { return $script:AllFrameworksCache }
     $frameworks = @()
     $confidences = @()
 
@@ -419,10 +432,12 @@ function Get-AllFrameworks {
         if ($i -gt 0) { $result += "," }
         $result += $frameworks[$i] + ":" + $confidences[$i]
     }
+    $script:AllFrameworksCache = $result
     return $result
 }
 
 # Function to get primary framework (highest confidence)
+# Uses cached AllFrameworks result when available.
 function Get-ProjectType {
     $frameworksStr = Get-AllFrameworks
     $frameworkEntries = $frameworksStr -split ","
@@ -453,104 +468,90 @@ function Get-ProjectType {
 }
 
 # Function to detect all programming languages
+# Cached result is stored in $script:AllLanguagesCache so downstream
+# generators reuse a single detection pass instead of re-scanning.
 function Get-AllLanguages {
+    if ($script:AllLanguagesCache -ne $null) { return $script:AllLanguagesCache }
+
+    $languageCounts = @{
+        js = 0
+        ts = 0
+        py = 0
+        go = 0
+        java = 0
+        dart = 0
+        cpp = 0
+        c = 0
+        h = 0
+        php = 0
+        rb = 0
+        rs = 0
+        swift = 0
+        kt = 0
+        scala = 0
+        sh = 0
+        html = 0
+        css = 0
+    }
+
+    Get-ChildItem -Path $ProjectPath -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
+        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
+    } | ForEach-Object {
+        switch ($_.Extension.ToLowerInvariant()) {
+            ".js" { $languageCounts.js++; break }
+            ".jsx" { $languageCounts.js++; break }
+            ".ts" { $languageCounts.ts++; break }
+            ".tsx" { $languageCounts.ts++; break }
+            ".py" { $languageCounts.py++; break }
+            ".go" { $languageCounts.go++; break }
+            ".java" { $languageCounts.java++; break }
+            ".dart" { $languageCounts.dart++; break }
+            ".cpp" { $languageCounts.cpp++; break }
+            ".cc" { $languageCounts.cpp++; break }
+            ".cxx" { $languageCounts.cpp++; break }
+            ".c" { $languageCounts.c++; break }
+            ".h" { $languageCounts.h++; break }
+            ".php" { $languageCounts.php++; break }
+            ".rb" { $languageCounts.rb++; break }
+            ".rs" { $languageCounts.rs++; break }
+            ".swift" { $languageCounts.swift++; break }
+            ".kt" { $languageCounts.kt++; break }
+            ".scala" { $languageCounts.scala++; break }
+            ".sh" { $languageCounts.sh++; break }
+            ".html" { $languageCounts.html++; break }
+            ".css" { $languageCounts.css++; break }
+            ".scss" { $languageCounts.css++; break }
+            ".sass" { $languageCounts.css++; break }
+        }
+    }
+
     $languages = @()
+    if ($languageCounts.js -gt 0) { $languages += "JavaScript" }
+    if ($languageCounts.ts -gt 0) { $languages += "TypeScript" }
+    if ($languageCounts.py -gt 0) { $languages += "Python" }
+    if ($languageCounts.go -gt 0) { $languages += "Go" }
+    if ($languageCounts.java -gt 0) { $languages += "Java" }
+    if ($languageCounts.dart -gt 0) { $languages += "Dart" }
+    if ($languageCounts.cpp -gt 0) { $languages += "C++" }
+    if ($languageCounts.c -gt 0) { $languages += "C" }
+    if ($languageCounts.h -gt 0) { $languages += "C/C++ Headers" }
+    if ($languageCounts.php -gt 0) { $languages += "PHP" }
+    if ($languageCounts.rb -gt 0) { $languages += "Ruby" }
+    if ($languageCounts.rs -gt 0) { $languages += "Rust" }
+    if ($languageCounts.swift -gt 0) { $languages += "Swift" }
+    if ($languageCounts.kt -gt 0) { $languages += "Kotlin" }
+    if ($languageCounts.scala -gt 0) { $languages += "Scala" }
+    if ($languageCounts.sh -gt 0) { $languages += "Shell" }
+    if ($languageCounts.html -gt 0) { $languages += "HTML" }
+    if ($languageCounts.css -gt 0) { $languages += "CSS" }
 
-    # Count different language files
-    $jsCount = ((Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.js" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count + (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.jsx" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count)
-    $tsCount = ((Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.ts" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count + (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.tsx" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count)
-    $pyCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.py" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $goCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.go" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $javaCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.java" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $dartCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.dart" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $cppCount = ((Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.cpp" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count + (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.cc" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count + (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.cxx" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count)
-    $cCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.c" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $hCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.h" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $phpCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.php" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $rbCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.rb" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $rsCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.rs" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $swiftCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.swift" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $ktCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.kt" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $scalaCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.scala" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $shCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.sh" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $htmlCount = (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.html" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count
-    $cssCount = ((Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.css" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count + (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.scss" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count + (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter "*.sass" | Where-Object {
-        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-    }).Count)
-
-    # Add languages that have files
-    if ($jsCount -gt 0) { $languages += "JavaScript" }
-    if ($tsCount -gt 0) { $languages += "TypeScript" }
-    if ($pyCount -gt 0) { $languages += "Python" }
-    if ($goCount -gt 0) { $languages += "Go" }
-    if ($javaCount -gt 0) { $languages += "Java" }
-    if ($dartCount -gt 0) { $languages += "Dart" }
-    if ($cppCount -gt 0) { $languages += "C++" }
-    if ($cCount -gt 0) { $languages += "C" }
-    if ($hCount -gt 0) { $languages += "C/C++ Headers" }
-    if ($phpCount -gt 0) { $languages += "PHP" }
-    if ($rbCount -gt 0) { $languages += "Ruby" }
-    if ($rsCount -gt 0) { $languages += "Rust" }
-    if ($swiftCount -gt 0) { $languages += "Swift" }
-    if ($ktCount -gt 0) { $languages += "Kotlin" }
-    if ($scalaCount -gt 0) { $languages += "Scala" }
-    if ($shCount -gt 0) { $languages += "Shell" }
-    if ($htmlCount -gt 0) { $languages += "HTML" }
-    if ($cssCount -gt 0) { $languages += "CSS" }
-
-    # If no languages found, default to JavaScript
     if ($languages.Count -eq 0) {
         $languages += "JavaScript"
     }
 
-    # Convert array to comma-separated string
-    return $languages -join ", "
+    $result = $languages -join ", "
+    $script:AllLanguagesCache = $result
+    return $result
 }
 
 # Function to detect primary language (most files)
@@ -705,13 +706,8 @@ function Get-MultiFrameworkAIInsights {
 
 # Function to count file types across project (single pass, cached result)
 # Returns hashtable with: @{ code=<count>, doc=<count>, config=<count> }
-$FileTypeCounts = $null
 function Get-FileTypeCounts {
-    if ($FileTypeCounts -ne $null) { return $FileTypeCounts }
-
-    $codePatterns = @("*.js", "*.jsx", "*.ts", "*.tsx", "*.py", "*.go", "*.java", "*.dart", "*.sh", "*.bash", "*.ps1", "*.psm1", "*.rb", "*.php", "*.rs", "*.c", "*.cc", "*.cpp", "*.h", "*.hpp", "*.cs", "*.kt", "*.kts", "*.swift")
-    $docPatterns = @("*.md", "*.txt", "*.rst", "*.adoc")
-    $configPatterns = @("*.json", "*.yaml", "*.yml", "*.toml", "*.ini", "*.xml", "*.cfg")
+    if ($script:FileTypeCounts -ne $null) { return $script:FileTypeCounts }
 
     $codeFiles = 0
     $docFiles = 0
@@ -720,8 +716,7 @@ function Get-FileTypeCounts {
     Get-ChildItem -Path $ProjectPath -Recurse -File | Where-Object {
         $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
     } | ForEach-Object {
-        $ext = [System.IO.Path]::GetExtension($_).ToLower()
-        $name = $_.Name
+        $ext = $_.Extension.ToLower()
 
         if ($ext -in @('.js', '.jsx', '.ts', '.tsx', '.py', '.go', '.java', '.dart', '.sh', '.bash', '.ps1', '.psm1', '.rb', '.php', '.rs', '.c', '.cc', '.cpp', '.h', '.hpp', '.cs', '.kt', '.kts', '.swift')) {
             $codeFiles++
@@ -736,6 +731,104 @@ function Get-FileTypeCounts {
 
     $script:FileTypeCounts = @{ code = $codeFiles; doc = $docFiles; config = $configFiles }
     return $script:FileTypeCounts
+}
+
+# Function to detect development tools (mirrors bash detect_development_tools)
+function Get-DevelopmentTools {
+    $tools = @()
+
+    # Version control
+    if (Test-Path (Join-Path $ProjectPath ".git")) { $tools += "Git" }
+    if (Test-Path (Join-Path $ProjectPath ".svn")) { $tools += "Subversion" }
+    if (Test-Path (Join-Path $ProjectPath ".hg")) { $tools += "Mercurial" }
+
+    # Package managers
+    if (Test-Path (Join-Path $ProjectPath "package.json")) { $tools += "npm/yarn/pnpm" }
+    if (Test-Path (Join-Path $ProjectPath "requirements.txt")) { $tools += "pip/poetry" }
+    if (Test-Path (Join-Path $ProjectPath "go.mod")) { $tools += "Go Modules" }
+    if (Test-Path (Join-Path $ProjectPath "Cargo.toml")) { $tools += "Cargo" }
+    if (Test-Path (Join-Path $ProjectPath "pom.xml")) { $tools += "Maven/Gradle" }
+    if (Test-Path (Join-Path $ProjectPath "Gemfile")) { $tools += "Bundler" }
+    if (Test-Path (Join-Path $ProjectPath "composer.json")) { $tools += "Composer" }
+    if (Test-Path (Join-Path $ProjectPath "pubspec.yaml")) { $tools += "Pub" }
+
+    # CI/CD tools
+    if ((Test-Path (Join-Path $ProjectPath ".github/workflows")) -or (Test-Path (Join-Path $ProjectPath ".github/workflows"))) { $tools += "GitHub Actions" }
+    if (Test-Path (Join-Path $ProjectPath ".gitlab-ci.yml")) { $tools += "GitLab CI" }
+    if (Test-Path (Join-Path $ProjectPath "Jenkinsfile")) { $tools += "Jenkins" }
+    if (Test-Path (Join-Path $ProjectPath "azure-pipelines.yml")) { $tools += "Azure Pipelines" }
+
+    # Testing frameworks
+    if (Test-Path (Join-Path $ProjectPath "jest.config.js")) { $tools += "Jest" }
+    if (Test-Path (Join-Path $ProjectPath "vitest.config.js")) { $tools += "Vitest" }
+    if (Test-Path (Join-Path $ProjectPath "pytest.ini")) { $tools += "pytest" }
+
+    # Linting and formatting
+    if (Test-Path (Join-Path $ProjectPath ".eslintrc.js")) { $tools += "ESLint" }
+    if (Test-Path (Join-Path $ProjectPath ".prettierrc")) { $tools += "Prettier" }
+
+    # Docker and containerization
+    if (Test-Path (Join-Path $ProjectPath "Dockerfile")) { $tools += "Docker" }
+
+    # If no tools found, default to basic
+    if ($tools.Count -eq 0) { $tools += "Manual" }
+
+    return $tools
+}
+
+# Function to detect build systems (mirrors bash detect_build_systems)
+function Get-BuildSystems {
+    $systems = @()
+
+    # JavaScript/TypeScript build tools
+    if (Test-Path (Join-Path $ProjectPath "package.json")) {
+        if (Test-Path (Join-Path $ProjectPath "webpack.config.js")) { $systems += "Webpack" }
+        if (Test-Path (Join-Path $ProjectPath "vite.config.js")) { $systems += "Vite" }
+        if (Test-Path (Join-Path $ProjectPath "rollup.config.js")) { $systems += "Rollup" }
+        if (Test-Path (Join-Path $ProjectPath "esbuild.js")) { $systems += "esbuild" }
+        if (Test-Path (Join-Path $ProjectPath "turbo.json")) { $systems += "Turbopack" }
+    }
+
+    # Python build systems
+    if (Test-Path (Join-Path $ProjectPath "pyproject.toml")) { $systems += "Poetry" }
+    if (Test-Path (Join-Path $ProjectPath "setup.py")) { $systems += "setuptools" }
+    if (Test-Path (Join-Path $ProjectPath "Makefile")) { $systems += "Make" }
+
+    # Java build systems
+    if (Test-Path (Join-Path $ProjectPath "pom.xml")) { $systems += "Maven" }
+    if (Test-Path (Join-Path $ProjectPath "build.gradle")) { $systems += "Gradle" }
+    if (Test-Path (Join-Path $ProjectPath "build.xml")) { $systems += "Ant" }
+
+    # Go build systems
+    if (Test-Path (Join-Path $ProjectPath "go.mod")) { $systems += "Go Modules" }
+
+    # Rust build systems
+    if (Test-Path (Join-Path $ProjectPath "Cargo.toml")) { $systems += "Cargo" }
+
+    # C/C++ build systems
+    if (Test-Path (Join-Path $ProjectPath "CMakeLists.txt")) { $systems += "CMake" }
+    if (Test-Path (Join-Path $ProjectPath "Makefile")) { $systems += "Make" }
+    if (Test-Path (Join-Path $ProjectPath "meson.build")) { $systems += "Meson" }
+
+    # Ruby build systems
+    if (Test-Path (Join-Path $ProjectPath "Gemfile")) { $systems += "Bundler" }
+    if (Test-Path (Join-Path $ProjectPath "Rakefile")) { $systems += "Rake" }
+
+    # PHP build systems
+    if (Test-Path (Join-Path $ProjectPath "composer.json")) { $systems += "Composer" }
+
+    # Mobile build systems
+    if (Test-Path (Join-Path $ProjectPath "pubspec.yaml")) { $systems += "Pub" }
+
+    # Container and infrastructure
+    if (Test-Path (Join-Path $ProjectPath "Dockerfile")) { $systems += "Docker" }
+    if (Test-Path (Join-Path $ProjectPath "docker-compose.yml")) { $systems += "Docker Compose" }
+    if (Test-Path (Join-Path $ProjectPath "main.tf")) { $systems += "Terraform" }
+
+    # If no build systems found, default to Manual
+    if ($systems.Count -eq 0) { $systems += "Manual" }
+
+    return $systems
 }
 
 # Function to generate comprehensive project.json
@@ -815,36 +908,21 @@ function New-ProjectJson {
         $complexity = "Medium"
     }
 
-    # Count file types
-    $codePatterns = @("*.js", "*.jsx", "*.ts", "*.tsx", "*.py", "*.go", "*.java", "*.dart", "*.sh", "*.bash", "*.ps1", "*.psm1", "*.rb", "*.php", "*.rs", "*.c", "*.cc", "*.cpp", "*.h", "*.hpp", "*.cs", "*.kt", "*.kts", "*.swift")
-    $codeFiles = 0
-    foreach ($pattern in $codePatterns) {
-        $codeFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
-
-    $docPatterns = @("*.md", "*.txt", "*.rst", "*.adoc")
-    $docFiles = 0
-    foreach ($pattern in $docPatterns) {
-        $docFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
-
-    $configPatterns = @("*.json", "*.yaml", "*.yml", "*.toml", "*.ini", "*.xml", "*.cfg")
-    $configFiles = 0
-    foreach ($pattern in $configPatterns) {
-        $configFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
+    # Use cached file type counts (single-pass, computed once in Main)
+    $fileTypeCounts = Get-FileTypeCounts
+    $codeFiles = $fileTypeCounts.code
+    $docFiles = $fileTypeCounts.doc
+    $configFiles = $fileTypeCounts.config
 
     # Build frameworks array for technology stack
     $frameworksArray = @()
     foreach ($fw in $frameworksList) {
         $frameworksArray += $fw.framework
     }
+
+    # Detect development tools and build systems (mirrors bash detect_development_tools/detect_build_systems)
+    $devTools = Get-DevelopmentTools
+    $buildSystems = Get-BuildSystems
 
     # Generate project.json
     $projectJson = @{
@@ -864,8 +942,8 @@ function New-ProjectJson {
         technology_stack = @{
             primary_languages = @($allLanguages -split ", ")
             frameworks = $frameworksArray
-            development_tools = @("Git")
-            build_systems = @("Manual")
+            development_tools = $devTools
+            build_systems = $buildSystems
         }
         structure = @{
             files = @{
@@ -945,30 +1023,11 @@ function New-ProjectStructureJson {
         }
     }
 
-    # Count file types
-    $codePatterns = @("*.js", "*.jsx", "*.ts", "*.tsx", "*.py", "*.go", "*.java", "*.dart")
-    $codeFiles = 0
-    foreach ($pattern in $codePatterns) {
-        $codeFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
-
-    $docPatterns = @("*.md", "*.txt", "*.rst", "*.adoc")
-    $docFiles = 0
-    foreach ($pattern in $docPatterns) {
-        $docFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
-
-    $configPatterns = @("*.json", "*.yaml", "*.yml", "*.toml", "*.ini", "*.xml", "*.cfg")
-    $configFiles = 0
-    foreach ($pattern in $configPatterns) {
-        $configFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
+    # Use cached file type counts (single-pass, computed once in Main)
+    $fileTypeCounts = Get-FileTypeCounts
+    $codeFiles = $fileTypeCounts.code
+    $docFiles = $fileTypeCounts.doc
+    $configFiles = $fileTypeCounts.config
 
     $structureJson = @{
         directories = $directories
@@ -1058,9 +1117,9 @@ function New-AnalysisOverviewMd {
     $overviewPath = Join-Path $AnalysisDir "overview.md"
     Write-Info "Generating analysis/overview.md (replacing previous snapshot)..."
 
-    $allLanguages = Get-AllLanguages
-    $languagesReadable = $allLanguages -replace ", ", ", "
-    $typeConfidence = Get-ProjectType
+    $allLanguages = if ($script:AllLanguagesCache -ne $null) { $script:AllLanguagesCache } else { Get-AllLanguages }
+    $languagesReadable = $allLanguages
+    $typeConfidence = if ($script:ProjectTypeCache -ne $null) { $script:ProjectTypeCache } else { Get-ProjectType }
     $projectType = $typeConfidence.Split(':')[0]
     $timestamp = (Get-Date).ToString("o")
     $projectName = Split-Path -Leaf (Resolve-Path $ProjectPath)
@@ -1070,30 +1129,11 @@ function New-AnalysisOverviewMd {
         "This is an AI-generated project context document for development assistance"
     }
 
-    # Count file types (same logic as New-ProjectJson) so this table isn't stuck at 0.
-    $codePatterns = @("*.js", "*.jsx", "*.ts", "*.tsx", "*.py", "*.go", "*.java", "*.dart", "*.sh", "*.bash", "*.ps1", "*.psm1", "*.rb", "*.php", "*.rs", "*.c", "*.cc", "*.cpp", "*.h", "*.hpp", "*.cs", "*.kt", "*.kts", "*.swift")
-    $codeFiles = 0
-    foreach ($pattern in $codePatterns) {
-        $codeFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
-
-    $docPatterns = @("*.md", "*.txt", "*.rst", "*.adoc")
-    $docFiles = 0
-    foreach ($pattern in $docPatterns) {
-        $docFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
-
-    $configPatterns = @("*.json", "*.yaml", "*.yml", "*.toml", "*.ini", "*.xml", "*.cfg")
-    $configFiles = 0
-    foreach ($pattern in $configPatterns) {
-        $configFiles += (Get-ChildItem -Path $ProjectPath -Recurse -File -Filter $pattern | Where-Object {
-            $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
-        }).Count
-    }
+    # Use cached file type counts (single-pass, computed once in Main)
+    $fileTypeCounts = Get-FileTypeCounts
+    $codeFiles = $fileTypeCounts.code
+    $docFiles = $fileTypeCounts.doc
+    $configFiles = $fileTypeCounts.config
 
     # Build recommendations from actual repo signals instead of static boilerplate.
     $recommendations = @()
@@ -1144,34 +1184,35 @@ $recommendationsText
     Write-Success "analysis/overview.md replaced with latest snapshot"
 }
 
-# Function to generate project scripts
-function New-ProjectScripts {
-    Write-Info "Generating project scripts..."
-
-    $testRunnerContent = @"
-#!/bin/bash
-echo "Running tests..."
-if [[ -f "package.json" ]]; then
-    npm test
-elif [[ -f "requirements.txt" ]]; then
-    python -m pytest
-elif [[ -f "go.mod" ]]; then
-    go test ./...
-else
-    echo "No test framework detected"
-fi
-echo "Test execution completed"
-"@
-
-    $testRunnerPath = Join-Path $ScriptsDir "test-runner.sh"
-    $testRunnerContent | Out-File -FilePath $testRunnerPath -Encoding UTF8
-
-    # Make it executable (on Unix systems)
-    if ($IsLinux -or $IsMacOS) {
-        chmod +x $testRunnerPath
+# Compute a fingerprint of the project: file count + newest mtime + framework version.
+# Used by -IfChanged to skip regeneration when nothing changed since last run.
+function Get-AnalyzeFingerprint {
+    $extPatterns = @('*.md', '*.ps1', '*.sh', '*.js', '*.jsx', '*.ts', '*.tsx',
+        '*.py', '*.go', '*.dart', '*.java', '*.kt', '*.kts', '*.swift',
+        '*.c', '*.h', '*.cc', '*.cpp', '*.hpp', '*.cs', '*.rs', '*.rb', '*.php',
+        '*.json', '*.yaml', '*.yml', '*.toml', '*.xml', '*.ini', '*.cfg')
+    $files = Get-ChildItem -Path $ProjectPath -Recurse -File -Include $extPatterns -ErrorAction SilentlyContinue | Where-Object {
+        $_.FullName -notmatch "[\\/]\.[^\\/]+[\\/]" -and $_.FullName -notmatch "node_modules"
     }
+    $count = $files.Count
+    $maxMtime = if ($files.Count -gt 0) { ($files | Sort-Object LastWriteTime -Descending | Select-Object -First 1).LastWriteTime.ToString('o') } else { "0" }
+    return "$count|$maxMtime|$FrameworkVersion"
+}
 
-    Write-Success "Project scripts generated"
+# Check if the project has changed since the last analysis run.
+# Returns $true if unchanged (safe to skip), $false if changed (must regenerate).
+function Test-AnalysisUnchanged {
+    $fpFile = Join-Path $AnalysisDir ".analysis-fingerprint"
+    $currentFp = Get-AnalyzeFingerprint
+    if (Test-Path $fpFile) {
+        $lastFp = (Get-Content $fpFile -Raw).Trim()
+        if ($currentFp -eq $lastFp) {
+            return $true
+        }
+    }
+    # Changed or no prior fingerprint — save and return $false
+    $currentFp | Out-File -FilePath $fpFile -Encoding UTF8 -NoNewline
+    return $false
 }
 
 # Main execution function
@@ -1184,6 +1225,30 @@ function Main {
         Write-Host "[ERROR] Directory '$ProjectPath' does not exist" -ForegroundColor Red
         exit 1
     }
+
+    # -IfChanged fast path: skip all regeneration if project fingerprint matches
+    # the last run's fingerprint. -Force overrides this (forces full regeneration).
+    if ($IfChanged -and (-not $Force) -and (Test-AnalysisUnchanged)) {
+        Write-Success "Analysis unchanged since last run (-IfChanged). Skipping regeneration."
+        Write-Info "Analysis files (in $AnalysisDir):"
+        Write-Info "   - project.json - AI-optimized project summary (cached)"
+        Write-Info "   - project.structure.json - Detailed project structure (cached)"
+        Write-Info "   - overview.md - Analysis snapshot (cached)"
+        if (-not $NoGraph) {
+            Write-Info "   - project.graph.json - Dependency graph (cached)"
+            Write-Info "   - project.html - Interactive graph visualization (cached)"
+            Write-Info "   - reports.md - Graph report (cached)"
+        }
+        return
+    }
+
+    # Compute detection results once and reuse across all generators.
+    # Order matters: AllFrameworksCache must be set before ProjectTypeCache
+    # (Get-ProjectType reads the cached frameworks string when present).
+    $script:AllLanguagesCache = Get-AllLanguages
+    $script:AllFrameworksCache = Get-AllFrameworks
+    $script:ProjectTypeCache = Get-ProjectType
+    $script:FileTypeCounts = Get-FileTypeCounts
 
     # Run comprehensive analysis functions
     New-ProjectJson
@@ -1214,7 +1279,7 @@ function Main {
         Write-Info "   - reports.md - Graph report (communities, god nodes, orphans)"
     }
     Write-Info "   - overview.md - Analysis snapshot (replaced every run)"
-    Write-Info "Topic memory files (in $MemoryDir):"
+    Write-Info "No topic memory files are generated by analyze."
 }
 
 # Run main function

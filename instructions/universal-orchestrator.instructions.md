@@ -213,7 +213,7 @@ Execute work across dimensions:
 ### `/optimize` — Improve Any Dimension
 ```bash
 /optimize --performance     # Speed up technical systems
-/optimize --design-quality  # Improve UX, accessibility, systems
+/optimize:design-quality  # Improve UX, accessibility, systems
 /optimize --user-experience # Streamline workflows
 /optimize --cost           # Reduce operational costs
 /optimize --marketing-roi  # Improve campaign efficiency

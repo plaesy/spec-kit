@@ -608,15 +608,38 @@ build_graph() {
     source_fingerprint > "$FINGERPRINT_FILE" 2>/dev/null || true
 }
 
+# Portable stat format detection: GNU stat uses -c %Y, BSD stat (macOS) uses -f %m.
+# Detected once at load time so source_fingerprint doesn't re-detect per call.
+_STAT_FMT=""
+detect_stat_format() {
+    if [[ -n "$_STAT_FMT" ]]; then return; fi
+    if stat -c %Y /dev/null >/dev/null 2>&1; then
+        _STAT_FMT="gnu"
+    elif stat -f %m /dev/null >/dev/null 2>&1; then
+        _STAT_FMT="bsd"
+    else
+        _STAT_FMT="none"
+    fi
+}
+
 source_fingerprint() {
     # Cheap change-detection signature for --watch: file count + newest mtime
     # across the same file set build_graph scans. Avoids hashing contents -
     # a full rescan is already fast; we only need to know *whether* to rescan.
-    # Uses find -printf when available (single process, no per-file stat spawn).
+    #
+    # Portable: prefers GNU find -printf (single process, no per-file stat spawn)
+    # but falls back to stat -f %m on macOS/BSD where -printf doesn't exist.
+    detect_stat_format
     local count maxmtime
     local -a ext_names=(-name '*.md' -o -name '*.ps1' -o -name '*.sh' -o -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' -o -name '*.py' -o -name '*.go' -o -name '*.dart' -o -name '*.java' -o -name '*.kt' -o -name '*.kts' -o -name '*.swift' -o -name '*.c' -o -name '*.h' -o -name '*.cc' -o -name '*.cpp' -o -name '*.hpp' -o -name '*.cs' -o -name '*.rs' -o -name '*.rb' -o -name '*.php')
+    local find_args=("${ext_names[@]}" ! -regex '.*/\.[^/]+/.*' ! -path '*/node_modules/*' ! -path '*/dist/*' ! -path '*/build/*' ! -path '*/__pycache__/*' ! -path '*/vendor/*')
     count="$(cd "$REPO_ROOT" && find . -type f \( "${ext_names[@]}" \) | grep -Ev "$EXCLUDE_DIRS_RE" | wc -l)"
-    maxmtime="$(cd "$REPO_ROOT" && find . -type f \( "${ext_names[@]}" \) ! -regex '.*/\.[^/]+/.*' ! -path '*/node_modules/*' ! -path '*/dist/*' ! -path '*/build/*' ! -path '*/__pycache__/*' ! -path '*/vendor/*' -printf '%T@\n' 2>/dev/null | sort -rn | head -1)"
+    if [[ "$_STAT_FMT" == "gnu" ]]; then
+        maxmtime="$(cd "$REPO_ROOT" && find . -type f \( "${find_args[@]}" \) -printf '%T@\n' 2>/dev/null | sort -rn | head -1)"
+    else
+        # macOS/BSD: use stat -f %m via find -exec (no -printf available)
+        maxmtime="$(cd "$REPO_ROOT" && find . -type f \( "${find_args[@]}" \) -exec stat -f '%m' {} + 2>/dev/null | sort -rn | head -1)"
+    fi
     printf '%s|%s\n' "$count" "$maxmtime"
 }
 

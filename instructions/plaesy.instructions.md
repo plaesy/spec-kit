@@ -179,9 +179,9 @@ CONTINUE LOOP until complete
 - Architecture smell → Flag for review + suggest refactor
 
 **Design Issues**:
-- UI/UX problems → `/optimize --design` (redesign per `/assess` Design Spine)
+- UI/UX problems → `/optimize:design` (redesign per `/assess` Design Spine)
 - Accessibility gap → `/implement --wcag`
-- Component inconsistency → `/optimize --design-system`
+- Component inconsistency → `/optimize:design-system`
 
 **Business Issues**:
 - Market gap → `/assess:business --research`

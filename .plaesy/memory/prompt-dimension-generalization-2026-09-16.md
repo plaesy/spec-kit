@@ -49,7 +49,7 @@ marketing/legal/financial/management/product). The other 7 execution prompts
 
 ## Syntax Consistency Fix (user-flagged)
 
-User noticed `/optimize --design` used dash-flag syntax while `/assess:technical`
+User noticed `/optimize:design` used dash-flag syntax while `/assess:technical`
 already established colon-scope syntax — asked why, wanted `:design` everywhere.
 Standardized: `:{dimension}` always selects one of the same 8 dimensions as
 `/assess:{scope}`; `--focus {aspect}` only narrows within a dimension (e.g.

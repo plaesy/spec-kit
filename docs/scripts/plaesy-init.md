@@ -259,13 +259,13 @@ PROJECT ROOT
 - **Status**: Production-ready with comprehensive features
 - **Error Handling**: `set -euo pipefail`
 - **Dependencies**: Requires `common.sh`
-- **Features**: Platform detection, timeout handling, instruction auto-copy to memory knowledge, comprehensive validation
+- **Features**: Platform detection, timeout handling, selective instruction copying, comprehensive validation
 
 ### PowerShell Script (plaesy-init.ps1)
 - **Status**: Production-ready with cross-platform compatibility
 - **Error Handling**: `$ErrorActionPreference = "Stop"`
 - **Dependencies**: Self-contained, requires `config-manager.ps1`
-- **Features**: Parameter binding, instruction auto-copy to memory knowledge, enhanced validation, cross-platform compatibility
+- **Features**: Parameter binding, selective instruction copying, enhanced validation, cross-platform compatibility
 
 ### Function Equivalents
 

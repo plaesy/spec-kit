@@ -1,36 +1,41 @@
 ---
 title: "Memory & Knowledge Index"
 description: "Central index for project memory, guidance, and reference"
-updatedAt: "2006-01-02T15:04:05.999Z"
+updatedAt: "2026-09-22T06:28:50Z"
 ---
 
 # Memory Index & Navigation
 
 **Project:** Plaesy Spec-Kit (framework repo, dogfooding its own `plaesy init`)  
-**Last Updated:** 2026-09-18 (/generate:images + static-site gap)  
+**Last Updated:** 2026-09-22 (/save checkpoint; Graft and Spec-Kit architecture review)
 **Purpose:** Central index for project memory, guidance, and reference
 
 ---
 
 ## 🎯 Core Reference
 
-- [design.md Spec Alignment](memory/designmd-spec-alignment-2026-09-19.md) — Aligned `.plaesy/memory/design.md`'s template with the real Google Labs DESIGN.md spec (fields, 8-section order), not a blog summary; new `instructions/how-to-create-designmd.instructions.md` (2026-09-19)
-- [Plaesy Graph Tool](memory/project-plaesy-graph-tool.md) — Custom knowledge-graph builder (PS1/bash parity), feature set, known limitations (migrated from Claude cross-session memory 2026-09-19)
-- [New /generate:images Command + Static-Site Framework Gap](memory/generate-images-and-static-site-2026-09-18.md) — new `prompts/generate.md` router + `prompts/generate/images.md` scoped protocol, backed by real API-calling scripts (`scripts/{bash,powershell}/generate-image.*`, OpenAI `gpt-image-1`/Gemini, requires API key env var, fails loudly if unset); new `instructions/static-site.instructions.md` (plain HTML/CSS/JS + Astro/Eleventy/Hugo/Jekyll) registered in `mapping.json` + `/improve` Artifact Type table; plain-HTML-with-no-config sites still not auto-detected (deliberate, documented limitation) (2026-09-18)
-- [Stack Detection Fixes (Office/Go/Java/Rust/Dart/Next.js)](memory/stack-detection-fixes-2026-09-17.md) — root cause of the reported Word/Excel/PowerPoint install bug: bash `copy_instructions()` scanned the empty `.plaesy` dir instead of the project root, plus a `jq`-gating bug that skipped detection entirely when jq wasn't installed; full mapping.json audit found Go/Java/Rust/Dart/Next.js also undetected on realistic manifests; new `"filenames"` field added to both detect-stack scripts for Next.js; 2 dead-code blocks removed (`--all-instructions` was a no-op); PowerShell `HashSet` → `Get-ChildItem -Include` gotcha documented (2026-09-17)
-- [Colon-Scope Sub-Commands (/assess:design etc.)](memory/colon-scope-commands-2026-09-17.md) — `:scope` syntax (`/assess:design`, `/fix:technical`, …) was usage-text only, no backing file anywhere; added 58 wrapper files under `prompts/{assess,fix,implement,optimize,loop,improve}/`; caught + fixed a source-path cross-reference mistake before saving (2026-09-17)
-- [mapping.json Extension-Based Detection + Orphan Audit](memory/mapping-json-extensions-audit-2026-09-16.md) — new generic `extensions` field (file-existence detection) for word/excel/powerpoint/csharp/terraform/sql; fixed bash's missing `*.csproj` scan and 1 real orphan file; **`agents.instructions.md` must never be added to mapping.json** (it's the platform core template, handled separately) (2026-09-16)
-- [analyze: overview.md Replaces context.md/memory.md Appending](memory/analysis-overview-md-refactor-2026-09-16.md) — `plaesy analyze` now only writes `.plaesy/analysis/overview.md` (always replaced); `context.md`/`memory.md` are no longer touched by analyze at all (2026-09-16)
-- [memory.md File Counts Hardcoded to 0](memory/overview-md-file-counts-fix-2026-09-16.md) — `generate_overview_md`/`New-OverviewMd` never counted files (unlike `generate_project_json`); fixed in `scripts/` source. **Rule**: always edit `scripts/{bash,powershell}/*`, never `.plaesy/scripts/**` (gitignored `plaesy init` output, edits there are lost) (2026-09-16)
-- [plaesy-analyze Path Fix + chatmodes core_directories Bug](memory/plaesy-analyze-path-fix-2026-09-16.md) — `.plaesy/chatmodes` empty-folder bug (core_directories vs mapping.chatmodes confusion) fixed; plaesy-analyze.sh/.ps1 were writing context.md/memory.md to `.plaesy/memory/` instead of `.plaesy/` root (breaking every other part of the framework that reads them); switched from skip-if-exists to append-dated-section on rerun (2026-09-16)
-- [Cross-Dimensional Generalization + Path Consistency](memory/prompt-dimension-generalization-2026-09-16.md) — start/continue/loop/implement/optimize/doc/fix generalized beyond software-only; `:{dimension}` syntax standardized across optimize/fix/implement/loop; fixed `prompts/*.md` path references that break post-install (2026-09-16)
-- [Command Surface & Architecture Decisions](memory/command-surface.md) — Current 9 prompts, removed commands (/clarify, /design, /research, /evolve, /flow) and where they went, constitution, verifier separation, task system, and the plaesy init bugs fixed 2026-09-15
-- [Microsoft 365 Automation Instructions](memory/office-automation.md) — PowerPoint/Excel/Word instruction files, starter templates, validation scripts, mapping.json registration, and the `/implement` → `detect-stack.sh` wiring fix (2026-09-15)
-- [Assess Dimension Coverage & mapping.json Install Bug](memory/assess-dimension-coverage.md) — New assess-financial/marketing instruction files, and the root-cause fix: 8 assess-* + 4 foundational files were never registered in mapping.json so never installed (2026-09-15)
-- [Prompt Quality Fixes + design.md System](memory/prompt-quality-and-design-md.md) — 4 confirmed bugs fixed across prompts/*.md (live web research grounded), plus new `.plaesy/memory/design.md` design-token source-of-truth system following Google's 2026-04-10 DESIGN.md spec (2026-09-15)
-- [Full Repo Audit (ultracode workflow)](memory/full-repo-audit-2026-09-15.md) — 141-agent workflow audit, 41 confirmed findings, ~20 fixed same session (detect-stack.sh/.ps1 false-positive matching, missing @nara chatmode, systemic docs/ broken links, orphaned checklists wired in, dead code removed, bash/PS1 parity gaps); 3 items flagged for user decision, not auto-fixed (2026-09-15)
-- [Feedback: Verify Before Deleting Refs](memory/feedback-verify-before-deleting-refs.md) — a "doc says X, this script doesn't do X" finding needs a repo-wide grep for another producer before deleting X, not just fixing the one script checked (2026-09-15)
-- [How to Write a Plaesy Slash-Command Prompt](memory/how-to-create-prompt.md) — required shape, "say routing logic once" rule + evidence, anti-patterns found/fixed across prompts/*.md this session; moved here from `instructions/` per the rule below (2026-09-16)
+- [Plaesy Spec-Kit Constitution](constitution.md) — Governing dimensions, quality bars, stack, and hard stops.
+- [Graft Assessment and Spec-Kit Architecture Gaps](graft-assessment-and-analyzer-gaps-2026-09-22.md) — Evidence, risks, and transfer candidates from the Graft assessment.
+- [Technical Assessment 2026-09-22](assess-technical-2026-09-22.md) — Multi-dimensional technical assessment: code quality, tests, security, performance, CI, analyzer gaps.
+- [Design Assessment 2026-09-22](assess-design-2026-09-22.md) — Prompt/instruction/template quality, orphaned files, CLI ergonomics, docs UX.
+- [Business/Product Assessment 2026-09-22](assess-business-product-2026-09-22.md) — Viability, completeness, marketing readiness, roadmap, adoption signals.
+- [Analyzer Implementation Fixes 2026-09-22](analyzer-implementation-fixes-2026-09-22.md) — `--if-changed` fast path, portable stat, PowerShell parity, functional tests, CI wiring.
+- [Plaesy Analyze Overview Refactor](analysis-overview-md-refactor-2026-09-16.md) — Analyzer writes only analysis/overview.md and never context.md/memory.md.
+- [Assess Dimension Coverage](assess-dimension-coverage.md) — Financial/marketing assess coverage and mapping registration fix.
+- [Command Surface and Architecture](command-surface.md) — Prompt phases, removed commands, constitution, verifier, and task model.
+- [Performance Measurement Feedback](feedback_measure_perf_multiple_rounds.md) — Use multiple alternating warm-cache rounds before reporting speedups.
+- [Feedback: Verify Before Deleting References](feedback-verify-before-deleting-refs.md) — Search for another producer before deleting a referenced capability.
+- [Full Repository Audit](full-repo-audit-2026-09-15.md) — 141-agent audit, confirmed findings, fixes, and deliberate gaps.
+- [Generate Images and Static-Site Gap](generate-images-and-static-site-2026-09-18.md) — Image command, API scripts, and static-site detection limitation.
+- [How to Write a Slash-Command Prompt](how-to-create-prompt.md) — Prompt shape, routing rules, and anti-patterns.
+- [mapping.json Extension Audit](mapping-json-extensions-audit-2026-09-16.md) — Generic extension/filename detection and orphan audit.
+- [Microsoft 365 Automation](office-automation.md) — Office instructions, templates, validation, and install wiring.
+- [Overview File-Count Fix](overview-md-file-counts-fix-2026-09-16.md) — File-count fix and source-versus-generated script rule.
+- [Detect-Stack Performance Feedback](perf_detect_stack_extension_scan_2026_09_16.md) — Cache-aware performance measurement evidence.
+- [Plaesy Analyze Path Fix](plaesy-analyze-path-fix-2026-09-16.md) — Root path, chatmodes, and analyzer output-location fixes.
+- [Cross-Dimensional Prompt Routing](prompt-dimension-generalization-2026-09-16.md) — Dimension routing and post-install path consistency.
+- [Prompt Quality and design.md](prompt-quality-and-design-md.md) — Prompt fixes and the design-token source of truth.
+- [Stack Detection Fixes](stack-detection-fixes-2026-09-17.md) — Office, language, framework, and Next.js detection fixes.
 
 ---
 
@@ -77,5 +82,5 @@ updatedAt: "2006-01-02T15:04:05.999Z"
 
 ---
 
-**Status:** Memory index updated 2026-09-19 (design.md spec alignment + cross-session memory migrated in-repo)  
-**Next:** Not yet committed (see context.md `## Next`) — four pending batches: colon-scope prompt wrappers, mapping.json/detect-stack/plaesy-init fixes, `/generate:images` + `static-site.instructions.md`, and this session's design.md spec alignment (5 files) + 4 new `.plaesy/memory/*.md` files. Re-run `plaesy init` on this repo to mirror `prompts/{fix,implement,optimize,loop,improve}/` into `.claude/commands/`. `/generate:images` still needs a real smoke test with an API key set.
+**Status:** Memory index synchronized 2026-09-22; every indexed topic link resolves to a local file.
+**Next:** Resume from `.plaesy/context.md`; run `/assess` before implementation or optimization.

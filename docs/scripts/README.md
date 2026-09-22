@@ -30,7 +30,7 @@
 **MANDATORY SEQUENCE** - Always run this when encountering a Plaesy project:
 ```bash
 # 1. Understand project structure (CRITICAL)
-#    Also triggers instruction auto-load to .plaesy/memory/
+#    Analyze does not copy instructions; plaesy-init performs instruction auto-load.
 ./scripts/bash/plaesy-analyze.sh
 
 # 2. Get current feature context
@@ -43,7 +43,7 @@
 ./scripts/bash/update-agent-context.sh
 ```
 
-**📌 Note**: `plaesy-analyze.sh` detects project technologies and auto-copies relevant instructions from `instructions/mapping.json` to `.plaesy/instructions/`. This creates a self-contained project instruction set.
+**📌 Note**: `plaesy-init` (not `plaesy-analyze`) detects project technologies and auto-copies relevant instructions from `instructions/mapping.json` to `.plaesy/instructions/`. Run `plaesy init` first to set up the instruction set, then `plaesy analyze` for project structure analysis.
 
 **Windows PowerShell Alternative:**
 ```powershell
