@@ -18,11 +18,15 @@ Most spec-driven development tools — including GitHub's own `spec-kit` — sco
 
 ### Install & Initialize
 
-**Linux/macOS:**
+Plaesy Constitution Kit ships as a single cross-platform Go binary (`plaesy`). There is no published release yet — build it from source (requires [Go](https://go.dev/dl/) 1.22+):
+
 ```bash
-# Install Plaesy Constitution Kit (download, inspect, then run — safer than piping curl into bash)
-curl -fsSL https://raw.githubusercontent.com/plaesy/spec-kit/main/scripts/bash/install.sh -o install.sh
-bash install.sh
+git clone https://github.com/plaesy/spec-kit.git
+cd spec-kit/scripts
+go build -o plaesy ./cmd/plaesy
+
+# put the binary on PATH, then:
+./plaesy install          # copies itself to a well-known bin dir and prints PATH instructions
 
 # Initialize new project (interactive AI selection)
 plaesy init my-awesome-app
@@ -31,17 +35,7 @@ plaesy init my-awesome-app
 plaesy init . --ai claude_code
 ```
 
-**Windows (PowerShell):**
-```powershell
-# Install Plaesy Constitution Kit
-iwr -useb https://raw.githubusercontent.com/plaesy/spec-kit/main/scripts/powershell/install.ps1 | iex
-
-# Initialize new project (interactive AI selection)
-plaesy init my-awesome-app
-
-# Or initialize in current directory with specific AI
-plaesy init . -AI claude_code
-```
+The same binary and commands work identically on Linux, macOS, and Windows — no separate bash/PowerShell install path is needed anymore.
 
 Using any AI assistant with optimized prompts:
 ```markdown
