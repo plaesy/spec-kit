@@ -25,8 +25,7 @@ deliberately deferred.
    ⚠️ audience segmentation still generic, feedback loop incomplete
 3. Graft follow-up: analyzer default = fingerprint fast-path (DEFAULT), `--force`
    only way to force regen; matches graph default per byte-identical rebuild invariant
-4. Uncommitted working tree: 30 files (Go CLI migration doc sync — docs/scripts/,
-   instructions/, templates/, prompts/, .github/, .plaesy/memory.md) — NOT committed
+4. No uncommitted changes (all Go CLI migration doc files committed)
 5. Stale analysis overview (says "Spec-Kit"/"Shell" — Go binary now; regenerate via
    `plaesy analyze` before citing)
 
@@ -43,13 +42,13 @@ deliberately deferred.
 - Rename scope: docs/CHANGELOG/repo — user said "pikirkan dulu", do not default broad
 - Template stub consistency (design Finding 3, LOW confidence, needs manual read) — `/loop` candidate
 - CI freshness assertion for analyzer fast-path — deferred ("abaikan CI-nya")
-- 30 uncommitted files (Go CLI migration doc updates) — commit or stash before resuming
+- 30 uncommitted files (Go CLI migration doc updates) — committed as
+    77e4971
 - Stale analysis overview — regenerate before next `/assess`/`/continue`
 
 **Next**
 - On resume: ask rename scope (README-only chosen; docs/CHANGELOG/repo undecided)
 - `/loop` or manual read on template stub if resumed
-- Commit or stash 30 uncommitted Go CLI migration doc files
 - Regenerate analysis via `plaesy analyze` (stale) before citing overview.md
 
 **Quality Gate Snapshot**
@@ -61,7 +60,8 @@ deliberately deferred.
 **Commits**
 - `c9101be` — analyzer portability + fast-path caching (prior session)
 - `a86113b` — rebrand + analyzer defaults + usage examples + marketing assessment
-- `41a5704` — Go CLI migration (30 doc files uncommitted on working tree)
+- `41a5704` — Go CLI migration
+- `77e4971` — Mode 3 verification, /save state update, Go CLI doc sync
 
 **Memory Reference**
 - Design: `assess-design-2026-09-22.md` (verified, 84/100)
