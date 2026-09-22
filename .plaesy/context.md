@@ -1,77 +1,71 @@
 ---
 title: "Session Context"
 updatedAt: "2026-09-23T00:00:00Z"
-phase: [save]
-status: [checkpoint]
+phase: [completed]
+status: [verified]
 ---
 
 ## Current Session (2026-09-23)
 
 **Task**: `/continue` → `/optimize:design` → `/assess:marketing` → README rebrand
-→ Graft follow-up fixes → `/save` checkpoint.
+→ Graft follow-up fixes → `/assess:design,marketing` (Mode 3 verification) → `/save` checkpoint.
 
-**Status**: All planned work for this session complete and committed. Naming
-decision made (rename to "Plaesy Constitution Kit") but scoped to README only;
-docs/CHANGELOG/repo-rename scope deliberately deferred, not decided.
+**Status**: All planned work complete and committed. Mode 3 verification
+run on design + marketing. Naming decision made (rename to "Plaesy
+Constitution Kit") scoped to README only; docs/CHANGELOG/repo-rename
+deliberately deferred.
 
 **Recent decisions**:
-1. Design assessment re-verified: 2 findings refuted (PowerShell dispatch bug,
-   graph watch-mode) with file:line evidence; 73→77→84/100 after fixing all 20
-   instructions files missing usage examples (55/55 now compliant)
-2. Marketing assessment: 53/100 (Grade D) — **CRITICAL finding**: name collision
-   with `github/spec-kit` (138.4k★, no stated wedge). User chose new name
-   "Plaesy Constitution Kit"; rename scope = README only for now (user still
-   deciding on docs/CHANGELOG/repo-rename scope)
-3. Graft follow-up: flipped `plaesy-analyze` default to fingerprint fast-path
-   (was opt-in via `--if-changed`, now default; `--force`/`-Force` is the only
-   way to force regen) — matches `plaesy-graph.sh`'s existing default, per
-   Graft's "byte-identical rebuild invariant" pattern
-4. Untracked `.plaesy/analysis/.edges.tsv` (regenerated cache, was inconsistently
-   tracked); gitignored alongside `.nodes.tsv`/`.analysis-fingerprint`
-5. Gated `/continue` and `/assess` on analysis freshness before citing
-   `.plaesy/analysis/overview.md` as evidence
+1. Design `/assess:design` Mode 3: ✅ 20/20 instruction example fixes verified
+   (55/55 compliant), 2 false positives refuted with evidence (PowerShell dispatch
+   at install.ps1:388, graph watch-mode at plaesy-graph.sh:646 / plaesy-graph.ps1:601)
+   → confirmed 84/100; template stub (Finding 3) remains LOW, needs manual read
+2. Marketing `/assess:marketing` Mode 3: ✅ Name collision resolved via rebrand,
+   differentiation section added (README:13-15), unsupported superlatives removed;
+   ⚠️ audience segmentation still generic, feedback loop incomplete
+3. Graft follow-up: analyzer default = fingerprint fast-path (DEFAULT), `--force`
+   only way to force regen; matches graph default per byte-identical rebuild invariant
+4. Uncommitted working tree: 30 files (Go CLI migration doc sync — docs/scripts/,
+   instructions/, templates/, prompts/, .github/, .plaesy/memory.md) — NOT committed
+5. Stale analysis overview (says "Spec-Kit"/"Shell" — Go binary now; regenerate via
+   `plaesy analyze` before citing)
 
 **Work completed**:
 - Added fenced usage examples to 20 `instructions/*.instructions.md` files
-- Rebranded README.md: "Spec-Kit" → "Plaesy Constitution Kit" + new "Why Plaesy
-  Constitution Kit" differentiation section (addresses the marketing hard-stop)
-- Flipped analyzer default behavior (bash + PowerShell), updated smoke tests
-  (both pass 4/4), updated `/continue` and `/assess` prompt instructions
-- Recorded `assess-marketing-2026-09-23.md` with live-researched competitor
-  evidence (github/spec-kit, BMAD, GSD star counts, cited)
+- Rebranded README.md: "Spec-Kit" → "Plaesy Constitution Kit" + "Why Plaesy
+  Constitution Kit" differentiation section
+- Flipped analyzer default (bash + PowerShell), smoke tests pass 4/4
+- Recorded `assess-marketing-2026-09-23.md` with live-researched competitor evidence
 - Committed as `a86113b` (33 files changed)
+- Mode 3 verification: design 84/100 confirmed, marketing rebrand verified
 
 **In-Flight Tasks**:
-- Rename scope decision still open: docs/ + CHANGELOG.md references to
-  "Spec-Kit", and whether to rename the GitHub repo itself — user said "pikirkan
-  dulu" (thinking about it), do not default to broadest scope when resumed
-- `/loop` for remaining autonomous fixes (template stub inconsistency — design
-  Finding 3, downgraded to LOW confidence, needs manual per-template read)
-- CI freshness assertion for the analyzer fast-path — explicitly deferred by
-  user ("abaikan CI-nya"), not forgotten, just out of scope for now
+- Rename scope: docs/CHANGELOG/repo — user said "pikirkan dulu", do not default broad
+- Template stub consistency (design Finding 3, LOW confidence, needs manual read) — `/loop` candidate
+- CI freshness assertion for analyzer fast-path — deferred ("abaikan CI-nya")
+- 30 uncommitted files (Go CLI migration doc updates) — commit or stash before resuming
+- Stale analysis overview — regenerate before next `/assess`/`/continue`
 
 **Next**
-- On resume: ask which rename scope applies (README-only was chosen; docs/
-  CHANGELOG/repo-rename still undecided) before touching more files
-- `/loop` or manual pass on template stub consistency if resumed
-- `/assess` (Mode 3 verification) to confirm no regressions from this session's
-  changes, per `/optimize`'s mandatory next-step rule
+- On resume: ask rename scope (README-only chosen; docs/CHANGELOG/repo undecided)
+- `/loop` or manual read on template stub if resumed
+- Commit or stash 30 uncommitted Go CLI migration doc files
+- Regenerate analysis via `plaesy analyze` (stale) before citing overview.md
 
 **Quality Gate Snapshot**
-- Build: N/A (shell scripts)
-- Tests: smoke-analyze.sh 4/4 PASS, smoke-analyze.ps1 (logic mirrored, not
-  re-run this session — Windows PowerShell not invoked), smoke-e2e.sh PASS
-  (prior session), bash run.sh 7/7 PASS (prior session)
+- Build: N/A (Go binary via `go build ./cmd/plaesy`)
+- Tests: smoke-analyze.sh 4/4 PASS, smoke-e2e.sh PASS (prior), bash run.sh 7/7 PASS (prior)
 - Security: No known vulnerabilities
 - Lint: bash syntax OK
 
 **Commits**
 - `c9101be` — analyzer portability + fast-path caching (prior session)
-- `a86113b` — rebrand + analyzer default flip + usage examples + marketing assessment
+- `a86113b` — rebrand + analyzer defaults + usage examples + marketing assessment
+- `41a5704` — Go CLI migration (30 doc files uncommitted on working tree)
 
 **Memory Reference**
-- Design: `assess-design-2026-09-22.md` (updated, 84/100)
-- Marketing: `assess-marketing-2026-09-23.md` (new, 53/100, naming collision — decision log inside)
-- Graft follow-up: `graft-assessment-and-analyzer-gaps-2026-09-22.md` (updated with 2026-09-23 fixes)
-- Business/Product: `assess-business-product-2026-09-22.md` (Finding 1 now stale — analyzer fixed)
+- Design: `assess-design-2026-09-22.md` (verified, 84/100)
+- Marketing: `assess-marketing-2026-09-23.md` (53/100 pre-rebrand, rebrand applied, post-rebrand unscored)
+- Graft: `graft-assessment-and-analyzer-gaps-2026-09-22.md` (updated 2026-09-23 fixes)
+- Business/Product: `assess-business-product-2026-09-22.md`
 - Technical: `assess-technical-2026-09-22.md`

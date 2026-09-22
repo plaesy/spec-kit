@@ -1,28 +1,22 @@
-# Check Task Prerequisites Script
+# plaesy check-task-prerequisites
 
 **Development environment validation for Plaesy Spec-Kit projects.**
 
+Source: `scripts/cmd/plaesy/prereq.go` + `scripts/internal/featurepath/prereq.go`.
+
 ## Purpose
 
-Validate that all required files and directories exist for the current feature development task, ensuring the development environment is properly set up before proceeding with implementation.
+Validate that all required files and directories exist for the current
+feature development task, ensuring the development environment is properly
+set up before proceeding with implementation.
 
 ## Quick Start
 
 ```bash
-# Bash
-./scripts/bash/check-task-prerequisites.sh
-./scripts/bash/check-task-prerequisites.sh --json
-./scripts/bash/check-task-prerequisites.sh --help
+plaesy check-task-prerequisites
+plaesy check-task-prerequisites --json
+plaesy check-task-prerequisites --help
 ```
-
-```powershell
-# PowerShell
-./scripts/powershell/check-task-prerequisites.ps1
-./scripts/powershell/check-task-prerequisites.ps1 -Json
-Get-Help ./scripts/powershell/check-task-prerequisites.ps1
-```
-
-Note: the PowerShell script has no dedicated `--help` handler; use `Get-Help` (from `[CmdletBinding()]`) for parameter info.
 
 ## Validation Checks
 
@@ -43,18 +37,21 @@ Note: the PowerShell script has no dedicated `--help` handler; use `Get-Help` (f
 
 ## Options
 
-| Flag (bash) | Flag (PowerShell) | Description |
-|-------------|--------------------|--------------|
-| `--json` | `-Json` | Emit a single-line JSON object instead of plain text |
-| `--help` / `-h` | — (use `Get-Help`) | Print usage and exit |
+| Flag | Description |
+|------|-------------|
+| `--json` | Emit a single-line JSON object instead of plain text |
+| `--help` / `-h` | Print usage and exit |
 
-Both scripts resolve feature paths via their shared helper (`common.sh` / `common.ps1`), verify the current branch matches `XXX-feature-name`, then check for `plan.md` (required) and `research.md`, `data-model.md`, `contracts/`, `quickstart.md` (optional).
+The command resolves feature paths via `internal/common.GetFeaturePaths()`,
+verifies the current branch matches `XXX-feature-name`, then checks for
+`plan.md` (required) and `research.md`, `data-model.md`, `contracts/`,
+`quickstart.md` (optional).
 
 ## Output Format
 
 ### Success (plain text)
 ```
-$ ./scripts/bash/check-task-prerequisites.sh
+$ plaesy check-task-prerequisites
 FEATURE_DIR:/home/user/project/specs/001-user-auth
 AVAILABLE_DOCS:
   ✓ research.md
@@ -63,20 +60,19 @@ AVAILABLE_DOCS:
   ✓ quickstart.md
 ```
 
-### Success (JSON — identical shape for both scripts)
+### Success (JSON)
 ```
-$ ./scripts/bash/check-task-prerequisites.sh --json
+$ plaesy check-task-prerequisites --json
 {"FEATURE_DIR":"/home/user/project/specs/001-user-auth","AVAILABLE_DOCS":["research.md","contracts/","quickstart.md"]}
 ```
 
 ### Failure (missing required file)
 ```
-$ ./scripts/bash/check-task-prerequisites.sh
-ERROR: Feature directory not found: specs/001-user-auth
-Run /start first to create the feature structure.
+$ plaesy check-task-prerequisites
+Error: feature directory not found: specs/001-user-auth (run /start first to create the feature structure)
 ```
-The PowerShell script prints the equivalent message and exits with code 1; same for a
-missing `plan.md` (message: "Create plan.md from templates/plan.template.md first.").
+Exits non-zero; the equivalent message for a missing `plan.md` is
+"plan.md not found in specs/<branch> (create plan.md from templates/plan.template.md first)".
 
 ## File Structure
 
@@ -92,46 +88,31 @@ specs/XXX-feature-name/
 ## Integration Example — CI/CD
 
 ```bash
-# Bash (e.g. CI pipeline step)
-if ! ./scripts/bash/check-task-prerequisites.sh --json; then
+if ! plaesy check-task-prerequisites --json; then
     echo "Prerequisites check failed"
     exit 1
 fi
-```
-
-```powershell
-# PowerShell equivalent
-if (-not (./scripts/powershell/check-task-prerequisites.ps1 -Json)) {
-    Write-Error "Prerequisites check failed"
-    exit 1
-}
 ```
 
 ## Troubleshooting
 
 ### Not on a feature branch
 ```
-ERROR: Not on a feature branch. Current branch: main
+Error: not on a feature branch (current: main); feature branches should be named like: 001-feature-name
 ```
-Switch to or create a branch matching `XXX-feature-name` (e.g. via `create-new-feature.sh` / `.ps1`).
+Switch to or create a branch matching `XXX-feature-name` (e.g. via `plaesy create-new-feature`).
 
 ### Feature directory or plan.md not found
 ```
-ERROR: Feature directory not found: specs/001-feature-auth
-ERROR: plan.md not found in specs/001-feature-auth
+Error: feature directory not found: specs/001-feature-auth
+Error: plan.md not found in specs/001-feature-auth
 ```
 Run `/start` to create the feature structure, then create `plan.md` from
 `templates/plan.template.md`.
 
-### Bash script not executable (Linux/macOS)
-```
-chmod +x scripts/bash/check-task-prerequisites.sh
-```
-Not applicable on Windows/PowerShell — no execute-bit is required, but the execution policy must allow local scripts (`Set-ExecutionPolicy -Scope Process RemoteSigned` if blocked).
+## Related Commands
 
-## Related Scripts
-
-- **create-new-feature.sh / .ps1** - Creates feature branches and directories
-- **get-feature-paths.sh / .ps1** - Provides feature path information
-- **plaesy-analyze.sh / .ps1** - Analyzes overall project structure
-- **update-agent-context.sh / .ps1** - Updates AI context files
+- **`plaesy create-new-feature`** — Creates feature branches and directories (see [create-new-feature.md](./create-new-feature.md))
+- **`plaesy get-feature-paths`** — Provides feature path information (see [get-feature-paths.md](./get-feature-paths.md))
+- **`plaesy analyze`** — Analyzes overall project structure (see [plaesy-analyze.md](./plaesy-analyze.md))
+- **`plaesy update-agent-context`** — Updates AI context files (see [update-agent-context.md](./update-agent-context.md))

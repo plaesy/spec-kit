@@ -134,16 +134,16 @@ Sistem secara otomatis mengekstrak description dari file target dan mengganti pl
 
 ```bash
 # Inject headers untuk Claude ke direktori prompts
-./scripts/bash/inject-ai-headers.sh --ai claude --target prompts --merge --backup
+plaesy inject-ai-headers --ai claude --target prompts --merge --backup
 
 # Dry-run untuk melihat apa yang akan diubah
-./scripts/bash/inject-ai-headers.sh --ai copilot --target chatmodes --dry-run
+plaesy inject-ai-headers --ai copilot --target chatmodes --dry-run
 
 # List mapping file → header
-./scripts/bash/inject-ai-headers.sh --ai cursor --target . --list-only
+plaesy inject-ai-headers --ai cursor --target . --list-only
 
 # Force inject dengan description replacement
-./scripts/bash/inject-ai-headers.sh --ai claude --target prompts --force --backup
+plaesy inject-ai-headers --ai claude --target prompts --force --backup
 ```
 
 ## Membuat Header Baru

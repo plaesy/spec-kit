@@ -1,60 +1,73 @@
-# Inject AI Headers Script
+# plaesy inject-ai-headers
 
-Injects platform-specific AI instruction headers (YAML front-matter + guidance) into prompt, chatmode, and instruction files.
+Injects platform-specific AI instruction headers (YAML front-matter +
+guidance) into prompt, chatmode, and instruction files.
 
-For the header file format, naming convention, `{{DESCRIPTION}}` placeholder, and how headers are authored, see [templates/ai-headers/README.md](../../templates/ai-headers/README.md). This page covers script usage only.
+For the header file format, naming convention, `{{DESCRIPTION}}` placeholder,
+and how headers are authored, see
+[templates/ai-headers/README.md](../../templates/ai-headers/README.md). This
+page covers command usage only.
 
-Scripts: `scripts/bash/inject-ai-headers.sh` and `scripts/powershell/inject-ai-headers.ps1`.
+Source: `scripts/cmd/plaesy/inject_ai_headers.go` + `scripts/internal/aiheaders/aiheaders.go`.
 
 ## Quick Start
 
 ```bash
-# bash
-./scripts/bash/inject-ai-headers.sh --ai claude --target ./prompts
+plaesy inject-ai-headers --ai claude --target ./prompts
 
-./scripts/bash/inject-ai-headers.sh --ai claude --target . --merge --backup
+plaesy inject-ai-headers --ai claude --target . --merge --backup
 
-./scripts/bash/inject-ai-headers.sh --ai copilot --target . --dry-run
-```
-
-```powershell
-# PowerShell
-.\scripts\powershell\inject-ai-headers.ps1 -AiPlatform claude -TargetDirectory .\prompts
-
-.\scripts\powershell\inject-ai-headers.ps1 -AiPlatform claude -TargetDirectory . -Merge -Backup
-
-.\scripts\powershell\inject-ai-headers.ps1 -AiPlatform copilot -TargetDirectory . -DryRun
+plaesy inject-ai-headers --ai copilot --target . --dry-run
 ```
 
 ## Options
 
-| Purpose | bash | PowerShell |
-|---|---|---|
-| AI platform (required) | `--ai <platform>` | `-AiPlatform <platform>` |
-| Target directory (required) | `--target <dir>` | `-TargetDirectory <dir>` |
-| Preview without writing | `--dry-run` | `-DryRun` |
-| Overwrite existing headers | `--force` | `-Force` |
-| Backup originals before writing | `--backup` | `-Backup` |
-| Merge missing keys into existing front-matter | `--merge` | `-Merge` (accepted but **not wired up** — see below) |
-| List file → header mapping only, no writes | `--list-only` | `-ListOnly` |
-| Extra include pattern (repeatable) | `--pattern <glob>` | `-Pattern <regex[]>` |
-| Exclude path fragment (repeatable) | `--exclude <fragment>` | not supported |
-| Show help | `--help` | `-Help` |
+| Flag | Purpose |
+|---|---|
+| `--ai <platform>` | AI platform (required) |
+| `--target <dir>` | Target directory (required) |
+| `--dry-run` | Preview without writing |
+| `--force` | Overwrite existing headers |
+| `--backup` | Backup originals before writing |
+| `--merge` | Merge missing keys into existing front-matter, instead of skipping files that already have a header |
+| `--list-only` | List file → header mapping only, no writes |
+| `--pattern <glob>` | Extra include glob pattern (repeatable; default: `*.prompt.md`, `*.chatmode.md`, `*.instructions.md`) |
+| `--exclude <fragment>` | Exclude a path fragment (repeatable) |
+| `--headers-dir <dir>` | Directory containing header YAML files (default: `<repo-root>/templates/ai-headers`) |
+| `--help` | Show help |
 
-**Supported platforms (bash)**: `copilot`, `cursor`, `windsurf`, `claude`, `chatgpt`, `gemini`, `trae-ai`, `qwen-code`, `codex-cli`, `opencode-cli`, `local-ai`, `manual`.
+**Supported platforms**: `copilot`, `cursor`, `windsurf`, `claude`, `chatgpt`,
+`gemini`, `trae-ai`, `qwen-code`, `codex-cli`, `opencode-cli`, `local-ai`,
+`manual`.
 
-**Supported platforms (PowerShell)**: the same set, plus framework-name aliases that fall back to the base platform's `.header.yaml`: `github_copilot`→copilot, `cursor_ai`→cursor, `windsurf_ai`→windsurf, `claude_code`→claude, `trae_ai`→trae-ai, `qwen_code`→qwen-code.
+## Behavior
 
-## Verified behavior differences
+- **Per-file-type header lookup**: resolves `templates/ai-headers/<platform>.<type>.yaml`
+  (type = `prompts`/`chatmodes`/`instructions`/`generic`, detected from
+  path/filename) before falling back to `<platform>.header.yaml` then
+  `manual.header.yaml`.
+- **`{{DESCRIPTION}}` replacement**: extracts each target file's own
+  `description` (or derives one from the filename) and substitutes it into
+  the header before injection.
+- **`--merge`**: when set and a file already has front-matter, merges the
+  header's keys into it instead of skipping the file, preserving existing
+  values and adding only missing keys.
+- **`.plaesy-headers.json` summary file**: written to the target directory
+  after a non-dry-run with `processed > 0`.
+- **File discovery**: default patterns are `*.prompt.md`, `*.chatmode.md`,
+  `*.instructions.md` (glob).
+- **`--exclude`**: excludes files whose relative path contains the given
+  fragment.
 
-Both scripts were read in full to confirm behavior rather than trusting prior docs:
-
-- **Per-file-type header lookup**: bash resolves `templates/ai-headers/<platform>.<type>.yaml` (type = `prompts`/`chatmodes`/`instructions`/`generic`, detected from path/filename) before falling back to `<platform>.header.yaml` then `manual.header.yaml`. PowerShell's `Get-HeaderFile` looks for `<platform>.<type>.header.md` (note: `.header.md`, not `.yaml` — this candidate does not match the repo's actual `<platform>.<type>.yaml` naming, so in practice PowerShell always falls through to `<platform>.header.yaml`).
-- **`{{DESCRIPTION}}` replacement**: bash extracts each target file's own `description` (or derives one from the filename) and substitutes it into the header before injection. PowerShell injects the header file's raw content verbatim — no placeholder substitution.
-- **`--merge` / `-Merge`**: bash actually calls its merge logic per file when `--merge` is set and a file already has front-matter. PowerShell defines `Merge-FrontMatter` but `Invoke-Main` never calls it, so `-Merge` currently has no effect.
-- **`.plaesy-headers.json` summary file**: bash writes one to the target directory after a non-dry-run with `processed > 0`. The equivalent block in the PowerShell script is present but commented out, so it is not created.
-- **File discovery**: bash's default patterns are `*.prompt.md`, `*.chatmode.md`, `*.instructions.md` (glob, via `find`). PowerShell's defaults are regexes matching the filename only: `\.prompt\.md$`, `\.chatmode\.md$`, `\.instruction\.md$` (singular "instruction").
-- **`--exclude`**: only bash supports excluding path fragments; PowerShell has no equivalent flag.
+> **Migration note**: the old PowerShell script (`inject-ai-headers.ps1`) had
+> several gaps relative to bash — `-Merge` was accepted but never wired up,
+> `{{DESCRIPTION}}` substitution didn't happen, the `.plaesy-headers.json`
+> summary write was commented out, and its per-file-type header lookup used a
+> `.header.md` naming convention that didn't match the repo's actual
+> `.yaml` files (so it always fell through to the generic header). None of
+> those gaps exist in the Go port — it is a single, complete implementation
+> matching the bash script's behavior (which was always the more complete of
+> the two).
 
 ## Output example
 
@@ -72,12 +85,9 @@ Both scripts were read in full to confirm behavior rather than trusting prior do
 [INFO] Created configuration: .plaesy-headers.json
 ```
 
-(PowerShell prints the same log lines but omits the final "Created configuration" line — that step is disabled.)
-
 ## Troubleshooting
 
-- **"Invalid AI platform" / parameter validation error"**: check spelling against the supported list above; PowerShell will reject unknown values before running (`ValidateSet`), bash exits with an error after printing help.
-- **Nothing gets injected**: run with `--dry-run`/`-DryRun` first, and confirm files actually match the default patterns (`*.prompt.md`, `*.chatmode.md`, `*.instructions.md` for bash; the singular-`instruction` regex set for PowerShell) or pass `--pattern`/`-Pattern` explicitly.
-- **File skipped with "already has header"**: the script found YAML front-matter or a known header marker in the first lines. Use `--force`/`-Force` to overwrite, or `--merge` (bash only — see above) to add missing keys without clobbering existing ones.
-- **Expected `--merge`/`-Merge` to update a PowerShell target and nothing changed**: this is the known gap above — the flag is currently a no-op in the `.ps1` script.
-- **Header file not found**: verify `templates/ai-headers/<platform>.header.yaml` (or the more specific `<platform>.<type>.yaml`) exists; both scripts fall back to `manual.header.yaml` when nothing else matches.
+- **"invalid AI platform" error**: check spelling against the supported list above.
+- **Nothing gets injected**: run with `--dry-run` first, and confirm files actually match the default patterns (`*.prompt.md`, `*.chatmode.md`, `*.instructions.md`) or pass `--pattern` explicitly.
+- **File skipped with "already has header"**: the command found YAML front-matter or a known header marker in the first lines. Use `--force` to overwrite, or `--merge` to add missing keys without clobbering existing ones.
+- **Header file not found**: verify `templates/ai-headers/<platform>.header.yaml` (or the more specific `<platform>.<type>.yaml`) exists; the command falls back to `manual.header.yaml` when nothing else matches.

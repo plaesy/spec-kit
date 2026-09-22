@@ -1,40 +1,42 @@
-# 📊 plaesy-analyze.sh
+# plaesy analyze
 
 **AI-optimized project structure analysis and documentation generation.**
 
-**Priority:** 🔴 **CRITICAL** - Must be run first when encountering any Plaesy project
+**Priority:** CRITICAL - Must be run first when encountering any Plaesy project
 
-## 🎯 Purpose
+Source: `scripts/cmd/plaesy/analyze.go` + `scripts/internal/analyze/`.
 
-Analyzes project structure and generates AI-optimized documentation for comprehensive project understanding. This script creates structured data that AI assistants use to understand project context, architecture, and development patterns.
+## Purpose
 
-## 🚀 KEY INFORMATION FOR AI ASSISTANTS
+Analyzes project structure and generates AI-optimized documentation for
+comprehensive project understanding. This command creates structured data
+that AI assistants use to understand project context, architecture, and
+development patterns.
 
-### ✅ **Standalone Script - NO Prerequisites Required**
-- **Works independently** - No other scripts need to be run first
+## KEY INFORMATION FOR AI ASSISTANTS
+
+### **Standalone Command - NO Prerequisites Required**
+- **Works independently** - No other commands need to be run first
 - **Self-contained** - Complete analysis in a single execution
-- **No dependencies** - Just run and get full analysis
-- **Cross-platform** - Available for both Bash and PowerShell
+- **No dependencies** - Just run and get full analysis, no `jq`/`awk`/`find` shelled out to
 
-### ✅ **Simple Usage**
+### **Simple Usage**
 ```bash
-# Linux/macOS
-./scripts/bash/plaesy-analyze.sh
-
-# Windows PowerShell
-./scripts/powershell/plaesy-analyze.ps1
-
-# Or if Plaesy CLI is installed
 plaesy analyze
 
 # Skip the (slow) dependency graph build on large repos
-./scripts/bash/plaesy-analyze.sh --no-graph
-./scripts/powershell/plaesy-analyze.ps1 -NoGraph
+plaesy analyze --no-graph
+
+# Force a full regeneration even if the project fingerprint is unchanged
+plaesy analyze --force
 ```
 
-## 📋 Usage
+By default, `plaesy analyze` skips regeneration entirely when the project's
+fingerprint (file count + newest mtime + framework version) hasn't changed
+since the last run — this fast path is what makes it safe to call
+unconditionally in a workflow. `--force` bypasses it.
 
-## 📁 Output Files
+## Output Files
 
 The script generates the project summary, structure, analysis overview, and (by default) the dependency graph in a single run.
 
@@ -72,7 +74,7 @@ Analyze also builds the dependency graph as part of its output. See [plaesy-grap
 - `project.html` — self-contained interactive force-directed visualization
 - `reports.md` — graph report: communities, god nodes, orphan files, suggested questions
 
-> **Note:** the graph build scans every file (references/calls/imports/mentions), so on large repos it is the slowest step. Skip it with `--no-graph` (Bash) or `-NoGraph` (PowerShell).
+> **Note:** the graph build scans every file (references/calls/imports/mentions), so on large repos it is the slowest step. Skip it with `--no-graph`.
 
 ## 🎯 What AI Assistants Should Do
 
@@ -289,12 +291,12 @@ Automatically detects 50+ project types including:
 - **Corrupted data**: Recovery from partial analysis
 - **Resource limits**: Memory and processing optimization
 
-## 📚 Integration Examples
+## Integration Examples
 
 ### For AI Assistants
 ```bash
 # Standard AI workflow
-./bash/plaesy-analyze.sh
+plaesy analyze
 
 # Read analysis results
 cat .plaesy/analysis/project.json | jq '.project_summary'
@@ -310,7 +312,7 @@ cat .plaesy/analysis/project.structure.json | jq '.key_directories'
 ### For Development Teams
 ```bash
 # Project onboarding
-./bash/plaesy-analyze.sh
+plaesy analyze
 
 # Review project insights
 cat .plaesy/analysis/project.json | jq '.ai_insights'
@@ -319,12 +321,12 @@ cat .plaesy/analysis/project.json | jq '.ai_insights'
 cat .plaesy/analysis/project.json | jq '.ai_insights.recommendations'
 ```
 
-## 🆘 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 ```bash
-# Permission denied
-chmod +x ./bash/plaesy-analyze.sh
+# `plaesy: command not found` -> see install.md
+plaesy status
 
 # No analysis directory created
 mkdir -p .plaesy/analysis
@@ -334,18 +336,17 @@ mkdir -p .plaesy/analysis
 # Ensure proper file permissions
 
 # Large project timeout
-# Script is optimized for performance
-# May take time on very large projects
+# The analyzer is a single native binary (no subprocess spawn overhead);
+# very large repos may still take time — pass --no-graph to skip the
+# slowest step (the dependency graph build).
 ```
 
 ### Debug Mode
 ```bash
-# Enable verbose output
-set -x
-./bash/plaesy-analyze.sh
-set +x
+# Enable debug-level log lines
+PLAESY_DEBUG=true plaesy analyze
 ```
 
 ---
 
-**📊 This script is the foundation of AI understanding in Plaesy projects. Always run it first to provide AI assistants with comprehensive project context.**
+**This command is the foundation of AI understanding in Plaesy projects. Always run it first to provide AI assistants with comprehensive project context.**

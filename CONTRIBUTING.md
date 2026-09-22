@@ -1,8 +1,8 @@
 # Contributing to Plaesy Spec-Kit
 
 Thanks for your interest in contributing! This project is a spec-driven-development
-framework distributed as markdown prompts/instructions plus bash and PowerShell
-automation scripts.
+framework distributed as markdown prompts/instructions plus a single cross-platform
+Go CLI (`plaesy`).
 
 ## Before you start
 
@@ -13,18 +13,19 @@ automation scripts.
 ## Development setup
 
 1. Fork and clone the repository.
-2. Scripts live under `scripts/bash/` (Linux/macOS) and `scripts/powershell/`
-   (Windows/cross-platform PowerShell). **Any behavioral change to a script must be
-   made in both the bash and PowerShell versions** — the two must stay in parity.
-3. Run the test suites before opening a PR:
-   - `bash testing/bash/run.sh`
-   - `pwsh testing/powershell/run.ps1`
-   - Smoke tests: `testing/smoke/smoke-e2e.sh` and `testing/smoke/smoke-powershell.ps1`
-4. `make` (or `make reload`) re-initializes this repo's own dogfooded `.plaesy/`
-   setup — its only target, `reload`, **unconditionally deletes `.claude/`,
-   `.plaesy/`, and `CLAUDE.md`** before re-running `plaesy-init.sh`, with no
-   confirmation prompt. Commit or back up anything under those paths first;
-   don't run bare `make` expecting a build/test step.
+2. Install [Go](https://go.dev/dl/) 1.22+. The CLI source lives under `scripts/`
+   (module root `scripts/go.mod`): commands in `scripts/cmd/plaesy/`, implementation
+   packages in `scripts/internal/`. There is one codebase for every platform —
+   Linux, macOS, and Windows all build and run the same Go source, so there's no
+   bash/PowerShell parity to maintain anymore.
+3. Run before opening a PR (from the repo root):
+   - `cd scripts && go build ./... && go vet ./... && go test ./...`
+4. `make build` compiles the CLI to `./plaesy` at the repo root. `make` (or
+   `make reload`) re-initializes this repo's own dogfooded `.plaesy/` setup — its
+   `reload` target **unconditionally deletes `.claude/`, `.plaesy/`, and
+   `CLAUDE.md`** before re-running `./plaesy init`, with no confirmation prompt.
+   Commit or back up anything under those paths first; don't run bare `make`
+   expecting a build/test step.
 
 ## Conventions
 
@@ -39,8 +40,9 @@ can discover them.
 
 ## Security-sensitive changes
 
-Any script change touching `eval`, remote downloads (`curl`/`Invoke-WebRequest`),
-file permissions, or credential handling should call this out explicitly in the PR
+Any change touching remote downloads/self-update (`net/http` calls in
+`scripts/internal/installer` or `scripts/internal/imagegen`), file permissions, or
+credential handling (API keys, tokens) should call this out explicitly in the PR
 description. See [SECURITY.md](SECURITY.md) for how to report vulnerabilities
 privately instead of via a public issue/PR.
 
@@ -48,7 +50,7 @@ privately instead of via a public issue/PR.
 
 - Keep PRs focused on one change.
 - Update relevant docs (`docs/`) and the root `CHANGELOG.md` under "Unreleased".
-- CI must pass (bash lint/smoke, PowerShell lint/smoke).
+- CI must pass (`go build`/`go vet`/`go test` across Linux, macOS, and Windows).
 
 ## Code of Conduct
 

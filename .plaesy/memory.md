@@ -9,8 +9,10 @@ updatedAt: "2026-09-23T00:00:00Z"
 **Project:** Plaesy Constitution Kit (framework repo, dogfooding its own `plaesy init`) —
 renamed from "Plaesy Spec-Kit" 2026-09-23, README scope only so far; see
 [[assess-marketing-2026-09-23]] decision log for remaining rename scope (docs/
-CHANGELOG/repo-rename still undecided).
-**Last Updated:** 2026-09-23 (/save checkpoint; rebrand, analyzer default flip, design+marketing assessments)
+CHANGELOG/repo-rename still undecided). CLI is now a single Go binary — see
+[[go-cli-migration-2026-09-23]]; the bash/PowerShell scripts referenced by
+several notes below are deleted.
+**Last Updated:** 2026-09-23 (Go CLI migration checkpoint; /continue session: design+marketing verified via Mode 3, README rebrand confirmed)
 **Purpose:** Central index for project memory, guidance, and reference
 
 ---
@@ -18,6 +20,7 @@ CHANGELOG/repo-rename still undecided).
 ## 🎯 Core Reference
 
 - [Plaesy Spec-Kit Constitution](constitution.md) — Governing dimensions, quality bars, stack, and hard stops.
+- [Go CLI Migration 2026-09-23](go-cli-migration-2026-09-23.md) — bash/PowerShell scripts replaced by a single Go binary (`scripts/cmd`, `scripts/internal`); supersedes several rules below that still reference `scripts/bash`/`scripts/powershell`.
 - [Graft Assessment and Spec-Kit Architecture Gaps](graft-assessment-and-analyzer-gaps-2026-09-22.md) — Evidence, risks, and transfer candidates from the Graft assessment.
 - [Technical Assessment 2026-09-22](assess-technical-2026-09-22.md) — Multi-dimensional technical assessment: code quality, tests, security, performance, CI, analyzer gaps.
 - [Design Assessment 2026-09-22](assess-design-2026-09-22.md) — Prompt/instruction/template quality, orphaned files, CLI ergonomics, docs UX.

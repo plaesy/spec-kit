@@ -12,8 +12,7 @@ A clear description of what went wrong.
 - [ ] prompt (`prompts/`)
 - [ ] instruction (`instructions/`)
 - [ ] chatmode/role (`chatmodes/`)
-- [ ] script — bash (`scripts/bash/`)
-- [ ] script — PowerShell (`scripts/powershell/`)
+- [ ] CLI (`plaesy` binary — `scripts/cmd/plaesy/` and `scripts/internal/`)
 - [ ] template (`templates/`)
 - [ ] other: ____
 
@@ -25,8 +24,8 @@ What you expected to happen instead.
 
 **Environment**
 - OS:
-- Shell (bash/pwsh) + version:
-- Plaesy Spec-Kit version (`plaesy status` or `VERSION` file):
+- `plaesy status` output (version, install path):
+- Go version, if building from source (`go version`):
 
 **Additional context**
 Logs, screenshots, or anything else relevant.

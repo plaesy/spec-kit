@@ -83,14 +83,14 @@ Next todo list for this tasks
 - Move task file between status directories as work progresses
 - Update file timestamp on move (git will track this)
 - Don't delete tasks — move to appropriate directory status (`.plaesy/tasks/{status}/{topcis}.md`)
-- Use `.plaesy/scripts/bash/plaesy-task-manage.sh` (or the PowerShell twin) for a
-  manual/ad-hoc move — it moves the file and appends a `## Blocked Reason`
-  section automatically when moving to `blocked/`; a plain `mv` works too but
-  skips that annotation
+- Use `plaesy task-manage move <task_file> <from_status> <to_status>` (or
+  `plaesy task-manage block <task_file> [reason]` when moving to `blocked/`)
+  for a manual/ad-hoc move — `block` appends a `## Blocked Reason` section
+  automatically; a plain `mv` works too but skips that annotation
 
 ### Validating Memory Files
 
-Run `.plaesy/scripts/bash/plaesy-validate-memory.sh` (or the PowerShell twin)
+Run `plaesy validate-memory`
 after hand-editing `.plaesy/memory/*.md` files — it checks the self-containment
 rule (no external/absolute paths inside `.plaesy/memory/`). `/save` does not run
 this automatically; run it yourself when you've made a structural edit to

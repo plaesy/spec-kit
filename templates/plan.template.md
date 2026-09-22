@@ -207,8 +207,7 @@ _Prerequisites: research.md complete_
    - Quickstart test = story validation steps
 
 5. **Update agent file incrementally** (O(1) operation):
-   - **Linux/macOS**: Run `.plaesy/scripts/bash/update-agent-context.sh [claude|gemini|copilot]`
-   - **Windows**: Run `.plaesy/scripts/powershell/update-agent-context.ps1 [claude|gemini|copilot]`
+   - Run `plaesy update-agent-context [claude|gemini|copilot|cursor|qwen|opencode]` (single cross-platform command)
    - If exists: Add only NEW tech from current plan
    - Preserve manual additions between markers
    - Update recent changes (keep last 3)

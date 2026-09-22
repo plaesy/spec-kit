@@ -192,11 +192,11 @@ Before marking implementation complete, work through
 Do not rely on a hardcoded technology list and do not re-parse `mapping.json`
 yourself — `mapping.json` lives only in the spec-kit source (`instructions/mapping.json`);
 it is **not** copied into `.plaesy/`, so a per-project session can't read it directly.
-Detection is already implemented once, in `scripts/bash/detect-stack.sh` /
-`scripts/powershell/detect-stack.ps1` — reuse it instead of duplicating its logic:
+Detection is already implemented once, in the `plaesy detect-stack` command
+(`scripts/internal/detectstack/`) — reuse it instead of duplicating its logic:
 
-1. Run `detect-stack.sh <project-dir>` (or the `.ps1` twin) — it scans manifests,
-   imports, and spec/context files against `mapping.json` and prints one
+1. Run `plaesy detect-stack <project-dir>` — it scans manifests, imports, and
+   spec/context files against `mapping.json` and prints one
    `*.instructions.md` filename per line (always-load files plus every matched
    framework/language)
 2. **Name transform**: each printed name has the source-repo suffix

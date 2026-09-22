@@ -21,10 +21,10 @@ Each checklist is a Markdown file with `- [ ]` items grouped by category, plus q
 ## Usage
 
 ```bash
-../../scripts/bash/get-feature-paths.sh          # get current context
-../../scripts/bash/check-task-prerequisites.sh   # validate prerequisites
+plaesy get-feature-paths          # get current context
+plaesy check-task-prerequisites   # validate prerequisites
 # work through the relevant checklist
-../../scripts/bash/update-agent-context.sh       # record progress
+plaesy update-agent-context       # record progress
 ```
 
 ## Adding a checklist

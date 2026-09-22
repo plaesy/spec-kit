@@ -19,7 +19,7 @@ python-docx>=1.1      # core generation/manipulation
 docxtpl>=0.19          # only if using Jinja2 tag-based template filling
 ```
 - Pin exact versions in the project's `requirements.txt`/`pyproject.toml`
-- Optional: LibreOffice (`soffice` on PATH) for headless render validation — see `.plaesy/scripts/bash/validate-docx.sh` / `.plaesy/scripts/powershell/validate-docx.ps1`; not required for structural validation, only for the render check
+- Optional: LibreOffice (`soffice` on PATH) for headless render validation — see `plaesy validate-docx`; not required for structural validation, only for the render check
 
 ## Development Standards
 
@@ -45,7 +45,7 @@ docxtpl>=0.19          # only if using Jinja2 tag-based template filling
 ### Testing and Validation
 - Assert on paragraph count, heading text, and table structure after generation, not just successful save
 - Round-trip test for templates: fill → reload → verify placeholder text was fully replaced (no leftover `{{ }}` tags)
-- Immediately after generating the file, run it through `.plaesy/scripts/bash/validate-docx.sh <file.docx>` (bash) or `.plaesy/scripts/powershell/validate-docx.ps1 -DocxFile <file.docx>` (PowerShell) — do this as a normal step of the generation task, not something gated behind a pipeline
+- Immediately after generating the file, run it through `plaesy validate-docx <file.docx>` — do this as a normal step of the generation task, not something gated behind a pipeline
 
 ### Security
 - Never embed macros (`.docm`) unless explicitly required and reviewed

@@ -126,14 +126,14 @@ Generate each document separately using its type-specific focus:
 GOOD — verbatim identifier + cited location (match this style):
 
 ```markdown
-#### `get_plaesy_version()`
+#### `common.NormalizeVersion()`
 
-Resolves the plaesy version string at script load time.
+Sanitizes the plaesy version string.
 
-- **Location**: `scripts/bash/common.sh:9`
-- **Search order**: checks `./VERSION`, repo root, then `${HOME}/.plaesy/VERSION`; first hit wins (`scripts/bash/common.sh:23-35`)
-- **Fallback**: emits `0.0.0` when no valid semver is found (`scripts/bash/common.sh:37-48`)
-- **Caching**: result stored once in readonly `PLAESY_VERSION` (`scripts/bash/common.sh:51`)
+- **Location**: `scripts/internal/common/version.go:17`
+- **Build-time value**: `Version` is set via `-ldflags "-X .../common.Version=1.2.3"` (`scripts/internal/common/version.go:11`)
+- **Fallback**: emits `0.0.0` when no valid semver is found (`scripts/internal/common/version.go:19-21`)
+- **Caching**: none needed — `Version` is a package-level var set once at build time, not resolved at runtime (`scripts/internal/common/version.go:11`)
 ```
 
 BAD — reconstructed from memory (never emit this):

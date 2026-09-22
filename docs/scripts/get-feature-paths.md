@@ -1,28 +1,24 @@
-# get-feature-paths
+# plaesy get-feature-paths
 
-**Feature branch and path resolution utility.**
+**Feature branch and path resolution command.**
+
+Source: `scripts/cmd/plaesy/feature_paths.go` + `scripts/internal/featurepath/prereq.go` (`GetPathsReport`).
 
 ## Purpose
 
-Resolves the current feature branch and prints the paths to its spec/plan/tasks files, without creating anything. Used by other scripts and AI workflows to locate the active feature's documents.
+Resolves the current feature branch and prints the paths to its spec/plan/tasks
+files, without creating anything. Used by other commands and AI workflows to
+locate the active feature's documents.
 
 ## Quick Start
 
 ```bash
-# Bash
-./scripts/bash/get-feature-paths.sh
+plaesy get-feature-paths
 ```
 
-```powershell
-# PowerShell
-./scripts/powershell/get-feature-paths.ps1
-```
-
-Neither script takes any flags or arguments.
+Takes no flags or arguments.
 
 ## Output Format
-
-Both scripts print the same six `KEY: value` lines:
 
 ```
 REPO_ROOT: /home/user/project
@@ -33,39 +29,46 @@ IMPL_PLAN: /home/user/project/specs/001-user-authentication/plan.md
 TASKS: /home/user/project/specs/001-user-authentication/tasks.md
 ```
 
-Paths are not checked for existence — they are computed from the repo root and current branch name only (`specs/<branch>/...`).
+Paths are not checked for existence — they are computed from the repo root
+and current branch name only (`specs/<branch>/...`).
 
 ## Behavior When Not on a Feature Branch
 
-This is the one place bash and PowerShell diverge:
+This command always follows the old bash script's forgiving behavior (the
+Go port standardized on it, rather than porting the PowerShell script's
+stricter one — see "Migration note" below): it still prints all six lines
+(using the actual current branch, e.g. `BRANCH: main`), then appends
+`INFO: Not on a feature branch (format: XXX-feature-name)` and exits `0`.
 
-- **Bash**: still prints all six lines (using the actual current branch, e.g. `BRANCH: main`), then appends `INFO: Not on a feature branch (format: XXX-feature-name)` and exits `0`.
-- **PowerShell**: prints nothing and exits `1`.
-
-If `git rev-parse` fails entirely (e.g. not a git repo), the bash script falls back to `REPO_ROOT: $(pwd)`, `BRANCH: unknown` (or similar), `FEATURE_DIR: Not available`, etc., plus `INFO: Unable to determine feature paths`, and still exits `0`. The PowerShell script has no equivalent fallback — `$ErrorActionPreference = 'Stop'` means a git failure terminates it with an error instead.
+If `git rev-parse` fails entirely (e.g. not a git repo), it falls back to
+`REPO_ROOT: <cwd>`, `BRANCH: unknown`, `FEATURE_DIR: Not available`, etc.,
+plus `INFO: Unable to determine feature paths`, and still exits `0`.
 
 ## Usage in AI Workflows
 
 ```bash
-# Bash: load paths into shell variables, then read the spec
-eval "$(./scripts/bash/get-feature-paths.sh)"
-cat "$FEATURE_SPEC"
+# Load paths into shell variables (for a script that wants to source them)
+eval "$(plaesy get-feature-paths | sed -n 's/^\([A-Z_]*\): \(.*\)$/\1=\2/p')"
 ```
 
-```powershell
-# PowerShell: parse the KEY: value output into a hashtable
-$paths = ./scripts/powershell/get-feature-paths.ps1 |
-    ForEach-Object { $_ -split ': ', 2 } |
-    ForEach-Object -Begin { $h = @{} } -Process { $h[$_[0]] = $_[1] } -End { $h }
-Get-Content $paths.FEATURE_SPEC
-```
+For programmatic use from other Go code in this repo, call
+`common.GetFeaturePaths()` directly instead of shelling out — see
+[common.md](./common.md).
 
-## Known Issue (PowerShell)
+## Migration note
 
-`scripts/powershell/get-feature-paths.ps1` calls two helper functions — `Get-FeaturePathsEnv` and `Test-FeatureBranch` — that are not defined or exported by `scripts/powershell/common.ps1` (verified: neither name appears anywhere under `scripts/powershell/`, and `common.ps1`'s `Export-ModuleMember` list does not include them). As written, running the script raises a "command not found" error rather than producing output. `scripts/powershell/check-task-prerequisites.ps1` has the same dependency and is equally affected. This needs a fix in `common.ps1` (or the two scripts) before the PowerShell path works; the bash script (`common.sh`'s `get_feature_paths` / `check_feature_branch`) is unaffected.
+The old PowerShell script (`get-feature-paths.ps1`) diverged from bash here:
+it printed nothing and exited `1` when not on a feature branch, and had a
+known bug (it called two helper functions, `Get-FeaturePathsEnv` and
+`Test-FeatureBranch`, that were never defined anywhere in
+`scripts/powershell/`, so the script actually errored out with "command not
+found" rather than running at all). The Go port fixes that bug by
+construction — there is one implementation, not two to keep in sync — and
+adopts the bash script's always-exit-0, always-print-something behavior as
+the single correct behavior going forward.
 
-## Related Scripts
+## Related Commands
 
-- **create-new-feature.sh / .ps1** — creates the feature branch and directory this script reads
-- **check-task-prerequisites.sh / .ps1** — validates the files this script points to actually exist
-- **plaesy-analyze.sh / .ps1** — broader project analysis
+- **`plaesy create-new-feature`** — creates the feature branch and directory this command reads (see [create-new-feature.md](./create-new-feature.md))
+- **`plaesy check-task-prerequisites`** — validates the files this command points to actually exist (see [check-task-prerequisites.md](./check-task-prerequisites.md))
+- **`plaesy analyze`** — broader project analysis (see [plaesy-analyze.md](./plaesy-analyze.md))

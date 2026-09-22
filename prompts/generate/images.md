@@ -57,20 +57,16 @@ attempt the API call without a key — it will just fail noisily.
 
 ### Step 3: Generate
 
-Run the platform-appropriate script, never call the provider API ad hoc inline
-— the scripts already handle encoding, sizing, and error surfacing:
+Run the `plaesy generate-image` command, never call the provider API ad hoc
+inline — the command already handles encoding, sizing, and error surfacing:
 
 ```bash
-# bash
-scripts/bash/generate-image.sh --prompt "<composed prompt>" --provider openai --size 1024x1024 --out assets/images/empty-inbox.png
+plaesy generate-image --prompt "<composed prompt>" --provider openai --size 1024x1024 --out assets/images/empty-inbox.png
 ```
 
-```powershell
-# PowerShell
-scripts/powershell/generate-image.ps1 -Prompt "<composed prompt>" -Provider openai -Size 1024x1024 -Out assets/images/empty-inbox.png
-```
+This is a single cross-platform command — no separate bash/PowerShell variant.
 
-For `--n > 1`, invoke the script once per variant with a `-1`/`-2`/… suffix on
+For `--n > 1`, invoke the command once per variant with a `-1`/`-2`/… suffix on
 `--out`, not a single call — keeps each failure isolated and reportable.
 
 ### Step 4: Validate & Report

@@ -19,7 +19,7 @@ python-pptx>=1.0.2      # core generation/manipulation
 Pillow>=10.0             # only if resizing/compressing images before embedding
 ```
 - Pin exact versions in the project's `requirements.txt`/`pyproject.toml`; `python-pptx` 1.0.x targets Python 3.8+ and current OOXML — verify against the project's Python version before pinning
-- Optional: LibreOffice (`soffice` on PATH) for headless render validation — see `.plaesy/scripts/bash/validate-pptx.sh` / `.plaesy/scripts/powershell/validate-pptx.ps1`; not required for structural validation, only for the render check
+- Optional: LibreOffice (`soffice` on PATH) for headless render validation — see `plaesy validate-pptx`; not required for structural validation, only for the render check
 
 ## Development Standards
 
@@ -48,7 +48,7 @@ Pillow>=10.0             # only if resizing/compressing images before embedding
 - Validate the deck's structure (slide count, required placeholders present) before returning it as "done" — treat this as a quality gate, not an afterthought
 
 ### Testing and Validation
-- Immediately after generating the file, run it through `.plaesy/scripts/bash/validate-pptx.sh <file.pptx> [expected_slide_count]` (bash) or `.plaesy/scripts/powershell/validate-pptx.ps1 -PptxFile <file.pptx> [-ExpectedSlides <int>]` (PowerShell) — do this as a normal step of the generation task, not something gated behind a pipeline. It always runs structural validation (opens the file via `python-pptx`, checks slide count/placeholders) and additionally headless-renders via LibreOffice when `soffice` is on PATH, catching corruption that the object model alone would miss
+- Immediately after generating the file, run it through `plaesy validate-pptx <file.pptx> [expected_slide_count]` — do this as a normal step of the generation task, not something gated behind a pipeline. It always runs structural validation (opens the file via `python-pptx`, checks slide count/placeholders) and additionally headless-renders via LibreOffice when `soffice` is on PATH, catching corruption that the object model alone would miss
 - For one-off/manual generation, running the script once right after `build()` is enough — no need to wire it into CI unless the generation runs repeatedly or unattended
 - Assert on shape counts, placeholder text, and slide count in tests — not just "file was written without exception"
 

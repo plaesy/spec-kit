@@ -20,7 +20,7 @@ XlsxWriter>=3.2       # write-only, large from-scratch datasets (pick per scenar
 pandas>=2.0           # optional — only if the data is naturally a DataFrame
 ```
 - Pin exact versions in the project's `requirements.txt`/`pyproject.toml`
-- Optional: LibreOffice (`soffice` on PATH) for headless render validation — see `.plaesy/scripts/bash/validate-xlsx.sh` / `.plaesy/scripts/powershell/validate-xlsx.ps1`; not required for structural validation, only for the render check
+- Optional: LibreOffice (`soffice` on PATH) for headless render validation — see `plaesy validate-xlsx`; not required for structural validation, only for the render check
 
 ## Development Standards
 
@@ -47,7 +47,7 @@ pandas>=2.0           # optional — only if the data is naturally a DataFrame
 ### Testing and Validation
 - Assert on sheet names, header rows, and a sample of data cells after generation — not just successful save
 - For files intended to be reopened and edited by users, round-trip test: write → reload with `openpyxl` → verify structure survives
-- Immediately after generating the file, run it through `.plaesy/scripts/bash/validate-xlsx.sh <file.xlsx> [expected_sheet_names...]` (bash) or `.plaesy/scripts/powershell/validate-xlsx.ps1 -XlsxFile <file.xlsx> [-ExpectedSheets <string[]>]` (PowerShell) — do this as a normal step of the generation task, not something gated behind a pipeline
+- Immediately after generating the file, run it through `plaesy validate-xlsx <file.xlsx> [expected_sheet_name...]` — do this as a normal step of the generation task, not something gated behind a pipeline
 
 ### Security
 - Never enable or write VBA macros (`.xlsm`) unless explicitly required and reviewed

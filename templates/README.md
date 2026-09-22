@@ -16,9 +16,9 @@ Reusable document skeletons for the Spec-Kit workflow. `template-registry.json` 
 | [agent-file-template.md](agent-file-template.md) | AI agent context file |
 
 **Note on task tracking**: the three templates above describe a richer
-epic/story/JSON-status model that `scripts/bash/plaesy-task-manage.sh` (and its
-PowerShell twin) do **not** implement — those scripts only move flat `.md` files
-between `.plaesy/tasks/{backlog,todo,doing,done,blocked}/`, with no epic/story
+epic/story/JSON-status model that the `plaesy task-manage` command does **not**
+implement — it only moves flat `.md` files between
+`.plaesy/tasks/{backlog,todo,doing,done,blocked}/`, with no epic/story
 nesting and no JSON status fields populated or read. Treat these three templates
 as a design reference for a possible future task model, not the current one;
 the flat `.plaesy/tasks/{status}/*.md` layout (see `.plaesy/instructions/tasks.md`)

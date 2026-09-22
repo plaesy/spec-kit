@@ -1,64 +1,67 @@
 # Plaesy Scripts Documentation
 
-**Complete guide to Plaesy Spec-Kit automation scripts.**
+**Complete guide to the `plaesy` CLI.**
 
 **Framework Version: 0.0.1**
 
+The framework's automation is a single cross-platform Go binary, `plaesy`
+(source: `scripts/cmd/plaesy` + `scripts/internal/`). There is no longer a
+separate bash and PowerShell implementation to keep in sync — one binary,
+one set of behavior, on Linux/macOS/Windows. Build it with:
+
+```bash
+cd scripts && go build -o plaesy ./cmd/plaesy
+```
+
 ## Quick Navigation
 
-### **Script Documentation**
+### **Command Documentation**
 
-| Script | Purpose | AI Priority | Documentation |
-|--------|---------|-------------|---------------|
-| **[plaesy-init.md](./plaesy-init.md)** | Project initialization & AI platform setup | **HIGH** | Platform detection and setup |
-| **[config-manager.md](./config-manager.md)** | AI platform configuration management | **MEDIUM** | Platform configs management |
-| **[platform-detector.md](./platform-detector.md)** | PowerShell auto-detection feature | **MEDIUM** | Windows platform detection |
-| **[plaesy-clean.md](./plaesy-clean.md)** | Project cleanup and reset | **MEDIUM** | Clean project state |
-| **[plaesy-analyze.md](./plaesy-analyze.md)** | Project structure analysis | **CRITICAL** | AI-optimized project analysis |
-| **[update-agent-context.md](./update-agent-context.md)** | AI context synchronization | **CRITICAL** | Multi-platform AI context |
-| **[get-feature-paths.md](./get-feature-paths.md)** | Feature path resolution | **CRITICAL** | Current feature context |
-| **[check-task-prerequisites.md](./check-task-prerequisites.md)** | Development validation | **CRITICAL** | Prerequisites checking |
-| **[create-new-feature.md](./create-new-feature.md)** | Feature branch creation | **HIGH** | Feature workflow setup |
-| **[inject-ai-headers.md](./inject-ai-headers.md)** | AI header optimization | **MEDIUM** | Platform-specific headers |
-| **[install.md](./install.md)** | System installation | **HIGH** | Framework installation |
-| **[common.md](./common.md)** | Common functions library | **CRITICAL** | Shared utilities and constants |
-| **[plaesy-graph.md](./plaesy-graph.md)** | Repo knowledge-graph builder (nodes/edges, queries, impact check) | **MEDIUM** | Codebase relationship analysis |
-| **[plaesy-trim.md](./plaesy-trim.md)** | Token/context compression (command output + memory files) | **MEDIUM** | Reduce token spend per session |
+| Doc | Command(s) documented | Purpose | AI Priority |
+|-----|------------------------|---------|-------------|
+| **[plaesy-init.md](./plaesy-init.md)** | `plaesy init` | Project initialization & AI platform setup | **HIGH** |
+| **[config-manager.md](./config-manager.md)** | `plaesy config <subcommand>` | AI platform configuration management | **MEDIUM** |
+| **[plaesy-clean.md](./plaesy-clean.md)** | `plaesy clean` | Project cleanup and reset | **MEDIUM** |
+| **[plaesy-analyze.md](./plaesy-analyze.md)** | `plaesy analyze` | Project structure analysis | **CRITICAL** |
+| **[update-agent-context.md](./update-agent-context.md)** | `plaesy update-agent-context` | AI context synchronization | **CRITICAL** |
+| **[get-feature-paths.md](./get-feature-paths.md)** | `plaesy get-feature-paths` | Feature path resolution | **CRITICAL** |
+| **[check-task-prerequisites.md](./check-task-prerequisites.md)** | `plaesy check-task-prerequisites` | Development validation | **CRITICAL** |
+| **[create-new-feature.md](./create-new-feature.md)** | `plaesy create-new-feature` | Feature branch creation | **HIGH** |
+| **[inject-ai-headers.md](./inject-ai-headers.md)** | `plaesy inject-ai-headers` | AI header optimization | **MEDIUM** |
+| **[install.md](./install.md)** | `plaesy install` / `uninstall` / `repair` / `upgrade` / `status` | Binary installation & self-management | **HIGH** |
+| **[common.md](./common.md)** | `internal/common` package | Shared logging/validation/git helpers used by every command | **CRITICAL** |
+| **[plaesy-graph.md](./plaesy-graph.md)** | `plaesy graph` | Repo knowledge-graph builder (nodes/edges, queries, impact check) | **MEDIUM** |
+| **[plaesy-trim.md](./plaesy-trim.md)** | `plaesy trim <subcommand>` | Token/context compression (command output + memory files) | **MEDIUM** |
+
+`platform-detector.md` was removed: it documented a Windows-only PowerShell
+auto-detection helper (`platform-detector.ps1`) that has no Go equivalent —
+`plaesy config detect-platform` now covers platform detection on every OS.
 
 ### **Quick Start for AI Assistants**
 
-**MANDATORY SEQUENCE** - Always run this when encountering a Plaesy project:
+**MANDATORY SEQUENCE** — Always run this when encountering a Plaesy project:
 ```bash
 # 1. Understand project structure (CRITICAL)
-#    Analyze does not copy instructions; plaesy-init performs instruction auto-load.
-./scripts/bash/plaesy-analyze.sh
+#    Analyze does not copy instructions; plaesy init performs instruction auto-load.
+plaesy analyze
 
 # 2. Get current feature context
-./scripts/bash/get-feature-paths.sh
+plaesy get-feature-paths
 
 # 3. Validate development setup
-./scripts/bash/check-task-prerequisites.sh
+plaesy check-task-prerequisites
 
 # 4. Update AI context understanding
-./scripts/bash/update-agent-context.sh
+plaesy update-agent-context
 ```
 
-**📌 Note**: `plaesy-init` (not `plaesy-analyze`) detects project technologies and auto-copies relevant instructions from `instructions/mapping.json` to `.plaesy/instructions/`. Run `plaesy init` first to set up the instruction set, then `plaesy analyze` for project structure analysis.
+**📌 Note**: `plaesy init` (not `plaesy analyze`) detects project technologies
+and auto-copies relevant instructions from `instructions/mapping.json` to
+`.plaesy/instructions/`. Run `plaesy init` first to set up the instruction
+set, then `plaesy analyze` for project structure analysis.
 
-**Windows PowerShell Alternative:**
-```powershell
-# 1. Understand project structure (CRITICAL)
-.\scripts\powershell\plaesy-analyze.ps1
-
-# 2. Get current feature context
-.\scripts\powershell\get-feature-paths.ps1
-
-# 3. Validate development setup
-.\scripts\powershell\check-task-prerequisites.ps1
-
-# 4. Update AI context understanding
-.\scripts\powershell\update-agent-context.ps1
-```
+The same four commands run identically on Linux, macOS, and Windows — no
+separate PowerShell invocation is needed anymore.
 
 ## AI Assistant Essential Information
 
@@ -66,7 +69,7 @@
 
 1. **`.plaesy/analysis/project.json`** - AI-optimized project summary
 2. **`.plaesy/analysis/project.structure.json`** - Complete project structure
-3. **`.plaesy/analysis/project.graph.json`** - Dependency graph (nodes + edges; built by `plaesy-analyze` automatically, queryable via `plaesy-graph`)
+3. **`.plaesy/analysis/project.graph.json`** - Dependency graph (nodes + edges; built by `plaesy analyze` automatically, queryable via `plaesy graph`)
 4. **`specs/[feature-name]/plan.md`** - Current feature implementation plan
 5. **Platform-specific AI contexts** (`CLAUDE.md`, `.github/copilot-instructions.md`, etc.)
 
@@ -81,42 +84,34 @@ Plaesy automatically detects AI platforms and applies appropriate configurations
 - **Continue.dev** → `.continue/` directory
 - **And 10+ other platforms** with optimized configurations
 
-### **Enhanced PowerShell Support (v2.0)**
+## Command Architecture
 
-All scripts now have full PowerShell equivalents with enhanced features:
+### **Single Binary, Registry-based Commands**
 
-| Feature | Bash | PowerShell |
-|---------|------|------------|
-| **Platform Detection** | Automatic | Automatic |
-| **Configuration Management** | config-manager.sh | config-manager.ps1 |
-| **Error Handling** | `set -euo pipefail` | `$ErrorActionPreference = "Stop"` |
-| **Parameter Binding** | Manual parsing | PowerShell parameters |
-| **Cross-Platform** | Linux/macOS | Windows/Linux/macOS |
-| **Output Formatting** | Color + Emojis | Color Only (Professional) |
+`plaesy` is a [cobra](https://github.com/spf13/cobra) CLI. Every subcommand
+lives in its own file under `scripts/cmd/plaesy/` and registers itself via
+`init() { register(new<Name>Cmd()) }` (see `scripts/cmd/plaesy/registry.go`)
+— so `main.go` never needs editing when a command is added or changed. Each
+command's actual logic lives in a matching package under
+`scripts/internal/<name>/`, reusing `scripts/internal/common` for logging,
+git-repo resolution, and validation.
 
-## PowerShell Script Development Guidelines
+List every available command:
+```bash
+plaesy --help
+```
 
-### **IMPORTANT: No Emojis in PowerShell Scripts**
-
-**CRITICAL**: PowerShell scripts have encoding issues with emojis that cause runtime errors. When creating or modifying PowerShell scripts:
-
-- **NEVER** use emojis (🎉📁🔍✅🚀❌⏰📚🏛️) in PowerShell scripts
-- **ALWAYS** use text-based indicators instead: `[INFO]`, `[SUCCESS]`, `[WARNING]`, `[ERROR]`
-- **USE** color formatting with `-ForegroundColor` for visual distinction
-- **REASON**: Emojis cause encoding and execution errors in Windows PowerShell environments
-
-### **PowerShell vs Bash Script Differences**
-
-- **Bash scripts** can safely use emojis (UTF-8 supported)
-- **PowerShell scripts** must avoid emojis due to Windows encoding limitations
-- **Both** should use consistent color schemes and text formatting
-- **Both** follow platform.json mapping for configuration
-
-## Enhanced Script Features (v2.0)
+Get flags/usage for one command:
+```bash
+plaesy <command> --help
+```
 
 ### **Configuration-Driven Architecture**
 
-All scripts now use centralized configuration through `platform.json`:
+Platform behavior (which files go where for Claude Code, Copilot, Cursor,
+etc.) is centralized in `scripts/configs/platform.json` and read via
+`plaesy config <subcommand>` — used internally by `plaesy init` and
+`plaesy clean`:
 
 ```json
 {
@@ -142,10 +137,7 @@ All scripts now use centralized configuration through `platform.json`:
         "prompts": ".claude/commands",
         "chatmodes": ".claude/roles"
       },
-      "detection_patterns": [
-        ".claude/",
-        "CLAUDE.md"
-      ]
+      "detection_patterns": [".claude/", "CLAUDE.md"]
     }
   }
 }
@@ -175,237 +167,83 @@ Enhanced platform support with multiple AI platforms:
 18. **LM Studio** - Local AI, model management
 19. **Generic AI** - Universal compatibility, basic automation
 
-### **Advanced Error Handling**
-
-#### Bash Error Handling
-```bash
-# Strict error handling
-set -euo pipefail
-
-# Trap-based cleanup
-cleanup() {
-    local exit_code=$?
-    if [ $exit_code -ne 0 ]; then
-        echo "[ERROR] Operation failed with exit code $exit_code" >&2
-    fi
-}
-trap cleanup EXIT
-```
-
-#### PowerShell Error Handling
-```powershell
-# Strict error handling
-$ErrorActionPreference = "Stop"
-$ProgressPreference = "SilentlyContinue"
-
-# Trap-based cleanup
-function Invoke-Cleanup {
-    param([int]$ExitCode = $LASTEXITCODE)
-    if ($ExitCode -ne 0) {
-        Write-Host "[ERROR] Operation failed with exit code $ExitCode" -ForegroundColor Red
-    }
-}
-trap {
-    Invoke-Cleanup -ExitCode $_.Exception.HResult
-}
-```
-
 ## Common Workflows
 
 ### **New Feature Development**
 
-#### Bash Workflow
 ```bash
 # 1. Create feature
-./scripts/bash/create-new-feature.sh "Feature description"
+plaesy create-new-feature "Feature description"
 
 # 2. Run critical sequence
-./scripts/bash/plaesy-analyze.sh
-./scripts/bash/get-feature-paths.sh
-./scripts/bash/check-task-prerequisites.sh
-./scripts/bash/update-agent-context.sh
-```
-
-#### PowerShell Workflow
-```powershell
-# 1. Create feature
-.\scripts\powershell\create-new-feature.ps1 "Feature description"
-
-# 2. Run critical sequence
-.\scripts\powershell\plaesy-analyze.ps1
-.\scripts\powershell\get-feature-paths.ps1
-.\scripts\powershell\check-task-prerequisites.ps1
-.\scripts\powershell\update-agent-context.ps1
+plaesy analyze
+plaesy get-feature-paths
+plaesy check-task-prerequisites
+plaesy update-agent-context
 ```
 
 ### **AI Platform Setup**
 
-#### Bash Setup
 ```bash
 # Initialize with specific AI platform
-./scripts/bash/plaesy-init.sh . --ai claude_code
+plaesy init . --ai claude_code
 
 # Optimize AI headers
-./scripts/bash/inject-ai-headers.sh --ai claude --target . --backup
-```
-
-#### PowerShell Setup
-```powershell
-# Initialize with specific AI platform
-.\scripts\powershell\plaesy-init.ps1 -Target . -AI claude_code
-
-# Optimize AI headers
-.\scripts\powershell\inject-ai-headers.ps1 -AI claude -Target . -Backup
+plaesy inject-ai-headers --ai claude --target . --backup
 ```
 
 ### **Project Cleanup**
 
-#### Bash Cleanup
 ```bash
 # Safe cleanup with preview
-./scripts/bash/plaesy-clean.sh --dry-run
+plaesy clean --dry-run
 
 # Complete cleanup for specific platform
-./scripts/bash/plaesy-clean.sh --level thorough --ai claude_code --yes
+plaesy clean --level thorough --ai claude_code --yes
 ```
 
-#### PowerShell Cleanup
-```powershell
-# Safe cleanup with preview
-.\scripts\powershell\plaesy-clean.ps1 -DryRun
+### **Installing the CLI**
 
-# Complete cleanup for specific platform
-.\scripts\powershell\plaesy-clean.ps1 -Level thorough -AI claude_code -Yes
-```
-
-### **Project Installation**
-
-#### Bash Installation
-```bash
-# Linux/macOS installation
-curl -fsSL https://raw.githubusercontent.com/plaesy/spec-kit/main/scripts/install.sh | bash
-
-# Local installation
-./scripts/bash/install.sh
-```
-
-#### PowerShell Installation
-```powershell
-# Windows installation
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& { iwr https://raw.githubusercontent.com/plaesy/spec-kit/main/scripts/install.ps1 | iex }"
-
-# Local installation
-.\scripts\powershell\install.ps1
-```
-
-## Script Architecture
-
-### **Configuration Management**
-
-All scripts use centralized configuration management:
+There is no published release yet — build from source, then let the binary
+install itself to a well-known bin directory:
 
 ```bash
-# Bash: Use config-manager.sh
-CONFIG_MANAGER="$(dirname "$0")/config-manager.sh"
-platforms=$("$CONFIG_MANAGER" "list-platforms")
-platform_name=$("$CONFIG_MANAGER" "get-platform-config" "$platform" "name")
-```
-
-```powershell
-# PowerShell: Use config-manager.ps1
-$ConfigManager = Join-Path $ScriptDir "config-manager.ps1"
-$platforms = & $ConfigManager "list-platforms"
-$platformName = & $ConfigManager "get-platform-config" $platform "name"
-```
-
-### **Platform Detection**
-
-Advanced platform detection using multiple methods:
-
-1. **File-based detection** - Check for platform-specific files
-2. **Directory detection** - Look for platform directories
-3. **Configuration detection** - Parse configuration files
-4. **Environment detection** - Check environment variables
-5. **User preference** - Respect user-specified platforms
-
-### **Dynamic File Mapping**
-
-Platform-specific file mapping based on configuration:
-
-```bash
-# Bash: Dynamic file copying
-for mapping_type in "${mapping_types[@]}"; do
-    target_path=$("$CONFIG_MANAGER" "get-mapping-value" "$platform" "$mapping_type")
-    if [[ -n "$target_path" && "$target_path" != "null" ]]; then
-        # Copy files with appropriate extensions
-    fi
-done
-```
-
-```powershell
-# PowerShell: Dynamic file copying
-foreach ($mappingType in $mappingTypes) {
-    $targetPath = & $ConfigManager "get-mapping-value" $platform $mappingType
-    if ($targetPath -and $targetPath -ne "null") {
-        # Copy files with appropriate extensions
-    }
-}
+cd scripts && go build -o plaesy ./cmd/plaesy
+./plaesy install    # copies itself into ~/.local/bin (or the Windows equivalent)
+plaesy status        # verify install location, PATH, and version
 ```
 
 ## Integration Examples
 
 ### **CI/CD Integration**
 
-#### GitHub Actions (Bash)
 ```yaml
 - name: Setup Plaesy
   run: |
-    ./scripts/bash/plaesy-init.sh --ai claude_code
-    ./scripts/bash/update-agent-context.sh
+    plaesy init --ai claude_code
+    plaesy update-agent-context
 
 - name: Analyze Project
-  run: ./scripts/bash/plaesy-analyze.sh
+  run: plaesy analyze
 
 - name: Cleanup
-  run: ./scripts/bash/plaesy-clean.sh --yes --level safe
-```
-
-#### GitHub Actions (PowerShell)
-```yaml
-- name: Setup Plaesy
-  shell: pwsh
-  run: |
-    .\scripts\powershell\plaesy-init.ps1 -AI claude_code
-    .\scripts\powershell\update-agent-context.ps1
-
-- name: Analyze Project
-  shell: pwsh
-  run: .\scripts\powershell\plaesy-analyze.ps1
-
-- name: Cleanup
-  shell: pwsh
-  run: .\scripts\powershell\plaesy-clean.ps1 -Yes -Level safe
+  run: plaesy clean --yes --level safe
 ```
 
 ### **Docker Integration**
 
-#### Dockerfile (Multi-platform)
 ```dockerfile
-# Install Plaesy Spec-Kit
+# Build Plaesy from source and install it
 COPY scripts/ /opt/plaesy/scripts/
-RUN chmod +x /opt/plaesy/scripts/bash/*.sh
+RUN cd /opt/plaesy/scripts && go build -o /usr/local/bin/plaesy ./cmd/plaesy
 
 # Initialize with Claude Code
-RUN /opt/plaesy/scripts/bash/plaesy-init.sh --ai claude_code --target /app
+RUN plaesy init --ai claude_code --target /app
 
-# Set working directory
 WORKDIR /app
-
-# Run analysis
-CMD ["/opt/plaesy/scripts/bash/plaesy-analyze.sh"]
+CMD ["plaesy", "analyze"]
 ```
 
-#### Docker Compose
 ```yaml
 version: '3.8'
 services:
@@ -416,7 +254,7 @@ services:
       - plaesy-cache:/root/.cache/claude
     environment:
       - AI_PLATFORM=claude_code
-    command: /opt/plaesy/scripts/bash/update-agent-context.sh
+    command: plaesy update-agent-context
 ```
 
 ### **VS Code Integration**
@@ -429,7 +267,7 @@ services:
         {
             "label": "Plaesy: Analyze Project",
             "type": "shell",
-            "command": "./scripts/bash/plaesy-analyze.sh",
+            "command": "plaesy analyze",
             "group": "build",
             "presentation": {
                 "echo": true,
@@ -441,28 +279,7 @@ services:
         {
             "label": "Plaesy: Update Context",
             "type": "shell",
-            "command": "./scripts/bash/update-agent-context.sh",
-            "group": "build"
-        }
-    ]
-}
-```
-
-#### PowerShell (Windows)
-```json
-{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Plaesy: Analyze Project",
-            "type": "shell",
-            "command": ".\\scripts\\powershell\\plaesy-analyze.ps1",
-            "group": "build"
-        },
-        {
-            "label": "Plaesy: Update Context",
-            "type": "shell",
-            "command": ".\\scripts\\powershell\\update-agent-context.ps1",
+            "command": "plaesy update-agent-context",
             "group": "build"
         }
     ]
@@ -473,63 +290,35 @@ services:
 
 ### **Common Issues**
 
-1. **Permission Denied (Bash)**
+1. **`plaesy: command not found`**
    ```bash
-   # Make scripts executable
-   chmod +x scripts/bash/*.sh
+   # Confirm the binary landed on PATH after `plaesy install`
+   plaesy status
    ```
 
-2. **PowerShell Execution Policy**
-   ```powershell
-   # Set execution policy
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-   ```
-
-3. **Configuration Not Found**
+2. **Configuration Not Found**
    ```bash
    # Check platform.json exists
    ls -la scripts/configs/platform.json
 
    # Validate configuration
-   ./scripts/bash/config-manager.sh validate
-   ```
-
-4. **Config Manager Missing**
-   ```bash
-   # Ensure config-manager exists
-   ls -la scripts/bash/config-manager.sh
-   ls -la scripts/powershell/config-manager.ps1
+   plaesy config validate
    ```
 
 ### **Debug Mode**
 
-#### Bash Debug
+Set `PLAESY_DEBUG=true` to enable debug-level log lines, and `PLAESY_LOG_FILE=<path>`
+to additionally write logs to a file (see `scripts/internal/common/logging.go`):
+
 ```bash
-# Enable debug mode
-bash -x ./scripts/bash/plaesy-init.sh
-
-# Verbose output
-./scripts/bash/plaesy-analyze.sh --verbose
-```
-
-#### PowerShell Debug
-```powershell
-# Enable debug mode
-powershell -NoProfile -Command "& { .\scripts\powershell\plaesy-init.ps1 -DebugMode }"
-
-# Verbose output
-.\scripts\powershell\plaesy-analyze.ps1 -Verbose
+PLAESY_DEBUG=true plaesy analyze
 ```
 
 ## Version Information
 
 - **Framework Version**: 0.0.1
-- **Configuration Format**: platform.json v1.0
-- **Bash Scripts**: Production-ready scripts
-- **PowerShell Scripts**: Cross-platform compatible scripts
-- **Supported Platforms**: Multiple AI platforms
-- **Configuration**: Centralized, mapping-based
-- **Error Handling**: Comprehensive with trap support
+- **Implementation**: single Go binary (`plaesy`), Go standard library only — no bash/PowerShell scripts remain
+- **Configuration**: Centralized, mapping-based (`scripts/configs/platform.json`)
 - **Documentation**: Complete with examples and troubleshooting
 
 ## Security Considerations
@@ -537,51 +326,33 @@ powershell -NoProfile -Command "& { .\scripts\powershell\plaesy-init.ps1 -DebugM
 - **Path Validation**: All paths validated before use
 - **Permission Checks**: Read/write permissions verified
 - **Input Sanitization**: User inputs validated and sanitized
-- **Backup Safety**: Automatic backups before destructive operations
+- **Backup Safety**: `plaesy clean` and `plaesy inject-ai-headers` create backups before destructive operations by default
 - **Error Handling**: Comprehensive error handling prevents data loss
-- **Configuration Security**: Platform configurations validated
-- **Cross-Platform Safety**: Scripts work safely across platforms
 
 ## Migration Guide
 
-### **From v1.0 to v2.0**
+### **From the bash/PowerShell scripts to the Go CLI**
 
-1. **Enhanced PowerShell Support**: Full PowerShell equivalents for all scripts
-2. **Configuration-Driven Architecture**: All scripts use platform.json
-3. **Improved Platform Detection**: Better automatic platform detection
-4. **Enhanced Error Handling**: Trap-based error handling
-5. **Cross-Platform Compatibility**: Better Windows support
-6. **Professional Output**: Removed emojis from PowerShell scripts
-7. **Comprehensive Documentation**: Updated documentation for all scripts
+The `scripts/bash/*.sh` and `scripts/powershell/*.ps1` scripts have been
+removed entirely and replaced by the single `plaesy` binary. All prior
+command-line options and behavior were preserved 1:1 where the Go port
+found a direct equivalent; a few deliberate deviations exist (documented
+in each command's own doc page) — most notably `plaesy repair` and
+`plaesy upgrade` are not yet implemented (the old bash self-update flow
+depended on a `git clone`-based install model that no longer applies) and
+print a clear "not yet implemented" message instead.
 
-### **Breaking Changes**
-
-- **None** - All existing command-line options preserved
-- **Enhanced** - New features added without breaking compatibility
-- **Improved** - Better error handling and validation
-
-### **Manual Migration**
-
-If upgrading an existing project:
+If you have an existing project that was set up with the old scripts,
+re-run the equivalent Go commands — the on-disk `.plaesy/` structure and
+platform files are unchanged:
 
 ```bash
 # Re-initialize to update configuration
-./scripts/bash/plaesy-init.sh . --ai your_current_platform
+plaesy init . --ai your_current_platform
 
 # Update context
-./scripts/bash/update-agent-context.sh
+plaesy update-agent-context
 
 # Verify setup
-./scripts/bash/plaesy-analyze.sh
-```
-
-```powershell
-# Re-initialize to update configuration
-.\scripts\powershell\plaesy-init.ps1 -Target . -AI your_current_platform
-
-# Update context
-.\scripts\powershell\update-agent-context.ps1
-
-# Verify setup
-.\scripts\powershell\plaesy-analyze.ps1
+plaesy analyze
 ```
