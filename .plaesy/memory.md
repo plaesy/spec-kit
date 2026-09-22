@@ -1,13 +1,16 @@
 ---
 title: "Memory & Knowledge Index"
 description: "Central index for project memory, guidance, and reference"
-updatedAt: "2026-09-22T06:28:50Z"
+updatedAt: "2026-09-23T00:00:00Z"
 ---
 
 # Memory Index & Navigation
 
-**Project:** Plaesy Spec-Kit (framework repo, dogfooding its own `plaesy init`)  
-**Last Updated:** 2026-09-22 (/save checkpoint; Graft and Spec-Kit architecture review)
+**Project:** Plaesy Constitution Kit (framework repo, dogfooding its own `plaesy init`) —
+renamed from "Plaesy Spec-Kit" 2026-09-23, README scope only so far; see
+[[assess-marketing-2026-09-23]] decision log for remaining rename scope (docs/
+CHANGELOG/repo-rename still undecided).
+**Last Updated:** 2026-09-23 (/save checkpoint; rebrand, analyzer default flip, design+marketing assessments)
 **Purpose:** Central index for project memory, guidance, and reference
 
 ---
@@ -58,6 +61,8 @@ updatedAt: "2026-09-22T06:28:50Z"
 - A `mapping.json` category entry can also carry a `"filenames"` array (exact-filename presence, e.g. `next.config.js`) for when the reliable signal is a config file's name rather than content, and the tech's own name is too generic/prose-colliding for a keyword. Never embed a literal `"` inside a `"keywords"` entry — bash's naive quote-stripping mangles it silently. In `detect-stack.ps1`, never pass a `HashSet[string]` directly to `Get-ChildItem -Include` — pipe through `ForEach-Object { $_ }` to an array first or it silently matches nothing. In `plaesy-init.sh`'s `copy_instructions()`, always scan `"."`, never its own `$target_dir` param (that's the `.plaesy` destination). See [[stack-detection-fixes-2026-09-17]]
 - A scoped prompt that needs to actually execute something (not just reason in text) shells out to a real script under `scripts/{bash,powershell}/` — never fabricates a result path/output; a missing precondition (API key, tool on PATH) means stop and say exactly what's missing, never degrade silently or pretend success. See [[generate-images-and-static-site-2026-09-18]]
 - Plain HTML sites with no generator config file (`astro.config.*`, `_config.yml`, etc.) are NOT auto-detected by `static-site` in `mapping.json` — `.html` alone is too broad/collision-prone a signal; deliberately left as a known limitation rather than a false-positive-prone heuristic. See [[generate-images-and-static-site-2026-09-18]]
+- `plaesy analyze`'s fingerprint fast-path (skip regeneration when nothing changed) is the DEFAULT for both `plaesy-analyze.sh` and `.ps1`, not opt-in — `--force`/`-Force` is the only way to force full regeneration; `--if-changed`/`-IfChanged` is kept as an accepted no-op flag for backward compatibility only. Matches `plaesy-graph.sh`'s existing default. Any prompt citing `.plaesy/analysis/overview.md` as evidence (`/continue`, `/assess`) must call `plaesy analyze` first — it's cheap when unchanged, so call unconditionally rather than trying to detect staleness yourself. See [[graft-assessment-and-analyzer-gaps-2026-09-22]]
+- Only human-reviewable analyzer output (`overview.md`, `project.json`, `project.structure.json`) is git-tracked — regenerated cache artifacts (`.plaesy/analysis/.edges.tsv`, `.nodes.tsv`, `.analysis-fingerprint`) are gitignored, never committed. See [[graft-assessment-and-analyzer-gaps-2026-09-22]]
 
 ---
 
@@ -83,5 +88,5 @@ updatedAt: "2026-09-22T06:28:50Z"
 
 ---
 
-**Status:** Memory index synchronized 2026-09-22; every indexed topic link resolves to a local file.
-**Next:** Resume from `.plaesy/context.md`; run `/assess` before implementation or optimization.
+**Status:** Memory index synchronized 2026-09-23; every indexed topic link resolves to a local file.
+**Next:** Resume from `.plaesy/context.md`; naming/rename scope decision still open (README done, docs/CHANGELOG/repo-rename pending user decision) — ask before broadening scope.

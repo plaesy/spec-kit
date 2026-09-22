@@ -1,57 +1,77 @@
 ---
 title: "Session Context"
-updatedAt: "2026-09-22T16:06:00Z"
+updatedAt: "2026-09-23T00:00:00Z"
 phase: [save]
 status: [checkpoint]
 ---
 
-## Current Session (2026-09-22)
+## Current Session (2026-09-23)
 
-**Task**: `/continue` → multi-dimensional assessment → `/implement` analyzer fixes → `/save` checkpoint.
+**Task**: `/continue` → `/optimize:design` → `/assess:marketing` → README rebrand
+→ Graft follow-up fixes → `/save` checkpoint.
 
-**Status**: Implementation phase complete. All analyzer fixes implemented and tested. Routing to `/save` for persistence.
+**Status**: All planned work for this session complete and committed. Naming
+decision made (rename to "Plaesy Constitution Kit") but scoped to README only;
+docs/CHANGELOG/repo-rename scope deliberately deferred, not decided.
 
 **Recent decisions**:
-1. Technical assessment: 65/100 → routed to `/implement` for analyzer fixes
-2. Design assessment: 73/100 → routed to `/optimize:design` (pending)
-3. Business/Product assessment: 71/100 → routed to `/assess:marketing` (pending)
-4. All fixes implemented with TDD: tests written, CI wired, smoke tests passing
+1. Design assessment re-verified: 2 findings refuted (PowerShell dispatch bug,
+   graph watch-mode) with file:line evidence; 73→77→84/100 after fixing all 20
+   instructions files missing usage examples (55/55 now compliant)
+2. Marketing assessment: 53/100 (Grade D) — **CRITICAL finding**: name collision
+   with `github/spec-kit` (138.4k★, no stated wedge). User chose new name
+   "Plaesy Constitution Kit"; rename scope = README only for now (user still
+   deciding on docs/CHANGELOG/repo-rename scope)
+3. Graft follow-up: flipped `plaesy-analyze` default to fingerprint fast-path
+   (was opt-in via `--if-changed`, now default; `--force`/`-Force` is the only
+   way to force regen) — matches `plaesy-graph.sh`'s existing default, per
+   Graft's "byte-identical rebuild invariant" pattern
+4. Untracked `.plaesy/analysis/.edges.tsv` (regenerated cache, was inconsistently
+   tracked); gitignored alongside `.nodes.tsv`/`.analysis-fingerprint`
+5. Gated `/continue` and `/assess` on analysis freshness before citing
+   `.plaesy/analysis/overview.md` as evidence
 
 **Work completed**:
-- Multi-dimensional assessment (technical, design, business/product) → 3 reports in `.plaesy/memory/`
-- Fixed GNU-only `find -printf` in `plaesy-graph.sh` with portable macOS fallback (`detect_stat_format`)
-- Added `--if-changed` fast path to `plaesy-analyze.sh` (bash) with fingerprint-based skip
-- Added `-IfChanged` fast path to `plaesy-analyze.ps1` (PowerShell) with fingerprint-based skip
-- Fixed PowerShell analyzer hardcoded dev tools/build systems → now mirrors bash `detect_development_tools`/`detect_build_systems`
-- Added `testing/smoke/smoke-analyze.sh` and `testing/smoke/smoke-analyze.ps1` functional tests
-- Wired CI: analyzer functional smoke test + Bash/PowerShell parity job in `.github/workflows/ci.yml`
-- All smoke tests pass: `smoke-analyze.sh` (4/4), `smoke-e2e.sh` (PASS), `testing/bash/run.sh` (7/7)
+- Added fenced usage examples to 20 `instructions/*.instructions.md` files
+- Rebranded README.md: "Spec-Kit" → "Plaesy Constitution Kit" + new "Why Plaesy
+  Constitution Kit" differentiation section (addresses the marketing hard-stop)
+- Flipped analyzer default behavior (bash + PowerShell), updated smoke tests
+  (both pass 4/4), updated `/continue` and `/assess` prompt instructions
+- Recorded `assess-marketing-2026-09-23.md` with live-researched competitor
+  evidence (github/spec-kit, BMAD, GSD star counts, cited)
+- Committed as `a86113b` (33 files changed)
 
 **In-Flight Tasks**:
-- Run `/optimize:design` for prompt/instruction/template quality improvements
-- Run `/assess:marketing` for README positioning and competitive differentiation
-- Run `/loop` for remaining autonomous fixes (orphaned docs, stale docs)
-
-**Doing**
-- Implementation fixes complete; assessments verify; routing to save
+- Rename scope decision still open: docs/ + CHANGELOG.md references to
+  "Spec-Kit", and whether to rename the GitHub repo itself — user said "pikirkan
+  dulu" (thinking about it), do not default to broadest scope when resumed
+- `/loop` for remaining autonomous fixes (template stub inconsistency — design
+  Finding 3, downgraded to LOW confidence, needs manual per-template read)
+- CI freshness assertion for the analyzer fast-path — explicitly deferred by
+  user ("abaikan CI-nya"), not forgotten, just out of scope for now
 
 **Next**
-- `/optimize:design` — add missing usage examples, fix stale docs, standardize templates
-- `/assess:marketing` — clarify positioning, add differentiation section
-- `/loop` — batch remaining autonomous fixes
-- `/save` — persist final state
+- On resume: ask which rename scope applies (README-only was chosen; docs/
+  CHANGELOG/repo-rename still undecided) before touching more files
+- `/loop` or manual pass on template stub consistency if resumed
+- `/assess` (Mode 3 verification) to confirm no regressions from this session's
+  changes, per `/optimize`'s mandatory next-step rule
 
 **Quality Gate Snapshot**
 - Build: N/A (shell scripts)
-- Tests: smoke-analyze.sh 4/4 PASS, smoke-e2e.sh PASS, bash run.sh 7/7 PASS
+- Tests: smoke-analyze.sh 4/4 PASS, smoke-analyze.ps1 (logic mirrored, not
+  re-run this session — Windows PowerShell not invoked), smoke-e2e.sh PASS
+  (prior session), bash run.sh 7/7 PASS (prior session)
 - Security: No known vulnerabilities
-- Lint: bash syntax OK, PowerShell syntax OK
+- Lint: bash syntax OK
 
 **Commits**
-- None in this phase; 12 files modified (uncommitted)
+- `c9101be` — analyzer portability + fast-path caching (prior session)
+- `a86113b` — rebrand + analyzer default flip + usage examples + marketing assessment
 
 **Memory Reference**
+- Design: `assess-design-2026-09-22.md` (updated, 84/100)
+- Marketing: `assess-marketing-2026-09-23.md` (new, 53/100, naming collision — decision log inside)
+- Graft follow-up: `graft-assessment-and-analyzer-gaps-2026-09-22.md` (updated with 2026-09-23 fixes)
+- Business/Product: `assess-business-product-2026-09-22.md` (Finding 1 now stale — analyzer fixed)
 - Technical: `assess-technical-2026-09-22.md`
-- Design: `assess-design-2026-09-22.md`
-- Business/Product: `assess-business-product-2026-09-22.md`
-- Prior: `graft-assessment-and-analyzer-gaps-2026-09-22.md`
