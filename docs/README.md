@@ -16,3 +16,15 @@ consumed by the CLI and AI assistants; the matching page here explains it.
 | **Tasks** | [.plaesy/tasks/](../.plaesy/tasks/) — per-project task tracking | [tasks/](tasks/README.md) |
 
 See the [root README](../README.md) for the framework overview and quick start.
+
+---
+
+## Project Documentation
+
+| Document | Purpose |
+|---|---|
+| [overview.md](./overview.md) | Project purpose, scope, features, tech stack |
+| [architecture.md](./architecture.md) | High-level design + Mermaid diagrams |
+| [components.md](./components.md) | Per-component responsibility + implementing paths |
+| [reference.md](./reference.md) | CLI command reference (usage, flags, examples) |
+| [metadata.json](./metadata.json) | Generation metadata, gaps, open questions |

@@ -94,10 +94,10 @@ Sistem secara otomatis mengekstrak description dari file target dan mengganti pl
 
 ## Cara Kerja
 
-1. **Saat Inisialisasi** (`plaesy-init.sh`):
+1. **Saat Inisialisasi** (`plaesy init`):
    - User memilih AI provider
-   - Script menyalin framework files ke `.plaesy/`
-   - Script `inject-ai-headers.sh` dipanggil dengan `--merge` flag
+   - CLI menyalin framework files ke `.plaesy/`
+   - `plaesy inject-ai-headers` dipanggil dengan `--merge` flag
 
 2. **Header Selection Logic**:
    - Untuk prompts: `{provider}.prompts.yaml` → `{provider}.header.yaml` → `manual.header.yaml`

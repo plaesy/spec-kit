@@ -227,7 +227,7 @@ Each instruction follows this standardized structure:
 #### **Context-Based Instruction Selection**
 The Plaesy framework automatically selects relevant instructions based on:
 
-1. **Project Analysis**: Results from `plaesy-analyze.sh`
+1. **Project Analysis**: Results from `plaesy analyze`
 2. **Technology Detection**: Identified technologies in project
 3. **Framework Detection**: Detected frameworks and platforms
 4. **Configuration**: User-specified preferences
@@ -235,8 +235,8 @@ The Plaesy framework automatically selects relevant instructions based on:
 #### **Integration with AI Assistants**
 ```bash
 # When AI assistant encounters project:
-1. ./bash/plaesy-analyze.sh     # Detect technologies
-2. ./bash/get-feature-paths.sh   # Get context
+1. plaesy analyze           # Detect technologies
+2. plaesy get-feature-paths   # Get context
 3. Load relevant instructions based on analysis
 4. Apply instruction-specific best practices
 5. Validate compliance with guidelines
@@ -266,8 +266,8 @@ The Plaesy framework automatically selects relevant instructions based on:
 #### **Instruction Loading Protocol**
 ```bash
 # Critical sequence for AI assistants:
-1. Run project analysis: ./bash/plaesy-analyze.sh
-2. Get feature context: ./bash/get-feature-paths.sh
+1. Run project analysis: plaesy analyze
+2. Get feature context: plaesy get-feature-paths
 3. Load relevant instructions based on technology stack
 4. Apply instruction-specific guidance
 5. Validate compliance with loaded instructions

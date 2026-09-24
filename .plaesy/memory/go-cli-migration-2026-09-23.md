@@ -63,8 +63,17 @@ single cross-platform Go binary.
   updating `docs/scripts/*.md`, `instructions/*.instructions.md`,
   `prompts/*.md`, `templates/*.md`, `CONTRIBUTING.md`,
   `.github/ISSUE_TEMPLATE/bug_report.md`, `docs/checklists/README.md` to
-  reference `plaesy <command>` instead of the deleted script paths. See
-  "In-Flight Tasks" in `.plaesy/context.md` for exact status.
+  reference `plaesy <command>` instead of the deleted script paths. This
+  cleanup is now COMPLETE.
+
+**Post-migration bug fixes (2026-09-23, commit `2962edb`)**:
+- **Windows path resolution**: `GetRepoRoot()` used hardcoded `/` in
+  `filepath.Join`, breaking Windows. Fixed by routing all path joins through
+  `filepath.Join` (platform-native) + `filepath.ToSlash` for display only.
+- **PowerShell install script**: `scripts/install.ps1` created for Windows
+  users, mirroring the existing `scripts/install.sh`.
+- **README.md**: stale `.sh`/`.ps1` references updated; both bash and
+  PowerShell install instructions documented.
 
 **Superseded guidance** (previously in `.plaesy/memory.md`, now WRONG — see
 that file's Established Rules section, corrected in this same checkpoint):

@@ -153,7 +153,7 @@
 #### **Template Selection Process**
 ```bash
 # 1. Understand project requirements
-./bash/plaesy-analyze.sh
+plaesy analyze
 
 # 2. Select appropriate template based on needs:
 #    - Project type and complexity
