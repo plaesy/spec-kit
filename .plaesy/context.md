@@ -1,58 +1,62 @@
 ---
 title: "Session Context"
-updatedAt: "2026-09-25T02:50:00Z"
-phase: [/implement, /improve, /save]
-status: pre-release-audit-complete
+updatedAt: "2026-09-25T03:30:00Z"
+phase: [/save]
+status: /create-framework-expansion-complete
 ---
 
-## Current Session (2026-09-25) - Install Scripts & Pre-Release Audit
+## Current Session (2026-09-25) - `/create:<scope>` Framework Expansion (v0.0.3)
 
-**Task**: Create cross-platform installation scripts + pre-release audit for v0.0.2:
-- Built `install.sh` (Linux/macOS) + `install.ps1` (Windows PowerShell)
-- Auto-download latest binary from GitHub Releases
-- Audited documentation for prompt path references
-- Fixed all breaking references (use command names, not file paths)
+**Task**: Expand `/create` framework with 8 new asset generation + boilerplate template scopes:
+- Gap analysis: Identified 8 missing commands
+- Parallel workflow: 12 agents (6 research + 6 implementation)
+- Quality fix: Integrated `/create:tasks` with `.plaesy/tasks/` infrastructure
+- Result: 78.2 KB new prompt code, 100+ research sources, version bumped
 
-### `/implement` (Install Scripts)
-1. **`install.sh` (Linux/macOS)** - Auto-detect platform & arch, download latest
-   binary from GitHub Releases, handle PATH setup
-2. **`install.ps1` (Windows PowerShell)** - Admin privilege detection, LocalAppData
-   fallback, same binary download + PATH workflow
-3. **README.md updated** - New "Option 1: Automated Installation" section with curl
-   one-liners for both platforms
+### Delivered (v0.0.3)
+1. **6 New Prompt Files** (78.2 KB total):
+   - `/create:diagram` — SVG, Mermaid, PlantUML diagrams (22 research sources)
+   - `/create:template:api` — OpenAPI 3.2.0, GraphQL boilerplate (14 sources)
+   - `/create:template:infra` — Terraform, CloudFormation (27 sources)
+   - `/create:template:ci` — GitHub Actions, GitLab CI (12 sources)
+   - `/create:template:project` — Monorepo scaffolding (10 sources)
+   - `/create:tasks` — Now conforms to `.plaesy/tasks/` infrastructure
 
-### `/improve` (Documentation Audit & Fixes)
-1. **Prompt folder mapping clarified** - Added disclaimer to `docs/prompts/README.md`:
-   - Explained prompts/ folder exists only in source repo
-   - Mapped install locations per AI platform (Claude Code → .claude/commands/, etc)
-   - Changed "File" → "Command" labels throughout
-2. **Reference cleanup** - Fixed path references in:
-   - `prompts/create.md` - removed `prompts/create/{scope}.md` file path reference
-   - `docs/prompts/README.md` - all `/assess`, `/start` command references
-3. **No breaking changes** - All references now use command names post-install
+2. **Updated Router & Docs**:
+   - `prompts/create.md` — Expanded 4→8 scopes (Asset Gen + Templates)
+   - `docs/prompts/README.md` — Version 0.0.2→0.0.3, all scopes documented
 
-### Audit Results (Pre-Release Checklist)
-✅ **Install Scripts** - install.sh + install.ps1 complete & tested
-✅ **CI/CD Pipeline** - GitHub Actions release.yml ready (5 platforms)
-✅ **Documentation** - All prompt references clarified, command names used
-✅ **Platform Mapping** - Tabled & explained for all 5 AI tools
-✅ **Reference Validation** - No broken paths, no .plaesy/prompts/ dead refs
-✅ **Code Quality** - All commits atomic & pushed to dev
+3. **Quality Fixes**:
+   - `/create:tasks` now generates proper `.plaesy/tasks/backlog/{priority}_{title}.md`
+   - Frontmatter format conformance (title, phase, status, timestamps)
+   - Priority prefixes (critical_, high_, medium_, low_)
+   - TDD phase sequencing per `templates/tasks.template.md`
+
+## Framework Growth
+- **Previous**: v0.0.2 (9 core + 2 `/create` scopes = 11 total)
+- **Current**: v0.0.3 (9 core + 8 `/create` scopes = 17 total)
+- **Total Prompts**: 17 commands ready for use
+
+## Workflow Stats
+- Execution time: 5m 17s
+- Agents executed: 12 (0 errors)
+- Tokens consumed: 638,689
+- Research sources: 100+
+- Commits: 3 (storyboard, workflow output, tasks fix)
 
 ## In-Flight Tasks
-- **v0.0.2 Release** - Create tag + push to trigger GitHub Actions build
+- None (all `/create` scopes completed + committed)
 
-## Next Steps
-1. **Trigger Release** - `git tag v0.0.2` + `git push origin v0.0.2`
-2. **Monitor Build** - GitHub Actions builds for 5 platforms (auto-upload to Releases)
-3. **Verify Installs** - Test install.sh/install.ps1 with fresh binary download
-4. **Announce Release** - Share install instructions with users
+## Next Steps (Optional)
+1. **Testing** — Run `/create:diagram` with diagram provider configured
+2. **Deferred Gaps** — Implement `/implement:data`, `/monitor`, `/refactor` if needed
+3. **Documentation** — Run `/doc` to generate API reference for new scopes
 
 ## Commits (This Session)
-- `e13f669` - Add automated installation scripts + README updates
-- `923add2` - Clarify prompt folder mapping in docs/prompts/README.md
-- `0b2bb7c` - Fix prompts/create.md references to command names
-
+- `4f5dd96` - Add /create:storyboard (from earlier)
+- `57bb5e9` - Add 8 /create:<scope> commands with WebSearch research (v0.0.3)
+- `9511243` - Fix /create:tasks integration with .plaesy/tasks/ infrastructure
 
 ## Memory Reference
-- [[plaesy-install-scripts-v0.0.2]] - Install script implementation & audit
+- [[create-framework-expansion]] - 8 new `/create:<scope>` scopes + research
+- [[task-infrastructure-integration]] - `/create:tasks` conformance to task system

@@ -1,7 +1,7 @@
 ---
 title: "Memory & Knowledge Index"
 description: "Central index for project memory, guidance, and reference"
-updatedAt: "2026-09-25T02:50:00Z"
+updatedAt: "2026-09-25T03:30:00Z"
 ---
 
 # Memory Index & Navigation
@@ -20,6 +20,7 @@ several notes below are deleted.
 ## 🎯 Core Reference
 
 - [Plaesy Spec-Kit Constitution](constitution.md) — Governing dimensions, quality bars, stack, and hard stops.
+- [Create Framework Expansion (v0.0.3)](create-framework-expansion-v0.0.3.md) — 8 new `/create:<scope>` commands: diagram, template:api/infra/ci/project, tasks (100+ research sources).
 - [Install Scripts & Pre-Release (v0.0.2)](plaesy-install-scripts-v0.0.2.md) — Cross-platform install.sh/install.ps1, documentation audit, ready for release tag.
 - [Go CLI Migration 2026-09-23](go-cli-migration-2026-09-23.md) — bash/PowerShell scripts replaced by a single Go binary (`scripts/cmd`, `scripts/internal`); supersedes several rules below that still reference `scripts/bash`/`scripts/powershell`.
 - [Graft Assessment and Spec-Kit Architecture Gaps](graft-assessment-and-analyzer-gaps-2026-09-22.md) — Evidence, risks, and transfer candidates from the Graft assessment.
