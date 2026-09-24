@@ -1,11 +1,17 @@
 ---
-description: "Generate a hierarchical task backlog from requirements specifications — produce epics, user stories, acceptance criteria, and technical tasks"
+description: "Generate task backlog from requirements specifications — produces `.plaesy/tasks/` frontmatter-formatted task files conforming to instructions/tasks.instructions.md"
 ---
 
 # `/create:tasks` command instructions
 
 This is the **tasks**-scoped entry point into `/create`. It produces real
-structured backlog files (Markdown + JSON), not descriptions.
+task files (`.md`) conforming to `.plaesy/tasks/` structure, not freeform markdown or descriptions.
+
+**CRITICAL**: All generated tasks MUST conform to `instructions/tasks.instructions.md` format:
+- Frontmatter: `title`, `phase`, `status`, `createdAt`, `updatedAt`
+- Directory: `.plaesy/tasks/backlog/` (or `/todo/` if pre-prioritized)
+- Naming: `{priority}_{title}.md` (critical_, high_, medium_, low_ prefixes)
+- Sections: Description, Acceptance Criteria, Dependencies, References
 
 ## Usage Format
 
@@ -51,33 +57,146 @@ Read provider config (stop at first match):
 
 Confirm the matching API key env var is set. **If not: stop, report exactly which env var to export, and return the specification brief as a manual fallback** (user can decompose tasks by hand using the brief).
 
-### Step 3: Generate Epics & Stories
+### Step 3: Generate Tasks Conforming to Task System Format
 
-Invoke `plaesy generate-backlog` with composed specification:
+Follow `instructions/tasks.instructions.md` template structure (NOT freeform markdown):
 
-```bash
-plaesy generate-backlog --spec "requirements.md" --provider claude --format markdown --out .plaesy/tasks/backlog/features.md
-```
+For each task, LLM will:
+1. **Extract requirements** from spec (features, stories, acceptance criteria)
+2. **Decompose into tasks** (following `templates/tasks.template.md` pattern)
+3. **Determine task type**: Setup, Test (TDD RED phase first), Core, Integration, Polish
+4. **Assign phase**: design|implement|assess|optimize|fix
+5. **Assign priority**: critical|high|medium|low (for filename prefix)
+6. **Identify dependencies**: blocking tasks, external blockers
+7. **Generate frontmatter**: title, phase, status (always "backlog" for new), createdAt, updatedAt
 
-LLM will:
-1. **Extract epics** (2-3 sentences, includes business value)
-2. **Decompose into user stories** (INVEST criteria: Independent, Negotiable, Valuable, Estimable, Small)
-   - Format: "As a [role] I want [capability] so that [benefit]"
-   - Limit: 2-5 acceptance criteria per story (no bloat)
-3. **Generate acceptance criteria** (Given-When-Then format + checklist items)
-4. **Identify technical tasks** (implementation subtasks, test cases, documentation)
-5. **Estimate story points** (1-13 Fibonacci; based on scope complexity)
-6. **Flag dependencies** (task-to-task links, blocking relationships)
+### Step 4: Write Task Files to `.plaesy/tasks/` Structure
 
-### Step 4: Index & Structure Output
+Write individual task files conforming to `instructions/tasks.instructions.md`:
 
-Write backlog files (`.plaesy/tasks/backlog/{name}.md` + `.plaesy/tasks/backlog/{name}.json`):
+**File location**: `.plaesy/tasks/backlog/{priority}_{title}.md`  
+**Naming examples**:
+- `.plaesy/tasks/backlog/critical_setup-auth-middleware.md`
+- `.plaesy/tasks/backlog/high_implement-user-model.md`
+- `.plaesy/tasks/backlog/medium_add-tests-for-api.md`
 
-**Markdown structure:**
+**File format** (must follow `instructions/tasks.instructions.md`):
 ```markdown
 ---
-generated: <ISO timestamp>
-source_spec: <path to requirements file>
+title: [title without priority prefix]
+phase: [design|implement|assess|optimize|fix]
+status: backlog
+createdAt: [ISO timestamp]
+updatedAt: [ISO timestamp]
+---
+
+## Description
+Clear description of what needs to be done.
+
+## Acceptance Criteria
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
+
+## References
+- [task-instructions](../../instructions/tasks.md)
+- [other-related-tasks](./{status}/*.md)
+
+## Dependencies
+- [blocking-task](./{status}/*.md) [if blocked]
+- External dependency: [description]
+
+## Notes
+- Implementation notes
+- Constraints
+- Related decisions
+```
+
+**For TDD-enforced tasks** (software implementation), follow `templates/tasks.template.md` pattern:
+- Mark RED phase tests first (before implementation)
+- Include exact file paths: `src/`, `tests/` directories
+- Add `[P]` marker for parallel-executable tasks (different files, no dependencies)
+
+### Step 5: Validate & Report
+
+Before reporting complete:
+
+1. **Format validation**:
+   - Each task has required frontmatter (title, phase, status, createdAt, updatedAt)
+   - All tasks use correct directory: `.plaesy/tasks/backlog/`
+   - All filenames follow pattern: `{priority}_{title}.md`
+
+2. **Content validation**:
+   - Each task has Description + Acceptance Criteria (minimum)
+   - Dependencies are valid cross-references to other `.plaesy/tasks/` files
+   - TDD tasks mark RED phase test generation first
+
+3. **Integration validation**:
+   - Tasks reference `instructions/tasks.instructions.md` for format guide
+   - Reference existing `.plaesy/memory/` files if available
+   - Tasks conform to project phase (from constitution.md)
+
+Report: Task file count, output directory, frontmatter sample, validation status
+
+## Anti-Patterns (NEVER Do These)
+
+- ❌ Generate freeform markdown instead of structured `.plaesy/tasks/` files
+- ❌ Ignore `instructions/tasks.instructions.md` format requirements (frontmatter required)
+- ❌ Create files outside `.plaesy/tasks/backlog/` without explicit user request
+- ❌ Forget priority prefixes in filename (`{priority}_{title}.md`)
+- ❌ Mix TDD RED/GREEN/REFACTOR phases into single task (each phase = separate task with dependency)
+- ❌ Skip acceptance criteria or leave them vague ("implement feature" ≠ acceptance criteria)
+- ❌ Reference requirements without extracting: "do what requirements.md says" is not a task description
+- ❌ Create circular dependencies (A depends on B depends on C depends on A)
+- ❌ Estimate story points for infrastructure/setup tasks (only for user story/feature tasks)
+
+## Design-Spine & Context Integration
+
+**Before generating tasks**, check for project context:
+- `.plaesy/memory/design-spine.md` — existing features, user personas, constraints
+- `instructions/brandkit.instructions.md` — product positioning (affects feature prioritization)
+- `.plaesy/memory/constitution.md` — tech stack, team size, timeline (affects task scope/estimate)
+- Existing `.plaesy/tasks/{backlog|todo}/*.md` — avoid duplicate tasks
+
+If generating tasks for a **feature within a larger project**, organize by feature:
+- Create `.plaesy/tasks/backlog/epic_[feature-name]_{task}.md` for feature-related tasks
+- Link to feature spec in `.plaesy/specs/[###-feature-name]/` if it exists
+
+## Programmatic Invocation (Called By Other Prompts)
+
+A prompt that needs a task backlog mid-run (`/implement`, `/doc`, `/assess`) calls this directly:
+
+```
+CALL /create:tasks
+  spec: <requirements document path or inline text>
+  format: markdown
+  out: .plaesy/tasks/backlog/
+  prioritize: true
+RETURNS
+  directory: .plaesy/tasks/backlog/
+  file_count: <number of task files created>
+  files: [critical_task1.md, high_task2.md, …]
+  index: <list of all task filenames with frontmatter summary>
+```
+
+If no LLM provider configured, return the spec brief as a manual fallback (user can decompose by hand).
+
+## Success Criteria
+
+A task backlog is complete when:
+- ✅ All tasks use `.plaesy/tasks/backlog/{priority}_{title}.md` format
+- ✅ Each task has frontmatter (title, phase, status, createdAt, updatedAt)
+- ✅ Description is clear and concise
+- ✅ Acceptance criteria are testable (not just checklist items)
+- ✅ Dependencies marked (cross-references to other tasks or external blockers)
+- ✅ References include `instructions/tasks.md` + project memory files
+- ✅ TDD tasks mark RED phase tests first (if software implementation)
+- ✅ No circular dependencies
+- ✅ Task count reported (e.g., "10 tasks generated: 2 critical, 4 high, 3 medium, 1 low")
+
+---
+
+**Follow shared protocols**: `.plaesy/instructions/quality-gates.md` → `.plaesy/instructions/error-recovery.md` → `instructions/tasks.instructions.md`
 provider: claude
 version: 1
 ---
