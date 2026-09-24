@@ -20,8 +20,8 @@ scope-less behavior of its own. Today it has exactly one scope:
 | `/create:images` | Turn a text description (or a design-spine/brandkit entry) into an actual saved image file, not just a prompt string |
 
 More scopes (e.g. `/create:audio`, `/create:video`) are added the same way if
-the project ever needs them — this file stays a thin router; each scope's own
-protocol lives in `prompts/create/{scope}.md`.
+the project ever needs them — this file stays a thin router; each scope has its
+own command (e.g., `/create:images`, `/create:audio`).
 
 ## Why This Exists
 
@@ -40,8 +40,8 @@ Any prompt that needs a concrete image asset mid-run — `/implement:design`
 building a component that needs an icon/illustration, `/improve:design`
 replacing an outdated asset, `/doc` illustrating a concept — invokes
 `/create:images` directly with a structured call instead of re-describing
-image generation itself. See "Programmatic Invocation" in
-`prompts/create/images.md`.
+image generation itself. See "Programmatic Invocation" in the `/create:images`
+command documentation.
 
 ## Anti-Patterns (NEVER Do These)
 
