@@ -117,7 +117,7 @@ plaesy uninstall         # Remove Plaesy Constitution Kit completely
 /fix                     # Bug resolution and error recovery
 /doc                     # Generate comprehensive project documentation
 /save                    # Save current context and new knowledge
-/generate:images          # Generate image assets from text prompt or design spec (router for /generate:{scope})
+/create:images          # Generate image assets from text prompt or design spec (router for /create:{scope})
 ```
 
 ## Documentation

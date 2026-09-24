@@ -15,7 +15,7 @@
     ],
     "project_directories": [
       "docs",
-      "specs"
+      ".plaesy/specs"
     ],
     "mapping": {
       "core": {

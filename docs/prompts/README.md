@@ -20,7 +20,7 @@
 | [`/continue`](#continue) | Resume & state detection | ultracode |
 | [`/save`](#save) | Persist progress | standard |
 | [`/doc`](#doc) | Documentation generation | ultracode |
-| [`/generate:images`](#generateimages) | Generate a real image asset (UI/design) from a text prompt | standard |
+| [`/create:images`](#generateimages) | Generate a real image asset (UI/design) from a text prompt | standard |
 
 Typical order for a new feature: `/start` → `/assess` (Mode 1: research, clarify,
 design Spine if UI) → `/implement` → `/assess` (Mode 2) → `/optimize`/`/fix` as needed

@@ -21,7 +21,7 @@ Global flags: `-h, --help` (help for any command).
 | `config` | Platform configuration management | `scripts/cmd/plaesy/config.go` |
 | `create-new-feature` | Create feature branch + spec.md | `scripts/cmd/plaesy/create_feature.go` |
 | `detect-stack` | List relevant instruction files | `scripts/cmd/plaesy/detect_stack.go` |
-| `generate-image` | Generate image via provider API | `scripts/cmd/plaesy/generate_image.go` |
+| `generate-image` | Generate image via provider API | `scripts/cmd/plaesy/create_image.go` |
 | `get-feature-paths` | Print current feature paths | `scripts/cmd/plaesy/feature_paths.go` |
 | `graph` | Build/query knowledge graph | `scripts/cmd/plaesy/graph.go` |
 | `init` | Scaffold new Plaesy project | `scripts/cmd/plaesy/init.go` |
@@ -138,7 +138,7 @@ plaesy create-new-feature <feature_description> [--json]
 ```
 
 Create a new feature branch, directory structure, and `spec.md` from template.
-Feature numbering: `NNN-slug` (next number auto-detected from `specs/`).
+Feature numbering: `NNN-slug` (next number auto-detected from `.plaesy/specs/`).
 
 | Flag | Default | Description |
 |---|---|---|

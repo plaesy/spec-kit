@@ -244,7 +244,7 @@ jobs:
       - name: Generate compliance report
         run: |
           # Generate comprehensive compliance report
-          ./scripts/generate-compliance-report.sh
+          ./scripts/create-compliance-report.sh
       
       - name: Upload compliance artifacts
         uses: actions/upload-artifact@v4
@@ -390,7 +390,7 @@ jobs:
       - name: Generate security metrics
         run: |
           # Generate security metrics and KPIs
-          ./scripts/generate-security-metrics.sh
+          ./scripts/create-security-metrics.sh
 ```
 
 ### Security Configuration Files
@@ -655,7 +655,7 @@ echo "✅ GDPR compliance check passed"
 
 ## Monitoring and Alerting
 
-### Security Metrics Collection (`scripts/generate-security-metrics.sh`)
+### Security Metrics Collection (`scripts/create-security-metrics.sh`)
 
 ```bash
 #!/bin/bash
@@ -680,7 +680,7 @@ curl -s "https://compliance-api.example.com/status" \
 
 # Generate security dashboard data
 echo "Generating security dashboard data..."
-node scripts/generate-security-dashboard.js
+node scripts/create-security-dashboard.js
 
 # Calculate security score
 echo "Calculating security score..."

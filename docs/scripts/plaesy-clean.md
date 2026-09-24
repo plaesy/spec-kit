@@ -45,7 +45,7 @@ Run `plaesy clean --help` for the exact, current flag list.
 
 | Component | Source | What Gets Removed |
 |-----------|--------|------------------|
-| **Plaesy Framework** | Fixed directories | `.plaesy/`, `specs/` directories (`docs/` preserved) |
+| **Plaesy Framework** | Fixed directories | `.plaesy/`, `.plaesy/specs/` directories (`docs/` preserved) |
 | **Platform-Specific** | `platforms.{platform}.mapping` | Only files/directories specified in mapping |
 
 ### Cleanup by Platform Mapping

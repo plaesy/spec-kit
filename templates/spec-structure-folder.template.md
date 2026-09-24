@@ -6,7 +6,7 @@
 ## Complete Folder Organization
 
 ```
-specs/{number}-{branch-name}/
+.plaesy/specs/{number}-{branch-name}/
 ├── status.md                          # Project status dashboard
 ├── idea/                              # Idea phase
 │   ├── README.md                      # Main idea documentation (was idea.md)

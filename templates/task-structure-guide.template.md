@@ -3,7 +3,7 @@
 ## Recommended Folder Structure
 
 ```
-specs/001-user-authentication/
+.plaesy/specs/001-user-authentication/
 ├── status.md                 # Overall project status dashboard
 ├── idea/                     # Idea phase
 │   ├── README.md             # Main idea documentation (was idea.md)

@@ -8,7 +8,7 @@ Source: `scripts/cmd/plaesy/update_agent.go` + `scripts/internal/agentcontext/up
 
 ## Prerequisites
 
-- Run from a feature branch with `specs/<branch>/plan.md` present (created from `templates/plan.template.md`).
+- Run from a feature branch with `.plaesy/specs/<branch>/plan.md` present (created from `templates/plan.template.md`).
 - `git` on PATH.
 - No external interpreter needed — the regex-based Active Technologies /
   Recent Changes rewrite is implemented natively in Go
@@ -90,7 +90,7 @@ Console summary:
 
 ## Troubleshooting
 
-**`no plan.md found`** — create `specs/<branch>/plan.md` from `templates/plan.template.md` first.
+**`no plan.md found`** — create `.plaesy/specs/<branch>/plan.md` from `templates/plan.template.md` first.
 
 **`template not found`** — ensure `.plaesy/templates/agent-file-template.md` exists.
 

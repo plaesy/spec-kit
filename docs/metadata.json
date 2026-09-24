@@ -12,7 +12,7 @@
     "scripts/cmd/plaesy/create_feature.go",
     "scripts/cmd/plaesy/detect_stack.go",
     "scripts/cmd/plaesy/feature_paths.go",
-    "scripts/cmd/plaesy/generate_image.go",
+    "scripts/cmd/plaesy/create_image.go",
     "scripts/cmd/plaesy/graph.go",
     "scripts/cmd/plaesy/init.go",
     "scripts/cmd/plaesy/inject_ai_headers.go",

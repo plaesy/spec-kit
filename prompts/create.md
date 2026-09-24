@@ -1,35 +1,34 @@
 ---
-description: "Generate real binary assets (images today) from a text prompt or design spec — router for /generate:{scope}"
+description: "Generate real binary assets (images today) from a text prompt or design spec — router for /create:{scope}"
 ---
-
-# `/generate` command instructions
+# `/create` command instructions
 
 ⚡ **Run with**: standard (single-agent; no multi-agent fan-out needed for one asset call)
 
 ## Usage Format
 
 ```bash
-/generate:images "a flat-style empty-state illustration for an empty inbox"
-/generate:images --for .plaesy/memory/design-spine.md --component "empty-state/inbox"
+/create:images "a flat-style empty-state illustration for an empty inbox"
+/create:images --for .plaesy/memory/design-spine.md --component "empty-state/inbox"
 ```
 
-`/generate` is a **router**, same shape as `/assess`/`/improve`/`/fix`: it has no
+`/create` is a **router**, same shape as `/assess`/`/improve`/`/fix`: it has no
 scope-less behavior of its own. Today it has exactly one scope:
 
-| Scope | Purpose |
-|---|---|
-| `/generate:images` | Turn a text description (or a design-spine/brandkit entry) into an actual saved image file, not just a prompt string |
+| Scope                | Purpose                                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `/create:images` | Turn a text description (or a design-spine/brandkit entry) into an actual saved image file, not just a prompt string |
 
-More scopes (e.g. `/generate:audio`, `/generate:video`) are added the same way if
+More scopes (e.g. `/create:audio`, `/create:video`) are added the same way if
 the project ever needs them — this file stays a thin router; each scope's own
-protocol lives in `prompts/generate/{scope}.md`.
+protocol lives in `prompts/create/{scope}.md`.
 
 ## Why This Exists
 
 Every other Plaesy prompt (`/implement:design`, `/improve:design`, `/doc`) can
 describe what an asset *should* look like, but none of them actually call an
 image-generation API and write bytes to disk — they stop at a text description
-and leave the human to go generate it by hand. `/generate:images` closes that
+and leave the human to go generate it by hand. `/create:images` closes that
 gap: given a description (typed by a user, or handed to it programmatically by
 another prompt), it produces a real image file in the project and reports its
 path, so the calling context can reference it immediately (in an `<img>`, a
@@ -40,9 +39,9 @@ Figma upload, a doc).
 Any prompt that needs a concrete image asset mid-run — `/implement:design`
 building a component that needs an icon/illustration, `/improve:design`
 replacing an outdated asset, `/doc` illustrating a concept — invokes
-`/generate:images` directly with a structured call instead of re-describing
+`/create:images` directly with a structured call instead of re-describing
 image generation itself. See "Programmatic Invocation" in
-`prompts/generate/images.md`.
+`prompts/create/images.md`.
 
 ## Anti-Patterns (NEVER Do These)
 

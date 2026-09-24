@@ -1,5 +1,5 @@
 ---
-title: "New /generate:images command + static-site framework gap closed"
+title: "New /create:images command + static-site framework gap closed"
 date: "2026-09-18"
 ---
 
@@ -8,7 +8,7 @@ date: "2026-09-18"
 User (working on a personal static website project consuming this spec-kit) asked
 two things this session:
 
-1. Noticed there was no `/generate:images` prompt for UI/design asset generation.
+1. Noticed there was no `/create:images` prompt for UI/design asset generation.
 2. Later reported an `/improve` run surfaced a framework gap: no
    instructions/template for "static site" as an artifact type.
 
@@ -17,10 +17,10 @@ the spec-kit source.
 
 ## Changes Made
 
-### 1. New `/generate:images` command
-- `prompts/generate.md` — thin router (mirrors `/assess`, `/improve`, `/fix`
+### 1. New `/create:images` command
+- `prompts/create.md` — thin router (mirrors `/assess`, `/improve`, `/fix`
   shape), one scope today: `images`.
-- `prompts/generate/images.md` — full protocol: resolve brief (reads
+- `prompts/create/images.md` — full protocol: resolve brief (reads
   `.plaesy/memory/design-spine.md` / `instructions/brandkit.instructions.md` /
   `.plaesy/roles/designer.md` + `accessibility.md` when present) → resolve
   provider (env var `PLAESY_IMAGE_PROVIDER` or `.plaesy/scripts/configs/image-provider.json`,
@@ -29,7 +29,7 @@ the spec-kit source.
   **programmatic invocation contract** so other prompts (`/implement:design`,
   `/improve:design`, `/doc`) can call it mid-run instead of just describing an
   asset in prose.
-- `scripts/bash/generate-image.sh` + `scripts/powershell/generate-image.ps1` —
+- `scripts/bash/create-image.sh` + `scripts/powershell/create-image.ps1` —
   actually call an image-gen API (OpenAI `gpt-image-1` images endpoint, or
   Gemini/Imagen as an alternate `--provider`), base64-decode, write the PNG.
   **Requires `OPENAI_API_KEY` or `GEMINI_API_KEY` env var** — if unset, the

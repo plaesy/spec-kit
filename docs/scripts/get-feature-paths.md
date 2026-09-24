@@ -23,14 +23,14 @@ Takes no flags or arguments.
 ```
 REPO_ROOT: /home/user/project
 BRANCH: 001-user-authentication
-FEATURE_DIR: /home/user/project/specs/001-user-authentication
-FEATURE_SPEC: /home/user/project/specs/001-user-authentication/spec.md
-IMPL_PLAN: /home/user/project/specs/001-user-authentication/plan.md
-TASKS: /home/user/project/specs/001-user-authentication/tasks.md
+FEATURE_DIR: /home/user/project/.plaesy/specs/001-user-authentication
+FEATURE_SPEC: /home/user/project/.plaesy/specs/001-user-authentication/spec.md
+IMPL_PLAN: /home/user/project/.plaesy/specs/001-user-authentication/plan.md
+TASKS: /home/user/project/.plaesy/specs/001-user-authentication/tasks.md
 ```
 
 Paths are not checked for existence — they are computed from the repo root
-and current branch name only (`specs/<branch>/...`).
+and current branch name only (`.plaesy/specs/<branch>/...`).
 
 ## Behavior When Not on a Feature Branch
 

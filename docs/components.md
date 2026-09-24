@@ -184,7 +184,7 @@ Ports `plaesy create-new-feature` / `plaesy get-feature-paths` /
 `get-feature-paths.sh`, and `check-task-prerequisites.sh`): feature-branch workflow helpers.
 
 - **`CreateNewFeature(desc)`** — computes next NNN-slug number, creates git
-  branch, seeds `specs/<branch>/spec.md` from template
+  branch, seeds `.plaesy/specs/<branch>/spec.md` from template
   (`scripts/internal/featurepath/create.go:33`).
 - **`GetPathsReport()`** — prints shell-sourceable `REPO_ROOT=` /
   `FEATURE_DIR=` / etc. (`scripts/internal/featurepath/prereq.go`).

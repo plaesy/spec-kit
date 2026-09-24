@@ -235,10 +235,8 @@
     "case_insensitive": true,
     "scan_locations_note": "This list must match what scripts/internal/detectstack (the Go port; formerly scripts/bash/detect-stack.sh + scripts/powershell/detect-stack.ps1, now a single implementation) actually scans — verify before editing this array; it previously listed 'architecture.md'/'design.md' which was never read (removed). '.plaesy/analysis/project.json' is written by `plaesy analyze` (scripts/internal/analyze; ANALYSIS_DIR = '.plaesy/analysis', flat — matches instructions/roles/scripts/tasks convention). The '**/*.ext' entries are existence checks (any file with that extension anywhere under the target, depth-limited) driven generically by each framework's 'extensions' array in this file, not manifest-content scans — see the 'word'/'excel'/'powerpoint' entries above.",
     "scan_locations": [
-      "specs/*/context.md",
-      "specs/*/requirements.md",
-      "docs/specs/*/context.md",
-      "docs/specs/*/requirements.md",
+      ".plaesy/specs/*/context.md",
+      ".plaesy/specs/*/requirements.md",
       "docs/project.json",
       ".plaesy/analysis/project.json",
       "package.json",

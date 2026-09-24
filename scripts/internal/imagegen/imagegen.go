@@ -1,6 +1,6 @@
 // Package imagegen generates image assets via a configured provider
 // (OpenAI or Gemini) and writes the decoded bytes to disk. It ports
-// scripts/bash/generate-image.sh using only the Go standard library.
+// scripts/bash/create-image.sh using only the Go standard library.
 package imagegen
 
 import (

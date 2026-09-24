@@ -1,7 +1,7 @@
 # Implementation Plan: [FEATURE]
 
 **Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `specs/[###-feature-name]/specify/README.md`
+**Input**: Feature specification from `.plaesy/specs/[###-feature-name]/specify/README.md`
 
 ## Execution Flow (/plan command scope)
 
@@ -106,7 +106,7 @@ _GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 ### Documentation (this feature)
 
 ```
-specs/[###-feature]/
+.plaesy/specs/[###-feature]/
 ├── plan.md              # This file (/plan command output)
 ├── research.md          # Phase 0 output (/plan command)
 ├── data-model.md        # Phase 1 output (/plan command)

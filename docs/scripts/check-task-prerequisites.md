@@ -24,16 +24,16 @@ plaesy check-task-prerequisites --help
 | Check | Description | Required File/Directory |
 |-------|-------------|-------------------------|
 | **Feature Branch** | Must be on a feature branch | Branch format: `XXX-feature-name` |
-| **Feature Directory** | Feature specification directory | `specs/XXX-feature-name/` |
-| **Implementation Plan** | Detailed implementation plan | `specs/XXX-feature-name/plan.md` |
+| **Feature Directory** | Feature specification directory | `.plaesy/specs/XXX-feature-name/` |
+| **Implementation Plan** | Detailed implementation plan | `.plaesy/specs/XXX-feature-name/plan.md` |
 
 ### Optional Documentation
 | Check | Description | File/Directory |
 |-------|-------------|----------------|
-| **Research Documentation** | Background research | `specs/XXX-feature-name/research.md` |
-| **Data Model** | Data structure specifications | `specs/XXX-feature-name/data-model.md` |
-| **API Contracts** | API specifications | `specs/XXX-feature-name/contracts/` |
-| **Quick Start Guide** | Implementation quick start | `specs/XXX-feature-name/quickstart.md` |
+| **Research Documentation** | Background research | `.plaesy/specs/XXX-feature-name/research.md` |
+| **Data Model** | Data structure specifications | `.plaesy/specs/XXX-feature-name/data-model.md` |
+| **API Contracts** | API specifications | `.plaesy/specs/XXX-feature-name/contracts/` |
+| **Quick Start Guide** | Implementation quick start | `.plaesy/specs/XXX-feature-name/quickstart.md` |
 
 ## Options
 
@@ -52,7 +52,7 @@ verifies the current branch matches `XXX-feature-name`, then checks for
 ### Success (plain text)
 ```
 $ plaesy check-task-prerequisites
-FEATURE_DIR:/home/user/project/specs/001-user-auth
+FEATURE_DIR:/home/user/project/.plaesy/specs/001-user-auth
 AVAILABLE_DOCS:
   ✓ research.md
   ✗ data-model.md
@@ -63,21 +63,21 @@ AVAILABLE_DOCS:
 ### Success (JSON)
 ```
 $ plaesy check-task-prerequisites --json
-{"FEATURE_DIR":"/home/user/project/specs/001-user-auth","AVAILABLE_DOCS":["research.md","contracts/","quickstart.md"]}
+{"FEATURE_DIR":"/home/user/project/.plaesy/specs/001-user-auth","AVAILABLE_DOCS":["research.md","contracts/","quickstart.md"]}
 ```
 
 ### Failure (missing required file)
 ```
 $ plaesy check-task-prerequisites
-Error: feature directory not found: specs/001-user-auth (run /start first to create the feature structure)
+Error: feature directory not found: .plaesy/specs/001-user-auth (run /start first to create the feature structure)
 ```
 Exits non-zero; the equivalent message for a missing `plan.md` is
-"plan.md not found in specs/<branch> (create plan.md from templates/plan.template.md first)".
+"plan.md not found in .plaesy/specs/<branch> (create plan.md from templates/plan.template.md first)".
 
 ## File Structure
 
 ```
-specs/XXX-feature-name/
+.plaesy/specs/XXX-feature-name/
 ├── plan.md                       # Implementation plan (REQUIRED)
 ├── research.md                   # Background research (optional)
 ├── data-model.md                 # Data specifications (optional)
@@ -104,8 +104,8 @@ Switch to or create a branch matching `XXX-feature-name` (e.g. via `plaesy creat
 
 ### Feature directory or plan.md not found
 ```
-Error: feature directory not found: specs/001-feature-auth
-Error: plan.md not found in specs/001-feature-auth
+Error: feature directory not found: .plaesy/specs/001-feature-auth
+Error: plan.md not found in .plaesy/specs/001-feature-auth
 ```
 Run `/start` to create the feature structure, then create `plan.md` from
 `templates/plan.template.md`.

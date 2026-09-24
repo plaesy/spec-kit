@@ -60,7 +60,7 @@
             "file_count": 8,
             "description": "Project directory"
         },
-        "prompts/generate": {
+        "prompts/create": {
             "file_count": 1,
             "description": "Project directory"
         },
@@ -886,12 +886,12 @@
             "type": "markdown",
             "purpose": "Project file"
         },
-        "prompts/generate.md": {
+        "prompts/create.md": {
             "size_bytes": 2857,
             "type": "markdown",
             "purpose": "Project file"
         },
-        "prompts/generate/images.md": {
+        "prompts/create/images.md": {
             "size_bytes": 5412,
             "type": "markdown",
             "purpose": "Project file"

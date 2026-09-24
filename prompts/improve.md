@@ -159,7 +159,7 @@ retrieved {{CURRENT_DATE}}`), same rule as `/assess` Mode 1 — an uncited
    one). Flag version drift: `.plaesy/memory/*` files older than the source
    repo's current versions.
 2. **Spec Quality & Traceability Review** — **only if a spec/tasks system is
-   actually in use** (`specs/*` or `.plaesy/tasks/*` has real content, not just
+   actually in use** (`.plaesy/specs/*` or `.plaesy/tasks/*` has real content, not just
    the empty scaffold) — review `spec.md`/`plan.md`/`tasks.md` for: testability
    of acceptance criteria, every requirement traceable to a task and every task
    traceable to a requirement (no orphans either direction), unresolved ambiguity

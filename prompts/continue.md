@@ -67,7 +67,7 @@ Auto-detect current project state → Execute remaining phases → Complete
 ### Detection Process
 
 1. **Load task state**: Scan `.plaesy/tasks/` for active work
-2. **Scan `specs/` Directory**: Identify active project folders
+2. **Scan `.plaesy/specs/` Directory**: Identify active project folders
 3. **File Existence Check**: Verify which specification files exist
 4. **Content Analysis**: Check completion status of existing files
 5. **Gap Identification**: Identify missing components

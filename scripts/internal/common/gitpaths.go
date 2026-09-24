@@ -56,7 +56,7 @@ func CheckFeatureBranch(branch string) error {
 
 // GetFeatureDir mirrors get_feature_dir.
 func GetFeatureDir(repoRoot, branch string) string {
-	return filepath.Join(repoRoot, "specs", branch)
+	return filepath.Join(repoRoot, ".plaesy", "specs", branch)
 }
 
 // FeaturePaths mirrors the KEY=value set emitted by get_feature_paths().

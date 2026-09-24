@@ -70,7 +70,7 @@ separate PowerShell invocation is needed anymore.
 1. **`.plaesy/analysis/project.json`** - AI-optimized project summary
 2. **`.plaesy/analysis/project.structure.json`** - Complete project structure
 3. **`.plaesy/analysis/project.graph.json`** - Dependency graph (nodes + edges; built by `plaesy analyze` automatically, queryable via `plaesy graph`)
-4. **`specs/[feature-name]/plan.md`** - Current feature implementation plan
+4. **`.plaesy/specs/[feature-name]/plan.md`** - Current feature implementation plan
 5. **Platform-specific AI contexts** (`CLAUDE.md`, `.github/copilot-instructions.md`, etc.)
 
 ### **Platform Detection Logic**

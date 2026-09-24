@@ -1,6 +1,6 @@
 # Tasks: [FEATURE NAME]
 
-**Input**: Design documents from `specs/[###-feature-name]/`
+**Input**: Design documents from `.plaesy/specs/[###-feature-name]/`
 **Prerequisites**: plan/README.md (required), research.md, data-model.md, contracts/
 
 ## Execution Flow (main)

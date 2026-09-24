@@ -7,7 +7,7 @@
 - **Active Phase**: {current_phase}
 - **Overall Completion**: {percentage}%
 - **Timeline Status**: ON_TRACK | AT_RISK | DELAYED | AHEAD
-- **Spec Directory**: specs/{number}-{branch-name}/
+- **Spec Directory**: .plaesy/specs/{number}-{branch-name}/
 - **Created**: {timestamp}
 - **Last Updated**: {timestamp}
 
@@ -112,7 +112,7 @@
 ### Phase 5: Implementation [STATUS]
 - **Status**: NOT_STARTED | TODO | PROGRESS | BLOCKED | NEED_REVIEW | COMPLETE
 - **Completion**: "[PERCENTAGE_FROM_CHECKLIST]"
-- **File**: tasks/{tasks-id}/implements/README.md  # per-task implementation README (specs/{number}-{branch-name}/tasks/{tasks-id}/implements/)
+- **File**: tasks/{tasks-id}/implements/README.md  # per-task implementation README (.plaesy/specs/{number}-{branch-name}/tasks/{tasks-id}/implements/)
 - **Quality Gates**:
   - [ ] Development environment setup
   - [ ] Core functionality implemented

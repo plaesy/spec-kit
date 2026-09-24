@@ -2,17 +2,17 @@
 description: "Generate an actual UI/design image asset from a text prompt and save it into the project"
 ---
 
-# `/generate:images` command instructions
+# `/create:images` command instructions
 
-This is the **images**-scoped entry point into `/generate`. It produces a real
+This is the **images**-scoped entry point into `/create`. It produces a real
 saved file (PNG by default), not a description of one.
 
 ## Usage Format
 
 ```bash
-/generate:images "<description>"
-/generate:images "<description>" --style flat-illustration --size 1024x1024 --out assets/images/empty-inbox.png
-/generate:images --for .plaesy/memory/design-spine.md --component "empty-state/inbox"
+/create:images "<description>"
+/create:images "<description>" --style flat-illustration --size 1024x1024 --out assets/images/empty-inbox.png
+/create:images --for .plaesy/memory/design-spine.md --component "empty-state/inbox"
 ```
 
 | Flag | Default | Meaning |
@@ -85,7 +85,7 @@ A prompt that needs an asset mid-run (`/implement:design`, `/improve:design`,
 `/doc`) calls this protocol directly rather than re-describing generation:
 
 ```
-CALL /generate:images
+CALL /create:images
   brief: "<one-line visual description>"
   style: "<optional; omit to inherit project brand>"
   out: "<path the calling prompt will reference>"

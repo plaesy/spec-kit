@@ -24,10 +24,8 @@ var manifestFiles = []string{
 // specGlobs are spec/context/analysis files whose content also feeds the
 // keyword scan, mirroring both shell twins.
 var specGlobs = []string{
-	"specs/*/context.md",
-	"specs/*/requirements.md",
-	"docs/specs/*/context.md",
-	"docs/specs/*/requirements.md",
+	".plaesy/specs/*/context.md",
+	".plaesy/specs/*/requirements.md",
 }
 
 // maxDepth mirrors both shell twins' -maxdepth 3 / -Depth 3 recursive walk

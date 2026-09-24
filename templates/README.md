@@ -9,7 +9,7 @@ Reusable document skeletons for the Spec-Kit workflow. `template-registry.json` 
 | [spec.template.md](spec.template.md) | Feature specification |
 | [plan.template.md](plan.template.md) | Implementation plan |
 | [tasks.template.md](tasks.template.md) | Task breakdown |
-| [spec-structure-folder.template.md](spec-structure-folder.template.md) | Recommended `specs/<feature>/` folder layout |
+| [spec-structure-folder.template.md](spec-structure-folder.template.md) | Recommended `.plaesy/specs/<feature>/` folder layout |
 | [task-structure-guide.template.md](task-structure-guide.template.md) | Epic/story/checklist folder structure reference (**not** the implemented model — see note below) |
 | [task-readme.template.md](task-readme.template.md) / [task-status.template.json](task-status.template.json) | Per-task README and status file reference (**not** the implemented model — see note below) |
 | [status.template.md](status.template.md) | Project status dashboard |

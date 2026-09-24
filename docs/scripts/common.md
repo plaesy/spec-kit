@@ -38,7 +38,7 @@ helpers so individual commands don't reimplement them.
 | `GetRepoRoot()` | `git rev-parse --show-toplevel` |
 | `GetCurrentBranch()` | `git rev-parse --abbrev-ref HEAD` |
 | `CheckFeatureBranch(branch)` | Validates branch name matches `NNN-*` |
-| `GetFeatureDir(repoRoot, branch)` | Builds `<repoRoot>/specs/<branch>` |
+| `GetFeatureDir(repoRoot, branch)` | Builds `<repoRoot>/.plaesy/specs/<branch>` |
 | `GetFeaturePaths()` | Returns a `*FeaturePaths` struct with `RepoRoot`, `CurrentBranch`, `FeatureDir`, `FeatureSpec`, `ImplPlan`, `Tasks`, `Research`, `DataModel`, `Quickstart`, `ContractsDir` |
 | `(*FeaturePaths).ShellLines()` | Renders the same fields as shell-sourceable `KEY='value'` lines, for anything that still wants to `eval` this output (see [get-feature-paths.md](./get-feature-paths.md)) |
 | `CheckFile(path, label)` / `CheckDir(path, label)` | Returns a `  ✓ label` / `  ✗ label` string |

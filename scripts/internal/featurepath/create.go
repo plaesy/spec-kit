@@ -28,7 +28,7 @@ var (
 )
 
 // CreateNewFeature mirrors create-new-feature.sh: computes the next feature
-// number, creates a NNN-slug branch, and seeds specs/<branch>/spec.md from
+// number, creates a NNN-slug branch, and seeds .plaesy/specs/<branch>/spec.md from
 // templates/spec.template.md.
 func CreateNewFeature(description string) (*CreateResult, error) {
 	description = strings.TrimSpace(description)
@@ -41,7 +41,7 @@ func CreateNewFeature(description string) (*CreateResult, error) {
 		return nil, err
 	}
 
-	specsDir := filepath.Join(repoRoot, "specs")
+	specsDir := filepath.Join(repoRoot, ".plaesy", "specs")
 	if err := os.MkdirAll(specsDir, 0o755); err != nil {
 		return nil, fmt.Errorf("creating specs dir: %w", err)
 	}
