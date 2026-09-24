@@ -2,6 +2,20 @@
 
 **Complete reference for all AI-optimized workflow prompts that power the Plaesy development automation framework.**
 
+## 📍 Important: Where Prompts Live
+
+This documentation references prompts from the **source repository** (`prompts/` folder). When you run `plaesy init`, prompts are installed to **platform-specific locations** based on your AI tool:
+
+| AI Platform | Install Location | Example |
+|---|---|---|
+| Claude Code | `.claude/commands/` | `.claude/commands/assess.md` |
+| Cursor | `.cursor/rules/` | `.cursor/rules/assess.md` |
+| OpenCode | `.opencode/prompts/` | `.opencode/prompts/assess.md` |
+| GitHub Copilot | `.github/prompts/` | `.github/prompts/assess.md` |
+| Windsurf | `.windsurf/prompts/` | `.windsurf/prompts/assess.md` |
+
+**After init, reference prompts by their command name** (e.g., `/assess`, `/start`) — not by the source file path (`prompts/assess.md`). The AI tool automatically resolves the command to the correct file in its platform-specific folder.
+
 > **Before creating prompts**: reference `instructions/plaesy.instructions.md` (copied to `.plaesy/instructions/plaesy.md` on init) for constitutional rules.
 
 ---
@@ -29,7 +43,7 @@ design Spine if UI) → `/implement` → `/assess` (Mode 2) → `/optimize`/`/fi
 the order.
 
 > **Note**: technology/market/legal research **and** spec-ambiguity resolution are both
-> **Mode 1 of `/assess`** (see `prompts/assess.md`) — run `/assess:{scope}` before a
+> **Mode 1 of `/assess`** (run `/assess:{scope}` before a
 > spec exists and it researches the web/Context7 for evidence and resolves vague
 > requirements in the same pass, instead of splitting research and clarification into
 > separate commands. This keeps one command per dimension, and keeps both
@@ -71,7 +85,7 @@ COMPLETION + RECOMMENDATIONS
 ## 🔄 Phase Details
 
 ### `/start`
-**File**: `prompts/start.md`  
+**Command**: `/start`  
 **Execution**: `ultracode` (parallel multi-agent)  
 **Purpose**: Orchestrate complete project workflow automation
 
@@ -98,7 +112,7 @@ COMPLETION + RECOMMENDATIONS
 
 
 > **No standalone design command.** Design production and audit are folded into
-> `/assess`'s **Design Spine** (see `prompts/assess.md` Mode 1 and Mode 2); redesign or
+> `/assess`'s **Design Spine** (Mode 1 and Mode 2); redesign or
 > refactor is handled by `/optimize:design`. The spine covers five dimensions —
 > UI/UX, architecture, business model, org structure, process — with one pattern:
 > components → tokens (no hardcoding) → states/edge cases → mandatory audit (hard
@@ -114,7 +128,7 @@ COMPLETION + RECOMMENDATIONS
 ---
 
 ### `/implement`
-**File**: `prompts/implement.md`  
+**Command**: `/implement`  
 **Execution**: `ultracode`  
 **Purpose**: Build production-ready code with TDD enforcement and 90%+ coverage
 
@@ -150,12 +164,9 @@ COMPLETION + RECOMMENDATIONS
 ---
 
 ### `/assess`
-**File**: `prompts/assess.md`  
-**Scoped commands**: `prompts/assess/{technical,design,business,marketing,legal,financial,management,product}.md`
-— one file per dimension, each a thin wrapper that pins the scope and defers to
-`prompts/assess.md` for the full protocol. This is what makes `/assess:design` (and
-the other seven) resolve as their own recognized command instead of an argument to
-`/assess`; the platform install step mirrors this same subfolder into each target
+**Command**: `/assess` (plus scoped variants: `/assess:technical`, `/assess:design`, `/assess:business`, `/assess:marketing`, `/assess:legal`, `/assess:financial`, `/assess:management`, `/assess:product`)  
+**Scoped commands**: Each dimension has its own command variant (e.g., `/assess:design`, `/assess:business`) that pins the scope and defers to the main `/assess` protocol for the full execution. This is what makes `/assess:design` (and the other seven) resolve as their own recognized command instead of an argument to
+`/assess`; the platform install step mirrors this same subfolder structure into each target
 (e.g. `.claude/commands/assess/design.md`) automatically, since the mirror copy
 already recurses through subdirectories.  
 **Execution**: `ultracode`  
@@ -201,7 +212,7 @@ already recurses through subdirectories.
 ---
 
 ### `/optimize`
-**File**: `prompts/optimize.md`  
+**Command**: `/optimize`  
 **Execution**: `ultracode`  
 **Purpose**: Performance and UX optimization
 
@@ -235,8 +246,8 @@ already recurses through subdirectories.
 ---
 
 ### `/improve`
-**File**: `prompts/improve.md`
-**Execution**: `ultracode`
+**Command**: `/improve`  
+**Execution**: `ultracode`  
 **Purpose**: Best-practice gate across **every active dimension** — not "is it
 broken" (`/fix`), not "known gap against a target" (`/optimize`), not "what's the
 score" (`/assess`), but "has practice moved on?"
@@ -284,7 +295,7 @@ whether you need `/assess`, `/optimize`, `/fix`, or a best-practice pass
 ---
 
 ### `/loop`
-**File**: `prompts/loop.md`  
+**Command**: `/loop`  
 **Execution**: `ultracode`  
 **Purpose**: Autonomous assess → fix → verify → repeat, no user input between iterations
 
@@ -309,7 +320,7 @@ reviewing each fix manually
 ---
 
 ### `/fix`
-**File**: `prompts/fix.md`  
+**Command**: `/fix`  
 **Execution**: standard  
 **Purpose**: Resolve issues and blockers
 
@@ -330,7 +341,7 @@ reviewing each fix manually
 ---
 
 ### `/continue`
-**File**: `prompts/continue.md`  
+**Command**: `/continue`  
 **Execution**: `ultracode`  
 **Purpose**: Resume project work and auto-detect current state
 
@@ -359,7 +370,7 @@ reviewing each fix manually
 ---
 
 ### `/save`
-**File**: `prompts/save.md`  
+**Command**: `/save`  
 **Execution**: standard  
 **Purpose**: Persist progress and knowledge to project memory
 
@@ -385,7 +396,7 @@ reviewing each fix manually
 ---
 
 ### `/doc`
-**File**: `prompts/doc.md`  
+**Command**: `/doc`  
 **Execution**: `ultracode`  
 **Purpose**: Generate comprehensive project documentation from code
 
