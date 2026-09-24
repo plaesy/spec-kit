@@ -18,10 +18,11 @@ scope-less behavior of its own. Today it has exactly one scope:
 | Scope                | Purpose                                                                                                              |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `/create:images` | Turn a text description (or a design-spine/brandkit entry) into an actual saved image file, not just a prompt string |
+| `/create:storyboard` | Generate a visual storyboard (sequential narrative panels) from a user journey/interaction flow — produces real image assets per panel, not descriptions |
 
-More scopes (e.g. `/create:audio`, `/create:video`) are added the same way if
+More scopes (e.g. `/create:audio`, `/create:video`, `/create:template`) are added the same way if
 the project ever needs them — this file stays a thin router; each scope has its
-own command (e.g., `/create:images`, `/create:audio`).
+own command (e.g., `/create:images`, `/create:storyboard`).
 
 ## Why This Exists
 

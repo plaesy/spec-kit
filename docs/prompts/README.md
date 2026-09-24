@@ -35,6 +35,7 @@ This documentation references prompts from the **source repository** (`prompts/`
 | [`/save`](#save) | Persist progress | standard |
 | [`/doc`](#doc) | Documentation generation | ultracode |
 | [`/create:images`](#generateimages) | Generate a real image asset (UI/design) from a text prompt | standard |
+| [`/create:storyboard`](#createstoryboard) | Generate a visual storyboard (sequential narrative panels) from user journey | standard |
 
 Typical order for a new feature: `/start` → `/assess` (Mode 1: research, clarify,
 design Spine if UI) → `/implement` → `/assess` (Mode 2) → `/optimize`/`/fix` as needed
@@ -481,6 +482,6 @@ reviewing each fix manually
 
 ---
 
-**Last Updated**: 2026-09-15  
-**Spec-Kit Version**: 0.0.1  
-**Total Prompts**: 9 implemented (research, ambiguity-resolution, and design production/audit all folded into `/assess` Mode 1/2)
+**Last Updated**: 2026-09-25  
+**Spec-Kit Version**: 0.0.2  
+**Total Prompts**: 10 implemented (9 core workflow + 2 asset generation scopes under `/create`)
