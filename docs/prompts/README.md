@@ -34,8 +34,14 @@ This documentation references prompts from the **source repository** (`prompts/`
 | [`/continue`](#continue) | Resume & state detection | ultracode |
 | [`/save`](#save) | Persist progress | standard |
 | [`/doc`](#doc) | Documentation generation | ultracode |
-| [`/create:images`](#generateimages) | Generate a real image asset (UI/design) from a text prompt | standard |
-| [`/create:storyboard`](#createstoryboard) | Generate a visual storyboard (sequential narrative panels) from user journey | standard |
+| [`/create:images`](#generateimages) | Generate real image asset from text description | standard |
+| [`/create:storyboard`](#createstoryboard) | Generate visual storyboard (sequential narrative panels) from user journey | standard |
+| [`/create:diagram`](#creatediagram) | Generate visual diagrams (architecture, flowchart, ERD, sequence, swimlane, mindmap) | standard |
+| [`/create:tasks`](#createtasks) | Generate task backlog (epics, stories, acceptance criteria) from requirements | standard |
+| [`/create:template:api`](#createtemplateapi) | Generate API boilerplate (OpenAPI, GraphQL) with modular components | standard |
+| [`/create:template:infra`](#createtemplateinfra) | Generate infrastructure-as-code (Terraform, CloudFormation) templates | standard |
+| [`/create:template:ci`](#createtemplateci) | Generate CI/CD pipeline configs (GitHub Actions, GitLab CI) | standard |
+| [`/create:template:project`](#createtemplateproject) | Generate project scaffolding (monorepo structure, configs) | standard |
 
 Typical order for a new feature: `/start` → `/assess` (Mode 1: research, clarify,
 design Spine if UI) → `/implement` → `/assess` (Mode 2) → `/optimize`/`/fix` as needed
@@ -483,5 +489,5 @@ reviewing each fix manually
 ---
 
 **Last Updated**: 2026-09-25  
-**Spec-Kit Version**: 0.0.2  
-**Total Prompts**: 10 implemented (9 core workflow + 2 asset generation scopes under `/create`)
+**Spec-Kit Version**: 0.0.3  
+**Total Prompts**: 17 implemented (9 core workflow + 8 `/create:<scope>` scopes: 4 asset generation + 4 boilerplate templates)

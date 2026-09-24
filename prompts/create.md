@@ -1,5 +1,5 @@
 ---
-description: "Generate real assets (images, tasks, storyboards) from specifications — router for /create:{scope}"
+description: "Generate real assets (images, diagrams, tasks, storyboards, boilerplate templates) from specifications — router for /create:{scope}"
 ---
 # `/create` command instructions
 
@@ -8,15 +8,23 @@ description: "Generate real assets (images, tasks, storyboards) from specificati
 ## Usage Format
 
 ```bash
+# Asset generation
 /create:images "a flat-style empty-state illustration for an empty inbox"
-/create:images --for .plaesy/memory/design-spine.md --component "empty-state/inbox"
+/create:storyboard "User signup flow: landing → email → verify → dashboard"
+/create:diagram "Architecture: frontend → API gateway → microservices → database"
 /create:tasks "requirements.md" --format markdown
-/create:storyboard "User signup flow: browse landing → enter email → verify → dashboard"
+
+# Boilerplate templates
+/create:template:api "REST API for e-commerce product catalog with search"
+/create:template:infra "AWS infrastructure: VPC, RDS PostgreSQL, S3, CloudFront"
+/create:template:ci "GitHub Actions CI/CD pipeline with security scanning"
+/create:template:project "Monorepo with React frontend + Node backend"
 ```
 
 `/create` is a **router**, same shape as `/assess`/`/improve`/`/fix`: it has no
-scope-less behavior of its own. Today it has four scopes:
+scope-less behavior of its own. Today it has eight scopes:
 
+### Asset Generation (Real Binary/File Output)
 | Scope                | Purpose                                                                                                              |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `/create:images` | Turn a text description (or a design-spine/brandkit entry) into an actual saved image file, not just a prompt string |
@@ -24,9 +32,17 @@ scope-less behavior of its own. Today it has four scopes:
 | `/create:diagram` | Generate visual diagrams (architecture, flowchart, ERD, sequence, swimlane, mindmap) from natural language or code context — produces SVG and Mermaid markdown files |
 | `/create:tasks` | Generate hierarchical task backlog (epics → user stories → acceptance criteria → technical tasks) from requirements specifications — produces structured Markdown + JSON backlog files |
 
-More scopes (e.g. `/create:audio`, `/create:video`, `/create:template`) are added the same way if
+### Boilerplate Templates (Code Scaffolding)
+| Scope                | Purpose                                                                                                              |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `/create:template:api` | Generate API boilerplate (OpenAPI 3.2.0 YAML, GraphQL SDL) with modular components, pagination patterns, authentication schemas |
+| `/create:template:infra` | Generate infrastructure-as-code (Terraform .tf, CloudFormation YAML) with modular structure, remote state config, policy enforcement |
+| `/create:template:ci` | Generate CI/CD pipeline configs (GitHub Actions .yml, GitLab CI .yml) with security scanning, staged deployments, compliance gates |
+| `/create:template:project` | Generate project scaffolding (monorepo structure, package.json, tsconfig.json, ESLint/Prettier config) ready for install |
+
+More scopes (e.g. `/create:audio`, `/create:video`) are added the same way if
 the project ever needs them — this file stays a thin router; each scope has its
-own command (e.g., `/create:images`, `/create:storyboard`, `/create:diagram`, `/create:tasks`).
+own command (e.g., `/create:images`, `/create:template:api`).
 
 ## Why This Exists
 
