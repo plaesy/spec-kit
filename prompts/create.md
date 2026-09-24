@@ -1,5 +1,5 @@
 ---
-description: "Generate real binary assets (images today) from a text prompt or design spec — router for /create:{scope}"
+description: "Generate real assets (images, tasks, storyboards) from specifications — router for /create:{scope}"
 ---
 # `/create` command instructions
 
@@ -10,19 +10,23 @@ description: "Generate real binary assets (images today) from a text prompt or d
 ```bash
 /create:images "a flat-style empty-state illustration for an empty inbox"
 /create:images --for .plaesy/memory/design-spine.md --component "empty-state/inbox"
+/create:tasks "requirements.md" --format markdown
+/create:storyboard "User signup flow: browse landing → enter email → verify → dashboard"
 ```
 
 `/create` is a **router**, same shape as `/assess`/`/improve`/`/fix`: it has no
-scope-less behavior of its own. Today it has exactly one scope:
+scope-less behavior of its own. Today it has four scopes:
 
 | Scope                | Purpose                                                                                                              |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `/create:images` | Turn a text description (or a design-spine/brandkit entry) into an actual saved image file, not just a prompt string |
 | `/create:storyboard` | Generate a visual storyboard (sequential narrative panels) from a user journey/interaction flow — produces real image assets per panel, not descriptions |
+| `/create:diagram` | Generate visual diagrams (architecture, flowchart, ERD, sequence, swimlane, mindmap) from natural language or code context — produces SVG and Mermaid markdown files |
+| `/create:tasks` | Generate hierarchical task backlog (epics → user stories → acceptance criteria → technical tasks) from requirements specifications — produces structured Markdown + JSON backlog files |
 
 More scopes (e.g. `/create:audio`, `/create:video`, `/create:template`) are added the same way if
 the project ever needs them — this file stays a thin router; each scope has its
-own command (e.g., `/create:images`, `/create:storyboard`).
+own command (e.g., `/create:images`, `/create:storyboard`, `/create:diagram`, `/create:tasks`).
 
 ## Why This Exists
 
@@ -37,12 +41,13 @@ Figma upload, a doc).
 
 ## Callable By Other Prompts
 
-Any prompt that needs a concrete image asset mid-run — `/implement:design`
-building a component that needs an icon/illustration, `/improve:design`
-replacing an outdated asset, `/doc` illustrating a concept — invokes
-`/create:images` directly with a structured call instead of re-describing
-image generation itself. See "Programmatic Invocation" in the `/create:images`
-command documentation.
+Any prompt that needs a concrete asset mid-run invokes the appropriate `/create:{scope}` directly with a structured call instead of re-describing generation itself:
+
+- **Images**: `/implement:design` building a component that needs an icon/illustration, `/improve:design` replacing an outdated asset, `/doc` illustrating a concept
+- **Diagrams**: `/implement:technical` documenting system architecture, `/assess:technical` analyzing existing systems, `/doc` explaining processes/data models
+- **Tasks**: `/implement` decomposing requirements into sprint-ready stories, `/doc` generating task documentation from specifications
+
+See "Programmatic Invocation" sections in the respective scope documentation.
 
 ## Anti-Patterns (NEVER Do These)
 
