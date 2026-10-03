@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-10-03T04:30:34Z",
+    "layer": "layer1",
+    "path": "go test ./...",
+    "before": 84728,
+    "after": 682,
+    "saved_pct": 99.2
+  },
+  {
+    "timestamp": "2026-10-03T04:47:17Z",
+    "layer": "layer1",
+    "path": "go test ./internal/scaffold/... -v",
+    "before": 67587,
+    "after": 700,
+    "saved_pct": 99
+  }
+]

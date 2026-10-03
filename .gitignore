@@ -1,0 +1,76 @@
+# Build artifacts. These are anchored to the repository root on purpose: a bare
+# `plaesy` also matches any path *component* named plaesy, which silently
+# excluded scripts/cmd/plaesy/ — the entire CLI source — from version control.
+# The commands existed on disk, passed their tests, and were never committed.
+reload.sh
+# Root-anchored, because a bare `plaesy` also matches any path *component*
+# named plaesy — which silently excluded scripts/cmd/plaesy/, the entire CLI
+# source, from version control. The commands existed on disk, passed their tests,
+# and were never committed.
+/plaesy
+/plaesy.exe
+/plaesy-test
+# A Windows `go build` in the CLI source directory writes plaesy.exe *there*,
+# so the extension spelling needs a rule of its own too. Safe unanchored: it can
+# only match a file of exactly that name, never the `plaesy/` directory. This
+# must NOT be root-anchored — anchored, it silently fails to match
+# scripts/plaesy.exe and leaves the binary staged for the next `git add -A`.
+plaesy.exe
+.clinerules/byterover-rules.md
+.kilo*
+.roo/rules/byterover-rules.md
+.windsurf/rules/byterover-rules.md
+.cursor/rules/byterover-rules.mdc
+.kiro/steering/byterover-rules.md
+.qoder/rules/byterover-rules.md
+.augment/rules/byterover-rules.md
+
+
+# Plaesy framework output dirs, ignored here as well as globally in
+# ~/.gitignore_global, so a fresh clone and this checkout agree on what is
+# generated rather than source.
+#
+# ...but the session state and the task system are *not* generated output, and
+# the global ignore excludes the whole `.plaesy` directory. Without these
+# negations a task file is tracked from the moment it is created and then
+# vanishes from `git add -A` the first time `plaesy tasks move` relocates it:
+# the old path shows as deleted, the new one is invisible, and the file
+# silently leaves version control. That is the tracked-binary bug from 2026-09-28
+# in a different costume — an ignore rule, correctly written for a directory
+# that is mostly generated, silently classifying the ungenerated minority too.
+# A repo .gitignore outranks ~/.gitignore_global, so these win.
+#
+# The order is load-bearing: git cannot re-include a file whose parent
+# directory is excluded, so `!.plaesy/` has to come first and the generated
+# subdirectories have to be re-ignored after it. Reversed, the negation is
+# silently inert and the bug returns with no error.
+!.plaesy/
+.plaesy/analysis*
+.plaesy/checklists*
+.plaesy/instructions*
+.plaesy/roles*
+.plaesy/scripts*
+.plaesy/templates*
+# The root `plaesy` binary was committed for the whole life of this repository,
+# a 14.9 MB Windows PE blob, even though `/plaesy` has been listed above the
+# entire time. Ignore rules do not apply to a file that is already tracked, so
+# neither the rule nor the fix to the `clean` target that had introduced it
+# (it ran `git add -Af`) could ever have worked. `git rm --cached` is what
+# actually removed it, in 2026-09-28.
+#
+# The lesson is the reason TestNoBuildArtifactIsTracked and
+# TestBuildOutputPathsAreIgnored exist: "we wrote the ignore rule" is not the
+# same claim as "the ignore rule is doing something".
+
+.claude*
+AGENTS.md
+CLAUDE.md
+
+# Node
+node_modules/
+
+# Go build/coverage artifacts
+*.out
+cover.out
+# Windows/MSYS stray redirect target ("... > nul" creates a real file named nul)
+nul

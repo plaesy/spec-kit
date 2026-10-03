@@ -1,0 +1,40 @@
+{
+  "task_id": "T001",
+  "title": "{{TASK_TITLE}}",
+  "status": "pending",
+  "priority": 1,
+  "assigned_to": null,
+  "created_at": "{{TIMESTAMP}}",
+  "started_at": null,
+  "completed_at": null,
+  "estimated_hours": 4,
+  "actual_hours": 0,
+  "dependencies": ["T000"],
+  "blocked_by": [],
+  "blockers": [],
+  "category": "{{CATEGORY}}",
+  "complexity": "{{COMPLEXITY}}",
+  "tags": ["backend", "api", "database"],
+  "acceptance_criteria": [
+    "Criteria 1 completed",
+    "Criteria 2 validated"
+  ],
+  "progress_notes": [
+    {
+      "timestamp": "{{TIMESTAMP}}",
+      "status": "in_progress",
+      "note": "Started implementation",
+      "author": "developer"
+    }
+  ],
+  "artifacts": [
+    "execution.log",
+    "test_results.xml"
+  ],
+  "quality_gates": {
+    "code_review": false,
+    "tests_passing": false,
+    "documentation_updated": false,
+    "constitutional_compliance": false
+  }
+}

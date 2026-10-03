@@ -1,0 +1,26 @@
+{
+  "$comment": [
+    "Config for the Go markdown linter built into this binary (plaesy validate markdown).",
+    "Same rule IDs and option keys as markdownlint-cli2, so this file is portable.",
+    "Unknown rule names and unknown option keys are hard errors: a config that half-loads",
+    "is a check that reports success while checking nothing.",
+    "MD010 ignores code blocks on purpose: a tab inside a fenced example is the content",
+    "being shown (a tab-delimited table, an indented Makefile recipe), not this",
+    "document's own formatting, and 'plaesy validate markdown --fix' would otherwise",
+    "rewrite the data of every example it passes over."
+  ],
+  "default": true,
+  "MD013": {
+    "line_length": 200,
+    "code_blocks": false,
+    "tables": false,
+    "headings": false
+  },
+  "MD024": { "siblings_only": true },
+  "MD010": { "code_blocks": false },
+  "MD029": { "style": "ordered" },
+  "MD041": false,
+  "MD046": { "style": "fenced" },
+  "MD048": { "style": "backtick" },
+  "MD058": { "tables": true }
+}

@@ -1,0 +1,395 @@
+{
+  "version": "1.0",
+  "description": "Platform detection and file mapping for Plaesy Spec-Kit",
+  "plaesy": {
+    "base_directory": ".plaesy",
+    "core_directories": [
+      "memory",
+      "decisions",
+      "roles",
+      "analysis",
+      "instructions",
+      "templates",
+      "tasks",
+      "checklists",
+      "scripts"
+    ],
+    "project_directories": [
+      ".plaesy/specs"
+    ],
+    "mapping": {
+      "core": {
+        "value": "instructions/agents.instructions.md"
+      },
+      "memory": {
+        "value": "memory/*",
+        "excludes": []
+      },
+      "roles": {
+        "value": "roles/*",
+        "excludes": [],
+        "description": "Agents copied to .plaesy/roles (platform-agnostic development storage)"
+      },
+      "tasks": {
+        "value": "tasks/*",
+        "excludes": [],
+        "description": "Task management system - universal across all platforms"
+      },
+      "instructions": {
+        "value": "instructions/*",
+        "excludes": [
+          "agents.instructions.md"
+        ]
+      },
+      "prompts": {
+        "value": "prompts/*",
+        "excludes": []
+      },
+      "agents": {
+        "value": "agents/*",
+        "excludes": []
+      },
+      "templates": {
+        "value": "templates/*",
+        "excludes": []
+      },
+      "checklists": {
+        "value": "checklists/*",
+        "excludes": []
+      },
+      "scripts": {
+        "value": "scripts/*",
+        "excludes": []
+      }
+    }
+  },
+  "platforms": {
+    "claude": {
+      "name": "Claude Code",
+      "provider": "Anthropic",
+      "category": "cli_tools",
+      "detection": [
+        ".claude/settings.local.json",
+        ".claude/commands",
+        "CLAUDE.md"
+      ],
+      "mapping": {
+        "core": "CLAUDE.md",
+        "instructions": ".claude/instructions",
+        "prompts": ".claude/commands",
+        "prune_prompts": "true",
+        "agents": ".claude/roles"
+      }
+    },
+    "opencode": {
+      "name": "OpenCode",
+      "provider": "OpenCode",
+      "category": "cli_tools",
+      "detection": [
+        ".opencode/agents",
+        ".opencode/commands",
+        ".opencode/config.json",
+        ".opencode/plugins"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "instructions": ".opencode/instructions",
+        "prompts": ".opencode/commands",
+        "prune_prompts": "true",
+        "agents": ".opencode/agents"
+      }
+    },
+    "cursor_ai": {
+      "name": "Cursor AI",
+      "provider": "Cursor",
+      "category": "ide_tools",
+      "detection": [
+        ".cursorrules",
+        ".cursor/rules",
+        ".cursor"
+      ],
+      "mapping": {
+        "core": ".cursor/rules/plaesy.mdc",
+        "instructions": ".cursor/instructions",
+        "prompts": ".cursor/rules"
+      }
+    },
+    "github_copilot": {
+      "name": "GitHub Copilot",
+      "provider": "GitHub",
+      "category": "ide_tools",
+      "detection": [
+        ".github/copilot-instructions.md",
+        ".github/prompts"
+      ],
+      "mapping": {
+        "core": ".github/copilot-instructions.md",
+        "instructions": ".github/instructions",
+        "prompts": ".github/prompts",
+        "prune_prompts": "true",
+        "agents": ".github/agents"
+      }
+    },
+    "cline": {
+      "name": "Cline",
+      "provider": "Cline AI",
+      "category": "vscode_extension",
+      "detection": [
+        ".cline/instructions.md",
+        ".cline/prompts"
+      ],
+      "mapping": {
+        "core": ".cline/instructions.md",
+        "instructions": ".cline/instructions",
+        "prompts": ".cline/prompts",
+        "prune_prompts": "true",
+        "agents": ".cline/agents"
+      }
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "provider": "DeepSeek AI",
+      "category": "api_based",
+      "detection": [
+        ".deepseek/instructions.md",
+        "deepseek.config.json"
+      ],
+      "mapping": {
+        "core": ".deepseek/instructions.md",
+        "instructions": ".deepseek/instructions",
+        "prompts": ".deepseek/prompts",
+        "prune_prompts": "true",
+        "agents": ".deepseek/agents"
+      }
+    },
+    "kilo": {
+      "name": "Kilo Code",
+      "provider": "Kilo Code",
+      "category": "api_based",
+      "detection": [
+        ".kilorules",
+        ".kilo/rules",
+        ".kilo"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "prompts": ".kilo/commands",
+        "prune_prompts": "true"
+      }
+    },
+    "qoder": {
+      "name": "Qoder AI",
+      "provider": "Qoder",
+      "category": "api_based",
+      "detection": [
+        ".qoderrules",
+        ".qoder/rules",
+        ".qoder"
+      ],
+      "mapping": {
+        "core": ".qoder/rules/plaesy.mdc",
+        "instructions": ".qoder/instructions",
+        "prompts": ".qoder/rules",
+        "agents": ".qoder/agents"
+      }
+    },
+    "trae_ai": {
+      "name": "Trae AI",
+      "provider": "Trae Labs",
+      "category": "api_based",
+      "detection": [
+        ".trae/instructions.md",
+        "trae.config.yaml"
+      ],
+      "mapping": {
+        "core": ".trae/instructions.md",
+        "instructions": ".trae/instructions",
+        "prompts": ".trae/prompts",
+        "prune_prompts": "true",
+        "agents": ".trae/agents"
+      }
+    },
+    "windsurf_ai": {
+      "name": "Windsurf AI",
+      "provider": "Windsurf",
+      "category": "multi_agent",
+      "detection": [
+        ".windsurf/workflow.yaml",
+        ".windsurfrules"
+      ],
+      "mapping": {
+        "core": ".windsurf/instructions.md",
+        "instructions": ".windsurf/instructions",
+        "prompts": ".windsurf/prompts",
+        "prune_prompts": "true",
+        "agents": ".windsurf/agents"
+      }
+    },
+    "continue_dev": {
+      "name": "Continue.dev",
+      "provider": "Continue",
+      "category": "vscode_extension",
+      "detection": [
+        ".continue/config.json",
+        ".continuerc",
+        ".continue-instructions.md"
+      ],
+      "mapping": {
+        "core": ".continue/config.json",
+        "instructions": ".continue/instructions",
+        "prompts": ".continue/prompts",
+        "prune_prompts": "true",
+        "agents": ".continue/agents"
+      }
+    },
+    "tabnine": {
+      "name": "Tabnine",
+      "provider": "Tabnine",
+      "category": "ide_tools",
+      "detection": [
+        ".tabnine-config.json",
+        ".tabnine/settings.json",
+        ".tabnine"
+      ],
+      "mapping": {
+        "core": ".tabnine/config.json",
+        "instructions": ".tabnine/instructions",
+        "prompts": ".tabnine/prompts",
+        "prune_prompts": "true",
+        "agents": ".tabnine/agents"
+      }
+    },
+    "codeium": {
+      "name": "Codeium",
+      "provider": "Codeium",
+      "category": "ide_tools",
+      "detection": [
+        ".codeium/config.json",
+        ".codeiumrc",
+        ".codeium"
+      ],
+      "mapping": {
+        "core": ".codeium/config.json",
+        "instructions": ".codeium/instructions",
+        "prompts": ".codeium/prompts",
+        "prune_prompts": "true",
+        "agents": ".codeium/agents"
+      }
+    },
+    "codewhisperer": {
+      "name": "Amazon CodeWhisperer",
+      "provider": "Amazon",
+      "category": "ide_tools",
+      "detection": [
+        ".codewhisperer/config.json",
+        ".aws/codewhisperer",
+        ".codewhisperer"
+      ],
+      "mapping": {
+        "core": ".codewhisperer/config.json",
+        "instructions": ".codewhisperer/instructions",
+        "prompts": ".codewhisperer/prompts",
+        "prune_prompts": "true",
+        "agents": ".codewhisperer/agents"
+      }
+    },
+    "studio_bot": {
+      "name": "Google Studio Bot",
+      "provider": "Google",
+      "category": "ide_tools",
+      "detection": [
+        ".studio-bot/config.json",
+        ".android/studio-bot",
+        ".studiobot"
+      ],
+      "mapping": {
+        "core": ".studio-bot/config.json",
+        "instructions": ".studio-bot/instructions",
+        "prompts": ".studio-bot/prompts",
+        "prune_prompts": "true",
+        "agents": ".studio-bot/agents"
+      }
+    },
+    "replit_ghostwriter": {
+      "name": "Replit Ghostwriter",
+      "provider": "Replit",
+      "category": "cloud_ide",
+      "detection": [
+        ".replit/config.json",
+        "ghostwriter.config.json",
+        ".replit-ghostwriter"
+      ],
+      "mapping": {
+        "core": ".replit/config.json",
+        "instructions": ".replit/instructions",
+        "prompts": ".replit/prompts",
+        "prune_prompts": "true",
+        "agents": ".replit/agents"
+      }
+    },
+    "llama_index": {
+      "name": "LlamaIndex",
+      "provider": "LlamaIndex",
+      "category": "framework",
+      "detection": [
+        ".llamaindex/config.json",
+        "llama.config.json",
+        ".llama-index"
+      ],
+      "mapping": {
+        "core": ".llamaindex/config.json",
+        "instructions": ".llamaindex/instructions",
+        "prompts": ".llamaindex/prompts",
+        "prune_prompts": "true",
+        "agents": ".llamaindex/agents"
+      }
+    },
+    "ollama": {
+      "name": "Ollama",
+      "provider": "Ollama",
+      "category": "local_ai",
+      "detection": [
+        ".ollama/config.json",
+        "ollama.config.json",
+        ".ollama"
+      ],
+      "mapping": {
+        "core": ".ollama/config.json",
+        "instructions": ".ollama/instructions",
+        "prompts": ".ollama/prompts",
+        "prune_prompts": "true",
+        "agents": ".ollama/agents"
+      }
+    },
+    "lm_studio": {
+      "name": "LM Studio",
+      "provider": "LM Studio",
+      "category": "local_ai",
+      "detection": [
+        ".lm-studio/config.json",
+        "lmstudio.config.json",
+        ".lm-studio"
+      ],
+      "mapping": {
+        "core": ".lm-studio/config.json",
+        "instructions": ".lm-studio/instructions",
+        "prompts": ".lm-studio/prompts",
+        "prune_prompts": "true",
+        "agents": ".lm-studio/agents"
+      }
+    },
+    "generic_ai": {
+      "name": "Generic AI",
+      "provider": "Various",
+      "category": "fallback",
+      "detection": [],
+      "mapping": {
+        "core": "AI-INSTRUCTIONS.md",
+        "instructions": "ai-config/instructions",
+        "prompts": "ai-config/prompts",
+        "prune_prompts": "true",
+        "agents": "ai-config/agents"
+      }
+    }
+  }
+}

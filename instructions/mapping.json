@@ -1,0 +1,1072 @@
+{
+  "description": "Mapping of technology keywords to instruction files for auto-loading context-aware instructions",
+  "version": "1.0.0",
+  "excluded_files_note": "instructions/agents.instructions.md is intentionally NOT referenced anywhere in this file. It's the platform 'core' template (scripts/configs/platform.json → mapping.core.value), copied per chosen AI platform as CLAUDE.md, AGENTS.md, .cursor/rules/plaesy.mdc, etc. by `plaesy init`'s platform-specific setup (see scripts/internal/scaffold/platform.go:SetupPlatformConfig) — not by the generic instructions copy or `plaesy stack detect` selection this file drives. platform.json's mapping.instructions.excludes already excludes it from the generic copy for the same reason. Do not add it to 'always_load' or any category here.",
+  "field_semantics_note": "Verified against scripts/internal/detectstack/detectstack.go (Go port, single cross-platform implementation replacing the old scripts/bash/detect-stack.sh + scripts/powershell/detect-stack.ps1 pair as of 2026-09): only 'file', 'keywords', 'extensions', and 'filenames' are actually read to decide what loads. 'extensions' matches any file with that suffix anywhere under the target (existence-only, e.g. '.docx'); 'filenames' matches an exact filename anywhere under the target (existence-only, e.g. 'next.config.js') — use 'filenames' instead of a keyword when the only reliable signal is a specific config file's name, not its content (a bare dependency name like \"next\" is too generic/prose-colliding to add as a keyword). Do not put literal double-quote characters inside a 'keywords' entry unless you have re-checked detect-stack.go's keyword extraction handles escaping the way you expect. 'patterns' and 'triggers' (per entry) and this file's top-level 'description'/'version' plus 'detection_rules.priority'/'case_insensitive'/'deduplication' are NOT read by the Go implementation — they are documentation/intent only. 'case_insensitive' and 'deduplication' happen to already match real behavior (matching is case-insensitive and output is deduplicated) but are not switches — flipping them here changes nothing. Do not assume editing 'patterns', 'triggers', or 'priority' affects detection; if you need pattern- or trigger-based matching to actually run, it must be implemented in scripts/internal/detectstack first.",
+  "pending_rename_note": "RESOLVED 2026-09-27. The file was misspelled 'software-design-prinsiples.instructions.md'; it is now 'software-design-principles.instructions.md' and BOTH mapping entries are restored below: the 'software-design-principles.instructions.md' scope_load row and the 'software-design-principles' cross_cutting block. Neither the rename nor a further consolidation into the other *-design-principles files is in progress — the file is a standalone general-altitude reference (applyTo '**') and is distinct from the domain-specific siblings.",
+  "mappings": {
+    "always_load_reinstatement_note": "2026-09-27. A slimming pass moved error-recovery, universal-orchestrator and context-engineering out of always_load into scope_load to keep the base context lean. That is wrong for these three: error-recovery is needed the moment anything fails rather than inside a named scope; universal-orchestrator routes requests that match no scoped command, so an agent that cannot see it in context cannot route to it; and context-engineering is named as a framework anchor by scripts/internal/scaffold/copy_test.go. They are reinstated here. date-system stays in scope_load: it is needed only when a document carries a date, so its absence from the base context costs nothing. If you are slimming always_load again, check reachability, not just how often each file is read.",
+  "always_load": [
+      "plaesy.instructions.md",
+        "error-recovery.instructions.md",
+        "universal-orchestrator.instructions.md",
+        "context-engineering.instructions.md",
+      "tasks.instructions.md",
+      "quality-gates.instructions.md",
+      "dimension-mapping.instructions.md",
+      "output-validation.instructions.md"
+    ],
+    "scope_load": [
+      "assess-technical.instructions.md",
+      "assess-design.instructions.md",
+      "assess-business.instructions.md",
+      "assess-financial.instructions.md",
+      "assess-marketing.instructions.md",
+      "assess-legal.instructions.md",
+      "assess-management.instructions.md",
+      "assess-product.instructions.md",
+      "assess-operations.instructions.md",
+      "context7-protocol.instructions.md",
+      "performance-baseline.instructions.md",
+      "performance-optimization.instructions.md",
+      "uncertainty-surfacing.instructions.md",
+      "software-design-principles.instructions.md",
+      "database-design-principles.instructions.md",
+      "api-design-principles.instructions.md",
+      "ui-ux-design-principles.instructions.md",
+      "frontend-design.instructions.md",
+      "distributed-systems-design-principles.instructions.md",
+      "security-design-principles.instructions.md",
+      "event-driven-architecture-principles.instructions.md",
+      "domain-driven-design-principles.instructions.md",
+      "observability-design-principles.instructions.md",
+      "concurrency-design-principles.instructions.md",
+      "caching-design-principles.instructions.md",
+      "resilience-engineering-principles.instructions.md",
+      "cli-design-principles.instructions.md",
+      "date-system.instructions.md",
+      "how-to-create-designmd.instructions.md",
+      "workflow-phases.instructions.md",
+      "multi-agent-patterns.instructions.md",
+      "error-recovery-predictive.instructions.md"
+    ],
+    "scope_load_note": "Not a detection category — a string sibling of scope_load, skipped by scripts/internal/detectstack (loadMapping treats any non-object sibling as metadata). It lists the instruction files installed by `init` but NOT loaded into active context: the assess-* workflow criteria, the general-altitude design-principles references, the shared on-demand protocols (error-recovery, context-engineering, universal-orchestrator, date-system, uncertainty-surfacing, context7-protocol), and any file with no detection signal of its own: the assess-* workflow criteria (one per dimension) and the general-altitude design-principles references. 'software-design-principles.instructions.md' is in this list because it applies to '**' — it cannot be detected, only installed. 'how-to-create-designmd.instructions.md' is here for the same reason and must not be dropped as an orphan: `copyInstructions` installs ONLY always_load + scope_load, so a file in no category is never written to `.plaesy/instructions/` at all — yet `templates/design.template.md` (lines 5 and 44) and `prompts/spec/design.md` (lines 20 and 82, 'Read the field-by-field rules in ... before writing') all cite it by its installed path. Removing this entry does not make the file merely unloaded, it makes 4+ citations dangle in every consumer project. Files that DO have a detection signal (frameworks, languages, cross_cutting) belong in their own category instead.",
+    "frameworks": {
+      "nextjs": {
+        "file": "nextjs.instructions.md",
+        "keywords": [
+          "next.js",
+          "nextjs",
+          "app router",
+          "server component",
+          "next/",
+          "@next/"
+        ],
+        "patterns": [
+          "import.*from ['\"](next/|@next/)"
+        ],
+        "filenames": [
+          "next.config.js",
+          "next.config.mjs",
+          "next.config.ts",
+          "next.config.cjs"
+        ]
+      },
+      "nestjs": {
+        "file": "nestjs.instructions.md",
+        "keywords": [
+          "nestjs",
+          "nest.js",
+          "@nestjs",
+          "nest framework"
+        ],
+        "patterns": [
+          "import.*from ['\"]@nestjs/"
+        ]
+      },
+      "vue": {
+        "file": "vue.instructions.md",
+        "keywords": [
+          "vue",
+          "vuejs",
+          "vue.js",
+          "vue 3",
+          "vuejs.org",
+          "single-file component",
+          "composition api",
+          "options api",
+          "script setup",
+          "pinia"
+        ],
+        "patterns": [
+          "import.*from ['\"]vue['\"]",
+          "import.*from ['\"]vue/"
+        ],
+        "filenames": [
+          "vite.config.js",
+          "vite.config.ts",
+          "vue.config.js"
+        ]
+      },
+      "react": {
+        "file": "reactjs.instructions.md",
+        "keywords": [
+          "react",
+          "jsx",
+          "tsx",
+          "usestate",
+          "useeffect",
+          "react-dom",
+          "react-scripts"
+        ],
+        "patterns": [
+          "import.*from ['\"]react"
+        ]
+      },
+      "react-native": {
+        "file": "react-native.instructions.md",
+        "keywords": [
+          "react native",
+          "react-native"
+        ],
+        "patterns": [
+          "import.*from ['\"]react-native"
+        ]
+      },
+      "angular": {
+        "file": "angular.instructions.md",
+        "keywords": [
+          "angular",
+          "@angular",
+          "angular component"
+        ],
+        "patterns": [
+          "import.*from ['\"]@angular/"
+        ]
+      },
+      "flutter": {
+        "file": "dart-n-flutter.instructions.md",
+        "keywords": [
+          "flutter",
+          "widget",
+          "stateless",
+          "stateful"
+        ],
+        "patterns": [
+          "import ['\"]package:flutter/"
+        ]
+      },
+      "spring-boot": {
+        "file": "springboot.instructions.md",
+        "keywords": [
+          "spring boot",
+          "springboot",
+          "spring framework",
+          "@springboot",
+          "spring-boot",
+          "springframework"
+        ],
+        "patterns": [
+          "import.*springframework"
+        ]
+      },
+      "rails": {
+        "file": "ruby-on-rails.instructions.md",
+        "keywords": [
+          "rails",
+          "ruby on rails",
+          "activerecord",
+          "rack"
+        ],
+        "patterns": [
+          "require ['\"]rails"
+        ]
+      },
+      "powerpoint": {
+        "file": "powerpoint.instructions.md",
+        "keywords": [
+          "python-pptx",
+          "pptx",
+          "powerpoint automation",
+          "slide deck generation"
+        ],
+        "patterns": [
+          "import.*from ['\"]pptx",
+          "from pptx import"
+        ],
+        "extensions": [
+          ".ppt",
+          ".pptx"
+        ]
+      },
+      "excel": {
+        "file": "excel.instructions.md",
+        "keywords": [
+          "openpyxl",
+          "xlsxwriter",
+          "excel automation",
+          "xlsx generation"
+        ],
+        "patterns": [
+          "import openpyxl",
+          "import xlsxwriter",
+          "from openpyxl import"
+        ],
+        "extensions": [
+          ".xls",
+          ".xlsx",
+          ".xlsm"
+        ]
+      },
+      "word": {
+        "file": "word.instructions.md",
+        "keywords": [
+          "python-docx",
+          "docxtpl",
+          "word automation",
+          "docx generation"
+        ],
+        "patterns": [
+          "from docx import",
+          "from docxtpl import"
+        ],
+        "extensions": [
+          ".doc",
+          ".docx"
+        ]
+      },
+      "static-site": {
+        "file": "static-site.instructions.md",
+        "keywords": [
+          "eleventy",
+          "11ty",
+          "hugo static site",
+          "jekyll",
+          "static site generator"
+        ],
+        "patterns": [
+          "import.*from ['\"]astro"
+        ],
+        "filenames": [
+          "astro.config.mjs",
+          "astro.config.ts",
+          "eleventy.config.js",
+          ".eleventy.js",
+          "_config.yml",
+          "hugo.toml",
+          "hugo.yaml",
+          "config.toml"
+        ]
+      }
+    },
+    "languages": {
+      "go": {
+        "file": "go.instructions.md",
+        "keywords": [
+          "golang",
+          "go lang",
+          "go module"
+        ],
+        "patterns": [
+          "package main",
+          "import \\("
+        ],
+        "extensions": [
+          ".go"
+        ]
+      },
+      "java": {
+        "file": "java.instructions.md",
+        "keywords": [
+          "java",
+          "jvm",
+          "maven",
+          "gradle"
+        ],
+        "patterns": [
+          "public class.*\\{",
+          "import java\\."
+        ],
+        "extensions": [
+          ".java"
+        ]
+      },
+      "csharp": {
+        "file": "csharp.instructions.md",
+        "keywords": [
+          "c#",
+          "csharp",
+          ".net",
+          "dotnet",
+          "asp.net"
+        ],
+        "patterns": [
+          "using System;",
+          "namespace.*\\{"
+        ],
+        "extensions": [
+          ".cs",
+          ".csproj",
+          ".sln"
+        ]
+      },
+      "rust": {
+        "file": "rust.instructions.md",
+        "keywords": [
+          "rust",
+          "cargo",
+          "rustc"
+        ],
+        "patterns": [
+          "fn main\\(\\)",
+          "use std::"
+        ],
+        "extensions": [
+          ".rs"
+        ]
+      },
+      "dart": {
+        "file": "dart-n-flutter.instructions.md",
+        "keywords": [
+          "dart",
+          "dart language"
+        ],
+        "patterns": [
+          "import ['\"]package:",
+          "void main\\(\\)",
+          "class .*\\{"
+        ],
+        "extensions": [
+          ".dart"
+        ]
+      },
+      "python": {
+        "file": "python.instructions.md",
+        "keywords": [
+          "python",
+          "python3",
+          "cpython",
+          "pytest",
+          "pyproject.toml",
+          "pip install"
+        ],
+        "patterns": [
+          "^\\s*def \\w+\\(.*\\):",
+          "^\\s*(from|import) \\w+"
+        ],
+        "filenames": [
+          "pyproject.toml",
+          "setup.py",
+          "setup.cfg",
+          "requirements.txt",
+          "Pipfile",
+          "tox.ini",
+          "uv.lock",
+          "poetry.lock"
+        ],
+        "extensions": [
+          ".py"
+        ]
+      }
+    },
+    "cross_cutting": {
+      "git": {
+        "file": "git.instructions.md",
+        "keywords": [
+          "git",
+          "github",
+          "gitlab",
+          "version control",
+          "branching",
+          "merge",
+          "commit",
+          "pull request",
+          "pr",
+          "gitflow"
+        ],
+        "patterns": [
+          "^[a-z]+/[a-z-]+$"
+        ]
+      },
+      "performance-measurement": {
+        "file": "performance-baseline.instructions.md",
+        "keywords": [
+          "performance",
+          "baseline",
+          "profiling",
+          "benchmark",
+          "measure",
+          "metrics",
+          "monitoring"
+        ],
+        "triggers": [
+          "performance requirement",
+          "load testing",
+          "profiling",
+          "benchmark",
+          "establish baseline"
+        ]
+      },
+      "performance-optimization": {
+        "file": "performance-optimization.instructions.md",
+        "keywords": [
+          "optimize",
+          "optimization",
+          "performance",
+          "scalability",
+          "scale",
+          "caching",
+          "cache",
+          "slow",
+          "latency",
+          "throughput",
+          "bottleneck",
+          "tuning"
+        ],
+        "triggers": [
+          "performance optimization",
+          "optimize code",
+          "improve performance",
+          "speed up"
+        ]
+      },
+      "database-design-principles": {
+        "file": "database-design-principles.instructions.md",
+        "keywords": [
+          "normalization",
+          "normal form",
+          "1nf",
+          "2nf",
+          "3nf",
+          "denormalization",
+          "primary key",
+          "foreign key",
+          "indexing",
+          "schema design",
+          "database design"
+        ],
+        "triggers": [
+          "design schema",
+          "database migration",
+          "review schema",
+          "index strategy",
+          "normalize table"
+        ]
+      },
+      "api-design-principles": {
+        "file": "api-design-principles.instructions.md",
+        "keywords": [
+          "api design",
+          "rest",
+          "resource modeling",
+          "idempotency",
+          "api versioning",
+          "pagination",
+          "error contract",
+          "backward compatibility",
+          "openapi"
+        ],
+        "triggers": [
+          "design api",
+          "review api",
+          "add endpoint",
+          "new api version",
+          "breaking api change"
+        ]
+      },
+      "ui-ux-design-principles": {
+        "file": "ui-ux-design-principles.instructions.md",
+        "keywords": [
+          "ui design",
+          "ux design",
+          "visual hierarchy",
+          "affordance",
+          "progressive disclosure",
+          "fitts's law",
+          "usability",
+          "feedback",
+          "consistency",
+          "information architecture",
+          "navigation design",
+          "interaction design",
+          "usability testing",
+          "storyboard",
+          "wireframe"
+        ],
+        "triggers": [
+          "design ui",
+          "build component",
+          "review ui",
+          "usability review",
+          "design storyboard",
+          "design navigation",
+          "design flow",
+          "usability test",
+          "review wireframe"
+        ],
+        "extensions": [
+          ".tsx",
+          ".jsx",
+          ".vue",
+          ".svelte",
+          ".dart"
+        ]
+      },
+      "distributed-systems-design-principles": {
+        "file": "distributed-systems-design-principles.instructions.md",
+        "keywords": [
+          "distributed systems",
+          "idempotency",
+          "retry",
+          "backoff",
+          "jitter",
+          "circuit breaker",
+          "bulkhead",
+          "cap theorem",
+          "saga pattern",
+          "outbox pattern",
+          "eventual consistency"
+        ],
+        "triggers": [
+          "design microservice",
+          "cross-service call",
+          "review workflow",
+          "handle partial failure"
+        ]
+      },
+      "security-design-principles": {
+        "file": "security-design-principles.instructions.md",
+        "keywords": [
+          "defense in depth",
+          "least privilege",
+          "fail-safe defaults",
+          "attack surface",
+          "threat modeling",
+          "stride",
+          "separation of duties",
+          "security architecture"
+        ],
+        "triggers": [
+          "design architecture",
+          "threat model",
+          "security review",
+          "review architecture"
+        ]
+      },
+      "event-driven-architecture-principles": {
+        "file": "event-driven-architecture-principles.instructions.md",
+        "keywords": [
+          "event-driven architecture",
+          "eda",
+          "pub-sub",
+          "event vs command",
+          "choreography",
+          "orchestration",
+          "fat event",
+          "thin event",
+          "dead-letter queue",
+          "event schema versioning",
+          "event ordering"
+        ],
+        "triggers": [
+          "design event",
+          "add event consumer",
+          "review event schema",
+          "message broker design"
+        ]
+      },
+      "software-design-principles": {
+        "file": "software-design-principles.instructions.md",
+        "keywords": [
+          "solid",
+          "single responsibility",
+          "open/closed",
+          "dependency inversion",
+          "separation of concerns",
+          "coupling",
+          "cohesion",
+          "composition over inheritance",
+          "open-closed",
+          "liskov",
+          "dry",
+          "kiss",
+          "yagni"
+        ],
+        "triggers": [
+          "review code structure",
+          "assess coupling",
+          "refactor responsibility",
+          "apply solid",
+          "reduce duplication"
+        ]
+      },
+      "domain-driven-design-principles": {
+        "file": "domain-driven-design-principles.instructions.md",
+        "keywords": [
+          "domain-driven design",
+          "ddd",
+          "bounded context",
+          "aggregate root",
+          "ubiquitous language",
+          "anemic domain model",
+          "domain event",
+          "anti-corruption layer",
+          "value object",
+          "entity"
+        ],
+        "triggers": [
+          "design domain model",
+          "define bounded context",
+          "review aggregate",
+          "model business rules"
+        ]
+      },
+      "observability-design-principles": {
+        "file": "observability-design-principles.instructions.md",
+        "keywords": [
+          "observability",
+          "structured logging",
+          "correlation id",
+          "trace id",
+          "distributed tracing",
+          "cardinality",
+          "slo",
+          "alert fatigue",
+          "logs metrics traces"
+        ],
+        "triggers": [
+          "design logging",
+          "add tracing",
+          "design alerting",
+          "review telemetry"
+        ]
+      },
+      "concurrency-design-principles": {
+        "file": "concurrency-design-principles.instructions.md",
+        "keywords": [
+          "concurrency",
+          "parallelism",
+          "race condition",
+          "deadlock",
+          "mutex",
+          "lock",
+          "atomic",
+          "thread pool",
+          "worker pool",
+          "async await",
+          "shared mutable state"
+        ],
+        "triggers": [
+          "design concurrent code",
+          "review threading",
+          "fix race condition",
+          "async worker design"
+        ]
+      },
+      "caching-design-principles": {
+        "file": "caching-design-principles.instructions.md",
+        "keywords": [
+          "caching",
+          "cache invalidation",
+          "cache-aside",
+          "write-through",
+          "write-behind",
+          "cache stampede",
+          "thundering herd",
+          "cache key",
+          "ttl",
+          "stale-while-revalidate"
+        ],
+        "triggers": [
+          "design cache",
+          "add caching",
+          "review cache strategy",
+          "cache invalidation bug"
+        ]
+      },
+      "resilience-engineering-principles": {
+        "file": "resilience-engineering-principles.instructions.md",
+        "keywords": [
+          "resilience",
+          "chaos engineering",
+          "graceful degradation",
+          "graceful shutdown",
+          "load shedding",
+          "timeout",
+          "steady state hypothesis",
+          "blast radius",
+          "sigterm"
+        ],
+        "triggers": [
+          "design resilience",
+          "chaos experiment",
+          "review shutdown",
+          "load shedding design"
+        ]
+      },
+      "cli-design-principles": {
+        "file": "cli-design-principles.instructions.md",
+        "keywords": [
+          "cli design",
+          "command line",
+          "exit code",
+          "stdout stderr",
+          "dry-run",
+          "flag design",
+          "help text",
+          "developer experience",
+          "dx"
+        ],
+        "triggers": [
+          "design cli",
+          "add cli command",
+          "review cli",
+          "cli flag design"
+        ]
+      },
+      "security-coding": {
+        "file": "security-and-owasp.instructions.md",
+        "keywords": [
+          "secure coding",
+          "security",
+          "owasp",
+          "authentication",
+          "authorization",
+          "encryption",
+          "vulnerability",
+          "xss",
+          "csrf",
+          "sql injection",
+          "deprecated libraries"
+        ],
+        "triggers": [
+          "secure code",
+          "security requirement",
+          "prevent vulnerability",
+          "code review security"
+        ]
+      },
+      "security-audit": {
+        "file": "security-audit.instructions.md",
+        "keywords": [
+          "security",
+          "security audit",
+          "audit",
+          "owasp",
+          "compliance",
+          "checklist",
+          "wcag",
+          "accessibility"
+        ],
+        "triggers": [
+          "security audit",
+          "compliance",
+          "gdpr",
+          "hipaa",
+          "accessibility",
+          "wcag",
+          "verify security"
+        ]
+      },
+      "devops": {
+        "file": "devops-core-principles.instructions.md",
+        "keywords": [
+          "devops",
+          "ci/cd",
+          "cicd",
+          "continuous integration",
+          "continuous deployment",
+          "pipeline",
+          "jenkins",
+          "github actions",
+          "gitlab ci"
+        ],
+        "triggers": [
+          "deployment",
+          "infrastructure"
+        ]
+      },
+      "monorepo": {
+        "file": "monorepo-scaffolding.instructions.md",
+        "keywords": [
+          "monorepo",
+          "pnpm workspace",
+          "turborepo",
+          "nx"
+        ],
+        "triggers": [
+          "workspace scaffolding",
+          "project scaffolding"
+        ],
+        "filenames": [
+          "pnpm-workspace.yaml",
+          "turbo.json",
+          "nx.json"
+        ]
+      },
+      "kubernetes": {
+        "file": "kubernetes-deployment-best-practices.instructions.md",
+        "keywords": [
+          "kubernetes",
+          "k8s",
+          "kubectl",
+          "helm",
+          "deployment",
+          "service mesh",
+          "istio"
+        ],
+        "triggers": [
+          "container orchestration",
+          "microservices deployment"
+        ]
+      },
+      "terraform": {
+        "file": "terraform.instructions.md",
+        "keywords": [
+          "terraform",
+          "infrastructure as code",
+          "iac",
+          "tf file",
+          "hcl"
+        ],
+        "triggers": [
+          "cloud infrastructure",
+          "provisioning"
+        ],
+        "extensions": [
+          ".tf",
+          ".tfvars"
+        ]
+      },
+      "testing": {
+        "file": "testing-strategy.instructions.md",
+        "keywords": [
+          "testing",
+          "test strategy",
+          "unit test",
+          "integration test",
+          "e2e test",
+          "e2e",
+          "test coverage",
+          "test pyramid",
+          "ci/cd testing"
+        ],
+        "triggers": [
+          "test requirement",
+          "quality assurance",
+          "test coverage",
+          "testing strategy"
+        ]
+      },
+      "tdd": {
+        "file": "tdd-enforcement.instructions.md",
+        "keywords": [
+          "tdd",
+          "test driven development",
+          "unit test",
+          "integration test",
+          "e2e test",
+          "testing",
+          "jest",
+          "mocha",
+          "pytest",
+          "junit"
+        ],
+        "triggers": [
+          "test requirement",
+          "quality assurance",
+          "test coverage"
+        ]
+      },
+      "sql": {
+        "file": "sql.instructions.md",
+        "keywords": [
+          "sql",
+          "database",
+          "postgresql",
+          "mysql",
+          "oracle",
+          "mssql",
+          "query optimization",
+          "index"
+        ],
+        "triggers": [
+          "database design",
+          "data model"
+        ],
+        "extensions": [
+          ".sql"
+        ]
+      },
+      "tech-validation": {
+        "file": "tech-validation.instructions.md",
+        "keywords": [
+          "technology validation",
+          "tech stack",
+          "framework selection",
+          "library choice",
+          "dependency",
+          "fallback"
+        ],
+        "triggers": [
+          "technology decision",
+          "framework selection",
+          "context7 unavailable"
+        ]
+      }
+    },
+    "methodologies": {
+      "brainstorming": {
+        "file": "brainstorming-techniques.instructions.md",
+        "keywords": [
+          "brainstorm",
+          "ideation",
+          "problem solving",
+          "creative",
+          "innovation"
+        ],
+        "triggers": [
+          "requirements unclear",
+          "solution exploration"
+        ]
+      },
+      "changelog": {
+        "file": "changelog.instructions.md",
+        "keywords": [
+          "changelog",
+          "semantic versioning",
+          "release notes",
+          "version management",
+          "release",
+          "breaking changes"
+        ],
+        "triggers": [
+          "preparing release",
+          "version bump",
+          "release management"
+        ]
+      },
+      "markdown": {
+        "file": "how-to-create-markdown-document.instructions.md",
+        "keywords": [
+          "markdown",
+          "documentation",
+          "readme",
+          "docs"
+        ],
+        "triggers": [
+          "create documentation",
+          "write readme"
+        ],
+        "extensions": [
+          ".md"
+        ]
+      },
+      "agentsmd": {
+        "file": "how-to-create-agentsmd.instructions.md",
+        "keywords": [
+          "agents.md",
+          "agentsmd",
+          "opencode.json",
+          "copilot-instructions.md"
+        ],
+        "triggers": [
+          "create agents.md",
+          "generate agents.md",
+          "repo onboarding doc",
+          "write agents.md"
+        ]
+      },
+      "instructionsmd": {
+        "file": "how-to-create-instructionsmd.instructions.md",
+        "keywords": [
+          "instructions.md",
+          "instructionsmd",
+          "applyTo",
+          "path-specific instructions",
+          "github copilot custom instructions"
+        ],
+        "triggers": [
+          "create instructions.md",
+          "generate instructions.md",
+          "write custom instructions file",
+          "new .instructions.md"
+        ],
+        "extensions": [
+          ".instructions.md"
+        ]
+      },
+      "brandkit": {
+        "file": "brandkit.instructions.md",
+        "keywords": [
+          "brand kit",
+          "brand guidelines",
+          "logo system",
+          "identity deck",
+          "brand board"
+        ],
+        "triggers": [
+          "create brand kit",
+          "generate logo system",
+          "brand identity"
+        ]
+      },
+      "redesign": {
+        "file": "redesign.instructions.md",
+        "keywords": [
+          "redesign",
+          "rebrand",
+          "visual refresh",
+          "upgrade design",
+          "modernize ui"
+        ],
+        "triggers": [
+          "redesign existing project",
+          "upgrade design quality",
+          "audit design"
+        ]
+      }
+    },
+    "always_load_note": "Loaded into the agent's active context on every session. Deliberately small: a file that only matters in one situation belongs in scope_load (installed, loaded on demand) with a trigger row in plaesy.instructions.md -> 'Shared Protocol Files' -> 'Scope-load (on-demand, not in context by default)' table. Moving a file out of here REQUIRES a trigger row in that table in the same change, or the file becomes unreachable."
+  },
+  "detection_rules": {
+    "priority_note": "Not enforced by either detect-stack script — both scripts union every matching category with no precedence/exclusivity (see top-level 'field_semantics_note'). This list documents intended reading order only; it does not mean 'frameworks' wins over 'cross_cutting' or similar.",
+    "priority": [
+      "always_load",
+      "frameworks",
+      "languages",
+      "cross_cutting",
+      "methodologies"
+    ],
+    "case_insensitive": true,
+    "scan_locations_note": "This list must match what scripts/internal/detectstack (the Go port; formerly scripts/bash/detect-stack.sh + scripts/powershell/detect-stack.ps1, now a single implementation) actually scans — verify before editing this array; it previously listed 'architecture.md'/'design.md' which was never read (removed). '.plaesy/analysis/project.json' is written by `plaesy analyze` (scripts/internal/analyze; ANALYSIS_DIR = '.plaesy/analysis', flat — matches instructions/roles/scripts/tasks convention). The '**/*.ext' entries are existence checks (any file with that extension anywhere under the target, depth-limited) driven generically by each framework's 'extensions' array in this file, not manifest-content scans — see the 'word'/'excel'/'powerpoint' entries above.",
+    "scan_locations": [
+      ".plaesy/specs/*/context.md",
+      ".plaesy/specs/*/requirements.md",
+      "docs/project.json",
+      ".plaesy/analysis/project.json",
+      "package.json",
+      "go.mod",
+      "pom.xml",
+      "build.gradle",
+      "Cargo.toml",
+      "pubspec.yaml",
+      "Gemfile",
+      "requirements.txt",
+      "**/*.csproj",
+      "**/*.doc",
+      "**/*.docx",
+      "**/*.xls",
+      "**/*.xlsx",
+      "**/*.xlsm",
+      "**/*.ppt",
+      "**/*.pptx",
+      "**/*.tf",
+      "**/*.tfvars",
+      "**/*.sql",
+      "**/*.cs",
+      "**/*.sln"
+    ],
+    "deduplication": true
+  }
+}

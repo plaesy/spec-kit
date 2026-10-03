@@ -1,0 +1,88 @@
+{
+  "assessment": "prompt-corpus",
+  "date": "2026-09-27",
+  "scope": ["prompts", "instructions", "agents", "checklists", "templates", ".kilo", ".plaesy"],
+  "corpus": {
+    "files": 237,
+    "lines": 43000,
+    "estimatedTokens": 388230,
+    "breakdown": {
+      "prompts": { "files": 69, "lines": 5585 },
+      "instructions": { "files": 69, "lines": 14781 },
+      "templates": { "files": 69, "lines": 19670 },
+      "agents": { "files": 23, "lines": 1468 },
+      "checklists": { "files": 7, "lines": 1547 }
+    }
+  },
+  "scores": {
+    "coreProtocol": 34,
+    "templates": 41,
+    "orchestrationPrompts": 52,
+    "dimensionSubprompts": 52,
+    "instructionLibrary": 58,
+    "agentsChecklists": 63,
+    "architecture": 70,
+    "overall": 47
+  },
+  "findings": [
+    { "id": "C1", "severity": "CRITICAL", "confidence": "HIGH", "area": "code", "title": "spec.template.md never reaches the user", "location": ["scripts/internal/featurepath/create.go:93", "scripts/internal/featurepath/create.go:99-103", "scripts/internal/scaffold/copy.go:263"], "verifiedByParent": true },
+    { "id": "C2", "severity": "CRITICAL", "confidence": "HIGH", "area": "prompts", "title": "create/tasks.md has two contradictory output contracts", "location": ["prompts/create/tasks.md:128", "prompts/create/tasks.md:175", "prompts/create/tasks.md:285", "prompts/create/tasks.md:297"], "verifiedByParent": true },
+    { "id": "C3", "severity": "CRITICAL", "confidence": "HIGH", "area": "prompts", "title": "design-spine.md referenced 43x, never exists", "location": ["prompts/create/api.md", "prompts/create/diagram.md", "prompts/create/images.md", "prompts/create/storyboard.md", "prompts/create/tasks.md", "prompts/create.md"], "verifiedByParent": true },
+    { "id": "C4", "severity": "CRITICAL", "confidence": "HIGH", "area": "instructions", "title": "routing tables duplicated despite explicit single-source-of-truth rule", "location": ["instructions/plaesy.instructions.md:224-226", "instructions/plaesy.instructions.md:179-213", "prompts/fix.md:315-369", "prompts/optimize.md:252-311", "prompts/doc.md:317-335", "prompts/improve.md:246-262", "prompts/implement.md:369-385", "instructions/universal-orchestrator.instructions.md:108-161"], "duplicatedLines": 170, "verifiedByParent": true },
+    { "id": "C5", "severity": "CRITICAL", "confidence": "HIGH", "area": "prompts", "title": "phase model contradicts itself across 4 counts", "location": ["instructions/plaesy.instructions.md:302-403", "prompts/start.md:135", "prompts/continue.md:217", "prompts/loop.md:40-129", "prompts/assess.md:48-49"], "verifiedByParent": true },
+    { "id": "C6", "severity": "CRITICAL", "confidence": "HIGH", "area": "vcs", "title": "generated .kilo/ and .plaesy/ tracked despite .gitignore", "location": [".gitignore:9", ".gitignore:24-28"], "trackedFiles": { "plaesy": 138, "kilo": 69, "binary": 1 }, "verifiedByParent": true },
+    { "id": "C7", "severity": "CRITICAL", "confidence": "HIGH", "area": "prompts", "title": "16 path references do not resolve", "location": ["prompts/create/diagram.md:50", "prompts/create/api.md:45", "prompts/create/api.md:52", "prompts/create/images.md:51", "prompts/create/tasks.md:49", "prompts/create/tasks.md:58", "prompts/create/storyboard.md:61", "prompts/create/templates/ci.md:52", "prompts/create/templates/infra.md:60"], "verifiedByParent": true },
+    { "id": "C8", "severity": "CRITICAL", "confidence": "HIGH", "area": "instructions", "title": "promised .plaesy/instructions.md index missing; 38 of 68 instructions never installed", "location": ["instructions/plaesy.instructions.md:103", "scripts/internal/scaffold/copy.go:117-152", ".plaesy/memory.md:17"], "verifiedByParent": true },
+    { "id": "H1", "severity": "HIGH", "confidence": "HIGH", "area": "docs", "title": "docs/agents/README.md mislabels pm and pe", "location": ["docs/agents/README.md:27", "docs/agents/README.md:52"], "verifiedByParent": true },
+    { "id": "H2", "severity": "HIGH", "confidence": "HIGH", "area": "checklists", "title": "po.checklist.md is not a Product Owner checklist", "location": ["checklists/po.checklist.md:1-5", "checklists/po.checklist.md:11-130", "instructions/assess-product.instructions.md:13"] },
+    { "id": "H3", "severity": "HIGH", "confidence": "HIGH", "area": "ci", "title": "no CI validator for prompts/instructions/agents/checklists", "location": [".github/workflows/ci.yml"] },
+    { "id": "H4", "severity": "HIGH", "confidence": "HIGH", "area": "agents", "title": "5 of 23 roles never invoked", "location": ["agents/ai-architect.agents.md", "agents/bo.agents.md", "agents/mlops.agents.md", "agents/pe.agents.md", "agents/po.agents.md"] },
+    { "id": "H5", "severity": "HIGH", "confidence": "HIGH", "area": "agents", "title": "23 personas with 0 boundary statements and 0 escalation rules", "location": ["agents/"] },
+    { "id": "H6", "severity": "HIGH", "confidence": "HIGH", "area": "checklists", "title": "qa.checklist.md violates documented checklist format", "location": ["checklists/qa.checklist.md:18-60", "docs/checklists/README.md:20-24"] },
+    { "id": "H7", "severity": "HIGH", "confidence": "HIGH", "area": "instructions", "title": "no python or vue instruction file despite claims", "location": ["instructions/mapping.json:108-138", "instructions/plaesy.instructions.md:317"], "verifiedByParent": true },
+    { "id": "H8", "severity": "HIGH", "confidence": "HIGH", "area": "templates", "title": "15 names for success criteria, 10 for opening frame", "location": ["prompts/improve.md:70", "templates/"] },
+    { "id": "H9", "severity": "HIGH", "confidence": "HIGH", "area": "templates", "title": "4 incompatible placeholder languages, no convention", "location": ["templates/constitution.template.md:41", "templates/constitution.template.md:59", "templates/README.md:104"] },
+    { "id": "H10", "severity": "MEDIUM", "confidence": "HIGH", "area": "instructions", "title": "software-design-prinsiples filename typo", "location": ["instructions/software-design-prinsiples.instructions.md", "instructions/mapping.json:157"] }
+  ],
+  "duplication": {
+    "totalRemovableLines": 8100,
+    "corpusLines": 43000,
+    "ratio": 0.19,
+    "byBlock": {
+      "routingTables": 170,
+      "dimensionSubpromptBoilerplate": 256,
+      "uncertaintySurfacingProtocol": 90,
+      "phaseList": 150,
+      "successCriteriaChecklist": 70,
+      "whyThisPhaseMatters": 55,
+      "context7Protocol": 35,
+      "security": 419,
+      "resiliencePatterns": 200,
+      "testingPyramid": 40,
+      "assessScaffold": 1400,
+      "createTasksTail": 130,
+      "mergeableTemplates": 5100,
+      "unreachableLargeTemplates": 4518
+    }
+  },
+  "unreachableTemplates": { "count": 62, "of": 69, "live": ["spec", "constitution", "tasks", "design", "state", "context", "plan"] },
+  "rejectedClaims": [
+    { "claim": ".plaesy/roles/ does not exist", "verdict": "FALSE", "note": "23 files exist and are git-tracked; glob skips gitignored paths" },
+    { "claim": ".plaesy/instructions/tasks.md is a dead reference", "verdict": "FALSE", "note": "file exists" },
+    { "claim": "@nara is undefined", "verdict": "FALSE", "note": "agents/nara.agents.md exists" },
+    { "claim": "brandkit is never installed", "verdict": "HALF_TRUE", "note": "in mapping.json as stack-detection entry; defect is repo-relative path in 7 refs" }
+  ],
+  "references": [
+    { "source": "Anthropic Claude Platform Docs - Prompting best practices", "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "retrieved": "2026-09-27" },
+    { "source": "Prompt Design at Scale: How Format, Instruction Count, and Context Length Shape Instruction Adherence and Hallucination in LLMs", "url": "https://arxiv.org/abs/2607.19257", "retrieved": "2026-09-27", "note": "perfect-response rate collapses to zero by N=80 rules" },
+    { "source": "Control Illusion: The Failure of Instruction Hierarchies in Large Language Models (AAAI-26)", "url": "https://arxiv.org/html/2502.15851v4", "retrieved": "2026-09-27", "note": "9.6-45.8% drop in primary-constraint adherence on conflicts" },
+    { "source": "Context Bloat and Quality Degradation in LLM Operational Skills (Kuhara, 2026, preprint)", "url": "https://zenodo.org/records/19695188", "retrieved": "2026-09-27", "note": "cites context rot beginning at 70-80% of window (Hong et al.); PREPRINT, not peer-reviewed" },
+    { "source": "Best Practices for AGENTS.md and CLAUDE.md Files (PromptForge, 2026)", "url": "https://github.com/mbagalman/PromptForge/blob/main/guides/agents-md-best-practices-2026.md", "retrieved": "2026-09-27", "note": "practitioner synthesis, not peer-reviewed; MEDIUM confidence" }
+  ],
+  "notAssessed": [
+    "runtime effectiveness (no harness available)",
+    "model output adherence (no eval baseline exists)",
+    "real token cost (char/4 estimate, not model tokenization)",
+    "availability guarantees of ultracode and mcp__context7__*"
+  ]
+}
