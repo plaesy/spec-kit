@@ -1,0 +1,10 @@
+[
+  {
+    "timestamp": "2026-10-03T04:45:31Z",
+    "layer": "layer1",
+    "path": "go test ./... --dir scripts",
+    "before": 23,
+    "after": 23,
+    "saved_pct": 0
+  }
+]

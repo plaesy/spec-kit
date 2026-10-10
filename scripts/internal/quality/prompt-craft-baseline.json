@@ -1,0 +1,6 @@
+{
+  "prompts": 10,
+  "with_objective": 10,
+  "with_output_contract": 10,
+  "with_worked_example": 10
+}

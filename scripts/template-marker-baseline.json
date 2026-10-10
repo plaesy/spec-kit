@@ -1,0 +1,451 @@
+{
+  "$comment": [
+    "Per-template ceiling on deprecated fill-in markers, per SURFACE, enforced by",
+    "TestTemplateLegacyMarkersDoNotGrow in scripts/internal/quality. Canonical {{PLACEHOLDER}}",
+    "tokens are the target state and are not counted anywhere.",
+    "",
+    "Three surfaces, because a marker can hide in any of them and measuring only the",
+    "first is what made the corpus look clean while 255 markers sat inside fenced blocks:",
+    "  prose      - outside fenced blocks and inline code spans",
+    "  fenced     - inside fenced code blocks. Usually a block that illustrates a format",
+    "               ([Module], [Number]) and usually should stay, but a fenced FORM is still a",
+    "               form, and its slots were being filled by nobody.",
+    "  underscore - a run of 4+ underscores used as a sign-off blank. Three or fewer is a",
+    "               horizontal rule or emphasis, which is why the threshold is 4.",
+    "",
+    "Re-record after a deliberate migration pass with:",
+    "  go test ./internal/quality -run TestTemplateLegacyMarkersDoNotGrow -update-template-marker-baseline",
+    "Review the diff before committing: the new numbers are the record, not a target. A number",
+    "that goes UP is a template gaining legacy syntax, and deleting the entry is not the fix.",
+    "",
+    "must_stay lists tokens that are permanently NOT fill-ins, one entry per file AND",
+    "surface, each carrying its reason. An entry is still COUNTED and then discounted, so an",
+    "allowance can never mask real debt in the same file and surface. Tokens are literal",
+    "substrings, not regexes; an entry that is a prefix covers its longer variants.",
+    "",
+    "The test rejects a file or surface that names no measured template, and an entry with no",
+    "why, because a mistyped key discounts nothing and looks exactly like an allowance that",
+    "has already been applied - the failure reads as success.",
+    "",
+    "Fenced blocks in this corpus are NOT one thing. The same file can hold docker-compose YAML",
+    "that must stay byte-identical, an ASCII wireframe that must stay a drawing, a field list",
+    "that must become tokens, and a grammar definition that must stay a pattern. Any sweep that",
+    "treats 'fenced' as a single kind will get at least one of those four wrong."
+  ],
+  "measured_at": "2026-10-01",
+  "surfaces": {
+    "fenced": {
+      "adr.template.md": 0,
+      "agents.template.md": 0,
+      "api-documentation.template.md": 0,
+      "application.template.md": 0,
+      "brainstorming.template.md": 0,
+      "brd.template.md": 0,
+      "change-request.template.md": 0,
+      "ci-cd-security.template.md": 0,
+      "communication-plan.template.md": 0,
+      "constitution.template.md": 0,
+      "context.template.md": 0,
+      "data-governance.template.md": 0,
+      "decision-topic.template.md": 0,
+      "decisions.template.md": 0,
+      "deployment-guide.template.md": 0,
+      "design.template.md": 0,
+      "dfd-and-context.template.md": 0,
+      "dpia.template.md": 0,
+      "fsd.template.md": 0,
+      "icd.template.md": 0,
+      "instructions.template.md": 0,
+      "iso25010-quality-model.template.md": 0,
+      "memory.template.md": 0,
+      "migration-plan.template.md": 0,
+      "mobile-app.template.md": 0,
+      "monitoring-playbook.template.md": 0,
+      "orr-checklist.template.md": 0,
+      "performance-testing-strategy.template.md": 0,
+      "plan.template.md": 0,
+      "prd.template.md": 0,
+      "project-charter.template.md": 0,
+      "raci-matrix.template.md": 0,
+      "release-plan.template.md": 0,
+      "research.template.md": 0,
+      "risk-register.template.md": 0,
+      "rtm.template.md": 0,
+      "runbook.template.md": 0,
+      "scmp.template.md": 0,
+      "sdd.template.md": 0,
+      "security-assessment.template.md": 0,
+      "service.template.md": 0,
+      "sla.template.md": 0,
+      "spec-structure-folder.template.md": 0,
+      "spec.template.md": 0,
+      "spmp.template.md": 0,
+      "sqap.template.md": 0,
+      "srs.template.md": 0,
+      "stakeholder-register.template.md": 0,
+      "status.template.md": 0,
+      "task-readme.template.md": 0,
+      "task-structure-guide.template.md": 0,
+      "tasks.template.md": 0,
+      "test-plan.template.md": 0,
+      "test-strategy.template.md": 0,
+      "threat-model.template.md": 0,
+      "tool.template.md": 0,
+      "user-documentation.template.md": 0,
+      "user-training-guide.template.md": 0,
+      "vv-plan.template.md": 0
+    },
+    "prose": {
+      "adr.template.md": 0,
+      "agents.template.md": 0,
+      "api-documentation.template.md": 0,
+      "application.template.md": 0,
+      "brainstorming.template.md": 0,
+      "brd.template.md": 0,
+      "change-request.template.md": 0,
+      "ci-cd-security.template.md": 0,
+      "communication-plan.template.md": 0,
+      "constitution.template.md": 0,
+      "context.template.md": 1,
+      "data-governance.template.md": 0,
+      "decision-topic.template.md": 0,
+      "decisions.template.md": 0,
+      "deployment-guide.template.md": 0,
+      "design.template.md": 0,
+      "dfd-and-context.template.md": 0,
+      "dpia.template.md": 0,
+      "fsd.template.md": 0,
+      "icd.template.md": 0,
+      "instructions.template.md": 0,
+      "iso25010-quality-model.template.md": 0,
+      "memory.template.md": 0,
+      "migration-plan.template.md": 0,
+      "mobile-app.template.md": 0,
+      "monitoring-playbook.template.md": 0,
+      "orr-checklist.template.md": 0,
+      "performance-testing-strategy.template.md": 0,
+      "plan.template.md": 0,
+      "prd.template.md": 0,
+      "project-charter.template.md": 0,
+      "raci-matrix.template.md": 0,
+      "release-plan.template.md": 0,
+      "research.template.md": 0,
+      "risk-register.template.md": 0,
+      "rtm.template.md": 0,
+      "runbook.template.md": 0,
+      "scmp.template.md": 0,
+      "sdd.template.md": 0,
+      "security-assessment.template.md": 0,
+      "service.template.md": 0,
+      "sla.template.md": 0,
+      "spec-structure-folder.template.md": 0,
+      "spec.template.md": 0,
+      "spmp.template.md": 0,
+      "sqap.template.md": 0,
+      "srs.template.md": 0,
+      "stakeholder-register.template.md": 0,
+      "status.template.md": 0,
+      "task-readme.template.md": 0,
+      "task-structure-guide.template.md": 0,
+      "tasks.template.md": 0,
+      "test-plan.template.md": 0,
+      "test-strategy.template.md": 0,
+      "threat-model.template.md": 0,
+      "tool.template.md": 0,
+      "user-documentation.template.md": 0,
+      "user-training-guide.template.md": 0,
+      "vv-plan.template.md": 0
+    },
+    "underscore": {
+      "adr.template.md": 0,
+      "agents.template.md": 0,
+      "api-documentation.template.md": 0,
+      "application.template.md": 0,
+      "brainstorming.template.md": 0,
+      "brd.template.md": 0,
+      "change-request.template.md": 0,
+      "ci-cd-security.template.md": 0,
+      "communication-plan.template.md": 0,
+      "constitution.template.md": 0,
+      "context.template.md": 0,
+      "data-governance.template.md": 0,
+      "decision-topic.template.md": 0,
+      "decisions.template.md": 0,
+      "deployment-guide.template.md": 0,
+      "design.template.md": 0,
+      "dfd-and-context.template.md": 0,
+      "dpia.template.md": 0,
+      "fsd.template.md": 0,
+      "icd.template.md": 0,
+      "instructions.template.md": 0,
+      "iso25010-quality-model.template.md": 0,
+      "memory.template.md": 0,
+      "migration-plan.template.md": 0,
+      "mobile-app.template.md": 0,
+      "monitoring-playbook.template.md": 0,
+      "orr-checklist.template.md": 0,
+      "performance-testing-strategy.template.md": 0,
+      "plan.template.md": 0,
+      "prd.template.md": 0,
+      "project-charter.template.md": 0,
+      "raci-matrix.template.md": 0,
+      "release-plan.template.md": 0,
+      "research.template.md": 0,
+      "risk-register.template.md": 0,
+      "rtm.template.md": 0,
+      "runbook.template.md": 0,
+      "scmp.template.md": 0,
+      "sdd.template.md": 0,
+      "security-assessment.template.md": 0,
+      "service.template.md": 0,
+      "sla.template.md": 0,
+      "spec-structure-folder.template.md": 0,
+      "spec.template.md": 0,
+      "spmp.template.md": 0,
+      "sqap.template.md": 0,
+      "srs.template.md": 0,
+      "stakeholder-register.template.md": 0,
+      "status.template.md": 0,
+      "task-readme.template.md": 0,
+      "task-structure-guide.template.md": 0,
+      "tasks.template.md": 0,
+      "test-plan.template.md": 0,
+      "test-strategy.template.md": 0,
+      "threat-model.template.md": 0,
+      "tool.template.md": 0,
+      "user-documentation.template.md": 0,
+      "user-training-guide.template.md": 0,
+      "vv-plan.template.md": 0
+    }
+  },
+  "must_stay": [
+    {
+      "file": "brainstorming.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[Continue adding ideas...]",
+        "[Continue with all ideas...]"
+      ],
+      "why": "Instructional prose meaning \"keep writing\", not a slot anyone fills."
+    },
+    {
+      "file": "ci-cd-security.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[GITHUB_ACTIONS | GITLAB_CI | AZURE_DEVOPS | JENKINS]",
+        "[STANDARD | HIGH | CRITICAL]"
+      ],
+      "why": "The permitted values of a pipeline field and of a security-level field. A token that enumerates its own legal values is defining the field, not filling it."
+    },
+    {
+      "file": "design.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[0, 4, 8, 12, 16, 24, 32, 48, 64]"
+      ],
+      "why": "A real YAML flow sequence in front matter: the concrete spacing scale. Converting it makes the front matter parse as a string."
+    },
+    {
+      "file": "monitoring-playbook.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[Critical/High/Medium/Low]"
+      ],
+      "why": "The business-criticality rating scale. See ci-cd-security for why an enumeration is not a slot."
+    },
+    {
+      "file": "plan.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[P]"
+      ],
+      "why": "The parallel-execution flag in the format grammar, same as tasks.template.md."
+    },
+    {
+      "file": "security-assessment.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[H/M/L]",
+        "[Low/Medium/High/Critical]",
+        "[Critical/High/Medium/Low]",
+        "[Accept/Mitigate/Transfer/Avoid]",
+        "[Design/Development/Pre-Production/Production]",
+        "[Development/Staging/Production]",
+        "[Overall risk level]",
+        "[User data, financial data, intellectual property]",
+        "[Servers, databases, APIs, third-party services]",
+        "[Reputation, compliance, revenue]",
+        "[Hackers, competitors, nation-states]",
+        "[Malicious insiders, compromised accounts]",
+        "[Human error, system failures]",
+        "[SQL injection, XSS, CSRF, DDoS]",
+        "[Authentication bypass, privilege escalation]",
+        "[Server misconfiguration, unpatched systems]",
+        "[Phishing, pretexting, social manipulation]"
+      ],
+      "why": "Rating scales and worked threat examples. The examples illustrate what could go in a threat cell; they are not the cell."
+    },
+    {
+      "file": "spec.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[NEEDS CLARIFICATION"
+      ],
+      "why": "The status flag an author marks on an unclear requirement. The trailing colon is dropped so the \"...: reason\" variants are covered by one entry."
+    },
+    {
+      "file": "srs.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[Category]"
+      ],
+      "why": "Metavariable in the NFR id pattern \"NFR-[Category]-XXX\", not a slot."
+    },
+    {
+      "file": "tasks.template.md",
+      "surface": "prose",
+      "tokens": [
+        "[P]"
+      ],
+      "why": "The parallel-execution flag in the format grammar, defined literally in the file as \"## Format: `[ID] [P?] Description`\". Names no slot."
+    },
+    {
+      "file": "threat-model.template.md",
+      "surface": "prose",
+      "tokens": [
+        "{Low/Med/High/Critical}",
+        "{Block/Review/Approve with conditions/Approve}",
+        "{Small/Medium/Large}",
+        "{Poor/Fair/Good/Excellent}",
+        "{Scenario}"
+      ],
+      "why": "Rating scales and the threat/control enumeration in the control table."
+    },
+    {
+      "file": "monitoring-playbook.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "{value}",
+        "[5m]",
+        "[service-name]",
+        "[version]",
+        "[uuid]",
+        "[user-id]"
+      ],
+      "why": "Prometheus and structured-log content, not slots. {value} and [5m] are PromQL/alert templating - single-brace or bracketed by PromQL's own grammar, deliberately outside the {{ }} fill-in namespace so the linters cannot claim them. [service-name]/[version]/[uuid]/[user-id] are per-RECORD runtime values in a worked log example: no one filling in the playbook types a uuid, and the surrounding fields are already concrete, so the block is a sample of output rather than a form to complete."
+    },
+    {
+      "file": "ci-cd-security.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[main, develop]",
+        "[main]",
+        "[16, 18, 20]",
+        "[security-scan, build-and-test, markdown-lint]",
+        "[security-scan, build-and-test, compliance-check]",
+        "[deploy-staging]",
+        "[deploy-production]"
+      ],
+      "why": "YAML flow sequences in real GitHub Actions workflow files: branches:, node-version: and needs: all take a bracketed list. Converting one to {{TOKEN}} turns a valid workflow into a string or breaks the dependency graph. Same class as the front-matter spacing scale in design.template.md. Note the 25 ${{ github.* }} expressions here are NOT in this list because the curly regex cannot match '{ github.x }' - it requires a letter immediately after the brace."
+    },
+    {
+      "file": "tasks.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[P]"
+      ],
+      "why": "The parallel-execution flag again, here inside the execution-flow fence. The agent emits it literally; it is grammar, not a slot."
+    },
+    {
+      "file": "spec.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[NEEDS CLARIFICATION"
+      ],
+      "why": "The status flag the spec agent emits on an unclear requirement, inside the execution-flow fence. The prose surface already carries an allowance for the same token; this is its fenced counterpart, not a new judgement."
+    },
+    {
+      "file": "rtm.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[module]",
+        "[service]",
+        "[controller]",
+        "[helper]",
+        "[api]",
+        "[workflow]",
+        "[Project Structure]"
+      ],
+      "why": "Type vocabulary in a worked traceability-matrix directory tree, not slots. '[module].ts' is naming a kind of file the way prose names a kind of file. Converting yields '{{CORE_MODULE_FILE}}.ts', which is neither more correct nor more fillable. The comment IDs in the same tree (FR-001, TC-003) are the same illustrative IDs used throughout the document's tables."
+    },
+    {
+      "file": "task-structure-guide.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "{story_points | weeks}",
+        "{hours | story_points}"
+      ],
+      "why": "Fields that enumerate their own legal values. A field defining its options is not a slot - the same rationale as the prose allowances for rating scales."
+    },
+    {
+      "file": "user-documentation.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[Logo]",
+        "[Profile]",
+        "[Start]",
+        "[Working]",
+        "[Testing]",
+        "[Done]",
+        "[Task status changes to \"Complete\"]",
+        "[Send notification to project manager]",
+        "[Move task to \"Archive\" section]"
+      ],
+      "why": "ASCII wireframes and status-flow diagrams, not slots. [Logo]/[Profile] sit in a UI sketch whose every other region (Sidebar, Main Content Area, Filters) is a plain unbracketed label, so converting only the bracketed two would make one drawing speak two grammars. [Start]/[Working]/[Testing]/[Done] duplicate a row immediately above that already carries the same four stages in plain words. The three Given/When/Then metavariables illustrate the automation-test shape the surrounding prose names. A diagram is a picture of a UI; tokenising a picture is not filling it."
+    },
+    {
+      "file": "deployment-guide.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "{VERSION}",
+        "{DATABASE_URL}",
+        "{DB_NAME}",
+        "{DB_USER}",
+        "{DB_PASSWORD}",
+        "{value}",
+        "[5m]"
+      ],
+      "why": "Foreign tool syntax that was never a fill-in. The ${...} forms are docker-compose environment interpolation - the curly regex matches their tail because it cannot see the leading '$', which is exactly the collision the {{ }} rewrite was meant to avoid. {value} is the Prometheus annotation form and [5m] a PromQL range selector. Converting any of these breaks a working config file."
+    },
+    {
+      "file": "srs.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[initial context/state]",
+        "[action is performed]",
+        "[expected outcome]",
+        "[context]",
+        "[action]",
+        "[outcome]",
+        "[user type]",
+        "[I can achieve some goal/benefit]",
+        "[describe]",
+        "[list]",
+        "[other stories/requirements]",
+        "[additional expected outcomes]",
+        "[Use checklist from 4.5]",
+        "[perform some action]"
+      ],
+      "why": "The DEFINITIONS of the two most common requirement grammars in the corpus, and each is instantiated concretely inside the very same fence: 'Given [initial context/state]' is answered by 'Given a user with 4 previous failed login attempts' a few lines below, and the As a/I want/So that triple likewise. Showing a grammar instantiated is the entire purpose of stating it, so tokenising the pattern would ship a grammar definition made of tokens. It would also be wrong in kind: these recur once per acceptance criterion in every real SRS, making them per-record values rather than template fill-ins. [Use checklist from 4.5] is a cross-reference pointer, not a slot."
+    },
+    {
+      "file": "test-plan.template.md",
+      "surface": "fenced",
+      "tokens": [
+        "[Module]",
+        "[Number]"
+      ],
+      "why": "The TC_[Module]_[Number] test-case ID naming grammar. Eight lines earlier the same file defines the concept as {{AREA}}, so the pattern already has a canonical anchor in the corpus; rewriting the grammar itself would be a content decision rather than a marker migration."
+    }
+  ]
+}
