@@ -1,0 +1,41 @@
+# Golden set for CODE retrieval on this repository (plaesy/spec-kit).
+#
+# Each line: one query and the repo-relative file(s) that answer it.
+# IDs are repo-relative paths with forward slashes, NOT content hashes:
+# the indexer's doc ID is sha256(content)[:16] (scripts/internal/store/document.go),
+# so hash IDs would change on every edit and break this set.
+#
+# relevance_scores: 1.0 = primary definition, lower = legitimate secondary location
+# (for example a duplicate definition, which the anti-duplication protocol must surface).
+#
+# Verified against the source on 2026-10-13. Re-verify an entry if its file moves.
+{"id": "q01", "query": "where is the default retry configuration defined", "expected_ids": ["scripts/internal/config/schema.go", "scripts/internal/reach/types.go"], "relevance_scores": [1.0, 0.6], "metadata": {"category": "duplicate-avoidance", "language": "go", "kind": "function"}}
+{"id": "q02", "query": "default rate limits configuration per platform", "expected_ids": ["scripts/internal/config/schema.go", "scripts/internal/reach/ratelimit.go"], "relevance_scores": [1.0, 0.6], "metadata": {"category": "duplicate-avoidance", "language": "go", "kind": "function"}}
+{"id": "q03", "query": "token bucket rate limiter that decides whether a request may proceed", "expected_ids": ["scripts/internal/reach/ratelimit.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "method"}}
+{"id": "q04", "query": "in-memory cache with TTL expiry and periodic cleanup", "expected_ids": ["scripts/internal/reach/cache.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "type"}}
+{"id": "q05", "query": "normalized discounted cumulative gain for ranking evaluation", "expected_ids": ["scripts/internal/search/eval/metrics.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q06", "query": "mean reciprocal rank and recall at k computation", "expected_ids": ["scripts/internal/search/eval/metrics.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q07", "query": "full-text BM25 search index backed by bleve", "expected_ids": ["scripts/internal/search/textindex/bleve.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "type"}}
+{"id": "q08", "query": "vector store search by cosine similarity", "expected_ids": ["scripts/internal/search/vectorstore/chromem.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q09", "query": "split a markdown document into chunks by its headings", "expected_ids": ["scripts/internal/search/chunker/structure_aware.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "method"}}
+{"id": "q10", "query": "text carried over between consecutive chunks as overlap", "expected_ids": ["scripts/internal/search/chunker/structure_aware.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "method"}}
+{"id": "q11", "query": "extract Go doc comments attached to declarations", "expected_ids": ["scripts/internal/semantic/godocs.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q12", "query": "label propagation to group graph nodes into communities", "expected_ids": ["scripts/internal/graph/community.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q13", "query": "write the dependency graph report to a file", "expected_ids": ["scripts/internal/graph/render.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q14", "query": "pick the project type from the frameworks detected", "expected_ids": ["scripts/internal/analyze/detect.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q15", "query": "detect which programming languages a project uses from its file names", "expected_ids": ["scripts/internal/analyze/detect.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q16", "query": "detect build systems present in the project directory", "expected_ids": ["scripts/internal/analyze/detect.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q17", "query": "map a legacy platform alias such as claude_code to its canonical id", "expected_ids": ["scripts/internal/config/config.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q18", "query": "detect which AI platform is configured from the config file path", "expected_ids": ["scripts/internal/config/config.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "method"}}
+{"id": "q19", "query": "read the name of the current git branch", "expected_ids": ["scripts/internal/common/gitpaths.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q20", "query": "normalize a raw version string", "expected_ids": ["scripts/internal/common/version.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q21", "query": "keep source file permission bits when copying a scaffolded file", "expected_ids": ["scripts/internal/scaffold/copy.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q22", "query": "ask the user a yes or no question and read the answer", "expected_ids": ["scripts/internal/installer/installer.go", "scripts/internal/cleaner/cleaner.go"], "relevance_scores": [1.0, 0.6], "metadata": {"category": "duplicate-avoidance", "language": "go", "kind": "function"}}
+{"id": "q23", "query": "insert blank lines around markdown headings", "expected_ids": ["scripts/internal/mdlint/fix.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q24", "query": "extract the alt text of a markdown image from the syntax tree", "expected_ids": ["scripts/internal/mdlint/githubrules.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q25", "query": "create a new feature branch and its spec folder from a description", "expected_ids": ["scripts/internal/featurepath/create.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q26", "query": "move a task file between backlog todo doing and done", "expected_ids": ["scripts/internal/taskmanage/taskmanage.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q27", "query": "generate an image from a text prompt using openai or gemini", "expected_ids": ["scripts/internal/imagegen/imagegen.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q28", "query": "compress command output by collapsing repeated lines", "expected_ids": ["scripts/internal/trimmer/layer1.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q29", "query": "remove filler phrases from prose to save tokens", "expected_ids": ["scripts/internal/trimmer/layer2.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}
+{"id": "q30", "query": "lint markdown files and report rule violations", "expected_ids": ["scripts/internal/mdlint/mdlint.go"], "relevance_scores": [1.0], "metadata": {"category": "behavior", "language": "go", "kind": "function"}}

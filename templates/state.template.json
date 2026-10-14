@@ -1,0 +1,30 @@
+{
+  "plaesy": {
+    "version": "0.0.1",
+    "created_at": "{{TIMESTAMP}}",
+    "updated_at": "{{TIMESTAMP}}"
+  },
+  "autonomous_loop": {
+    "status": "paused",
+    "max_iterations": 10,
+    "current_iteration": 0,
+    "max_consecutive_failures": 2,
+    "consecutive_failures": 0,
+    "checkpoint_interval": 0,
+    "last_human_checkpoint": 0
+  },
+  "active_role": null,
+  "role_handoff_log": [],
+  "assumptions_review_days": 0,
+  "quality_gates": {
+    "require_code_review": true,
+    "require_tests_passing": true,
+    "require_documentation": true,
+    "require_constitutional_compliance": true
+  },
+  "task_defaults": {
+    "priority": 3,
+    "complexity": "M",
+    "estimated_hours": 4
+  }
+}

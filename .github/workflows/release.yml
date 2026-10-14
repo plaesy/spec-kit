@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    # Each target builds natively on a runner whose OS/arch matches the
+    # target, with CGO_ENABLED=1 (the default for a native build). The
+    # search embedder links github.com/yalue/onnxruntime_go, a cgo-only
+    # package with no pure-Go fallback — cross-compiling it with
+    # CGO_ENABLED=0 from a single runner fails for every target
+    # ("build constraints exclude all Go files"). See
+    # .plaesy/decisions/release-native-matrix-cgo.md.
+    #
+    # darwin/amd64 (Intel Mac) was dropped from this matrix on 2026-10-10:
+    # its only native runner, macos-13, queued for 25+ minutes with no
+    # runner ever assigned while the other four targets finished in under
+    # two minutes each — GitHub has been shrinking Intel-Mac hosted-runner
+    # capacity as it pushes macos-latest to Apple Silicon. Blocking every
+    # release on that one label's queue wasn't worth it. Re-add it (and the
+    # matching `dist/plaesy-darwin-amd64` release file entry below) if
+    # GitHub's macos-13 capacity recovers and an Intel Mac binary is wanted
+    # again.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            goos: linux
+            goarch: amd64
+            ext: ""
+          - os: ubuntu-24.04-arm
+            goos: linux
+            goarch: arm64
+            ext: ""
+          - os: macos-latest
+            goos: darwin
+            goarch: arm64
+            ext: ""
+          - os: windows-latest
+            goos: windows
+            goarch: amd64
+            ext: ".exe"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: Build native binary
+        working-directory: scripts
+        shell: bash
+        env:
+          CGO_ENABLED: "1"
+        run: |
+          mkdir -p ../dist
+          go build \
+            -ldflags "-X github.com/plaesy/spec-kit/internal/common.Version=${GITHUB_REF#refs/tags/v}" \
+            -o "../dist/plaesy-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}" \
+            ./cmd/plaesy
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plaesy-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: dist/plaesy-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.ext }}
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      # Needed to sign build provenance (Sigstore OIDC) and store attestations.
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Write SHA256SUMS
+        working-directory: dist
+        run: |
+          sha256sum plaesy-linux-amd64 plaesy-linux-arm64 plaesy-darwin-arm64 plaesy-windows-amd64.exe > SHA256SUMS
+          cat SHA256SUMS
+      # Signed provenance tying each binary to this workflow run. Verify with:
+      #   gh attestation verify <file> --repo plaesy/spec-kit
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/plaesy-linux-amd64
+            dist/plaesy-linux-arm64
+            dist/plaesy-darwin-arm64
+            dist/plaesy-windows-amd64.exe
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/plaesy-linux-amd64
+            dist/plaesy-linux-arm64
+            dist/plaesy-darwin-arm64
+            dist/plaesy-windows-amd64.exe
+            dist/SHA256SUMS
+          generate_release_notes: true

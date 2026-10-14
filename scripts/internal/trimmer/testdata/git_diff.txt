@@ -1,0 +1,130 @@
+diff --git a/docs/reference.md b/docs/reference.md
+index cd53779..e477bd9 100644
+--- a/docs/reference.md
++++ b/docs/reference.md
+@@ -30,17 +30,14 @@ of help and the calling script would have carried on.
+ | `doctor` | Check health of all system components (reach platforms, search index, config) | `scripts/cmd/plaesy/doctor.go` |
+ | `eval` | Run search evaluation harness (Recall@k, MRR, nDCG) against a golden set | `scripts/cmd/plaesy/eval.go` |
+ | `features` | List, create, and inspect feature branches | `scripts/cmd/plaesy/features.go` |
+-| `graph` | Build/query knowledge graph | `scripts/cmd/plaesy/graph.go` |
+ | `images` | Generate image assets | `scripts/cmd/plaesy/images.go` |
+-| `index` | Build or update the search index; top-level alias for `search index` | `scripts/cmd/plaesy/search_index.go` |
+ | `init` | Scaffold new Plaesy project | `scripts/cmd/plaesy/init.go` |
+ | `install` | Install binary to bin dir | `scripts/cmd/plaesy/install.go` |
+ | `platforms` | AI platforms plaesy can target | `scripts/cmd/plaesy/platforms.go` |
+-| `query` | Search the local index directly; top-level alias for `search query` | `scripts/cmd/plaesy/search_index.go` |
+ | `reach` | Access external data sources (web, github, youtube, etc.) across multiple platforms; `configure` and `list` subcommands | `scripts/cmd/plaesy/reach.go` |
+ | `repair` | Repair installation (stub) | `scripts/cmd/plaesy/install.go` |
+ | `reload` | Refresh generated `.plaesy/` files, keeping memory and context; `--prune` lists orphans in the tool-owned trees, `--prune-apply` removes them | `scripts/cmd/plaesy/reload.go` |
+-| `search` | Embedding-based semantic search over extracted symbols; `plaesy analyze` (or `--index`) builds the index, a query refuses a stale one | `scripts/cmd/plaesy/search.go` |
++| `search` | Search the project by meaning. Indexes are built by `plaesy analyze`; a query refuses a stale index | `scripts/cmd/plaesy/search.go` |
+ | `stack` | Inspect a target project's technology stack | `scripts/cmd/plaesy/stack.go` |
+ | `stats` | Show search index and reach cache statistics | `scripts/cmd/plaesy/stats.go` |
+ | `status` | Show CLI version + environment | `scripts/cmd/plaesy/status.go` |
+@@ -67,9 +64,11 @@ search after an analyze run is not refused as stale.
+ | Flag | Default | Description |
+ |---|---|---|
+ | `--no-graph` | `false` | Skip dependency graph build entirely |
+-| `--no-index` | `false` | Skip the semantic-search index build (`plaesy search --index` still builds it on demand) |
++| `--no-index` | `false` | Skip the semantic-search index build (`plaesy analyze` still builds it on demand) |
+ | `--force` | `false` | Force full regeneration (bypass fingerprint check) |
+ | `--if-changed` | `false` | Hidden no-op — fingerprint fast path is always on |
++| `--watch` | `false` | Re-run analyze automatically when source files change |
++| `--watch-interval` | `3` | Poll interval (seconds) for `--watch` |
+ 
+ **Example**: `plaesy analyze` — analyzes the current directory.
+ 
+@@ -313,49 +312,6 @@ are available. With no feature directory it is an error, not an empty report.
+ 
+ ---
+ 
+-## `graph`
+-
+-```bash
+-
+-plaesy graph [project_path] [flags]
+-```
+-
+-Build (or query) a lightweight knowledge graph of a project. Scans
+-source/doc/config files, extracts structural references + mentions + symbols,
+-runs community detection, and emits `project.graph.json`, `project.html`, and
+-`reports.md`.
+-
+-| Flag | Default | Description |
+-|---|---|---|
+-| `--path` | `.` | Project directory to scan |
+-| `--outdir` | `.plaesy/analysis` | Output directory (relative to `--path`) |
+-| `--query` | `""` | Keyword query against node IDs |
+-| `--fuzzy-query` | `""` | Fuzzy/substring search against node IDs |
+-| `--search-depth` | `2` | Search depth for `--fuzzy-query` |
+-| `--path-query-from` | `""` | Shortest-path: source node |
+-| `--path-query-to` | `""` | Shortest-path: target node |
+-| `--explain` | `""` | Explain one node's edges and symbols |
+-| `--impact-check` | `""` | List nodes impacted by changing this node |
+-| `--impact-depth` | `2` | BFS depth for `--impact-check` |
+-| `--impact-visualize` | `false` | Write `impact-visualization.html` |
+-| `--semantic-queue` | `false` | Export inferred edges to `semantic-queue.json` |
+-| `--business-logic` | `false` | Export inferred edges to `business-logic-queue.json` |
+-| `--generate-paths` | `false` | Write `learning-paths.json` |
+-| `--apply-semantic` | `""` | Merge annotations file into `reports.md` |
+-| `--watch` | `false` | Rebuild automatically on source changes |
+-| `--watch-interval` | `3` | Poll interval (seconds) for `--watch` |
+-| `--if-changed` | `false` | Rebuild only if source changed since last build |
+-
+-**Examples**:
+-
+-```bash
+-
+-plaesy graph                       # build graph for current dir
+-plaesy graph --path /path/to/proj  # build for specific project
+-plaesy graph --query "README"      # query the graph
+-plaesy graph --watch               # watch mode (3s poll)
+-```
+-
+ ---
+ 
+ ---
+@@ -520,6 +476,43 @@ List every platform `reach` can target.
+ 
+ ---
+ 
++## `search`
++
++Search the project by meaning. The indexes it reads are built by `plaesy analyze`;
++a query refuses an index that is missing or older than the sources.
++
++```bash
++plaesy search "validates user credentials"            # top 10
++plaesy search "formats a date for display" --top 5
++```
++
++| Flag | Default | Purpose |
++|------|---------|---------|
++| `--path` | `.` | Project directory |
++| `--outdir` | `.plaesy/analysis` | Analysis directory, relative to `--path` |
++| `--top` | `10` | Maximum results |
++
++Output is one result per line, highest similarity first. The columns are
++`score`, `path:start-end`, `extension`, `kind`, and `name`:
++
++```text
++0.8214	internal/auth/check.go:12-19	go	func	CheckUserIsValid
++0.7958	internal/auth/validate.go:40-52	go	method	ValidateUser
++0.4102	notes/billing.md		file	Pricing, Refunds
++```
++
++A **Go declaration** (function, method, or type) is one search unit, so `path:start-end`
++points at the matching declaration. Other files are indexed as a whole, so they show
++`path` alone with `kind` `file` and their symbol names in the last column.
++
++**Line ranges** are 1-based, and the end line is inclusive. A declaration's range
++starts at its doc comment when one sits directly above it, with no blank line in
++between. A free-standing comment is not a unit. Convert at output boundaries only:
++LSP uses 0-based lines with an exclusive end, and SARIF uses 1-based lines with an
++exclusive `endColumn`.
++
++---
++
+ ## `repair`
+ 
+ ```bash
