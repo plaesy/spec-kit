@@ -182,7 +182,9 @@ Restraint is a judgement; a render is evidence. When a browser can run the page:
     - a screen that is mostly empty ground (see "Fullness");
     - a console error, or a control that does nothing when clicked (the Gate 7
       click-through in `.plaesy/instructions/quality-gates.md`);
-    - a section that repeats the layout of the section before it.
+    - a section that repeats the layout of the section before it;
+    - text contrast below WCAG 2.2 AA: 4.5:1 for normal text, 3:1 for large text
+      (18.66px bold or 24px and up), checked on the colours the page actually uses.
 3. Write the top three problems, one line each, fix them, and render again.
 4. Stop after three rounds. List any remaining problems in the handoff as open. Do not
    report a clean pass while they stand.

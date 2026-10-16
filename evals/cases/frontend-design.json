@@ -1,0 +1,75 @@
+{
+  "instruction": "instructions/frontend-design.instructions.md",
+  "static": [
+    {
+      "id": "fd-verify-widths",
+      "description": "Renders are required at 1440, 768 and 390 px",
+      "requires": ["Verify with renders", "1440, 768 and 390 px"]
+    },
+    {
+      "id": "fd-round-cap",
+      "description": "The revision loop stops after three rounds",
+      "requires": ["Stop after three rounds"]
+    },
+    {
+      "id": "fd-contrast-aa",
+      "description": "Contrast is checked at WCAG 2.2 AA thresholds, and no older or stricter level is named",
+      "requires": ["WCAG 2.2 AA", "4.5:1", "3:1"],
+      "forbids": ["WCAG 2.1", "AAA"]
+    },
+    {
+      "id": "fd-no-false-pass",
+      "description": "A render check that did not run is not reported as passed",
+      "requires": ["did not run"]
+    },
+    {
+      "id": "fd-idea-test",
+      "description": "The idea test checks the idea against the nearest real competitor",
+      "requires": ["The idea test", "nearest real competitor"]
+    },
+    {
+      "id": "fd-fullness",
+      "description": "Restraint is paired with a fullness rule against thin pages",
+      "requires": ["Fullness"]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "clean-page-passes",
+      "description": "A page with own assets, a readable font and AA-passing colours has no FAIL",
+      "fixture": "evals/fixtures/frontend-clean",
+      "expect": "pass"
+    },
+    {
+      "id": "placeholder-picture-fails",
+      "description": "A picture from a placeholder host is a FAIL",
+      "fixture": "evals/fixtures/frontend-placeholder-image",
+      "expect": "fail",
+      "rules": ["DL-IMG-HOST"]
+    },
+    {
+      "id": "near-miss-contrast-fails",
+      "description": "#777 on white (4.48:1) fails AA normal text",
+      "fixture": "evals/fixtures/frontend-low-contrast",
+      "expect": "fail",
+      "rules": ["DL-CONTRAST"]
+    },
+    {
+      "id": "invented-figures-and-default-font-warn",
+      "description": "Placeholder-like figures and Inter as first family are reviewed (WARN), not failed",
+      "fixture": "evals/fixtures/frontend-invented-figures",
+      "expect": "pass",
+      "rules": ["DL-INVENTED-FIGURE", "DL-DEFAULT-FONT"]
+    }
+  ],
+  "briefs": [
+    {
+      "id": "saas-invoicing",
+      "brief": "Build a landing page for Ledgerly, an invoicing tool for freelance designers. It costs 9 euros a month with a 14-day free trial and no card needed. Include pricing and a short FAQ. There is no brand or screenshot yet; the name is all we have."
+    },
+    {
+      "id": "restaurant-osteria",
+      "brief": "Make a one-page website for Osteria Nove, a 38-seat Italian restaurant in Alfama, Lisbon. Dinner Tuesday to Saturday from 19:00. The page needs the menu with euro prices, hours, address and how to book. We have no photographs yet."
+    }
+  ]
+}

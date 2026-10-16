@@ -170,7 +170,7 @@ External-URL allow-listing (host, port, path) is fixed by
 
 ---
 
-## WCAG 2.2 AAA Accessibility Checklist
+## WCAG 2.2 AA Accessibility Checklist
 
 ### Perceivable
 
@@ -179,8 +179,8 @@ External-URL allow-listing (host, port, path) is fixed by
 [ ] All images have descriptive alt text
 [ ] Decorative images marked with empty alt ("")
 [ ] Heading hierarchy logical (h1 → h2 → h3, no skips)
-[ ] Text contrast ratio ≥7:1 (normal text)
-[ ] Text contrast ratio ≥4.5:1 (large text >18pt)
+[ ] Text contrast ratio ≥4.5:1 (normal text)
+[ ] Text contrast ratio ≥3:1 (large text >18pt)
 [ ] Text resizable without loss of content
 [ ] No blinking/flashing >3 times/second
 ```
@@ -248,7 +248,7 @@ the report.
 - A09 (Security Logging and Monitoring Failures): ✅ PASS
 - A10 (Server-Side Request Forgery): ✅ PASS
 
-## WCAG 2.2 AAA Summary
+## WCAG 2.2 AA Summary
 - Perceivable: ✅ PASS
 - Operable: ⚠️ 2 issues found
 - Understandable: ✅ PASS
@@ -267,14 +267,14 @@ the report.
 When `/assess` runs:
 
 - ✅ Auto-check OWASP High/Critical items
-- ✅ Check WCAG AAA compliance (if UI project)
+- ✅ Check WCAG AA compliance (if UI project)
 - ✅ Dependency audit (npm audit / cargo audit)
 - ✅ Secret scan for hardcoded credentials
 
 **Assessment Impact**:
 
 - OWASP High/Critical: -20 points per issue (critical fix before shipping)
-- WCAG AAA violations: -10 points per issue (must fix before UI release)
+- WCAG AA violations: -10 points per issue (must fix before UI release)
 
 ---
 

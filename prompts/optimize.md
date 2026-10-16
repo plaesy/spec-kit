@@ -108,7 +108,7 @@ constitution's Technical row overrides them.
 | Business       | CAC payback period within constitution threshold; every unit-economics assumption sourced | Model canvas / business case   |
 | Legal          | 100% of clauses/claims traceable to a source; zero unassigned compliance owners           | Contract / compliance doc set  |
 | Marketing      | 100% of claims sourced; brand voice/positioning consistent across assets                  | Campaign / content set         |
-| Design         | WCAG 2.2 AAA pass; zero hardcoded values outside the design-token set                      | UI/UX, brand system            |
+| Design         | WCAG 2.2 AA pass; zero hardcoded values outside the design-token set                      | UI/UX, brand system            |
 | Management/Org | Span of control ≤6; no single point of failure in org chart                               | Org structure, process docs    |
 | Product        | Every roadmap item traceable to a validated user need; no unsourced priority claim        | Roadmap / prioritization set   |
 | Financial      | Every cost/price figure sourced; no vendor or FinOps commitment without a review date     | Cost model / budget set        |
@@ -150,7 +150,7 @@ outranks a minor copy-edit (low impact, low effort).*
 
 1. **Design Tokens** - Standardize colors, spacing, typography
 2. **Visual Consistency** - Ensure consistent patterns across UI
-3. **Accessibility Performance** - WCAG AAA compliance, keyboard navigation, screen reader
+3. **Accessibility Performance** - WCAG AA compliance, keyboard navigation, screen reader
 4. **Dark Mode** - Optimize contrast, ensure theme parity
 
 ### Code Quality (All Projects)

@@ -432,7 +432,7 @@ The Plaesy framework automatically selects relevant instructions based on:
 - **Secure Coding**: Security-focused development practices
 - **Authentication**: Secure authentication and authorization
 - **Data Protection**: Encryption and data security
-- **Accessibility (WCAG 2.2 AAA)**: Accessibility compliance guidelines
+- **Accessibility (WCAG 2.2 AA)**: Accessibility compliance guidelines
 - **Compliance Frameworks**: GDPR, HIPAA, and other standards
 
 ---

@@ -7,6 +7,11 @@ build: assets
 test:
 	cd scripts && go test ./...
 
+# Behavioural cases for instruction files and the offline design lint. Briefs run only
+# when PLAESY_EVAL_RUNNER is set; otherwise they are reported as SKIP.
+evals:
+	cd scripts && go test -count=1 ./internal/evals/ ./internal/designlint/ && go test -count=1 ./cmd/plaesy/ -run "TestValidateDesign|TestValidateEvals"
+
 # Removes only generated files. It never stages or commits: `git add -Af` here
 # swallowed every unrelated working-tree change and committed it as "Initial
 # Commit", which is how the repo ended up with three commits by that name.

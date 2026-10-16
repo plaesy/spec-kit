@@ -39,7 +39,7 @@ defaults — override the cell, never delete the row.
 | Dimension | Active | Deliverable | Binding threshold(s) | Mandatory audit (hard stop) |
 |---|---|---|---|---|
 | Technical | {{ACTIVE_TECHNICAL\|no}} | code, service, API, library dependencies | {{TEST_COVERAGE_MIN\|90}}% coverage, {{PERFORMANCE_TARGET\|<200ms p95 response time}}, {{SECURITY_BAR\|zero known vulnerabilities at Sev-High or above}} | Full `quality-gates.md` run — fail blocks handoff |
-| Design | {{ACTIVE_DESIGN\|no}} | UI/UX, design system, brand, accessibility | WCAG 2.2 AAA, design tokens defined (no hardcoded values) | WCAG 2.2 AAA pass (contrast, keyboard nav, screen reader) |
+| Design | {{ACTIVE_DESIGN\|no}} | UI/UX, design system, brand, accessibility | WCAG 2.2 AA, design tokens defined (no hardcoded values) | WCAG 2.2 AA pass (contrast, keyboard nav, screen reader) |
 | Business | {{ACTIVE_BUSINESS\|no}} | business plan, model, pitch, go/no-go case | unit economics reviewed, assumptions logged, go/no-go criteria defined | Viability: breakeven modelled, CAC payback period stated |
 | Product | {{ACTIVE_PRODUCT\|no}} | roadmap, feature spec, competitive baseline | prioritization criteria defined, competitive baseline sourced | Prioritization criteria actually applied to every roadmap item |
 | Marketing | {{ACTIVE_MARKETING\|no}} | positioning, messaging, campaign, content | {{CLAIM_BAR\|every published claim carries a source}}, brand voice defined | 100% of published claims carry a source |
@@ -70,7 +70,7 @@ other silently becomes stale.
   shared by every dimension: rationale and evidence complete for all deliverables
 - **Claim bar**: {{CLAIM_BAR|every published claim carries a source}} *(Marketing only;
   distinct from `DOC_BAR`, which governs rationale and evidence, not sourcing)*
-- **Accessibility bar**: WCAG 2.2 AAA *(Design only)*
+- **Accessibility bar**: WCAG 2.2 AA *(Design only)*
 - **Viability bar**: {{VIABILITY_BAR|unit economics positive within 18 months}} *(Business/Financial only)*
 
 ## 3. Technology & Method Constraints

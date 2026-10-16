@@ -26,7 +26,7 @@ active_dimensions: [technical, business]
 | Dimension | Active | Deliverable | Binding threshold(s) | Mandatory audit (hard stop) |
 |---|---|---|---|---|
 | Technical | yes | code, service, API | 90% coverage, <200ms p95 | Full quality-gates.md run |
-| Design | no | UI/UX | WCAG 2.2 AAA | WCAG pass |
+| Design | no | UI/UX | WCAG 2.2 AA | WCAG pass |
 | Business | yes | business plan | unit economics reviewed | Viability review |
 | Product | no | roadmap | prioritization criteria | Criteria applied |
 | Marketing | no | campaign | every claim sourced | 100% claims sourced |

@@ -9,10 +9,10 @@
     "Bash"
   ],
   "counts": {
-    "goFilesCmd": 29,
-    "goFilesInternal": 135,
-    "internalPackages": 22,
-    "cobraCommandConstructors": 64,
+    "goFilesCmd": 31,
+    "goFilesInternal": 138,
+    "internalPackages": 24,
+    "cobraCommandConstructors": 66,
     "topLevelRegisteredParents": 24,
     "platforms": 20,
     "instructionFiles": 79,
@@ -21,8 +21,8 @@
     "agentFiles": 28,
     "checklistFiles": 7,
     "templateFiles": 61,
-    "goTestFiles": 154,
-    "goTestFunctions": 1298,
+    "goTestFiles": 157,
+    "goTestFunctions": 1327,
     "nestedSubPrompts": 0
   },
   "countsHowToVerify": {

@@ -203,6 +203,7 @@ Apply changes in this order for maximum visual impact with minimum risk:
 
 - Work with the existing tech stack. Do not migrate frameworks or styling libraries.
 - Do not break existing functionality. Test after every change.
+- Text contrast must meet WCAG 2.2 AA on every colour pair you change: 4.5:1 for normal text, 3:1 for large text (18.66px bold or 24px and up). Check the pairs the page uses, not one swatch.
 - Verify the visual result the way `.plaesy/instructions/frontend-design.md` describes under "Verify with renders":
   render at 1440, 768 and 390 px, apply its fail conditions, and report what did not pass. If no browser can run, say so.
 - Before importing any new library, check the project's dependency file first.

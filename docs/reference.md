@@ -765,6 +765,8 @@ a check that passed.
 | `pptx` | file | `.pptx` OOXML structure, slide count, title placeholders |
 | `xlsx` | file | `.xlsx` OOXML structure, sheet names |
 | `assumptions` | project-wide | `ASSUMED —` tags left by autonomous runs, optionally gated by age |
+| `design` | path | Produced frontend output against the design rules: placeholder image hosts, WCAG 2.2 AA contrast, render evidence |
+| `evals` | repository | Behavioural cases for `frontend-design` and `redesign` under `evals/` |
 
 `plaesy validate --list` prints the same table from the binary, so it cannot drift
 from the code.
@@ -924,6 +926,36 @@ plaesy validate xlsx <file.xlsx> [expected_sheet_name...]
 
 Validate OOXML structure without rendering. Reports paragraph/table/slide/sheet
 counts and structural issues.
+
+### `validate design`
+
+```bash
+
+plaesy validate design <path...> [--evidence <dir>] [--strict]
+```
+
+Lints produced HTML, CSS, JSX, TSX, Vue and Svelte files without a browser. FAIL
+findings: pictures from placeholder hosts (`DL-IMG-HOST`), text colour pairs below
+WCAG 2.2 AA (`DL-CONTRAST`, 4.5:1 normal text, 3:1 large text), and, with
+`--evidence`, a screenshot at each of 1440, 768 and 390 px (`DL-VIEWPORTS`). WARN
+findings: placeholder-looking figures in visible text (`DL-INVENTED-FIGURE`) and
+Inter, Arial or Roboto as the first font (`DL-DEFAULT-FONT`). WARN fails the run only
+with `--strict`. Colour is read from hex, `rgb()`, or `var(--token)` declared in the
+same run; rules that depend on gradients or images are skipped and counted.
+
+### `validate evals`
+
+```bash
+
+plaesy validate evals
+PLAESY_EVAL_RUNNER="<command>" plaesy validate evals
+```
+
+Runs every case file under `evals/cases`. Static cases check that an instruction
+contains required phrases and none of the forbidden ones. Output cases lint the
+fixtures under `evals/fixtures` and check the expected result. Brief cases need a
+model: `PLAESY_EVAL_RUNNER` is called as `<command> <brief-id> <output-dir>`. Without
+it, brief cases are reported as `SKIP`, never as a pass. See `evals/README.md`.
 
 ---
 

@@ -38,6 +38,8 @@ var validateTargets = []validateTarget{
 	{name: "docx", build: newDocxCmd},
 	{name: "pptx", build: newPptxCmd},
 	{name: "xlsx", build: newXlsxCmd},
+	{name: "design", build: newDesignCmd},
+	{name: "evals", build: newEvalsCmd},
 }
 
 func init() {
@@ -72,6 +74,8 @@ Name a target to run just that one, with its own flags:
   plaesy validate docx <file.docx>
   plaesy validate pptx <file.pptx> [expected_slide_count]
   plaesy validate xlsx <file.xlsx> [expected_sheet_name...]
+  plaesy validate design <path...> [--evidence dir] [--strict]
+  plaesy validate evals
 
 Or pass a document and let the extension pick the validator:
 

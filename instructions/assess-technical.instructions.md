@@ -112,7 +112,7 @@ retry integration test.
 **When to run**: Project has React, Vue, Angular, Flutter, web UI, mobile UI, or Figma files
 
 - **Component Consistency**: Check if UI components follow naming conventions, variants documented
-- **Accessibility**: Audit WCAG 2.2 AAA compliance (contrast ratios, keyboard navigation, ARIA labels)
+- **Accessibility**: Audit WCAG 2.2 AA compliance (contrast ratios, keyboard navigation, ARIA labels)
 - **Design Tokens**: Verify colors, spacing, typography defined as tokens (not hardcoded)
 - **Dark Mode Support**: Check if light/dark theme colors are consistent and accessible
 - **Design System Adoption**: Measure component reuse rate from design library
@@ -175,7 +175,7 @@ performance: 9%             # Response time, resource usage, animation performan
 ```text
 
 component_consistency: 25%   # Naming conventions, variants, documentation
-accessibility: 35%           # WCAG 2.2 AAA compliance, contrast, keyboard nav, ARIA
+accessibility: 35%           # WCAG 2.2 AA compliance, contrast, keyboard nav, ARIA
 design_tokens: 20%          # Token usage, consistency, light/dark themes
 design_system_adoption: 20% # Component reuse rate, library usage
 ```
@@ -200,7 +200,7 @@ are defined once in `.plaesy/instructions/quality-gates.md` →
 - Must have: Score computed from the published weights, with an evidence line for every criterion
 - Must have: No OWASP High/Critical vulns unfixed
 - Must have: Tests pass (or known failures documented)
-- Must have (if frontend): WCAG 2.2 AAA compliance or documented accessibility exceptions
+- Must have (if frontend): WCAG 2.2 AA compliance or documented accessibility exceptions
 
 ---
 

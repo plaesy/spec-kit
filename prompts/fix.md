@@ -187,7 +187,7 @@ on a guessed API signature fixes a bug that doesn't exist.
   up under research (business, financial)
 - **Brand/Positioning Inconsistency** - Copy contradicts established voice or prior
   claims (marketing)
-- **Accessibility Violation** - WCAG 2.2 AAA failure (design)
+- **Accessibility Violation** - WCAG 2.2 AA failure (design)
 
 ### Priority Levels
 

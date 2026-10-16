@@ -123,7 +123,7 @@ second must not report completion.
 5. **Lint/Static analysis** — no new errors introduced. Blocking.
 6. **Performance** — meets the constitution's performance target where measurable.
    Non-blocking (flag, don't halt) unless the constitution marks it a hard stop.
-7. **Accessibility** (frontend only) — WCAG 2.2 AAA. Blocking for UI work. For any
+7. **Accessibility** (frontend only) — WCAG 2.2 AA. Blocking for UI work. For any
    UI marked complete, this gate also requires a **click-through pass**: run/build
    it, click every interactive element (buttons, links, forms, tabs, modals,
    toggles, nav) one at a time, and confirm each produces its real effect — a
