@@ -1,19 +1,22 @@
-// Package evals runs behavioural cases for instruction files.
+// Package evals runs the checks declared in evals/cases. It does not evaluate model
+// behaviour unless a runner is configured, and the names say so.
 //
 // A case file (evals/cases/<name>.json) names one instruction file and holds
 // three kinds of case:
 //
 //   - static: the instruction text must contain some phrases (requires) and must
-//     not contain others (forbids). Offline and deterministic, so it runs in
-//     go test and in CI.
-//   - outputs: a fixture directory of produced frontend files is linted with
+//     not contain others (forbids). This checks that wording is present. It does
+//     not check meaning, and it is not a behavioural test.
+//   - outputs: a fixture directory of hand-written frontend files is linted with
 //     designlint. expect is "pass" (no FAIL) or "fail"; rules lists the rule
-//     identifiers that must appear in the findings.
-//   - briefs: a model writes an output for each brief. This needs an LLM, so it
-//     is optional. The command in PLAESY_EVAL_RUNNER is run as
-//     `<command> <brief-id> <output-dir>` with the brief text in PLAESY_EVAL_BRIEF,
-//     and the output is linted. Without a runner, every brief is reported SKIP,
-//     never PASS.
+//     identifiers that must appear in the findings. This tests the lint on known
+//     inputs. The fixtures are not model output.
+//   - briefs: a model writes an output for each brief. This is the only case
+//     kind that tests model behaviour, and it needs a runner. The command in
+//     PLAESY_EVAL_RUNNER is run as `<command> <brief-id> <output-dir>` with the
+//     brief text in PLAESY_EVAL_BRIEF. The output must contain at least one
+//     lintable file and must have no FAIL findings. Without a runner every brief is
+//     reported SKIP, and a skip is never a pass.
 package evals
 
 import (
@@ -285,14 +288,16 @@ func runBriefs(root, name string, f File, opts Options) []Outcome {
 }
 
 // runOne calls the runner, then lints what it wrote. The runner's stdout and
-// stderr are kept in the detail when it fails, so the cause is visible.
+// stderr are kept in the detail when it fails, so the cause is visible. A runner
+// that writes no lintable file is a FAIL: an empty output lints clean, and that
+// would report a broken runner as a pass.
 func runOne(runner string, b Brief, dir string) (string, string) {
-	fields := strings.Fields(runner)
-	if len(fields) == 0 {
-		return StatusFail, "PLAESY_EVAL_RUNNER is empty"
+	argv, err := ParseRunner(runner)
+	if err != nil {
+		return StatusFail, err.Error()
 	}
-	args := append(fields[1:], b.ID, dir)
-	cmd := exec.Command(fields[0], args...)
+	args := append(argv[1:], b.ID, dir)
+	cmd := exec.Command(argv[0], args...)
 	cmd.Env = append(os.Environ(), "PLAESY_EVAL_BRIEF="+b.Brief)
 	var buf bytes.Buffer
 	cmd.Stdout = &buf
@@ -304,10 +309,71 @@ func runOne(runner string, b Brief, dir string) (string, string) {
 	if err != nil {
 		return StatusFail, err.Error()
 	}
+	if res.Files == 0 {
+		return StatusFail, fmt.Sprintf("runner wrote no lintable files to %s", dir)
+	}
 	if res.Failed() {
 		return StatusFail, "output has FAIL findings: " + failRules(res)
 	}
-	return StatusPass, "output lints clean"
+	return StatusPass, fmt.Sprintf("output lints clean (%d file(s))", res.Files)
+}
+
+// ParseRunner splits the runner setting into argv. Two forms are accepted:
+//
+//   - a JSON array of strings, for example ["C:\\tools\\my runner.exe", "--fast"]:
+//     unambiguous, and the right choice for paths with spaces;
+//   - a command line: words are split on spaces, and a double- or single-quoted
+//     group is one word. Backslashes are kept as they are, so a Windows path works
+//     unescaped: "C:\tools\my runner.exe" --fast.
+func ParseRunner(s string) ([]string, error) {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return nil, fmt.Errorf("PLAESY_EVAL_RUNNER is empty")
+	}
+	if strings.HasPrefix(s, "[") {
+		var argv []string
+		if err := json.Unmarshal([]byte(s), &argv); err != nil {
+			return nil, fmt.Errorf("PLAESY_EVAL_RUNNER looks like a JSON array but does not parse: %w", err)
+		}
+		if len(argv) == 0 {
+			return nil, fmt.Errorf("PLAESY_EVAL_RUNNER JSON array is empty")
+		}
+		return argv, nil
+	}
+	var argv []string
+	var word strings.Builder
+	inWord := false
+	var quote byte
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		switch {
+		case quote != 0:
+			if c == quote {
+				quote = 0
+			} else {
+				word.WriteByte(c)
+			}
+		case c == '"' || c == '\'':
+			quote = c
+			inWord = true
+		case c == ' ' || c == '\t':
+			if inWord {
+				argv = append(argv, word.String())
+				word.Reset()
+				inWord = false
+			}
+		default:
+			word.WriteByte(c)
+			inWord = true
+		}
+	}
+	if quote != 0 {
+		return nil, fmt.Errorf("PLAESY_EVAL_RUNNER has an unclosed %c quote", quote)
+	}
+	if inWord {
+		argv = append(argv, word.String())
+	}
+	return argv, nil
 }
 
 // Summary counts outcomes by status.

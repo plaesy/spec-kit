@@ -3,6 +3,7 @@ package evals
 import (
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -142,7 +143,10 @@ func TestEvalRunnerHelper(t *testing.T) {
 	}
 	dir := os.Args[len(os.Args)-1]
 	body := `<main><h1>Clean</h1></main>`
-	if mode == "bad" {
+	switch mode {
+	case "empty":
+		os.Exit(0) // exits cleanly and writes nothing
+	case "bad":
 		body = `<img src="https://placehold.co/600x400">`
 	}
 	if err := os.WriteFile(filepath.Join(dir, "index.html"), []byte(body), 0o644); err != nil {
@@ -160,6 +164,68 @@ func TestRunnerProducesPassOrFailPerBrief(t *testing.T) {
 		got, detail := runOne(runner, Brief{ID: "b", Brief: "a page"}, t.TempDir())
 		if got != want {
 			t.Errorf("mode %s: status %s (%s), want %s", mode, got, detail, want)
+		}
+	}
+}
+
+// M-5: a runner that exits 0 and writes nothing is a FAIL, never a PASS.
+func TestRunnerThatWritesNothingFails(t *testing.T) {
+	t.Setenv("PLAESY_EVAL_HELPER", "empty")
+	runner := os.Args[0] + " -test.run=^TestEvalRunnerHelper$ --"
+	status, detail := runOne(runner, Brief{ID: "b", Brief: "a page"}, t.TempDir())
+	if status != StatusFail || !strings.Contains(detail, "no lintable files") {
+		t.Fatalf("an empty output must FAIL and say why, got %s %q", status, detail)
+	}
+}
+
+// M-6: a runner whose path has spaces runs. The test binary is copied into a folder
+// with a space in its name, and the runner is quoted on the command line.
+func TestRunnerPathWithSpacesRuns(t *testing.T) {
+	dir := filepath.Join(t.TempDir(), "dir with space")
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	self, err := os.ReadFile(os.Args[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	exe := filepath.Join(dir, "evals.test.exe")
+	if err := os.WriteFile(exe, self, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PLAESY_EVAL_HELPER", "clean")
+	for _, runner := range []string{
+		`"` + exe + `" -test.run=^TestEvalRunnerHelper$ --`,
+		`["` + strings.ReplaceAll(exe, `\`, `\\`) + `", "-test.run=^TestEvalRunnerHelper$", "--"]`,
+	} {
+		status, detail := runOne(runner, Brief{ID: "b", Brief: "a page"}, t.TempDir())
+		if status != StatusPass {
+			t.Errorf("runner %q: %s (%s)", runner, status, detail)
+		}
+	}
+}
+
+func TestParseRunnerForms(t *testing.T) {
+	cases := []struct {
+		in   string
+		want []string
+	}{
+		{`tool --fast`, []string{"tool", "--fast"}},
+		{`"C:\dir with space\run.exe" --x`, []string{`C:\dir with space\run.exe`, "--x"}},
+		{`'C:\a b\run.exe' "two words"`, []string{`C:\a b\run.exe`, "two words"}},
+		{`C:\no\quotes\run.exe`, []string{`C:\no\quotes\run.exe`}},
+		{`["C:\\a b\\run.exe", "--x y"]`, []string{`C:\a b\run.exe`, "--x y"}},
+		{`   tool    spaced   `, []string{"tool", "spaced"}},
+	}
+	for _, c := range cases {
+		got, err := ParseRunner(c.in)
+		if err != nil || !reflect.DeepEqual(got, c.want) {
+			t.Errorf("ParseRunner(%q) = %q, %v; want %q", c.in, got, err, c.want)
+		}
+	}
+	for _, bad := range []string{``, `"unclosed path`, `[not json`, `[]`} {
+		if _, err := ParseRunner(bad); err == nil {
+			t.Errorf("ParseRunner(%q) should fail", bad)
 		}
 	}
 }

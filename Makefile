@@ -7,8 +7,8 @@ build: assets
 test:
 	cd scripts && go test ./...
 
-# Behavioural cases for instruction files and the offline design lint. Briefs run only
-# when PLAESY_EVAL_RUNNER is set; otherwise they are reported as SKIP.
+# Case files for the instructions (phrase checks and lint fixtures) and the offline design
+# lint. Model briefs run only when PLAESY_EVAL_RUNNER is set; otherwise they are SKIP.
 evals:
 	cd scripts && go test -count=1 ./internal/evals/ ./internal/designlint/ && go test -count=1 ./cmd/plaesy/ -run "TestValidateDesign|TestValidateEvals"
 

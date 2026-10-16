@@ -22,7 +22,13 @@ type validateTarget struct {
 	// repoWide is true when the validator can check a whole project with no
 	// arguments, which is what bare `plaesy validate` runs.
 	repoWide bool
-	build    func() *cobra.Command
+	// noArgs is true for a validator that takes no path and checks a fixed location
+	// in the repository. It is listed as "repository", not "needs a file".
+	noArgs bool
+	// legacy is true for the six validators that had a pre-1.0 top-level spelling.
+	// Only those get a deprecated `validate-<name>` alias.
+	legacy bool
+	build  func() *cobra.Command
 }
 
 // The pre-1.0 spelling was one top-level command per validator (six of them,
@@ -31,21 +37,23 @@ type validateTarget struct {
 // keep working. Cobra hides a deprecated command from help and announces the
 // replacement when it runs, so the help text shows one verb while nothing breaks.
 var validateTargets = []validateTarget{
-	{name: "constitution", repoWide: true, build: newConstitutionCmd},
-	{name: "memory", repoWide: true, build: newMemoryCmd},
-	{name: "markdown", repoWide: true, build: newMarkdownCmd},
+	{name: "constitution", repoWide: true, legacy: true, build: newConstitutionCmd},
+	{name: "memory", repoWide: true, legacy: true, build: newMemoryCmd},
+	{name: "markdown", repoWide: true, legacy: true, build: newMarkdownCmd},
 	{name: "assumptions", repoWide: true, build: newAssumptionsCmd},
-	{name: "docx", build: newDocxCmd},
-	{name: "pptx", build: newPptxCmd},
-	{name: "xlsx", build: newXlsxCmd},
+	{name: "docx", legacy: true, build: newDocxCmd},
+	{name: "pptx", legacy: true, build: newPptxCmd},
+	{name: "xlsx", legacy: true, build: newXlsxCmd},
 	{name: "design", build: newDesignCmd},
-	{name: "evals", build: newEvalsCmd},
+	{name: "evals", noArgs: true, build: newEvalsCmd},
 }
 
 func init() {
 	register(newValidateCmd())
 	for _, target := range validateTargets {
-		register(legacyValidateAlias(target))
+		if target.legacy {
+			register(legacyValidateAlias(target))
+		}
 	}
 }
 
@@ -128,8 +136,11 @@ func printValidateTargets(cmd *cobra.Command) {
 	fmt.Fprintf(out, "Validation targets:\n\n")
 	for _, target := range validateTargets {
 		scope := "needs a file"
-		if target.repoWide {
+		switch {
+		case target.repoWide:
 			scope = "project-wide"
+		case target.noArgs:
+			scope = "repository"
 		}
 		fmt.Fprintf(out, "  %-14s %-14s %s\n", target.name, scope, target.build().Short)
 	}

@@ -57,8 +57,10 @@ Check for these problems and fix them:
 - **[C-10] Random dark sections in a light mode page (or vice versa).** A single dark-background section breaking an otherwise light page looks like a copy-paste accident. Either commit to a full
   dark mode or keep a consistent background tone throughout. If contrast is needed, use a slightly darker shade of the same palette — not a sudden jump to `#111` in the middle of a cream page.
 - **[C-11] Empty, flat sections with no visual depth.** Sections that are just text on a plain background feel unfinished. Add high-quality background imagery (blurred, overlaid, or masked), subtle
-  patterns, or ambient gradients. Use only imagery the project has the right to use. When it has none, use an open-collection picture under a licence that allows commercial use (CC0, public domain,
-  CC BY or CC BY-SA), with its credit recorded on the page. Do not use a placeholder service whose pictures come from elsewhere. If no honest picture exists, leave a flat colour field instead.
+  patterns, or ambient gradients. Use only imagery the project has the right to use. When it has none, use an open-collection picture
+  under a licence that allows commercial use (CC0, public domain, CC BY or CC BY-SA), with its credit recorded on the page. Do not use a
+  placeholder service whose pictures come from elsewhere. If no honest picture exists, use a flat colour field, but still compose it: the
+  content, the type scale and the hierarchy must fill it. A flat field left empty is the same failure this rule names.
 
 ### Layout
 

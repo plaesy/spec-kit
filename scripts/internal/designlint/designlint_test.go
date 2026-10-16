@@ -1,9 +1,11 @@
 package designlint
 
 import (
+	"fmt"
 	"math"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -46,20 +48,22 @@ func TestContrastRatioMatchesWCAGReference(t *testing.T) {
 }
 
 func TestParseColorForms(t *testing.T) {
-	cases := map[string]rgb{
-		"#fff":               {255, 255, 255},
-		"#1a1a1a":            {26, 26, 26},
-		"rgb(10, 20, 30)":    {10, 20, 30},
-		"rgba(10,20,30,0.5)": {10, 20, 30},
-		"  #ABCDEF  ":        {0xab, 0xcd, 0xef},
+	cases := map[string]colour{
+		"#fff":               {rgb{255, 255, 255}, 1},
+		"#1a1a1a":            {rgb{26, 26, 26}, 1},
+		"rgb(10, 20, 30)":    {rgb{10, 20, 30}, 1},
+		"rgba(10,20,30,0.5)": {rgb{10, 20, 30}, 0.5},
+		"  #ABCDEF  ":        {rgb{0xab, 0xcd, 0xef}, 1},
+		"#0008":              {rgb{0, 0, 0}, 0x88 / 255.0},
+		"white":              {rgb{255, 255, 255}, 1},
 	}
 	for in, want := range cases {
 		got, ok := parseColor(in)
-		if !ok || got != want {
-			t.Errorf("parseColor(%q) = %v, %v; want %v", in, got, ok, want)
+		if !ok || got.c != want.c || math.Abs(got.a-want.a) > 1e-9 {
+			t.Errorf("parseColor(%q) = %+v, %v; want %+v", in, got, ok, want)
 		}
 	}
-	for _, in := range []string{"inherit", "transparent", "rgb(300, 0, 0)"} {
+	for _, in := range []string{"inherit", "currentColor", "rgb(300, 0, 0)", "hsl(0 0% 50%)"} {
 		if _, ok := parseColor(in); ok {
 			t.Errorf("parseColor(%q) should not resolve", in)
 		}
@@ -103,7 +107,7 @@ func TestFigureWarnsOnInventedStatInVisibleText(t *testing.T) {
 
 func TestFigureIgnoresAttributesAndCSS(t *testing.T) {
 	dir := writeFiles(t, map[string]string{
-		"index.html": "<div data-stat=\"99.99%\" style=\"width: 50%\">ok</div>\n",
+		"index.html": "<div data-stat=\"99.99%\" class=\"x\">ok</div>\n",
 		"style.css":  "p { width: 50%; }\n",
 	})
 	if res := lintDir(t, dir, Options{}); res.Count(RuleFigure, SevWarn) != 0 {
@@ -176,6 +180,183 @@ func TestContrastSkipsUnresolvableRules(t *testing.T) {
 	}
 }
 
+// M-1: the verdict must not depend on map iteration. Two files define --ink
+// differently (light and dark theme). The conflict is reported, and the contrast
+// that uses --ink is skipped, so the verdict is the same on every run.
+func TestTokenConflictIsDeterministicAndSkipped(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": ":root{--ink:#111}\n.p{color:var(--ink);background:#fff}\n",
+		"b.css": ":root[data-theme=\"dark\"]{--ink:#fff}\n",
+	})
+	first := lintDir(t, dir, Options{})
+	if first.Failed() {
+		t.Fatalf("conflicting token must be skipped, not failed: %+v", first.Findings)
+	}
+	if first.Count(RuleToken, SevWarn) != 1 || first.ContrastSkipped != 1 || first.ContrastChecked != 0 {
+		t.Fatalf("want one token WARN and one skipped check, got %+v (skipped %d, checked %d)",
+			first.Findings, first.ContrastSkipped, first.ContrastChecked)
+	}
+}
+
+// M-1 repeat-run: identical input must give identical output, every time, and
+// the order of the path arguments must not matter.
+func TestLintIsStableAcrossRunsAndPathOrder(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css":       ":root{--ink:#111;--paper:#fff}\n.p{color:var(--ink);background:#fff}\n.q{color:#777;background:var(--paper)}\n",
+		"b.css":       ":root[data-theme=\"dark\"]{--ink:#fff}\n.r{color:#808080;background:#fff;font-size:1.1em}\n",
+		"c/page.html": "<p style=\"color:#777777; background:#ffffff\">x</p>\n<p>99.99%</p>\n",
+		"d/app.jsx":   "export const A = () => <p style={{ color: '#777', backgroundColor: '#fff' }}>x</p>;\n",
+	})
+	want := lintDir(t, dir, Options{})
+	for i := 0; i < 30; i++ {
+		got := lintDir(t, dir, Options{})
+		if !reflect.DeepEqual(got, want) {
+			t.Fatalf("run %d differs:\nwant %v\n got %v", i, fmt.Sprint(want), fmt.Sprint(got))
+		}
+	}
+	files, _ := collectFiles([]string{filepath.Join(dir, "a.css"), filepath.Join(dir, "b.css")})
+	swapped, _ := collectFiles([]string{filepath.Join(dir, "b.css"), filepath.Join(dir, "a.css")})
+	if !reflect.DeepEqual(files, swapped) {
+		t.Fatalf("path order changed the file list: %v vs %v", files, swapped)
+	}
+}
+
+// M-2: inline style attributes and JSX style objects are checked.
+func TestInlineStyleAttributeIsChecked(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"index.html": "<p style=\"color:#777777; background:#ffffff\">Payment is due.</p>\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Count(RuleContrast, SevFail) != 1 {
+		t.Fatalf("inline #777 on #fff must FAIL, got %+v (checked %d)", res.Findings, res.ContrastChecked)
+	}
+}
+
+func TestJSXStyleObjectIsChecked(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"page.tsx": "export const P = () => <p style={{ color: '#777777', backgroundColor: '#ffffff', fontSize: 16 }}>x</p>;\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Count(RuleContrast, SevFail) != 1 {
+		t.Fatalf("JSX #777 on #fff must FAIL, got %+v", res.Findings)
+	}
+}
+
+func TestNonLiteralStyleIsCountedAsSkipped(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"page.jsx": "export const P = () => <p style={styles.body}>x</p>;\n<div :style=\"x\"></div>\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Failed() || res.ContrastSkipped != 2 {
+		t.Fatalf("non-literal and Vue bindings must be skipped and counted, got skipped=%d findings=%+v", res.ContrastSkipped, res.Findings)
+	}
+}
+
+// M-3: translucent text is composited over its background before the check.
+// firstRule returns the message of the first finding with the given rule, or "".
+func firstRule(res Result, rule string) string {
+	for _, f := range res.Findings {
+		if f.Rule == rule {
+			return f.Message
+		}
+	}
+	return ""
+}
+
+func TestTranslucentTextIsCompositedAndFails(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": ".n{color:rgba(0,0,0,0.4); background-color:#fff}\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Count(RuleContrast, SevFail) != 1 {
+		t.Fatalf("rgba(0,0,0,.4) on white composites to about #999 (2.85:1) and must FAIL, got %+v", res.Findings)
+	}
+	if !strings.Contains(firstRule(res, RuleContrast), "opaque") {
+		t.Fatalf("message should say the colour is translucent: %q", firstRule(res, RuleContrast))
+	}
+}
+
+func TestTranslucentTextThatPassesIsNotFlagged(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": ".n{color:rgba(0,0,0,0.9); background-color:#fff}\n",
+	})
+	if res := lintDir(t, dir, Options{}); res.Failed() {
+		t.Fatalf("rgba(0,0,0,.9) on white is about 16:1 and must pass, got %+v", res.Findings)
+	}
+}
+
+func TestTranslucentBackgroundIsSkipped(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": ".n{color:#777; background-color:rgba(255,255,255,0.5)}\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Failed() || res.ContrastChecked != 0 || res.ContrastSkipped != 1 {
+		t.Fatalf("a translucent background cannot be measured here: want skipped, got %+v", res)
+	}
+}
+
+// M-4: em and rem resolve to px; a 1.5em heading is large text.
+func TestEmFontSizeResolvesToLargeText(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": "h2{font-size:1.5em; color:#808080; background-color:#fff}\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Failed() {
+		t.Fatalf("1.5em = 24px is large text; 3.95:1 must pass the 3:1 rule, got %+v", res.Findings)
+	}
+}
+
+func TestEmFontSizeBelowLargeIsNormalAndStates(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": "p{font-size:1.1em; color:#808080; background-color:#fff}\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Count(RuleContrast, SevFail) != 1 {
+		t.Fatalf("1.1em = 17.6px is normal text: 3.95:1 must FAIL, got %+v", res.Findings)
+	}
+	if !strings.Contains(firstRule(res, RuleContrast), "assuming a 16px root") {
+		t.Fatalf("the em assumption must be stated: %q", res.Findings[0].Message)
+	}
+}
+
+func TestClampUsesTheSmallestSize(t *testing.T) {
+	// clamp(1rem, 2vw, 1.5rem): the smallest argument is 16px, so normal text applies.
+	dir := writeFiles(t, map[string]string{
+		"a.css": "p{font-size:clamp(1rem, 2vw, 1.5rem); color:#808080; background-color:#fff}\n",
+	})
+	if res := lintDir(t, dir, Options{}); res.Count(RuleContrast, SevFail) != 1 {
+		t.Fatalf("clamp with a 16px minimum is normal text and must FAIL at 3.95:1, got %+v", res.Findings)
+	}
+}
+
+func TestUnknownFontSizeIsSkippedNotGuessed(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": "p{font-size:var(--fs); color:#808080; background-color:#fff}\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Failed() || res.ContrastSkipped != 1 {
+		t.Fatalf("an unreadable font-size must be skipped, got %+v (skipped %d)", res.Findings, res.ContrastSkipped)
+	}
+}
+
+func TestFontShorthandSizeAndWeight(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": "h2{font: 600 24px/1.2 Geist, sans-serif; color:#808080; background-color:#fff}\n",
+	})
+	if res := lintDir(t, dir, Options{}); res.Failed() {
+		t.Fatalf("24px in the shorthand is large text and must pass 3.95:1, got %+v", res.Findings)
+	}
+}
+
+func TestCommentedOutRuleIsIgnored(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": "/* p{color:#777;background:#fff} */\n",
+	})
+	if res := lintDir(t, dir, Options{}); res.ContrastChecked != 0 || res.Failed() {
+		t.Fatalf("a commented-out rule must not be checked: %+v", res)
+	}
+}
+
 func TestViewportsInfoWithoutEvidence(t *testing.T) {
 	dir := writeFiles(t, map[string]string{"a.html": "<p>x</p>\n"})
 	res := lintDir(t, dir, Options{})
@@ -200,6 +381,18 @@ func TestViewportsFailWhenAWidthIsMissing(t *testing.T) {
 	}
 }
 
+// m-14: a width must be its own number. 1768 and 3900 are not 768 and 390.
+func TestViewportMatchesWholeNumberOnly(t *testing.T) {
+	src := writeFiles(t, map[string]string{"a.html": "<p>x</p>\n"})
+	evidence := writeFiles(t, map[string]string{
+		"1440.png": "", "1768.png": "", "3900.png": "",
+	})
+	res := lintDir(t, src, Options{EvidenceDir: evidence})
+	if got := res.Count(RuleViewports, SevFail); got != 2 {
+		t.Fatalf("1768 and 3900 must not satisfy 768 and 390: want 2 FAIL, got %d: %+v", got, res.Findings)
+	}
+}
+
 func TestViewportsPassWhenAllWidthsPresent(t *testing.T) {
 	src := writeFiles(t, map[string]string{"a.html": "<p>x</p>\n"})
 	evidence := writeFiles(t, map[string]string{
@@ -218,17 +411,53 @@ func TestViewportsFailOnMissingDirectory(t *testing.T) {
 	}
 }
 
-func TestWalkSkipsNodeModulesAndOtherExtensions(t *testing.T) {
+// m-15: an unreadable evidence directory is reported as such, not as missing widths.
+func TestUnreadableEvidenceIsReportedAsItself(t *testing.T) {
+	src := writeFiles(t, map[string]string{"a.html": "<p>x</p>\n"})
+	res := lintDir(t, src, Options{EvidenceDir: filepath.Join(src, "missing")})
+	for _, f := range res.Findings {
+		if strings.Contains(f.Message, "does not exist") {
+			return
+		}
+	}
+	t.Fatalf("missing directory must say so: %+v", res.Findings)
+}
+
+// m-18: build output is skipped only at the top of the target; source folders are linted.
+func TestWalkSkipsBuildOutputAtTopLevelOnly(t *testing.T) {
 	dir := writeFiles(t, map[string]string{
 		"node_modules/pkg/index.html": "<img src=\"https://picsum.photos/x\">",
 		"readme.md":                   "https://picsum.photos/x",
 		"src/page.tsx":                "<img src=\"https://placehold.co/600\" />",
+		"src/build/tool.html":         "<img src=\"https://placehold.co/1\" />",
+		"dist/bundle.html":            "<img src=\"https://placehold.co/2\" />",
 	})
 	res := lintDir(t, dir, Options{})
-	if res.Count(RuleImageHost, SevFail) != 1 {
-		t.Fatalf("only src/page.tsx should be linted, got %+v", res.Findings)
+	if res.Count(RuleImageHost, SevFail) != 2 {
+		t.Fatalf("src/page.tsx and src/build/tool.html must be linted; dist/ and node_modules/ skipped: %+v", res.Findings)
 	}
-	if res.Files != 1 {
-		t.Fatalf("Files = %d, want 1", res.Files)
+	if res.Files != 2 {
+		t.Fatalf("Files = %d, want 2", res.Files)
+	}
+}
+
+func TestTargetItselfNamedBuildIsLinted(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"build/index.html": "<img src=\"https://placehold.co/1\" />",
+	})
+	res := lintDir(t, filepath.Join(dir, "build"), Options{})
+	if res.Count(RuleImageHost, SevFail) != 1 {
+		t.Fatalf("an explicit target named build/ must be linted: %+v", res.Findings)
+	}
+}
+
+// m-16: a colour the lint cannot read is counted as skipped, never silently dropped.
+func TestUnreadableColourIsCountedAsSkipped(t *testing.T) {
+	dir := writeFiles(t, map[string]string{
+		"a.css": ".x{color:hsl(0 0% 50%); background:#fff}\n",
+	})
+	res := lintDir(t, dir, Options{})
+	if res.Failed() || res.ContrastSkipped != 1 || res.ContrastChecked != 0 {
+		t.Fatalf("hsl() text must be skipped and counted: %+v (skipped %d)", res.Findings, res.ContrastSkipped)
 	}
 }

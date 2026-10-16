@@ -26,14 +26,24 @@ Deterministic checks, with no browser and no network:
   DL-INVENTED-FIGURE placeholder-looking figures in visible text (99.99%, $100.00)    WARN
   DL-DEFAULT-FONT    Inter, Arial, Roboto, system-ui... as the first family           WARN
 
-Contrast uses colours written as hex or rgb(), or as var(--token) where the token
-is declared in the same run. Rules that depend on gradients, images or inherited
-colours are skipped, and the count is reported.
+Covered: CSS rules (including @media blocks), inline style="" attributes, and JSX
+style={{ }} object literals. Not covered: utility classes (Tailwind and similar),
+CSS-in-JS helpers, style={variable} and Vue :style bindings. Those are counted as
+skipped, not checked.
 
---evidence names a directory of screenshots. Each file name must contain the width.
-Without it, viewport coverage is reported as INFO and not checked.
+Colours: #rgb, #rgba, #rrggbb, #rrggbbaa, rgb() and rgba() with 0-255 channels, the
+keywords black, white and transparent, and var(--token) where the token is declared
+in the run. A text colour with alpha is composited over its background. A token
+declared with different values in different files is a conflict: it is not used,
+and a WARN names it. Font sizes in px, rem, em, % and clamp() (the smallest bound)
+are read; em and % are taken against a 16px root, and the finding says so.
+Gradients, images, inherited colours and unreadable sizes are skipped and counted.
 
-WARN findings do not fail the run unless --strict is given.`,
+--evidence names a directory of screenshots. Each file name must contain the width
+as its own number. Without it, viewport coverage is reported as INFO and not checked.
+
+WARN findings do not fail the run unless --strict is given. The verdict is the same
+for the same input on every run.`,
 		Example: `  plaesy validate design dist/
   plaesy validate design src/ --evidence .plaesy/renders
   plaesy validate design index.html --strict`,
@@ -55,7 +65,7 @@ WARN findings do not fail the run unless --strict is given.`,
 			fmt.Printf("\n[INFO] %d file(s); contrast checked %d, skipped %d\n", res.Files, res.ContrastChecked, res.ContrastSkipped)
 			fmt.Printf("%d FAIL, %d WARN\n", fails, warns)
 			if fails > 0 || (strict && warns > 0) {
-				fmt.Println("[✗] design lint failed")
+				// Cobra prints the error once, so the failure is not repeated here.
 				return fmt.Errorf("design lint found %d FAIL and %d WARN (strict=%t)", fails, warns, strict)
 			}
 			fmt.Println("[OK] design lint passed")
