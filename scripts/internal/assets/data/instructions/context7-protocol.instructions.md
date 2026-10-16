@@ -95,7 +95,7 @@ source. Work down this list and record which rung you landed on:
 | Standard | Source |
 |----------|--------|
 | **OWASP Top 10** | `https://owasp.org/www-project-top-ten/` |
-| **WCAG 2.1** | `https://www.w3.org/WAI/WCAG21/quickref/` |
+| **WCAG 2.2** | `https://www.w3.org/WAI/WCAG22/quickref/` |
 | **REST API Best Practices** | `https://restfulapi.net` |
 | **GraphQL Spec** | `https://spec.graphql.org` |
 | **Semantic Versioning** | `https://semver.org` |

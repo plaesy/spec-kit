@@ -48,7 +48,7 @@ file scores what's already shipped against them (plus WCAG) after the fact.
 
 ### Step 2: Accessibility Audit (WCAG 2.2 AAA)
 
-- **Color Contrast**: Verify WCAG AAA contrast ratios (4.5:1 for text, 3:1 for UI)
+- **Color Contrast**: Verify WCAG AAA contrast ratios (7:1 for normal text, 4.5:1 for large text, 3:1 for UI components)
 - **Keyboard Navigation**: Check all interactive elements keyboard accessible
 - **ARIA Labels**: Verify ARIA labels and roles where appropriate
 - **Screen Reader Support**: Test with screen reader
@@ -233,7 +233,7 @@ are defined once in `.plaesy/instructions/quality-gates.md` →
 
 ## Accessibility Checklist
 
-- [ ] Color contrast ≥4.5:1 for text (WCAG AAA)
+- [ ] Color contrast ≥7:1 for normal text and ≥4.5:1 for large text (WCAG AAA)
 - [ ] Color contrast ≥3:1 for UI components
 - [ ] All interactive elements keyboard accessible
 - [ ] Tab order logical and predictable

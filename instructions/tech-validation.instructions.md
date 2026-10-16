@@ -127,7 +127,7 @@ When Context7 MCP is unavailable, this protocol provides verified fallback sourc
 | Standard | Source |
 |----------|--------|
 | **OWASP Top 10** | [owasp.org](https://owasp.org/www-project-top-ten/) |
-| **WCAG 2.1** | [w3.org/WAI/WCAG21](https://www.w3.org/WAI/WCAG21/quickref/) |
+| **WCAG 2.2** | [w3.org/WAI/WCAG22](https://www.w3.org/WAI/WCAG22/quickref/) |
 | **REST API Best Practices** | [restfulapi.net](https://restfulapi.net) |
 | **GraphQL Spec** | [spec.graphql.org](https://spec.graphql.org) |
 | **Semantic Versioning** | [semver.org](https://semver.org) |

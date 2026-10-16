@@ -112,7 +112,7 @@ framework mechanics, not interaction design.
 - Angular naming conventions (`feature.component.ts`, `feature.service.ts`)
 - Angular CLI for boilerplate generation
 - JSDoc comments on components/services
-- WCAG 2.1 accessibility compliance where applicable
+- WCAG 2.2 accessibility compliance where applicable
 - Built-in i18n if specified
 - DRY via reusable utilities and shared modules
 - Use signals consistently for state management

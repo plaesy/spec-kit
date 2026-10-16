@@ -18,7 +18,7 @@ constraint with no home is a constraint nobody is checking.
 - Interfaces are specified before they are built, and the written contract wins.
 - Tests ship with the increment that introduces the behaviour, not after it.
 - Security and privacy controls belong to the design, not to a later phase.
-- Accessibility targets WCAG 2.1 AA and is verified rather than asserted.
+- Accessibility targets WCAG 2.2 AAA and is verified rather than asserted.
 - Every capacity claim carries a number; an unquantified "scales fine" is a defect.
 
 ## Application Overview
@@ -150,11 +150,11 @@ cannot run is reported as skipped, never as passed.
 
 | Requirement | Target | Verification method | Verified on |
 |-------------|--------|---------------------|-------------|
-| Contrast | WCAG 2.1 AA | {{A11Y_CONTRAST_CHECK}} | {{A11Y_CONTRAST_DATE}} |
-| Keyboard navigation | WCAG 2.1 AA | {{A11Y_KEYBOARD_CHECK}} | {{A11Y_KEYBOARD_DATE}} |
-| Screen reader output | WCAG 2.1 AA | {{A11Y_SCREENREADER_CHECK}} | {{A11Y_SCREENREADER_DATE}} |
-| Focus visibility | WCAG 2.1 AA | {{A11Y_FOCUS_CHECK}} | {{A11Y_FOCUS_DATE}} |
-| Colour independence | WCAG 2.1 AA | {{A11Y_COLOUR_CHECK}} | {{A11Y_COLOUR_DATE}} |
+| Contrast | WCAG 2.2 AAA | {{A11Y_CONTRAST_CHECK}} | {{A11Y_CONTRAST_DATE}} |
+| Keyboard navigation | WCAG 2.2 AAA | {{A11Y_KEYBOARD_CHECK}} | {{A11Y_KEYBOARD_DATE}} |
+| Screen reader output | WCAG 2.2 AAA | {{A11Y_SCREENREADER_CHECK}} | {{A11Y_SCREENREADER_DATE}} |
+| Focus visibility | WCAG 2.2 AAA | {{A11Y_FOCUS_CHECK}} | {{A11Y_FOCUS_DATE}} |
+| Colour independence | WCAG 2.2 AAA | {{A11Y_COLOUR_CHECK}} | {{A11Y_COLOUR_DATE}} |
 
 ### Supported devices and browsers
 
@@ -197,7 +197,7 @@ cannot run is reported as skipped, never as passed.
 | Integration | API endpoints and database interaction | {{INTEGRATION_COVERAGE_TARGET}} | {{INTEGRATION_TEST_TOOLS}} |
 | End to end | Complete user journeys | {{E2E_JOURNEY_COUNT}} journeys | {{E2E_TEST_TOOLS}} |
 | Performance | Load and stress | {{PERFORMANCE_TEST_PROFILE}} | {{PERFORMANCE_TEST_TOOLS}} |
-| Accessibility | Automated and manual audit | WCAG 2.1 AA | {{A11Y_TEST_TOOLS}} |
+| Accessibility | Automated and manual audit | WCAG 2.2 AAA | {{A11Y_TEST_TOOLS}} |
 
 ### Critical journeys
 
