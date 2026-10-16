@@ -6,6 +6,9 @@ applyTo: "**/components/**,**/*.tsx,**/*.jsx,**/*.vue,**/*.svelte,**/*.css,**/*.
 
 # Frontend Design
 
+*Adapted from [anthropics/skills `frontend-design`](https://github.com/anthropics/skills/tree/main/skills/frontend-design) (Apache-2.0),
+with the verification and fullness rules from [taste-skill](https://github.com/Leonxlnx/taste-skill) (MIT). See `THIRD_PARTY_NOTICES.md`.*
+
 **Scope vs. siblings.** This file is about *aesthetic distinctiveness* — palette,
 type, layout, motion choices that avoid the generic AI-default look. It does not
 cover usability mechanics (hierarchy, feedback, affordance, Fitts's law) — see
@@ -33,6 +36,15 @@ subject matter, materials, and vernacular are where distinctive visual choices c
 from — a design for a toy for girls aged 8–11 will be very aesthetically different
 from a dashboard for financial analysts. Build with the brief's real content and
 subject matter throughout.
+
+**The idea test.** Write one sentence in your notes before building: "On this page,
+*[something that belongs to this subject]* becomes *[the device the layout calls
+for]*." Fill the first blank from the subject's own material (its name and what it
+means, its place, its output, its printed artefacts), not from the category. Then
+put the nearest real competitor into the sentence. If the sentence still works, the
+idea belongs to the category: a generic idea is the one most likely to produce a
+templated page. Carry the idea into every section, including pricing, FAQ and
+footer, not only the hero.
 
 ## Design principles
 
@@ -146,6 +158,36 @@ Chanel's advice: before leaving the house, take a look in the mirror and remove 
 accessory. Human creatives have memory and always try to do something new, so if you
 have a space to quickly jot down notes about what you've tried, it can help you in
 future passes.
+
+**Fullness.** Restraint removes decoration, not content. Each desktop screen should
+read as a composed poster: one dominant element and the content it needs. A screen
+of mostly empty background, a page of grey placeholder blocks, or a section that
+carries only a heading looks unfinished. taste-skill's juror notes (model jurors, not
+people; see `THIRD_PARTY_NOTICES.md`) name "a quiet page that read as empty" among
+the things they penalised. Write the full content the brief asks for (every menu
+item, every room, every price with what it includes) at a readable size.
+
+## Verify with renders
+
+Restraint is a judgement; a render is evidence. When a browser can run the page:
+
+1. Render the page at 1440, 768 and 390 px wide (desktop, tablet, phone) in a real
+   browser.
+2. Check each render against these conditions. Any one of them is a failure, not a
+   note:
+    - sideways scrolling, or content running past the edge, at any width;
+    - text cut off at the top, or lying under or over another element (a picture
+      covering a headline counts);
+    - a headline running past two lines at any width;
+    - a screen that is mostly empty ground (see "Fullness");
+    - a console error, or a control that does nothing when clicked (the Gate 7
+      click-through in `.plaesy/instructions/quality-gates.md`);
+    - a section that repeats the layout of the section before it.
+3. Write the top three problems, one line each, fix them, and render again.
+4. Stop after three rounds. List any remaining problems in the handoff as open. Do not
+   report a clean pass while they stand.
+5. If no browser can run (a static mockup, chat-only output), say so, and check the
+   same conditions by reading the code. Do not claim a render check that did not run.
 
 ## More on writing in design
 

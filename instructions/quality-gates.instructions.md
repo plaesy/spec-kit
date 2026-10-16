@@ -135,7 +135,9 @@ second must not report completion.
    mockup or chat-only output), say so explicitly and verify each element by
    code inspection instead of claiming it was clicked. (Convention: anti-slop
    R-35 "Verify Before You Deliver", github.com/miqdadbadjuber/anti-slop,
-   retrieved 2026-09-29.)
+   retrieved 2026-09-29.) For the layout part of this gate, the measurable procedure
+   (renders at 1440, 768 and 390 px with fail conditions) is in
+   `.plaesy/instructions/frontend-design.md` under "Verify with renders".
 8. **Documentation** — public interfaces documented per constitution's doc bar.
    Non-blocking (route to `/doc`).
 9. **Cleanup** — temporary/scratch files (test scripts, throwaway helpers) created
