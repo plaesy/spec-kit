@@ -151,6 +151,14 @@ unused.
 - **Format sensitivity**: Prompt format *does* affect results (arXiv:2411.10541: up to 40% variance on GPT-3.5; arXiv:2310.11324: up to 76 pts on open-source LMs) — pin templates and eval per
   template, do not treat format as noise.
 
+### Success Contract (Mandatory)
+
+Every phase writes a measurable contract **before** it starts and compares the results
+against it item by item at the end; completion without that comparison is invalid. Results
+never redefine the targets. The full rule, schema and KPI starter sets are in
+`.plaesy/instructions/success-contract.md`, loaded before a phase starts. The end-of-phase
+check is Gate 0 in `.plaesy/instructions/quality-gates.md`.
+
 ---
 
 ## Anti-Duplication Protocol (Mandatory)
@@ -418,7 +426,7 @@ Load it whenever a task is being split across subagents.
 
 ### Shared Protocol Files
 
-Seven files beyond this one carry shared protocol content. `instructions/mapping.json`
+Eight files beyond this one carry shared protocol content. `instructions/mapping.json`
 is the sole authority for which list (`always_load` vs `scope_load`) each one is in —
 the tables below restate that split for convenience, they do not set it.
 
@@ -436,7 +444,7 @@ no trigger to wait for:
 
 #### Scope-load (on-demand, not in context by default)
 
-These four are installed but loaded only on a trigger: they matter in a specific
+These five are installed but loaded only on a trigger: they matter in a specific
 situation, and paying their token cost every session for something irrelevant most
 of the time is the wrong trade.
 
@@ -446,6 +454,7 @@ of the time is the wrong trade.
 | `workflow-phases.md` | Running `/start`, `/continue`, or `/loop`, or needing the full per-phase purpose/output/prerequisites detail beyond the summary table below. |
 | `multi-agent-patterns.md` | Splitting a task across subagents — need the communication protocol, specialization pattern table, or instruction template. |
 | `error-recovery-predictive.md` | `error-recovery.md`'s `mode: both` (default) or `mode: predictive` is active — need the pattern-detection catalog, prevention workflow, or prediction-sensitivity config. |
+| `success-contract.md` | Before starting any phase (every `/` command and its dimension variants), and before claiming a phase complete — the KPI and checklist schema, the freeze and amendment rules, and the starter KPI sets per dimension. |
 
 If you reach a scope-load trigger and the file is not on disk, run
 `plaesy stack detect --install`.

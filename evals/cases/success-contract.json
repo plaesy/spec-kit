@@ -1,0 +1,35 @@
+{
+  "instruction": "instructions/success-contract.instructions.md",
+  "static": [
+    {
+      "id": "sc-before-start",
+      "description": "The contract is created before the work, and the first step says so",
+      "requires": ["Before the first action", "created **before** the work"]
+    },
+    {
+      "id": "sc-anti-hindsight",
+      "description": "Targets are frozen; blocking can never be loosened; amendments are required",
+      "requires": ["anti-hindsight", "may **not** change from `true` to `false`", "amendment"]
+    },
+    {
+      "id": "sc-measurable",
+      "description": "Measurability rule: numeric or binary, and vague words are rejected",
+      "requires": ["numeric or binary", "Rejected by the validator", "vague words"]
+    },
+    {
+      "id": "sc-gate",
+      "description": "The gate compares results item by item and fails on a blocking item not met or not measurable",
+      "requires": ["plaesy validate contract <file> --gate", "fails the gate"]
+    },
+    {
+      "id": "sc-proportionality",
+      "description": "The rule states that a small change needs few items",
+      "requires": ["2 to 3 items"]
+    },
+    {
+      "id": "sc-starter-sets",
+      "description": "Starter KPI sets exist for every dimension",
+      "requires": ["**technical**", "**design**", "**business**", "**legal**", "**marketing**", "**financial**", "**management**", "**product**", "**operations**"]
+    }
+  ]
+}

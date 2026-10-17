@@ -377,6 +377,18 @@
               "iso25010",
               "model"
             ]
+          },
+          {
+            "id": "success-contract",
+            "name": "Success Contract",
+            "path": "templates/success-contract.template.md",
+            "required": false,
+            "phase": "all",
+            "tags": [
+              "quality",
+              "contract",
+              "kpi"
+            ]
           }
         ]
       },

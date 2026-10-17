@@ -9,6 +9,15 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
 
 ### Added
 
+- **Success Contract (mandatory for every phase).** Before a phase starts it writes a measurable KPI set and checklist, freezes it, and at
+  the end compares every item with its result. Full rule: `instructions/success-contract.instructions.md` (installed as
+  `.plaesy/instructions/success-contract.md`, scope-loaded). Template: `templates/success-contract.template.md`. A short pointer is in
+  `plaesy.instructions.md`. Gate 0 in `quality-gates` is the precondition and the contract comparison table is part of its output. Every
+  phase prompt carries the same pointer block, and the verifier, critic and qa agents and the story checklists point to the rule.
+  Contracts are stored under `.plaesy/contracts/`.
+- `plaesy validate contract <file> [--gate]`: validates the contract's schema, measurable targets (no vague words; a number with a comparison or a
+  binary condition), freeze and amendments (a changed target needs a recorded reason, and blocking cannot be loosened), and with `--gate` the
+  recorded results. A `met` numeric claim is checked against its target. Unit tests and fixtures under `evals/fixtures/contracts/`.
 - `THIRD_PARTY_NOTICES.md` and `licenses/Apache-2.0-frontend-design.txt` credit the taste-skill (MIT) and anthropics/skills `frontend-design`
   (Apache-2.0) text adapted into the instructions. The Apache text is a byte-for-byte copy of the upstream licence file.
 - `frontend-design`: an idea test (grounding sentence with a competitor check), a fullness rule against thin pages, and a "Verify with renders"
@@ -29,7 +38,8 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
   4.5:1 for normal text and 3:1 for large text and UI components (SC 1.4.3, 1.4.11). Updated: `assess-design`, `assess-technical`,
   `security-audit`, `quality-gates`, `angular`, `context7-protocol`, `tech-validation`, the `accessibility` agent, the `application` and
   `constitution` templates, `prompts/assess`, `fix`, `optimize`, `docs/instructions/README`, and the constitution test fixture.
-- `.plaesy/memory/constitution.md` still names WCAG 2.1 AA. Its amendment to 2.2 AA is pending human approval and is not applied in this change.
+- `.plaesy/memory/constitution.md` 2.0.0 → 2.1.0 (MINOR, approved): the Design threshold and accessibility bar name WCAG 2.2 AA, with a
+  Sync Impact Report in the amendment log.
 - `redesign`: placeholder-looking figures and invented brand names are replaced by rules to use real or clearly marked placeholder content;
   `picsum.photos` is replaced by licence-checked imagery with credits; monospace is limited to code-like data; surface effects (glass, grain,
   tinted shadows) are opt-in.

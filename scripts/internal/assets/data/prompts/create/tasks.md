@@ -14,6 +14,13 @@ task files (`.md`) conforming to `.plaesy/tasks/` structure, not freeform markdo
 - Naming: `{priority}_{title}.md` (critical_, high_, medium_, low_ prefixes)
 - Sections: Description, Acceptance Criteria, Dependencies, References
 
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.
+
 ## Usage Format
 
 ```bash
@@ -351,6 +358,8 @@ decomposition needed" and report it, never silently drop the backlog or
 fabricate paths.
 
 ## Success Criteria
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 A task backlog is complete when:
 

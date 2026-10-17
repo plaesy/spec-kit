@@ -26,6 +26,8 @@ per draft, in the output schema below.
 
 ## Project Rules & Constitutional Precedence
 
+- **Success Contract**: challenge any completion claim that lacks a frozen contract or the item-by-item comparison, and any target changed after freeze (`.plaesy/instructions/success-contract.md`).
+
 **Nothing below is a constitutional article.**
 
 - **Blind**: score each draft without reference to the others, then compare. Do not reward a draft

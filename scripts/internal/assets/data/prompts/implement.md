@@ -16,6 +16,13 @@ the user immediately; completion is reported, not polled. Run synchronously
 only if the user explicitly asks to wait or this conversation's next step
 needs the result right away.
 
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.
+
 ## Usage Format
 
 ```bash
@@ -214,6 +221,8 @@ REFACTOR: Extract validation logic to separate module
 ```
 
 ## Validation Checklist (Before Running)
+
+- [ ] Success Contract written, frozen and validated before the first action (see Success Contract above).
 
 - ✅ Specs are clear (research done, gaps found via `/assess`)
 - ✅ Project type detected (language, framework, tools identified)

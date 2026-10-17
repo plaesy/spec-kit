@@ -1,0 +1,20 @@
+{
+  "instruction": "instructions/quality-gates.instructions.md",
+  "static": [
+    {
+      "id": "qg-gate-zero",
+      "description": "Gate 0 is a blocking precondition for the Success Contract",
+      "requires": ["Gate 0 — Success Contract (precondition, blocking).", "not started"]
+    },
+    {
+      "id": "qg-contract-comparison",
+      "description": "The output format carries the contract comparison table, and a completion claim without it is invalid",
+      "requires": ["### Contract comparison (required, part of Gate 0)", "A completion claim without this table"]
+    },
+    {
+      "id": "qg-numbering-stable",
+      "description": "The numbered gates keep their numbers, because other files cite them",
+      "requires": ["1. **Build**", "2. **Tests**", "7. **Accessibility**"]
+    }
+  ]
+}

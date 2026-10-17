@@ -10,6 +10,13 @@ This is the **diagram**-scoped entry point into `/create`. It produces real
 saved diagram files (Mermaid markdown by default, SVG on request), not descriptions
 or abstract prompts.
 
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.
+
 ## Usage Format
 
 ```bash
@@ -282,6 +289,8 @@ Example: if `.plaesy/memory/design.md` defines microservices (auth, api, worker,
 placeholders.
 
 ## Success Criteria
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 A diagram generation is complete when:
 

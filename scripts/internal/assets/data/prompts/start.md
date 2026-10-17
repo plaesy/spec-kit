@@ -10,6 +10,13 @@ subagents, or a mode that does. Not a requirement: a single-agent host
 runs this identically, just serially. `/loop` documents when fan-out is
 worth its cost.
 
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.
+
 ## Objective
 
 Transform project description → production-ready deliverable through modular
@@ -193,6 +200,8 @@ The total is always **9**. Sub-steps 1.0 and 1.1 are part of Phase 1 and are not
 counted separately (see `.plaesy/instructions/plaesy.md`).
 
 ## Success Criteria
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 `/start` is complete when:
 

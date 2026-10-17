@@ -14,3 +14,10 @@ Optimize a measure, never a guess: establish the baseline for the target first
 (per the canonical Baseline step in `/optimize`), and record the before/after
 numbers. A deploy that is fast because it skips verification is a regression,
 not an optimization.
+
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.

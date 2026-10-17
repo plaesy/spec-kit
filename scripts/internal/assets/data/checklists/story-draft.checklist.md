@@ -9,6 +9,8 @@ guidance, not exhaustive detail.]]
 
 ## 1. GOAL & CONTEXT CLARITY
 
+- [ ] Acceptance criteria are measurable: each has a numeric target or a binary check, so they can seed a Success Contract (see `.plaesy/instructions/success-contract.md`).
+
 [[LLM: Verify the story states what to build, why it matters, how it fits the epic, explicit dependencies, and a concrete (not vague) definition of success.]]
 
 - [ ] Story goal/purpose is clearly stated

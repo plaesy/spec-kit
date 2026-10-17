@@ -115,6 +115,16 @@ second must not report completion.
 
 ## Gate Checklist (run in order; stop at first blocking failure)
 
+**Gate 0 — Success Contract (precondition, blocking).** Before any numbered gate runs, the phase
+must have a valid, frozen Success Contract, and every item must be measurable. A phase with no
+such contract is not started. At the end of the phase, the contract comparison (Output Format
+below) is part of this gate: each item is met, not met or not measurable, with evidence. A blocking
+item that is not met, or not measurable, blocks completion. Full rule and schema:
+`.plaesy/instructions/success-contract.md`. Check it with `plaesy validate contract <file>` before
+work, and `plaesy validate contract <file> --gate` at the end.
+
+The numbered gates below keep their numbers; Gate 0 is a precondition, not a renumbering.
+
 1. **Build** — project compiles/builds cleanly. Blocking.
 2. **Tests** — full suite passes. Blocking.
 3. **Coverage** — meets `{{TEST_COVERAGE_MIN|90}}%` (or constitution override). Blocking.
@@ -202,6 +212,7 @@ resolved (see `.plaesy/instructions/dimension-mapping.md`).
 ```text
 
 QUALITY GATES: [PASS/BLOCKED]
+0. Success Contract: [PASS/FAIL] (frozen before work: yes/no; N items; N blocking unmet or unmeasured)
 1. Build:          [PASS/FAIL]
 2. Tests:          [PASS/FAIL] (N passing / M failing)
 3. Coverage:       [XX%] (target: YY%)
@@ -216,6 +227,20 @@ Verifier pass:     [PASS/FAIL] (see findings)
 (first blocking failure: [gate number and name], or none — the checklist
  stops at the first blocking failure, so at most one may be reported)
 ```
+
+### Contract comparison (required, part of Gate 0)
+
+Every item of the frozen Success Contract appears in this table, once, in contract order. The
+targets are the frozen ones: a result never changes a target (see the contract rule, section 4).
+
+| Item | KPI | Target (frozen) | Actual | Result | Blocking | Evidence or reason |
+|---|---|---|---|---|---|---|
+| C1 | [kpi] | [target] | [value] | met / not_met / not_measurable | yes/no | [file, line or command output] |
+
+A completion claim without this table, or with a blocking row that is `not_met` or
+`not_measurable`, is invalid. Report the failing row by its item id, then stop. The validator
+(`plaesy validate contract <file> --gate`) checks the recorded results in the contract file, and
+refuses a `met` whose actual value does not satisfy a numeric target.
 
 ## Deterministic Enforcement (Optional, Recommended)
 

@@ -20,6 +20,8 @@ dependencies and meet coverage requirements.
 
 ## Project Rules & Constitutional Precedence
 
+- **Success Contract**: verify each contract item by its stated method, and report unmeasured blocking items rather than passing them (`.plaesy/instructions/success-contract.md`).
+
 The articles that bind every role — **EV-01..03** (cite every verifiable claim;
 label uncertainty; never fabricate a citation), **QG-01..02** (a check that
 cannot run is not a pass; incomplete work must not look complete), **SC-01**

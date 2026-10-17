@@ -767,6 +767,7 @@ a check that passed.
 | `assumptions` | project-wide | `ASSUMED —` tags left by autonomous runs, optionally gated by age |
 | `design` | path | Produced frontend output against the design rules: placeholder image hosts, WCAG 2.2 AA contrast, render evidence |
 | `evals` | repository | Case files under `evals/`: phrase checks, lint fixtures, and model briefs only when `PLAESY_EVAL_RUNNER` is set |
+| `contract` | file | A Success Contract file: schema, measurability, freeze and amendments; with `--gate`, the recorded results |
 
 `plaesy validate --list` prints the same table from the binary, so it cannot drift
 from the code.
@@ -978,6 +979,19 @@ Runs every case file under `evals/cases`. Three kinds of case:
   where a "quoted group" is one argument; backslashes are kept, so Windows paths work.
 
 See `evals/README.md`.
+
+### `validate contract`
+
+```bash
+plaesy validate contract <file.contract.md> [--gate]
+```
+
+Checks one Success Contract (`instructions/success-contract.instructions.md`, stored under `.plaesy/contracts/`).
+Without `--gate`: the schema, measurable targets (a number with a comparison, or a binary condition), no
+vague words, a real method, and the freeze: every change to a target after freeze needs a recorded amendment
+with a reason, and a blocking item cannot be loosened. With `--gate`: every item needs a recorded result
+(`met`, `not_met` or `not_measurable`); a `met` numeric claim is checked against its target; a blocking item that
+is not met, or not measurable, fails the gate. Exit status is non-zero on any error.
 
 ---
 

@@ -23,6 +23,8 @@ The goal is quality delivery, not just checking boxes.]]
 
 ## Checklist Items
 
+- [ ] The story's success contract was written and frozen before work started, and every item was compared with its result (see `.plaesy/instructions/success-contract.md`).
+
 1. **Requirements Met:**
 
   [[LLM: Be specific - list each requirement and whether it's complete]]

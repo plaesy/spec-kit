@@ -10,6 +10,13 @@ subagents, or a mode that does. Not a requirement: a single-agent host
 runs this identically, just serially. `/loop` documents when fan-out is
 worth its cost.
 
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.
+
 ## Objective
 
 Generate professional, grounded documentation from project source code and specifications with verifiable accuracy and complete citations.
@@ -63,6 +70,8 @@ These rules prevent fabricated documentation. Violating any of them invalidates 
 ---
 
 ## Validation Checklist (Before Running)
+
+- [ ] Success Contract written, frozen and validated before the first action (see Success Contract above).
 
 - ✅ Source files exist and readable
 - ✅ Project type detectable (not unknown/ambiguous)
@@ -270,6 +279,8 @@ Valid OpenAPI 3.0 spec; import-ready for Postman/Insomnia/Hoppscotch.
 ---
 
 ## Success Criteria (VERIFY Before Completing)
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 ✅ **Clarity**:
 

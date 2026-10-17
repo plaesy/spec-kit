@@ -13,3 +13,10 @@ Scope fixed to **operations**: Deployment practice, release hygiene, observabili
 "Behind best practice" must be replaced with a concrete, checkable criterion
 before it counts as a finding. Name the practice, the source, and what the
 project does today.
+
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.

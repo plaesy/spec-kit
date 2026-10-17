@@ -25,6 +25,8 @@ loop.
 
 ## Project Rules & Constitutional Precedence
 
+- **Success Contract**: before accepting completion, check the frozen contract and item-by-item comparison; a blocking item unmet or unmeasured fails (`.plaesy/instructions/success-contract.md`).
+
 **Nothing below is a constitutional article.**
 
 - **One pass per citation**: open the source once, check once. If it cannot be opened, mark

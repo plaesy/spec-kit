@@ -35,6 +35,7 @@ AI configuration.
 | Feature branch scaffolding | `plaesy features create`, `plaesy features paths` | `internal/featurepath` |
 | Agent context sync | `plaesy context update` | `internal/agentcontext` |
 | File validation | `plaesy validate <target>` | `internal/validate` |
+| Success Contract validation | `plaesy validate contract <file> [--gate]` | `internal/contract` |
 | Image generation | `plaesy images create` | `internal/imagegen` |
 
 ## Tech Stack

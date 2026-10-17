@@ -140,7 +140,7 @@ plaesy delegate                  # Send a bounded sub-task to a configured model
 plaesy doctor                  # Check health of reach platforms, search index, and config
 plaesy reach                   # Access external data sources (web, github, youtube, etc.)
 plaesy stats                   # Show search index and reach cache statistics
-plaesy validate [target]       # Check a constitution, memory, Markdown, OOXML, produced frontend (design), or evals
+plaesy validate [target]       # Check a constitution, memory, Markdown, OOXML, produced frontend (design), evals, or a Success Contract
 plaesy config                  # Read and validate scripts/configs/platform.json
 plaesy platforms               # AI platforms plaesy can target
 plaesy features                # List every feature in .plaesy/specs/

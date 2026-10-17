@@ -16,6 +16,13 @@ the user immediately; completion is reported, not polled. Run synchronously
 only if the user explicitly asks to wait or this conversation's next step
 needs the result right away.
 
+## Success Contract
+
+Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in
+`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item
+with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion
+while a blocking item is unmet or unmeasured.
+
 ## Usage Format
 
 ```bash
@@ -206,6 +213,8 @@ For detailed optimization techniques per technology stack, see `.plaesy/instruct
 - **Document decisions** - Why each optimization was chosen
 
 ## Success Criteria (VERIFY Before Completing)
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 ✅ **Baseline Recorded**:
 
