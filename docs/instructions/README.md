@@ -63,7 +63,7 @@ description each, and every path in it exists after `init`.
 | Group | Count | What it is |
 |-------|-------|------------|
 | `always_load` | 8 | Loaded into context for every project: `plaesy`, `context-engineering`, `tasks`, `quality-gates`, `error-recovery`, `dimension-mapping`, `output-validation`, `universal-orchestrator` |
-| `scope_load` | 25 | Copied but read on demand: the 9 `assess-*` per-dimension workflows, the 3 protocol references (`context7-protocol`, `uncertainty-surfacing`, `date-system`) + 13 cross-cutting `*-design-principles` files |
+| `scope_load` | 34 | Copied but read on demand: the 9 `assess-*` workflows, the 13 cross-cutting `*-design-principles` files, `frontend-design`, and the protocol references (`context7-protocol`, `uncertainty-surfacing`, `date-system`, `workflow-phases`, `multi-agent-patterns`, `error-recovery-predictive`, `success-contract`, `how-to-create-designmd`, `role-mapping`, `performance-baseline`, `performance-optimization`) |
 
 ### The consequence, stated plainly
 
@@ -178,6 +178,7 @@ read on demand (`scope_load`). Only the first is genuinely automatic.
 | **[quality-gates.instructions.md](../../instructions/quality-gates.instructions.md)** | Quality validation framework | Coverage, performance, security gates | ✅ YES |
 | **[error-recovery.instructions.md](../../instructions/error-recovery.instructions.md)** | Error classification & recovery | Per-phase recovery strategies | ✅ YES |
 | **[date-system.instructions.md](../../instructions/date-system.instructions.md)** | Date variable system | {{CURRENT_DATE}}, {{CURRENT_YEAR}} | ❌ NO — `scope_load`, read on demand |
+| **[success-contract.instructions.md](../../instructions/success-contract.instructions.md)** | Success Contract: measurable KPIs and checklist recorded before each phase, compared item by item at its gate | Every phase, before it starts and at completion | ❌ NO — `scope_load`, read on demand |
 | **[context-engineering.instructions.md](../../instructions/context-engineering.instructions.md)** | Token & context management | `plaesy trim` (compression) + `plaesy analyze` (knowledge graph, impact analysis) | ✅ YES |
 
 ---
@@ -432,7 +433,7 @@ The Plaesy framework automatically selects relevant instructions based on:
 - **Secure Coding**: Security-focused development practices
 - **Authentication**: Secure authentication and authorization
 - **Data Protection**: Encryption and data security
-- **Accessibility (WCAG 2.1 AA)**: Accessibility compliance guidelines
+- **Accessibility (WCAG 2.2 AA)**: Accessibility compliance guidelines
 - **Compliance Frameworks**: GDPR, HIPAA, and other standards
 
 ---

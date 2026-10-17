@@ -1,8 +1,8 @@
 ---
 title: "spec-kit Constitution"
-version: "2.0.0"
+version: "2.2.0"
 ratified: "2026-10-10"
-last_amended: "2026-10-14"
+last_amended: "2026-10-17"
 active_dimensions: [technical]
 ---
 
@@ -39,7 +39,7 @@ defaults — override the cell, never delete the row.
 | Dimension | Active | Deliverable | Binding threshold(s) | Mandatory audit (hard stop) |
 |---|---|---|---|---|
 | Technical | yes | code, service, API, library dependencies | 90% coverage, <200ms p95 response time, zero known vulnerabilities at Sev-High or above | Full `quality-gates.md` run — fail blocks handoff |
-| Design | no | UI/UX, design system, brand, accessibility | WCAG 2.1 AA, design tokens defined (no hardcoded values) | WCAG 2.1 AA pass (contrast, keyboard nav, screen reader) |
+| Design | no | UI/UX, design system, brand, accessibility | WCAG 2.2 AA, design tokens defined (no hardcoded values) | WCAG 2.2 AA pass (contrast, keyboard nav, screen reader) |
 | Business | no | business plan, model, pitch, go/no-go case | unit economics reviewed, assumptions logged, go/no-go criteria defined | Viability: breakeven modelled, CAC payback period stated |
 | Product | no | roadmap, feature spec, competitive baseline | prioritization criteria defined, competitive baseline sourced | Prioritization criteria actually applied to every roadmap item |
 | Marketing | no | positioning, messaging, campaign, content | every published claim carries a source, brand voice defined | 100% of published claims carry a source |
@@ -71,7 +71,7 @@ other silently becomes stale.
   shared by every dimension: rationale and evidence complete for all deliverables
 - **Claim bar**: every published claim carries a source *(Marketing only;
   distinct from `DOC_BAR`, which governs rationale and evidence, not sourcing)*
-- **Accessibility bar**: WCAG 2.1 AA *(Design only)*
+- **Accessibility bar**: WCAG 2.2 AA *(Design only)*
 - **Viability bar**: unit economics positive within 18 months *(Business/Financial only)*
 
 ## 3. Technology & Method Constraints
@@ -118,6 +118,7 @@ Never violated regardless of pressure to ship. A temporary need to break one is 
 | NN-05 | Never collect, retain, or emit personal data beyond the declared purpose | MUST | data-flow review against the declared purpose |
 | NN-06 | Never delete or overwrite data without a logged, reversible action | MUST | backup/undo path exists and is recorded before the action |
 | NN-07 | Never let a downstream phase override this file to unblock itself | MUST | precedence rule in §8 |
+| NN-08 | Never start a phase without its Success Contract (measurable KPIs and checklist) committed before the first action, and never report a phase complete while a blocking contract item is unmet or unmeasured | MUST | `plaesy validate contract --gate` and `plaesy validate contracts`; `instructions/success-contract.md` |
 
 ## 6. Waivers (Bounded Exceptions)
 
@@ -183,6 +184,8 @@ Rules:
 | 2026-10-14 | 1.1.0 | MINOR: Internet Access row now active-capable (`internet_access` added to the validator's closed set; the validator normalizes the §1 label `Internet Access` to `internet_access`; the label itself is unchanged). Literal placeholder examples in §2 and EV-01 reworded so the validator no longer reads them as unfilled. Sync: `scripts/internal/validate/constitution.go` and `constitution_test.go` changed; the template row is unchanged. | Template and validator disagreed: `plaesy validate constitution` rejected the row that `/start` writes. |
 | 2026-10-14 | 1.1.1 | PATCH: internet_access gate command corrected from `plaesy reach doctor` (no such subcommand) to `plaesy doctor` in §1 and the template row. | Review finding; wording only, no rule changed. |
 | 2026-10-14 | 2.0.0 | MAJOR: removed the `internet_access` dimension. `plaesy reach` is tooling, not a deliverable dimension; its health check stays in `plaesy doctor`, outside the constitution. Validator, template, and §1/§2 rows updated to match. | Narrows the governed scope. Decision recorded in `.plaesy/decisions/remove-internet-access-dimension.md`. |
+| 2026-10-16 | 2.1.0 | MINOR: accessibility threshold raised from WCAG 2.1 AA to WCAG 2.2 AA (§1 Design row, §2 Accessibility bar). Sync Impact Report: `templates/constitution.template.md` (Design row and bar, already 2.2 AA); `instructions/assess-design`, `assess-technical`, `security-audit`, `quality-gates`, `angular`, `context7-protocol`, `tech-validation`; `agents/accessibility`; `templates/application.template.md`; `prompts/assess`, `fix`, `optimize`; `docs/instructions/README`; `scripts/internal/validate/constitution_test.go` fixture. Level stays AA. | Human decision after an AA/AAA conflict across the corpus. WCAG 2.2 is the current W3C Recommendation; WCAG 3 is still a draft. Approved by the human in the spec-kit-1 brief. |
+| 2026-10-17 | 2.2.0 | MINOR: added NN-08 (Success Contract): no phase starts without its contract committed before the first action, and no phase reports completion while a blocking contract item is unmet or unmeasured. Sync Impact Report: `templates/constitution.template.md` (NN-08 row); `instructions/success-contract.instructions.md` (names NN-08; freeze anchored to git; blocking rules); `instructions/quality-gates.instructions.md` (Gate 0); `instructions/plaesy.instructions.md` (pointer); `prompts/*.md` (the shared contract block); `agents/verifier`, `critic`, `qa`; `checklists/story-done`, `story-draft`. Detection: `plaesy validate contract --gate`, `plaesy validate contracts`. | Human decision in the spec-kit-1 brief: the rule is standard, so the AI always keeps the goal and has a complete basis for its work. Precedence (§8) is what stops a phase prompt from overriding it. |
 
 ---
 **This file is authoritative.** If a prompt's hardcoded default (e.g. "90% coverage")

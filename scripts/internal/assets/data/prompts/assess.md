@@ -16,6 +16,14 @@ the user immediately; completion is reported, not polled. Run synchronously
 only if the user explicitly asks to wait or this conversation's next step
 needs the result right away.
 
+## Success Contract
+
+Before any work begins, after any routing or persona step above, write the contract, freeze it and commit it: rule in
+`.plaesy/instructions/success-contract.md`, template in `.plaesy/templates/success-contract.template.md`, check with
+`plaesy validate contract <file>`. At the end, compare every item with its result (Gate 0 and the Contract comparison
+table in `.plaesy/instructions/quality-gates.md`). Do not report completion while a blocking item is unmet or unmeasured
+(constitution NN-08).
+
 ## Usage Format
 
 ```bash
@@ -205,7 +213,7 @@ spine, instantiated per dimension:
   backpressure; **Business Model**: churn scenarios, downturn/recession, competitor entry,
   regulatory change; **Org Structure**: growth phases (startup → scale → enterprise), attrition,
   reorg, merger; **Process**: exception cases, rollback procedures, deadlock/priority scenarios
-- **Spine Step**: **Mandatory Audit** (hard stop before handoff); **UI/UX**: WCAG 2.1 AA (contrast,
+- **Spine Step**: **Mandatory Audit** (hard stop before handoff); **UI/UX**: WCAG 2.2 AA (contrast,
   keyboard nav, screen readers); **Architecture**: Failure modes (latency p99, availability %, data
   loss risks); **Business Model**: Viability (unit economics breakeven, CAC payback period); **Org
   Structure**: Sustainability (no single point of failure, span of control ≤6, attrition ≤10%);
@@ -293,7 +301,7 @@ among several. That is how a dimension with a red build reports 78.
 
 | Spine column   | Audit                                                                           |
 | -------------- | ------------------------------------------------------------------------------- |
-| UI/UX          | WCAG 2.1 AA click-through (see `.plaesy/instructions/assess-design.md`)         |
+| UI/UX          | WCAG 2.2 AA click-through (see `.plaesy/instructions/assess-design.md`)         |
 | Architecture   | Failure-mode analysis — each failure mode has a detection and a response        |
 | Business Model | Unit-economics viability at the declared assumptions                            |
 | Org Structure  | Sustainability — the structure still works at 2× the current size               |
@@ -591,6 +599,8 @@ link-rot):
 ---
 
 ## Success Criteria
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 Assessment is complete when:
 

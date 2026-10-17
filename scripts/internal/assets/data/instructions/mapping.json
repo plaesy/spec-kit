@@ -49,7 +49,8 @@
       "how-to-create-designmd.instructions.md",
       "workflow-phases.instructions.md",
       "multi-agent-patterns.instructions.md",
-      "error-recovery-predictive.instructions.md"
+      "error-recovery-predictive.instructions.md",
+      "success-contract.instructions.md"
     ],
     "scope_load_note": "Not a detection category — a string sibling of scope_load, skipped by scripts/internal/detectstack (loadMapping treats any non-object sibling as metadata). It lists the instruction files installed by `init` but NOT loaded into active context: the assess-* workflow criteria, the general-altitude design-principles references, the shared on-demand protocols (error-recovery, context-engineering, universal-orchestrator, date-system, uncertainty-surfacing, context7-protocol), and any file with no detection signal of its own: the assess-* workflow criteria (one per dimension) and the general-altitude design-principles references. 'software-design-principles.instructions.md' is in this list because it applies to '**' — it cannot be detected, only installed. 'how-to-create-designmd.instructions.md' is here for the same reason and must not be dropped as an orphan: `copyInstructions` installs ONLY always_load + scope_load, so a file in no category is never written to `.plaesy/instructions/` at all — yet `templates/design.template.md` (lines 5 and 44) and `prompts/spec/design.md` (lines 20 and 82, 'Read the field-by-field rules in ... before writing') all cite it by its installed path. Removing this entry does not make the file merely unloaded, it makes 4+ citations dangle in every consumer project. Files that DO have a detection signal (frameworks, languages, cross_cutting) belong in their own category instead.",
     "frameworks": {

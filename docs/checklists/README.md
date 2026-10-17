@@ -7,9 +7,9 @@ phase.
 
 | Checklist | Phase / Role | Focus |
 |-----------|--------------|-------|
-| [story-draft.checklist.md](../../checklists/story-draft.checklist.md) | Story creation | Requirements, acceptance criteria, INVEST compliance |
+| [story-draft.checklist.md](../../checklists/story-draft.checklist.md) | Story creation | Requirements, measurable acceptance criteria, INVEST compliance |
 | [update.checklist.md](../../checklists/update.checklist.md) | Change updates | Impact assessment, rollback/re-scope options |
-| [story-done.checklist.md](../../checklists/story-done.checklist.md) | Story completion | Definition of Done, testing, documentation |
+| [story-done.checklist.md](../../checklists/story-done.checklist.md) | Story completion | Definition of Done, testing, documentation, Success Contract |
 | [pm.checklist.md](../../checklists/pm.checklist.md) | Product Manager | Problem, MVP scope, PRD, epic structure |
 | [po.checklist.md](../../checklists/po.checklist.md) | Product Owner | Vision, backlog hygiene, prioritization, stories, acceptance criteria, value metrics, Definition of Ready |
 | [sa.checklist.md](../../checklists/sa.checklist.md) | Solutions Architect | Architecture, tech choices, project setup, dependencies, security, performance, deployment & DR |

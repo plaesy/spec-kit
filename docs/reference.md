@@ -765,6 +765,10 @@ a check that passed.
 | `pptx` | file | `.pptx` OOXML structure, slide count, title placeholders |
 | `xlsx` | file | `.xlsx` OOXML structure, sheet names |
 | `assumptions` | project-wide | `ASSUMED —` tags left by autonomous runs, optionally gated by age |
+| `design` | path | Produced frontend output against the design rules: placeholder image hosts, WCAG 2.2 AA contrast, render evidence |
+| `evals` | repository | Case files under `evals/`: phrase checks, lint fixtures, and model briefs only when `PLAESY_EVAL_RUNNER` is set |
+| `contracts` | repository | Every Success Contract under `.plaesy/contracts`: open ones by schema and freeze, closed ones at the gate |
+| `contract` | file | A Success Contract file: schema, measurability, freeze and amendments; with `--gate`, the recorded results |
 
 `plaesy validate --list` prints the same table from the binary, so it cannot drift
 from the code.
@@ -924,6 +928,80 @@ plaesy validate xlsx <file.xlsx> [expected_sheet_name...]
 
 Validate OOXML structure without rendering. Reports paragraph/table/slide/sheet
 counts and structural issues.
+
+### `validate design`
+
+```bash
+plaesy validate design <path...> [--evidence <dir>] [--strict]
+```
+
+Lints produced HTML, CSS, JSX, TSX, Vue and Svelte files without a browser. FAIL
+findings: pictures from placeholder hosts (`DL-IMG-HOST`); text colour pairs below
+WCAG 2.2 AA (`DL-CONTRAST`, 4.5:1 normal text, 3:1 large text); and, with
+`--evidence`, no screenshot at 1440, 768 or 390 px (`DL-VIEWPORTS`). WARN findings:
+placeholder-looking figures in visible text (`DL-INVENTED-FIGURE`), Inter, Arial or
+Roboto as the first font (`DL-DEFAULT-FONT`), and a token declared with different
+values in different files (`DL-TOKEN`). WARN fails the run only with `--strict`.
+
+What is read: CSS rules (including `@media` blocks), inline `style=""` attributes, and
+JSX `style={{ }}` object literals. What is not read: utility classes (Tailwind and
+similar), CSS-in-JS helpers, `style={variable}` and Vue `:style` bindings. Those are
+counted as skipped, and the summary prints the count.
+
+Colours: `#rgb`, `#rgba`, `#rrggbb`, `#rrggbbaa`, `rgb()` and `rgba()` with 0-255
+channels, the keywords `black`, `white` and `transparent`, and `var(--token)` for a
+token declared in the same run. Text with alpha is composited over its background.
+Sizes: px, rem, em, % and `clamp()` (the smallest bound). em and % are taken against
+a 16px root, and the finding says so. A rule with a gradient, an image, an inherited
+colour, a background from elsewhere in the cascade, or an unreadable size is skipped
+and counted. The verdict is the same for the same input on every run.
+
+`--evidence` names a directory of screenshots. Each file name must contain the width
+as its own number (`home-768.png` counts; `1768.png` does not).
+
+### `validate contracts`
+
+```bash
+plaesy validate contracts
+```
+
+Checks every `*.contract.md` under `.plaesy/contracts`. An open contract is checked for its schema and its
+freeze; a closed one at the gate. With no contracts it prints `[SKIP]`. It runs as part of bare `plaesy validate`.
+
+### `validate evals`
+
+```bash
+plaesy validate evals
+PLAESY_EVAL_RUNNER='["<command>", "<arg>"]' plaesy validate evals
+```
+
+Runs every case file under `evals/cases`. Three kinds of case:
+
+- **static**: checks that an instruction contains required wording and none of the
+  forbidden wording. It confirms that the words are present. It does not check meaning.
+- **outputs**: lints a hand-written fixture folder under `evals/fixtures` and checks the
+  expected result. It tests the lint on known inputs. The fixtures are not model output.
+- **briefs**: the only check of model behaviour. It needs `PLAESY_EVAL_RUNNER`, run as
+  `<command> <brief-id> <output-dir>` with the brief in `PLAESY_EVAL_BRIEF`. The runner
+  must write at least one lintable file, with no FAIL findings. Without the variable
+  every brief is reported `SKIP`, the summary says that no model behaviour was checked,
+  and a skip is never a pass. `PLAESY_EVAL_RUNNER` is a JSON array, or a command line
+  where a "quoted group" is one argument; backslashes are kept, so Windows paths work.
+
+See `evals/README.md`.
+
+### `validate contract`
+
+```bash
+plaesy validate contract <file.contract.md> [--gate] [--require-git]
+```
+
+Checks one Success Contract (`instructions/success-contract.instructions.md`, stored under `.plaesy/contracts/`).
+Without `--gate`: the schema, measurable targets (a number with a comparison, or a binary condition), no
+vague words, a real method, and the freeze: every change to a target after freeze needs a recorded amendment
+with a reason, and a blocking item cannot be loosened. With `--gate`: every item needs a recorded result
+(`met`, `not_met` or `not_measurable`); a `met` numeric claim is checked against its target; a blocking item that
+is not met, or not measurable, fails the gate. Exit status is non-zero on any error.
 
 ---
 

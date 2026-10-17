@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/plaesy/spec-kit/internal/common"
+	"github.com/plaesy/spec-kit/internal/contract"
 	"github.com/plaesy/spec-kit/internal/mdlint"
 	"github.com/plaesy/spec-kit/internal/validate"
 	"github.com/spf13/cobra"
@@ -22,7 +23,13 @@ type validateTarget struct {
 	// repoWide is true when the validator can check a whole project with no
 	// arguments, which is what bare `plaesy validate` runs.
 	repoWide bool
-	build    func() *cobra.Command
+	// noArgs is true for a validator that takes no path and checks a fixed location
+	// in the repository. It is listed as "repository", not "needs a file".
+	noArgs bool
+	// legacy is true for the six validators that had a pre-1.0 top-level spelling.
+	// Only those get a deprecated `validate-<name>` alias.
+	legacy bool
+	build  func() *cobra.Command
 }
 
 // The pre-1.0 spelling was one top-level command per validator (six of them,
@@ -31,19 +38,25 @@ type validateTarget struct {
 // keep working. Cobra hides a deprecated command from help and announces the
 // replacement when it runs, so the help text shows one verb while nothing breaks.
 var validateTargets = []validateTarget{
-	{name: "constitution", repoWide: true, build: newConstitutionCmd},
-	{name: "memory", repoWide: true, build: newMemoryCmd},
-	{name: "markdown", repoWide: true, build: newMarkdownCmd},
+	{name: "constitution", repoWide: true, legacy: true, build: newConstitutionCmd},
+	{name: "memory", repoWide: true, legacy: true, build: newMemoryCmd},
+	{name: "markdown", repoWide: true, legacy: true, build: newMarkdownCmd},
 	{name: "assumptions", repoWide: true, build: newAssumptionsCmd},
-	{name: "docx", build: newDocxCmd},
-	{name: "pptx", build: newPptxCmd},
-	{name: "xlsx", build: newXlsxCmd},
+	{name: "docx", legacy: true, build: newDocxCmd},
+	{name: "pptx", legacy: true, build: newPptxCmd},
+	{name: "xlsx", legacy: true, build: newXlsxCmd},
+	{name: "design", build: newDesignCmd},
+	{name: "evals", noArgs: true, build: newEvalsCmd},
+	{name: "contract", build: newContractCmd},
+	{name: "contracts", repoWide: true, build: newContractsCmd},
 }
 
 func init() {
 	register(newValidateCmd())
 	for _, target := range validateTargets {
-		register(legacyValidateAlias(target))
+		if target.legacy {
+			register(legacyValidateAlias(target))
+		}
 	}
 }
 
@@ -59,8 +72,8 @@ func newValidateCmd() *cobra.Command {
 		Short: "Validate a constitution, memory, Markdown, or an OOXML document",
 		Long: `Run every check, or one of them.
 
-With no arguments, runs each project-wide check — constitution, memory, and
-Markdown — and prints a summary naming what ran, what was skipped, and why:
+With no arguments, runs each project-wide check — constitution, memory, Markdown, and contracts —
+and prints a summary naming what ran, what was skipped, and why:
 
   plaesy validate
 
@@ -72,6 +85,9 @@ Name a target to run just that one, with its own flags:
   plaesy validate docx <file.docx>
   plaesy validate pptx <file.pptx> [expected_slide_count]
   plaesy validate xlsx <file.xlsx> [expected_sheet_name...]
+  plaesy validate design <path...> [--evidence dir] [--strict]
+  plaesy validate evals
+  plaesy validate contract <file.contract.md> [--gate]
 
 Or pass a document and let the extension pick the validator:
 
@@ -124,8 +140,11 @@ func printValidateTargets(cmd *cobra.Command) {
 	fmt.Fprintf(out, "Validation targets:\n\n")
 	for _, target := range validateTargets {
 		scope := "needs a file"
-		if target.repoWide {
+		switch {
+		case target.repoWide:
 			scope = "project-wide"
+		case target.noArgs:
+			scope = "repository"
 		}
 		fmt.Fprintf(out, "  %-14s %-14s %s\n", target.name, scope, target.build().Short)
 	}
@@ -172,6 +191,19 @@ func runValidateProject() error {
 				return c.RunE(c, nil)
 			},
 		},
+	}
+
+	// Success Contracts: open ones by schema and freeze, closed ones at the gate. The check
+	// is listed only when the repository has a contracts directory: a project with no phase
+	// contracts yet has no contract check to skip, so none is reported.
+	if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(contract.Dir))); err == nil {
+		checks = append(checks, projectCheck{
+			name: "contracts",
+			run: func() error {
+				c := newContractsCmd()
+				return c.RunE(c, nil)
+			},
+		})
 	}
 
 	fmt.Printf("[INFO] Validating project at %s\n", root)

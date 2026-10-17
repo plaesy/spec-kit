@@ -39,7 +39,7 @@ defaults — override the cell, never delete the row.
 | Dimension | Active | Deliverable | Binding threshold(s) | Mandatory audit (hard stop) |
 |---|---|---|---|---|
 | Technical | {{ACTIVE_TECHNICAL\|no}} | code, service, API, library dependencies | {{TEST_COVERAGE_MIN\|90}}% coverage, {{PERFORMANCE_TARGET\|<200ms p95 response time}}, {{SECURITY_BAR\|zero known vulnerabilities at Sev-High or above}} | Full `quality-gates.md` run — fail blocks handoff |
-| Design | {{ACTIVE_DESIGN\|no}} | UI/UX, design system, brand, accessibility | WCAG 2.1 AA, design tokens defined (no hardcoded values) | WCAG 2.1 AA pass (contrast, keyboard nav, screen reader) |
+| Design | {{ACTIVE_DESIGN\|no}} | UI/UX, design system, brand, accessibility | WCAG 2.2 AA, design tokens defined (no hardcoded values) | WCAG 2.2 AA pass (contrast, keyboard nav, screen reader) |
 | Business | {{ACTIVE_BUSINESS\|no}} | business plan, model, pitch, go/no-go case | unit economics reviewed, assumptions logged, go/no-go criteria defined | Viability: breakeven modelled, CAC payback period stated |
 | Product | {{ACTIVE_PRODUCT\|no}} | roadmap, feature spec, competitive baseline | prioritization criteria defined, competitive baseline sourced | Prioritization criteria actually applied to every roadmap item |
 | Marketing | {{ACTIVE_MARKETING\|no}} | positioning, messaging, campaign, content | {{CLAIM_BAR\|every published claim carries a source}}, brand voice defined | 100% of published claims carry a source |
@@ -70,7 +70,7 @@ other silently becomes stale.
   shared by every dimension: rationale and evidence complete for all deliverables
 - **Claim bar**: {{CLAIM_BAR|every published claim carries a source}} *(Marketing only;
   distinct from `DOC_BAR`, which governs rationale and evidence, not sourcing)*
-- **Accessibility bar**: WCAG 2.1 AA *(Design only)*
+- **Accessibility bar**: WCAG 2.2 AA *(Design only)*
 - **Viability bar**: {{VIABILITY_BAR|unit economics positive within 18 months}} *(Business/Financial only)*
 
 ## 3. Technology & Method Constraints
@@ -118,6 +118,7 @@ Never violated regardless of pressure to ship. A temporary need to break one is 
 | NN-05 | Never collect, retain, or emit personal data beyond the declared purpose | MUST | data-flow review against the declared purpose |
 | NN-06 | Never delete or overwrite data without a logged, reversible action | MUST | backup/undo path exists and is recorded before the action |
 | NN-07 | Never let a downstream phase override this file to unblock itself | MUST | precedence rule in §8 |
+| NN-08 | Never start a phase without its Success Contract (measurable KPIs and checklist) committed before the first action, and never report a phase complete while a blocking contract item is unmet or unmeasured | MUST | `plaesy validate contract --gate` and `plaesy validate contracts`; `instructions/success-contract.md` |
 
 ## 6. Waivers (Bounded Exceptions)
 

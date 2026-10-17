@@ -1,0 +1,18 @@
+:root {
+  --ink: #1a1a1a;
+  --paper: #f5f5f0;
+  --accent: #1f5f4a;
+}
+
+body {
+  font-family: "Geist", sans-serif;
+  font-size: 18px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.button {
+  color: #ffffff;
+  background-color: var(--accent);
+  font-size: 18px;
+}

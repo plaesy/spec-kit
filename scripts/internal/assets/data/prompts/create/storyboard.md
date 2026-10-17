@@ -12,6 +12,14 @@ Each panel depicts an interaction, not just a scene — apply
 affordance, navigation design) to what's drawn in the panel, the same way you
 would to coded UI; the medium changed, the usability bar didn't.
 
+## Success Contract
+
+Before any work begins, after any routing or persona step above, write the contract, freeze it and commit it: rule in
+`.plaesy/instructions/success-contract.md`, template in `.plaesy/templates/success-contract.template.md`, check with
+`plaesy validate contract <file>`. At the end, compare every item with its result (Gate 0 and the Contract comparison
+table in `.plaesy/instructions/quality-gates.md`). Do not report completion while a blocking item is unmet or unmeasured
+(constitution NN-08).
+
 ## Usage Format
 
 ```bash
@@ -216,6 +224,8 @@ If the project has a `.plaesy/memory/design.md` with defined flows/scenarios:
 4. If a flow is **missing** from the Design Spine but the user requests it, that's a finding for `/assess:design` — note it in the storyboard index as a gap and proceed with best-practice defaults
 
 ## Success Criteria
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 A storyboard is complete when:
 

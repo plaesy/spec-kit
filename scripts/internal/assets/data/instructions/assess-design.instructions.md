@@ -46,9 +46,9 @@ file scores what's already shipped against them (plus WCAG) after the fact.
 
 **Rate**: 0-100 based on consistency level
 
-### Step 2: Accessibility Audit (WCAG 2.2 AAA)
+### Step 2: Accessibility Audit (WCAG 2.2 AA)
 
-- **Color Contrast**: Verify WCAG AAA contrast ratios (4.5:1 for text, 3:1 for UI)
+- **Color Contrast**: Verify WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text and UI components)
 - **Keyboard Navigation**: Check all interactive elements keyboard accessible
 - **ARIA Labels**: Verify ARIA labels and roles where appropriate
 - **Screen Reader Support**: Test with screen reader
@@ -56,7 +56,7 @@ file scores what's already shipped against them (plus WCAG) after the fact.
 - **Form Labels**: Verify all form inputs have proper labels
 - **Alternative Text**: Check images have alt text
 
-**Rate**: 0-100 based on WCAG AAA compliance
+**Rate**: 0-100 based on WCAG AA compliance
 
 ### Step 3: Design Tokens Assessment
 
@@ -144,7 +144,7 @@ sections and do not rename them.
 
 **Blocking Issues**:
 
-- WCAG AAA compliance failures = BLOCKER (must fix before shipping)
+- WCAG AA compliance failures = BLOCKER (must fix before shipping)
 - Missing component documentation = medium priority
 - Inconsistent naming = low priority
 
@@ -157,7 +157,7 @@ sections and do not rename them.
 ```text
 
 component_consistency: 25%   # Naming conventions, variants, documentation
-accessibility: 35%           # WCAG 2.2 AAA compliance, contrast, keyboard nav, ARIA
+accessibility: 35%           # WCAG 2.2 AA compliance, contrast, keyboard nav, ARIA
 design_tokens: 20%          # Token usage, consistency, light/dark themes
 design_system_adoption: 20% # Component reuse rate, library usage
 ```
@@ -166,9 +166,9 @@ design_system_adoption: 20% # Component reuse rate, library usage
 
 | Grade | What it means here |
 |---|---|
-| A+ | Exceptional - Design system mature, WCAG AAA compliant, well-documented |
+| A+ | Exceptional - Design system mature, WCAG AA compliant, well-documented |
 | A | Excellent - Good design system adoption, minor accessibility issues |
-| B+ | Very Good - Design tokens in place, WCAG AAA mostly compliant |
+| B+ | Very Good - Design tokens in place, WCAG AA mostly compliant |
 | B | Good - Design system started, some accessibility gaps, address in next iteration |
 | C | Acceptable - Inconsistent design, significant accessibility issues |
 | D | Needs Work - Design system gaps, critical accessibility issues |
@@ -179,7 +179,7 @@ are defined once in `.plaesy/instructions/quality-gates.md` →
 
 ### Success Criteria (Hard Stops)
 
-- MUST have: WCAG 2.2 AAA compliance (or documented exceptions)
+- MUST have: WCAG 2.2 AA compliance (or documented exceptions)
 - MUST have: No critical accessibility failures (color contrast, keyboard nav, screen reader)
 - SHOULD have: `.plaesy/memory/design.md` present and not drifted from code tokens
 - SHOULD have: Component documentation
@@ -188,7 +188,7 @@ are defined once in `.plaesy/instructions/quality-gates.md` →
 
 ## Critical Rules
 
-- ✅ **WCAG AAA MANDATORY** - Accessibility is non-negotiable for UI projects
+- ✅ **WCAG AA MANDATORY** - Accessibility is non-negotiable for UI projects
 - ✅ **MEASURE CONTRAST** - Use automated tools to verify contrast ratios
 - ✅ **TEST KEYBOARD NAV** - Tab through entire interface
 - ✅ **TEST SCREEN READER** - Verify with actual screen reader
@@ -233,7 +233,7 @@ are defined once in `.plaesy/instructions/quality-gates.md` →
 
 ## Accessibility Checklist
 
-- [ ] Color contrast ≥4.5:1 for text (WCAG AAA)
+- [ ] Color contrast ≥4.5:1 for text (WCAG 2.2 AA)
 - [ ] Color contrast ≥3:1 for UI components
 - [ ] All interactive elements keyboard accessible
 - [ ] Tab order logical and predictable
@@ -275,7 +275,7 @@ Do design tools exist?
 Assessment is complete when:
 
 - ✅ Component consistency audited with examples
-- ✅ WCAG 2.2 AAA compliance verified with tools
+- ✅ WCAG 2.2 AA compliance verified with tools
 - ✅ Design tokens assessed and documented
 - ✅ Dark mode implementation reviewed
 - ✅ Design system adoption measured

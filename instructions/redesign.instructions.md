@@ -5,6 +5,9 @@ description: Upgrades existing websites and apps to premium quality. Audits curr
 
 # Redesign Skill
 
+*Adapted from [taste-skill `redesign-skill`](https://github.com/Leonxlnx/taste-skill/tree/main/skills/redesign-skill) (MIT),
+with changes for this framework's house rules. See `THIRD_PARTY_NOTICES.md`.*
+
 ## How This Works
 
 When applied to an existing project, follow this sequence:
@@ -33,7 +36,8 @@ Check for these problems and fix them:
 - **[T-02] Headlines lack presence.** Increase size for display text, tighten letter-spacing, reduce line-height. Headlines should feel heavy and intentional.
 - **[T-03] Body text too wide.** Limit paragraph width to roughly 65 characters. Increase line-height for readability.
 - **[T-04] Only Regular (400) and Bold (700) weights used.** Introduce Medium (500) and SemiBold (600) for more subtle hierarchy.
-- **[T-05] Numbers in proportional font.** Use a monospace font or enable tabular figures (`font-variant-numeric: tabular-nums`) for data-heavy interfaces.
+- **[T-05] Numbers in proportional font.** Enable tabular figures (`font-variant-numeric: tabular-nums`) for data-heavy interfaces.
+  Use a monospace face only for code-like data (IDs, hashes, code); a monospace face for ordinary numbers is a template tell.
 - **[T-06] Missing letter-spacing adjustments.** Use negative tracking for large headers, positive tracking for small caps or labels.
 - **[T-07] All-caps subheaders everywhere.** Try lowercase italics, sentence case, or small-caps instead.
 - **[T-08] Orphaned words.** Single words sitting alone on the last line. Fix with `text-wrap: balance` or `text-wrap: pretty`.
@@ -45,15 +49,18 @@ Check for these problems and fix them:
 - **[C-03] More than one accent color.** Pick one. Remove the rest. Consistency beats variety.
 - **[C-04] Mixing warm and cool grays.** Stick to one gray family. Tint all grays with a consistent hue (warm or cool, not both).
 - **[C-05] Purple/blue "AI gradient" aesthetic.** This is the most common AI design fingerprint. Replace with neutral bases and a single, considered accent.
-- **[C-06] Generic `box-shadow`.** Tint shadows to match the background hue. Use colored shadows (e.g., dark blue shadow on a blue background) instead of pure black at low opacity.
-- **[C-07] Flat design with zero texture.** Add subtle noise, grain, or micro-patterns to backgrounds. Pure flat vectors feel sterile.
+- **[C-06] Generic `box-shadow`.** Tint shadows to match the background hue, and use them only on elements that float above the page (menus, dialogs).
+  Resting surfaces separate by a tone step, not a shadow.
+- **[C-07] Flat design with zero texture.** Add subtle noise, grain, or micro-patterns only when the brief calls for texture. Decoration alone does not make a flat design better.
 - **[C-08] Perfectly even gradients.** Break the uniformity with radial gradients, noise overlays, or mesh gradients instead of standard linear 45-degree fades.
 - **[C-09] Inconsistent lighting direction.** Audit all shadows to ensure they suggest a single, consistent light source.
 - **[C-10] Random dark sections in a light mode page (or vice versa).** A single dark-background section breaking an otherwise light page looks like a copy-paste accident. Either commit to a full
   dark mode or keep a consistent background tone throughout. If contrast is needed, use a slightly darker shade of the same palette — not a sudden jump to `#111` in the middle of a cream page.
 - **[C-11] Empty, flat sections with no visual depth.** Sections that are just text on a plain background feel unfinished. Add high-quality background imagery (blurred, overlaid, or masked), subtle
-  patterns, or ambient gradients. Use reliable placeholder sources like `https://picsum.photos/seed/{name}/1920/1080` when real assets are not available. Experiment with background images behind hero
-  sections, feature blocks, or CTAs — even a subtle full-width photo at low opacity adds presence.
+  patterns, or ambient gradients. Use only imagery the project has the right to use. When it has none, use an open-collection picture
+  under a licence that allows commercial use (CC0, public domain, CC BY or CC BY-SA), with its credit recorded on the page. Do not use a
+  placeholder service whose pictures come from elsewhere. If no honest picture exists, use a flat colour field, but still compose it: the
+  content, the type scale and the hierarchy must fill it. A flat field left empty is the same failure this rule names.
 
 ### Layout
 
@@ -94,8 +101,10 @@ Check for these problems and fix them:
 ### Content
 
 - **[CO-01] Generic names like "John Doe" or "Jane Smith".** Use diverse, realistic-sounding names.
-- **[CO-02] Fake round numbers like `99.99%`, `50%`, `$100.00`.** Use organic, messy data: `47.2%`, `$99.00`, `+1 (312) 847-1928`.
-- **[CO-03] Placeholder company names like "Acme Corp", "Nexus", "SmartFlow".** Invent contextual, believable brand names.
+- **[CO-02] Placeholder-looking round numbers like `99.99%`, `50%`, `$100.00`.** Do not invent statistics, prices, customers, testimonials, or ratings.
+  Use the figures the brief gives. Where a layout needs sample figures, mark them as placeholders for the client to confirm, and list them in the handoff.
+- **[CO-03] Placeholder company names like "Acme Corp", "Nexus", "SmartFlow".** Use the client's real name.
+  If none is given, use a clearly marked placeholder such as `[Client Name]` and say so in the handoff.
 - **[CO-04] AI copywriting cliches.** Never use "Elevate", "Seamless", "Unleash", "Next-Gen", "Game-changer", "Delve", "Tapestry", or "In the world of...". Write plain, specific language.
 - **[CO-05] Exclamation marks in success messages.** Remove them. Be confident, not loud.
 - **[CO-06] "Oops!" error messages.** Be direct: "Connection failed. Please try again."
@@ -173,6 +182,8 @@ When upgrading a project, pull from these high-impact techniques to replace gene
 
 ### Surface Upgrades
 
+These are opt-in. Use one only when the Keystone reason for the page names it. A new surface treatment is not a fix on its own.
+
 - **True glassmorphism.** Go beyond `backdrop-filter: blur`. Add a 1px inner border and a subtle inner shadow to simulate edge refraction.
 - **Spotlight borders.** Card borders that illuminate dynamically under the cursor.
 - **Grain and noise overlays.** A fixed, pointer-events-none overlay with subtle noise to break digital flatness.
@@ -194,6 +205,9 @@ Apply changes in this order for maximum visual impact with minimum risk:
 
 - Work with the existing tech stack. Do not migrate frameworks or styling libraries.
 - Do not break existing functionality. Test after every change.
+- Text contrast must meet WCAG 2.2 AA on every colour pair you change: 4.5:1 for normal text, 3:1 for large text (18.66px bold or 24px and up). Check the pairs the page uses, not one swatch.
+- Verify the visual result the way `.plaesy/instructions/frontend-design.md` describes under "Verify with renders":
+  render at 1440, 768 and 390 px, apply its fail conditions, and report what did not pass. If no browser can run, say so.
 - Before importing any new library, check the project's dependency file first.
 - If the project uses Tailwind, check the version (v3 vs v4) before modifying config.
 - If the project has no framework, use vanilla CSS.

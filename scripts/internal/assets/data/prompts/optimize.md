@@ -16,6 +16,14 @@ the user immediately; completion is reported, not polled. Run synchronously
 only if the user explicitly asks to wait or this conversation's next step
 needs the result right away.
 
+## Success Contract
+
+Before any work begins, after any routing or persona step above, write the contract, freeze it and commit it: rule in
+`.plaesy/instructions/success-contract.md`, template in `.plaesy/templates/success-contract.template.md`, check with
+`plaesy validate contract <file>`. At the end, compare every item with its result (Gate 0 and the Contract comparison
+table in `.plaesy/instructions/quality-gates.md`). Do not report completion while a blocking item is unmet or unmeasured
+(constitution NN-08).
+
 ## Usage Format
 
 ```bash
@@ -108,7 +116,7 @@ constitution's Technical row overrides them.
 | Business       | CAC payback period within constitution threshold; every unit-economics assumption sourced | Model canvas / business case   |
 | Legal          | 100% of clauses/claims traceable to a source; zero unassigned compliance owners           | Contract / compliance doc set  |
 | Marketing      | 100% of claims sourced; brand voice/positioning consistent across assets                  | Campaign / content set         |
-| Design         | WCAG 2.1 AA pass; zero hardcoded values outside the design-token set                      | UI/UX, brand system            |
+| Design         | WCAG 2.2 AA pass; zero hardcoded values outside the design-token set                      | UI/UX, brand system            |
 | Management/Org | Span of control ≤6; no single point of failure in org chart                               | Org structure, process docs    |
 | Product        | Every roadmap item traceable to a validated user need; no unsourced priority claim        | Roadmap / prioritization set   |
 | Financial      | Every cost/price figure sourced; no vendor or FinOps commitment without a review date     | Cost model / budget set        |
@@ -206,6 +214,8 @@ For detailed optimization techniques per technology stack, see `.plaesy/instruct
 - **Document decisions** - Why each optimization was chosen
 
 ## Success Criteria (VERIFY Before Completing)
+
+- [ ] Every Success Contract item compared with its result at the gate, blocking items met (see Success Contract above).
 
 ✅ **Baseline Recorded**:
 

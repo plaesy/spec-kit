@@ -170,7 +170,7 @@ External-URL allow-listing (host, port, path) is fixed by
 
 ---
 
-## WCAG 2.1 AA Accessibility Checklist
+## WCAG 2.2 AA Accessibility Checklist
 
 ### Perceivable
 
@@ -248,7 +248,7 @@ the report.
 - A09 (Security Logging and Monitoring Failures): ✅ PASS
 - A10 (Server-Side Request Forgery): ✅ PASS
 
-## WCAG 2.1 AA Summary
+## WCAG 2.2 AA Summary
 - Perceivable: ✅ PASS
 - Operable: ⚠️ 2 issues found
 - Understandable: ✅ PASS

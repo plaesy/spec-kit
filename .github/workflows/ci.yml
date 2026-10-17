@@ -52,9 +52,9 @@ jobs:
   # instructions/, templates/ and agents/.
   #
   # `plaesy validate constitution` is deliberately NOT run here. This repository
-  # is spec-kit itself and has no ratified `.plaesy/memory/constitution.md` — it
-  # is the template's source, not a consumer. The check is a per-project gate and
-  # belongs in the consuming project's CI, not this one.
+  # has a ratified `.plaesy/memory/constitution.md`, but it is the framework's own
+  # source of truth, changed only through its amendment procedure. The check is a
+  # per-project gate for consuming projects, so it belongs in their CI, not this one.
   corpus:
     name: Validate the corpus (prompts, instructions, templates, agents)
     runs-on: ubuntu-latest
@@ -70,3 +70,5 @@ jobs:
         run: ./scripts/plaesy.exe validate markdown
       - name: memory self-containment
         run: ./scripts/plaesy.exe validate memory
+      - name: success contracts
+        run: ./scripts/plaesy.exe validate contracts

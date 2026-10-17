@@ -32,7 +32,7 @@
     "that must become tokens, and a grammar definition that must stay a pattern. Any sweep that",
     "treats 'fenced' as a single kind will get at least one of those four wrong."
   ],
-  "measured_at": "2026-10-01",
+  "measured_at": "2026-10-17",
   "surfaces": {
     "fenced": {
       "adr.template.md": 0,
@@ -84,6 +84,7 @@
       "srs.template.md": 0,
       "stakeholder-register.template.md": 0,
       "status.template.md": 0,
+      "success-contract.template.md": 0,
       "task-readme.template.md": 0,
       "task-structure-guide.template.md": 0,
       "tasks.template.md": 0,
@@ -145,6 +146,7 @@
       "srs.template.md": 0,
       "stakeholder-register.template.md": 0,
       "status.template.md": 0,
+      "success-contract.template.md": 0,
       "task-readme.template.md": 0,
       "task-structure-guide.template.md": 0,
       "tasks.template.md": 0,
@@ -206,6 +208,7 @@
       "srs.template.md": 0,
       "stakeholder-register.template.md": 0,
       "status.template.md": 0,
+      "success-contract.template.md": 0,
       "task-readme.template.md": 0,
       "task-structure-guide.template.md": 0,
       "tasks.template.md": 0,
