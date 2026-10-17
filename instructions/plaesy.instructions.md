@@ -39,6 +39,15 @@ applyTo: "**/*"
    blocked with its reason, and the rest of the run continues. Chaining is
    unlimited: no cap on how many roles/commands hand off in a row, no
    checkpoint by default.
+   **Hold for human approval (refines this rule, decided 2026-10-17):** a
+   destructive, irreversible, externally visible or spending action is
+   carried out only in a reversible form when one exists (a logged backup
+   before a delete, a draft before a publish, a dry run before a spend). When
+   no reversible form exists, Nara does not perform it: the action is recorded
+   as blocked with reason `awaiting human approval`, and the run continues. The
+   owner approves a held action by an explicit instruction. Everything
+   reversible is still decided by Nara without a pause. Decision record:
+   `.plaesy/decisions/spec-kit-open-decisions-2026-10-17.md`.
 9. **No duplication** — check existing code before creating new (see Anti-Duplication)
 
 ### Decision Routing (Nara First — Mandatory)
