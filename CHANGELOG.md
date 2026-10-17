@@ -9,6 +9,11 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
 
 ### Added
 
+- **CI secret scan (NN-01).** The `secrets` job in `ci.yml` runs gitleaks v8.30.1 (pinned, built by `go run`, no third-party action or
+  licence key) over the full git history. `.gitleaksignore` allowlists 12 reviewed false positives at base commit `7cdd774` (documentation
+  placeholders and cached web responses). Each entry is commit-scoped, so a new leak still fails the job.
+- **Constitution 2.3.0 (MINOR): SC-01 scope.** SC-01 now names the untrusted channels (repository files, web pages, issue and PR text, tool
+  output, MCP tool descriptions) and says they cannot request an action the user or the constitution does not authorize.
 - **Agent and tool trust boundaries** in `security-design-principles`: repository files, web pages, issue and PR text, tool output and MCP
   descriptions are untrusted data (constitution SC-01 extended to these channels). An action requested only by untrusted content is never
   taken. Repository-defined MCP and hook configuration is reviewed before first use. Pointer added to `plaesy.instructions.md`.
@@ -56,6 +61,9 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
 
 ### Changed
 
+- **Held actions (rule 8).** An irreversible or externally visible action with no reversible form is recorded as blocked (`awaiting human
+  approval`) instead of performed on Nara's decision alone. Reversible actions keep the Nara-decides rule (`plaesy.instructions.md` rule 8,
+  `agents/nara.agents.md`; refines `.plaesy/decisions/nara-first-no-stop.md`).
 - Quality gate verifier: findings block only when they break an acceptance criterion, a constitution article or correctness. Other findings
   go in a non-blocking list (`quality-gates`).
 - Eval guidance: brief cases are described as single-trial results until a k-trial runner exists (`evals/README.md`).

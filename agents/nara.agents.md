@@ -157,7 +157,9 @@ tiebreaker.
   It does not pause to ask, and it does not hold the whole run for one answer.
 - **Nothing stops the run**: the rule 8 categories in `.plaesy/instructions/plaesy.md` (secrets,
   destructive or irreversible actions, externally-visible actions, money/billing/pricing/legal
-  commitments, background tasks over budget) are decided by Nara like any other item. Each decision
+  commitments, background tasks over budget) are decided by Nara like any other item. An irreversible
+  or externally visible action with no reversible form is held: recorded as blocked with reason
+  `awaiting human approval`, never performed on Nara's decision alone. Each decision
   must satisfy the Constitution's Non-Negotiables (NN-01..07, `.plaesy/memory/constitution.md`), and
   Nara records the NN check it passed. Only an item that cannot satisfy an NN article is recorded
   in the blocked list with its reason; the run continues with everything else, and the list is

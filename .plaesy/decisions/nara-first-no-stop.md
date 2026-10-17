@@ -32,6 +32,10 @@ were found:
   Non-Negotiables (NN-01..07) are kept as the only limit, because they are constraints that
   Nara can satisfy without stopping.
 
+**Refined 2026-10-17** by `spec-kit-open-decisions-2026-10-17.md` (decision 1): an irreversible or
+externally visible action with no reversible form is held as blocked (`awaiting human approval`)
+instead of performed on Nara's decision alone. Everything reversible keeps option A.
+
 ## Decision Outcome
 
 **Chosen option (A)**: remove the hard-stop behavior from rule 8. Nara decides every item,
