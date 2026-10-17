@@ -39,6 +39,10 @@ The goal is quality delivery, not just checking boxes.]]
   - [ ] Adherence to `Tech Stack` for technologies/versions used (if story introduces or modifies tech usage).
   - [ ] Adherence to `Api Reference` and `Data Models` (if story involves API or data model changes).
   - [ ] Basic security best practices (e.g., input validation, proper error handling, no hardcoded secrets) applied for new/modified code.
+  - [ ] Every new dependency name was checked against its registry (exact name, publisher, release history) and the lockfile is committed (`security-and-owasp` §6.2).
+  - [ ] No secret was printed into the transcript or committed; files were staged by name and the staged diff was scanned (`git` §7).
+  - [ ] Changes were made in small batches, with a checkpoint commit before any multi-file or destructive edit (`git` §1).
+  - [ ] No copy-pasted block of 5 or more lines duplicates adjacent code; shared logic was extended rather than repeated (anti-duplication protocol).
   - [ ] No new linter errors or warnings introduced.
   - [ ] Code is well-commented where necessary (clarifying complex logic, not obvious statements).
 

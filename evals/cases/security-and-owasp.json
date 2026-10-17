@@ -1,0 +1,16 @@
+{
+  "instruction": "instructions/security-and-owasp.instructions.md",
+  "static": [
+    {
+      "id": "sao-slopsquatting-registry-check",
+      "description": "New package names are checked against the registry before they enter a manifest, with a lockfile",
+      "requires": ["### 6.2. Dependency Existence (Slopsquatting)", "Check every new package name against its registry", "Pin and commit the lockfile"],
+      "forbids": ["the same invented names recur"]
+    },
+    {
+      "id": "sao-slopsquatting-evidence",
+      "description": "The rule cites the study it rests on, so the figure can be checked",
+      "requires": ["arXiv:2406.10279"]
+    }
+  ]
+}

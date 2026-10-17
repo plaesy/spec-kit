@@ -15,6 +15,11 @@ Establish consistent git practices: disciplined commits, clear branching strateg
 
 - **One logical change per commit**: Each commit should represent a single, testable, reviewable change
 - **Self-contained commits**: Commit must not break the build or introduce known regressions
+- **Checkpoint before risky agent edits**: before a multi-file, generated or destructive
+  change, commit (or stash to a named branch) the last verified state. Roll back with
+  `git restore` or `git revert`, not by hand-undoing edits. An agent's built-in undo
+  tracks only its own file edits, so it is not a substitute for git (Claude Code best
+  practices, https://code.claude.com/docs/en/best-practices, retrieved 2026-10-17).
 - **Meaningful commit messages**:
   - Format: `<type>: <subject>` (50 chars max for subject)
   - Types: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`, `style`, `perf`
@@ -89,6 +94,15 @@ Establish consistent git practices: disciplined commits, clear branching strateg
 - **NEVER commit secrets**: API keys, tokens, passwords, private keys
 - **Use environment files**: .env (in .gitignore), or CI/CD secrets
 - **Scan before push**: Use git hooks (`pre-commit` hook) or tools like Gitleaks
+- **Agent-specific rules**:
+  - Do not print a secret file into the transcript to check it (`cat .env`). Check variable
+    names only, for example `grep -o '^[A-Z_]*' .env`.
+  - Stage named files, not `git add -A` or `git add .`, so a stray `.env` or key file is not
+    swept in. Run a secret scanner on the staged diff before every commit.
+  - Commits made with Claude Code leaked secrets at about twice the baseline rate in 2025
+    (3.2% vs 1.5%, GitGuardian State of Secrets Sprawl 2026,
+    https://gitguardian.com/state-of-secrets-sprawl-report-2026, press-release figures,
+    retrieved 2026-10-17).
 - **If secrets leaked**:
   - Revoke/rotate immediately
   - Use `git filter-branch` or BFG Repo-Cleaner to remove from history

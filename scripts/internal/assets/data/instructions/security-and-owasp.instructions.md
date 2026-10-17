@@ -105,6 +105,20 @@ issue resolution; check recent releases and community adoption.
 📋 MIGRATION: [Simple migration steps or resources].
 ```
 
+### 6.2. Dependency Existence (Slopsquatting)
+
+- **Check every new package name against its registry before it goes into a manifest.**
+  Confirm the exact name exists, the publisher and repository are the ones you expect,
+  and the release history is plausible. A name that a model suggested is not evidence
+  that the package exists.
+- **Why**: models sometimes invent package names. An attacker can register an invented
+  name that does not exist yet, and an install that follows the generated text then pulls
+  that package. In a study of 16 code-generating models, 576,000
+  samples, hallucinated packages appeared in at least 5.2% of commercial-model samples and
+  21.7% of open-source-model samples (Spracklen et al., arXiv:2406.10279, USENIX Security 2025).
+- **Pin and commit the lockfile** for every new dependency. An install command copied from
+  generated text is run only after the name in it has passed the check above.
+
 ### 7. A07: Identification and Authentication Failures
 
 - **Secure session management**: new session ID on login (prevents fixation); session cookies with `HttpOnly`, `Secure`, `SameSite=Strict`

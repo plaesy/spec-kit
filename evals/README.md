@@ -47,6 +47,27 @@ Without the variable, every brief is reported `SKIP`, and the summary says that 
 model behaviour was checked. A skip is not a pass. The repository does not bundle a
 model, and CI does not run brief cases.
 
+## Trials and consistency
+
+Model output varies between runs, so one passing brief shows little. Guidance for brief
+cases (Anthropic, "Demystifying evals for AI agents",
+https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents, retrieved 2026-10-17):
+
+- **Run several trials per brief.** Each trial is one attempt. Report **pass@k** (at least
+  one success in k) only when one good result is enough. Report **pass^k** (all k succeed)
+  for behaviour that must be consistent every time, which is the case for a Success
+  Contract's blocking items.
+- **Grade the outcome, not the path.** Check the files produced and whether they lint, not
+  the exact sequence of tool calls. Path-based graders reject valid approaches.
+- **Read transcripts before trusting a failing grader.** A failure must be explainable from
+  the transcript. If it is not, the grader is wrong.
+- **Start from real failures.** 20 to 50 cases taken from failures you have actually seen
+  are a sound start. Convert each user-reported failure into a case.
+
+**Gap:** `PLAESY_EVAL_RUNNER` runs each brief once. The repository has no k-trial runner and
+no pass^k report yet, so brief results today are single-trial and must not be read as
+consistency results.
+
 ## Adding a case
 
 1. Decide what must be true: a wording that must be present or absent, or an output
