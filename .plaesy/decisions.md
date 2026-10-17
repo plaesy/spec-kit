@@ -29,6 +29,7 @@ Add a link here only once the file it points at exists. Keep descriptions under
 
 ## Active Decisions
 
+- [Open decisions from the spec-kit-2 and spec-kit-5 reviews](decisions/spec-kit-open-decisions-2026-10-17.md) — Hold irreversible outward actions; gitleaks in CI; SC-01 = 2.3.0 · 2026-10-17
 - [Graph extension lists consolidated](decisions/graph-extension-consolidation.md) — One SourceExtensions list; .hh and .cxx collected · 2026-10-13
 - [Analysis fingerprint records built components](decisions/fingerprint-component-tracking.md) — --no-graph records nothing; skips need the components · 2026-10-13
 
