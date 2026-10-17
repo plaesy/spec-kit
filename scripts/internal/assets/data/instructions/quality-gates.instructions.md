@@ -121,7 +121,7 @@ such contract is not started. At the end of the phase, the contract comparison (
 below) is part of this gate: each item is met, not met or not measurable, with evidence. A blocking
 item that is not met, or not measurable, blocks completion. Full rule and schema:
 `.plaesy/instructions/success-contract.md`. Check it with `plaesy validate contract <file>` before
-work, and `plaesy validate contract <file> --gate` at the end.
+work, and `plaesy validate contract <file> --gate --require-git` at the end (the freeze must be verifiable against git).
 
 The numbered gates below keep their numbers; Gate 0 is a precondition, not a renumbering.
 

@@ -76,6 +76,8 @@ plaesy.exe
 /.plaesy/roles*
 /.plaesy/scripts*
 /.plaesy/templates*
+# Success Contracts are session records, tracked like .plaesy/tasks/: the freeze is anchored to git history.
+!/.plaesy/contracts/
 # The root `plaesy` binary was committed for the whole life of this repository,
 # a 14.9 MB Windows PE blob, even though `/plaesy` has been listed above the
 # entire time. Ignore rules do not apply to a file that is already tracked, so

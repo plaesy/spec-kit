@@ -14,10 +14,17 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
   `.plaesy/instructions/success-contract.md`, scope-loaded). Template: `templates/success-contract.template.md`. A short pointer is in
   `plaesy.instructions.md`. Gate 0 in `quality-gates` is the precondition and the contract comparison table is part of its output. Every
   phase prompt carries the same pointer block, and the verifier, critic and qa agents and the story checklists point to the rule.
-  Contracts are stored under `.plaesy/contracts/`.
-- `plaesy validate contract <file> [--gate]`: validates the contract's schema, measurable targets (no vague words; a number with a comparison or a
-  binary condition), freeze and amendments (a changed target needs a recorded reason, and blocking cannot be loosened), and with `--gate` the
-  recorded results. A `met` numeric claim is checked against its target. Unit tests and fixtures under `evals/fixtures/contracts/`.
+  Contracts are stored under `.plaesy/contracts/`, tracked in git.
+- **Success Contract is constitution NN-08** (constitution 2.2.0, MINOR): no phase starts without its contract committed before the first action,
+  and no phase reports completion while a blocking item is unmet or unmeasured.
+- `plaesy validate contract <file> [--gate] [--require-git]`: schema; measurable targets (one number with a comparison and an optional unit, or a
+  binary condition; no vague words; no template placeholders); a real method; at least one blocking item unless a logged no-blocking waiver; the
+  freeze. The freeze is checked against git: the frozen snapshot must match the first committed version, that version must hold no results, and
+  the amendment log must only grow. Blocking items cannot be loosened or removed, even with an amendment. With `--gate`: every item has a result;
+  a `met` numeric claim is checked against its target and unit, and a binary claim against its vocabulary; evidence is a repo-relative path that
+  must exist (or `cmd:` and the command); a blocking item not met fails; an all-non-blocking contract with a failure fails. A closed contract is
+  always checked at the gate. Outside git the freeze is reported as NOT VERIFIED.
+- `plaesy validate contracts`: every contract under `.plaesy/contracts`, part of bare `plaesy validate` when that directory exists, and a CI step.
 - `THIRD_PARTY_NOTICES.md` and `licenses/Apache-2.0-frontend-design.txt` credit the taste-skill (MIT) and anthropics/skills `frontend-design`
   (Apache-2.0) text adapted into the instructions. The Apache text is a byte-for-byte copy of the upstream licence file.
 - `frontend-design`: an idea test (grounding sentence with a competitor check), a fullness rule against thin pages, and a "Verify with renders"

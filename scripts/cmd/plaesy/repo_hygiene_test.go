@@ -142,6 +142,7 @@ func TestSessionStatePathsAreTrackable(t *testing.T) {
 		".plaesy/memory.md",
 		".plaesy/state.json",
 		".plaesy/tasks/README.md",
+		".plaesy/contracts/example.contract.md", // a contract is session state too: its freeze is anchored to git history
 	}
 	taskDirs, err := os.ReadDir(filepath.Join(root, ".plaesy", "tasks"))
 	if err != nil {

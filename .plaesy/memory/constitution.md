@@ -1,8 +1,8 @@
 ---
 title: "spec-kit Constitution"
-version: "2.1.0"
+version: "2.2.0"
 ratified: "2026-10-10"
-last_amended: "2026-10-16"
+last_amended: "2026-10-17"
 active_dimensions: [technical]
 ---
 
@@ -118,6 +118,7 @@ Never violated regardless of pressure to ship. A temporary need to break one is 
 | NN-05 | Never collect, retain, or emit personal data beyond the declared purpose | MUST | data-flow review against the declared purpose |
 | NN-06 | Never delete or overwrite data without a logged, reversible action | MUST | backup/undo path exists and is recorded before the action |
 | NN-07 | Never let a downstream phase override this file to unblock itself | MUST | precedence rule in §8 |
+| NN-08 | Never start a phase without its Success Contract (measurable KPIs and checklist) committed before the first action, and never report a phase complete while a blocking contract item is unmet or unmeasured | MUST | `plaesy validate contract --gate` and `plaesy validate contracts`; `instructions/success-contract.md` |
 
 ## 6. Waivers (Bounded Exceptions)
 
@@ -184,6 +185,7 @@ Rules:
 | 2026-10-14 | 1.1.1 | PATCH: internet_access gate command corrected from `plaesy reach doctor` (no such subcommand) to `plaesy doctor` in §1 and the template row. | Review finding; wording only, no rule changed. |
 | 2026-10-14 | 2.0.0 | MAJOR: removed the `internet_access` dimension. `plaesy reach` is tooling, not a deliverable dimension; its health check stays in `plaesy doctor`, outside the constitution. Validator, template, and §1/§2 rows updated to match. | Narrows the governed scope. Decision recorded in `.plaesy/decisions/remove-internet-access-dimension.md`. |
 | 2026-10-16 | 2.1.0 | MINOR: accessibility threshold raised from WCAG 2.1 AA to WCAG 2.2 AA (§1 Design row, §2 Accessibility bar). Sync Impact Report: `templates/constitution.template.md` (Design row and bar, already 2.2 AA); `instructions/assess-design`, `assess-technical`, `security-audit`, `quality-gates`, `angular`, `context7-protocol`, `tech-validation`; `agents/accessibility`; `templates/application.template.md`; `prompts/assess`, `fix`, `optimize`; `docs/instructions/README`; `scripts/internal/validate/constitution_test.go` fixture. Level stays AA. | Human decision after an AA/AAA conflict across the corpus. WCAG 2.2 is the current W3C Recommendation; WCAG 3 is still a draft. Approved by the human in the spec-kit-1 brief. |
+| 2026-10-17 | 2.2.0 | MINOR: added NN-08 (Success Contract): no phase starts without its contract committed before the first action, and no phase reports completion while a blocking contract item is unmet or unmeasured. Sync Impact Report: `templates/constitution.template.md` (NN-08 row); `instructions/success-contract.instructions.md` (names NN-08; freeze anchored to git; blocking rules); `instructions/quality-gates.instructions.md` (Gate 0); `instructions/plaesy.instructions.md` (pointer); `prompts/*.md` (the shared contract block); `agents/verifier`, `critic`, `qa`; `checklists/story-done`, `story-draft`. Detection: `plaesy validate contract --gate`, `plaesy validate contracts`. | Human decision in the spec-kit-1 brief: the rule is standard, so the AI always keeps the goal and has a complete basis for its work. Precedence (§8) is what stops a phase prompt from overriding it. |
 
 ---
 **This file is authoritative.** If a prompt's hardcoded default (e.g. "90% coverage")

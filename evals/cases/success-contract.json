@@ -14,7 +14,7 @@
     {
       "id": "sc-measurable",
       "description": "Measurability rule: numeric or binary, and vague words are rejected",
-      "requires": ["numeric or binary", "Rejected by the validator", "vague words"]
+      "requires": ["Rejected by the validator", "a comparison with one number, or a binary condition"]
     },
     {
       "id": "sc-gate",

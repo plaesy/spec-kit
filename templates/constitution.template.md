@@ -118,6 +118,7 @@ Never violated regardless of pressure to ship. A temporary need to break one is 
 | NN-05 | Never collect, retain, or emit personal data beyond the declared purpose | MUST | data-flow review against the declared purpose |
 | NN-06 | Never delete or overwrite data without a logged, reversible action | MUST | backup/undo path exists and is recorded before the action |
 | NN-07 | Never let a downstream phase override this file to unblock itself | MUST | precedence rule in §8 |
+| NN-08 | Never start a phase without its Success Contract (measurable KPIs and checklist) committed before the first action, and never report a phase complete while a blocking contract item is unmet or unmeasured | MUST | `plaesy validate contract --gate` and `plaesy validate contracts`; `instructions/success-contract.md` |
 
 ## 6. Waivers (Bounded Exceptions)
 

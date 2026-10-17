@@ -767,6 +767,7 @@ a check that passed.
 | `assumptions` | project-wide | `ASSUMED —` tags left by autonomous runs, optionally gated by age |
 | `design` | path | Produced frontend output against the design rules: placeholder image hosts, WCAG 2.2 AA contrast, render evidence |
 | `evals` | repository | Case files under `evals/`: phrase checks, lint fixtures, and model briefs only when `PLAESY_EVAL_RUNNER` is set |
+| `contracts` | repository | Every Success Contract under `.plaesy/contracts`: open ones by schema and freeze, closed ones at the gate |
 | `contract` | file | A Success Contract file: schema, measurability, freeze and amendments; with `--gate`, the recorded results |
 
 `plaesy validate --list` prints the same table from the binary, so it cannot drift
@@ -958,6 +959,15 @@ and counted. The verdict is the same for the same input on every run.
 `--evidence` names a directory of screenshots. Each file name must contain the width
 as its own number (`home-768.png` counts; `1768.png` does not).
 
+### `validate contracts`
+
+```bash
+plaesy validate contracts
+```
+
+Checks every `*.contract.md` under `.plaesy/contracts`. An open contract is checked for its schema and its
+freeze; a closed one at the gate. With no contracts it prints `[SKIP]`. It runs as part of bare `plaesy validate`.
+
 ### `validate evals`
 
 ```bash
@@ -983,7 +993,7 @@ See `evals/README.md`.
 ### `validate contract`
 
 ```bash
-plaesy validate contract <file.contract.md> [--gate]
+plaesy validate contract <file.contract.md> [--gate] [--require-git]
 ```
 
 Checks one Success Contract (`instructions/success-contract.instructions.md`, stored under `.plaesy/contracts/`).

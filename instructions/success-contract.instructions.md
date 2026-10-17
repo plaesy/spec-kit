@@ -1,47 +1,47 @@
 ---
 name: success-contract
-description: The Success Contract rule. Before any phase starts, it records measurable KPIs and a measurable checklist; its final gate compares results against them item by item. Load it before starting any phase and before claiming completion.
+description: The Success Contract rule. Before any phase starts, it records measurable KPIs and a measurable checklist, frozen in git; its final gate compares results against them item by item. Load it before starting any phase and before claiming completion.
 ---
 
 # Success Contract
 
-**Mandatory for every phase.** Before work starts, a phase writes a *contract*: a short list of
-measurable items it will be judged against. At the end, the phase compares each item with the
-result, item by item. Completion is valid only when that comparison is recorded and no blocking
-item is unmet or unmeasured. This applies to every phase, including `/assess`, `/implement`,
-`/optimize`, `/fix`, `/improve`, `/loop`, `/create`, `/doc`, `/spec`, `/continue`, `/save`,
-`/start`, and their per-dimension variants.
+**Mandatory for every phase, and a constitution non-negotiable (NN-08).** Before work starts, a phase
+writes a *contract*: a short list of measurable items it will be judged against, committed to git. At
+the end, the phase compares each item with its result, item by item. Completion is valid only when that
+comparison is recorded and no blocking item is unmet or unmeasured. This applies to every phase,
+including `/assess`, `/implement`, `/optimize`, `/fix`, `/improve`, `/loop`, `/create`, `/doc`, `/spec`,
+`/continue`, `/save`, `/start`, and their per-dimension variants.
 
-The contract is created **before** the work, never after. A contract written from the results
-is not a contract.
+The contract is created **before** the work, never after. A contract written from the results is not a
+contract. The validator checks this against git history where it can; section 4 says what it cannot.
 
 ## 1. When and where
 
-1. **Before the first action** of the phase, write the contract file (the template is
-   `.plaesy/templates/success-contract.template.md`).
-2. Store it at `.plaesy/contracts/<phase>-<id>.contract.md`, where `<phase>` is the command
-   (for example `implement` or `assess-technical`) and `<id>` is a short slug. Contracts are
-   session records, like `.plaesy/tasks/`: keep them, do not delete them.
-3. Validate it: `plaesy validate contract <file>`. Fix every error before doing the work.
-4. **Freeze it.** Fill the `frozen` snapshot in the same file (the validator checks it against the
-   items). From then on the targets are fixed (section 4).
-
-A phase with no valid, frozen contract is not started. `quality-gates` Gate 0 enforces this.
+1. **Before the first action** of the phase (after any routing or persona step the prompt names),
+   write the contract. The template is `.plaesy/templates/success-contract.template.md`.
+2. Store it at `.plaesy/contracts/<phase>-<id>.contract.md`, where `<phase>` is the command (for example
+   `implement` or `assess-technical`) and `<id>` is a short slug. Contracts are tracked in git, like
+   `.plaesy/tasks/`. Keep them; do not delete them. Each contract is at most 150 lines, one file per phase.
+3. Fill the `frozen` snapshot (the targets as they stand before work), validate with
+   `plaesy validate contract <file>`, fix every error, and **commit the file** before the first action.
+4. Only then start the work. A phase with no valid, committed, frozen contract is not started.
+   `quality-gates` Gate 0 enforces this.
 
 ## 2. Contract schema
 
-The contract is a markdown file with one fenced `json` block. The block is what the validator
-reads; the prose around it is for people.
+The contract is a markdown file with **exactly one** fenced `json` block. The validator reads that block;
+the prose around it is for people. Examples go in prose, never in a second block.
 
 | Field | Required | Meaning |
 |---|---|---|
-| `id` | yes | Slug, lower case, digits and hyphens. Unique per phase. |
+| `id` | yes | Slug, lower case, digits and hyphens. |
 | `phase` | yes | The command that owns the contract, for example `implement`, `assess:technical`. |
 | `dimension` | yes | One of `technical`, `design`, `business`, `legal`, `marketing`, `financial`, `management`, `product`, `operations`, or `general`. |
-| `status` | yes | `open` while work runs; `closed` only when the gate has recorded every result. |
-| `frozen` | yes once frozen | Snapshot of `id`, `metric`, `target`, `method` and `blocking` for every item, taken before work. |
-| `items` | yes | One or more items (below). |
-| `amendments` | when targets change | Each change to a frozen target, with a reason (section 4). |
+| `status` | yes | `open` while work runs; `closed` only once the gate passes. A `closed` contract is checked against the gate in every mode. |
+| `frozen` | yes | `{"items": [...]}`: `id`, `metric`, `target`, `method` and `blocking` for every item, as they were before work. |
+| `items` | yes | One or more items (below). At least one must be blocking, unless a waiver says otherwise. |
+| `amendments` | yes (may be empty) | The only way a frozen target changes (section 4). Append-only. |
+| `waivers` | yes (may be empty) | Logged exceptions. The only kind is `no-blocking`, with a reason. |
 
 Each item:
 
@@ -51,139 +51,162 @@ Each item:
 | `kpi` | yes | Short name of what is measured. |
 | `metric` | yes | Exactly what is counted or computed. |
 | `baseline` | no | The value before the work, if known. Recorded, not judged. |
-| `target` | yes | A threshold: a number with a comparison (`>= 90`, `<= 200`), or a binary condition (`zero`, `none`, `all pages`, `pass`). |
-| `method` | yes | The command, check or procedure that produces the actual value. |
+| `target` | yes | A comparison with one number and an optional unit (`>= 90`, `<= 2 s`, `>= 80%`), or a binary condition (`zero`, `none`, `pass`, `yes`, `no`, `present`, `absent`, `all pages`, `every route`). |
+| `method` | yes | The command, count or procedure that produces the actual value. At least 8 characters, with a procedure word such as `test`, `count`, `measure`, `run`, `inspect`. |
 | `blocking` | yes | `true` or `false`. A blocking item that is unmet or unmeasured fails the phase. |
-| `evidence` | at the gate | Where the proof lives: a file, a report line, a command output. |
+| `evidence` | at the gate | A repo-relative path that exists (optionally `:line` or `:start-end`), or `cmd:` followed by the command that was run. |
 | `result` | at the gate | `met`, `not_met` or `not_measurable`. |
-| `actual` | at the gate | The measured value, for example `92.4`. Required for `met`. |
+| `actual` | at the gate | The measured value, with its unit when the target has one (`92.4`, `1.5 s`, `0`, `5 of 5`, `pass`). |
 | `reason` | at the gate, for `not_measurable` | Why it could not be measured. |
 
 ## 3. What counts as measurable
 
-An item is measurable only if a person or a command can decide met or not met from its
-`method` alone, with no judgement about quality in general.
+An item is measurable only if a person or a command can decide met or not met from its `method`
+alone, with no judgement about quality in general.
 
-**Accepted.** `>= 90` coverage from `go test -cover`; `zero` Sev-High findings from the named
-scanner; `all 5 pages render at 390 px with no horizontal scroll`; `pass` on `make test`.
+**Accepted.** `>= 90` coverage from `go test -cover`; `zero` Sev-High findings from the named scanner;
+`all 5 pages render at 390 px with no horizontal scroll`; `pass` on `make test`.
 
-**Rejected by the validator.** Targets or metrics that use vague words: `good`, `nice`,
-`clean`, `fast`, `intuitive`, `user-friendly`, `robust`, `high quality`, `appropriate`,
-`as needed`, `improve`, `better`, `acceptable`, `reasonable`, `sufficient`, `TBD`, `TODO`. A
-numeric or binary target is required; a `method` that is one vague word is rejected. "Good UX"
-is not measurable. "Task completion rate >= 80% in five moderated sessions (method: session notes)"
-is.
+**Rejected by the validator.** In a KPI, metric or target, these words are rejected: `good`, `nice`, `clean`, `fast`, `intuitive`, `user-friendly`, `user friendly`, `robust`, `high
+quality`, `appropriate`, `as needed`, `improve`, `better`, `acceptable`, `reasonable`, `sufficient`, `tbd`, `todo`, `approx`, `approximately`, `about`, `roughly`, `around`,
+`several`, `accessible`, `secure`, `adequate`, `enough`, `significant`, `usable`, `simple`, `easy`, `quick`, `modern`, `stable`, `scalable`.
+
+Inside a code span or after a dash (a flag such as `--fast`), a word is not counted. A target must be a comparison with one number, or a binary condition; `90` alone, `about 90`,
+`12 files`, and `no more than 3` are rejected.
+
+"Good UX" is not measurable. "Task completion rate >= 80% in five moderated sessions (method: session notes)" is.
 
 ## 4. Freeze and amendments (anti-hindsight)
 
 Results may never redefine targets. The rules:
 
-1. At freeze, `frozen.items` holds the targets as they were.
-2. A change to `metric`, `target`, `method` or `blocking` after freeze is allowed only as an
-   **amendment**: a new entry in `amendments` with `item`, `field`, `from`, `to` and a non-empty
-   `reason`, written before the work it affects continues.
-3. `blocking` may **not** change from `true` to `false` after freeze. Loosening a blocking item
-   means stopping and asking the human, not editing the file.
-4. An item added after freeze is an amendment with `field: "added"`; a removed item is
-   `field: "removed"`. Both need a reason.
-5. The validator reports every change it cannot match to an amendment. A phase that sees such a
-   report stops and records the amendment before continuing.
+1. **The freeze is the first committed version.** When the contract file is in git, the validator takes its
+   first committed version that holds a `frozen` snapshot. The snapshot must (a) be identical to the current
+   `frozen`, (b) hold no results, and (c) every amendment ever committed must still be present, unchanged,
+   in the current file. Changing `frozen` to match an edit is therefore caught.
+2. A change to `metric`, `target`, `method` or `blocking` after freeze is allowed only as an **amendment**:
+   an `amendments` entry with `item`, `field`, `from` (the frozen value), `to` (the new value) and a non-empty
+   `reason`. Write it before the work it affects continues, and commit it.
+3. `blocking` may **not** change from `true` to `false` after freeze. A blocking item is **never** removed.
+   Loosening a blocking item, or removing one, means stopping and asking the human, not editing the file.
+   These are errors even with an amendment.
+4. An item added after freeze is an amendment with `field: "added"`; a non-blocking item removed after freeze
+   is `field: "removed"`. Both need a reason.
+5. Amendments are append-only. Editing or deleting a committed amendment fails the anchor check.
+
+**What is not verified, stated plainly.** The git check proves the snapshot and the amendment log match the
+first committed version. It does not prove that the first commit came before the work (git records when a
+commit was made, not whether the work came first). It does not prove that the contract was not replaced by a
+new file under another name. Outside git, or before the contract is committed, the freeze is reported as
+**NOT VERIFIED**: a warning in plain mode, an error at the gate, and an error with `--require-git`. The phase
+report must say which case applied.
 
 ## 5. Gate comparison (end of the phase)
 
-The final gate fills `result` and `actual` (or `reason`) for **every** item, then runs
-`plaesy validate contract <file> --gate`. The rules:
+The final gate fills `result` and `actual` (or `reason`) and `evidence` for **every** item, sets `status` to
+`closed` once it passes, and runs `plaesy validate contract <file> --gate`. The rules:
 
-- `met` needs `actual` and `evidence`. For a numeric target the validator checks the claim: if
-  the target is `>= 90` and the actual is `85`, `met` is refused.
-- `not_met` and `not_measurable` need `evidence` or `reason`.
-- A **blocking** item that is `not_met` or `not_measurable` fails the gate. The phase must not
-  report completion. It reports the failure, with the item, and stops.
-- A non-blocking `not_met` is reported as a warning and does not fail the gate.
-- The status becomes `closed` only when the gate passes.
+- `met` needs `actual` and `evidence`. The validator checks the claim against the target:
+  - a numeric target: the number and the unit must match (time units convert: `ms`, `s`, `min`, `h`); a
+    claim that does not satisfy the target is refused, and so is an actual that is not a readable number;
+  - a binary target: `zero` or `none`; `pass`, `yes`, `true` or `present`; `absent`, `no`, `false`, `none` or
+    `0`; `all X` or `every X` takes `pass` or `n of n` with n above zero. Anything else is refused.
+- `evidence` must be a path that exists under the repository, optionally with `:line`, or `cmd:` and the
+  command. The validator checks that the path exists. It does not read the file or re-run the command.
+- `not_met` needs evidence. `not_measurable` needs a `reason`.
+- A **blocking** item that is `not_met` or `not_measurable` fails the gate. The phase must not report completion.
+- A non-blocking `not_met` is a warning, provided the contract has a blocking item that can fail the phase.
+- A contract whose items are **all** non-blocking fails the gate when any item is `not_met`, unless a
+  `no-blocking` waiver is recorded (then it is a warning).
 
-The result is also written into the phase's report using the table in `quality-gates`
-("Contract comparison").
+The result is also written into the phase's report, in the "Contract comparison" table of `quality-gates`.
 
 ## 6. Proportionality (avoid ceremony)
 
-- A tiny fix: **2 to 3 items**, for example the failing test passes, the regression is covered,
-  the touched file stays under its line budget.
+- A tiny fix: **2 to 3 items**, for example the failing test passes, the regression is covered, the touched
+  file stays under its line budget.
 - A feature: 5 to 10 items.
 - A whole-project assessment: one contract per dimension, 3 to 8 items each.
-- A contract over 150 lines is too large to read at the gate. The validator warns at 150 lines.
-- Reuse what exists. Thresholds already in the constitution are cited, not restated: use the
-  constitution's value in `target` and point to the constitution row in `evidence`.
+- A status or state phase (`/save`, `/continue`, a routing step): **one** blocking item, for example
+  "state file written and validated with `plaesy validate memory`". The block and the gate still apply.
+- A contract over 150 lines is an error: it is too large to read at the gate. Cut items or split the phase.
+- Reuse what exists. Thresholds already in the constitution are cited, not restated: use the constitution's
+  value in `target` and point to the constitution row in `evidence`.
 
 ## 7. Defaults from the constitution
 
-The constitution (`.plaesy/memory/constitution.md`, section 1) sets binding thresholds per active
-dimension. A contract for an active dimension must include them unless the human overrides the
-cell in the constitution. Current defaults: technical 90% coverage, p95 under 200 ms, zero known
-Sev-High vulnerabilities; design WCAG 2.2 AA; marketing every published claim sourced; legal
-every clause traceable; financial every cost sourced; business unit economics reviewed; product
-prioritization applied; management no single point of failure; operations as set by the
-constitution's operations row.
+The constitution (`.plaesy/memory/constitution.md`, section 1) sets binding thresholds per active dimension.
+A contract for an active dimension should carry them as **blocking** items unless the human overrides the cell
+in the constitution. Current defaults: technical 90% coverage, p95 under 200 ms, zero known Sev-High
+vulnerabilities; design WCAG 2.2 AA; marketing every published claim sourced; legal every clause traceable;
+financial every cost sourced; business unit economics reviewed; product prioritization applied; management no
+single point of failure; operations as set by the constitution's operations row.
+
+The validator does not yet require those threshold rows to be present. That needs a mapping from each
+constitution cell to the item that measures it, which is a human decision (see the review notes).
 
 ## 8. Starter KPI sets
 
-Starting points, not a mandate. Pick the items that fit the phase, set the target from the
-constitution or the brief, and keep it measurable.
+Starting points, not a mandate. Pick the items that fit the phase, set the target from the constitution or the
+brief, and keep it measurable. Each line gives the target and the method in code spans; a test validates every
+one of them against the validator's rules.
 
 **technical** (`dimension: technical`)
 
-- Line coverage of changed packages, `>= 90`, method: `go test -cover` on those packages.
-- p95 latency of the changed endpoint, `< 200 ms`, method: load run with the named tool.
-- Known Sev-High vulnerabilities, `zero`, method: the project's dependency and secret scanners.
-- Tests added for the change, `all new behaviour covered`, method: diff review against the story's acceptance criteria.
+- Line coverage of changed packages. Target `>= 90`. Method `go test -cover` on those packages.
+- p95 latency of the changed endpoint. Target `<= 200 ms`. Method `load run with the named tool`.
+- Known Sev-High vulnerabilities. Target `zero`. Method `run the dependency and secret scanners`.
+- Tests added for the change. Target `all new behaviour covered`. Method `diff review against the acceptance criteria`.
 
 **design** (`dimension: design`)
 
-- Text contrast, `>= 4.5:1` normal text and `>= 3:1` large text (WCAG 2.2 AA), method: contrast check on every colour pair the page uses.
-- Keyboard-only path to each primary action, `all pass`, method: manual tab walk recorded in evidence.
-- Layout at 1440, 768 and 390 px, `no horizontal scroll and no clipped text`, method: renders at all three widths.
+- Text contrast, normal text (WCAG 2.2 AA). Target `>= 4.5`. Method `contrast check on every colour pair the page uses`.
+- Text contrast, large text (WCAG 2.2 AA). Target `>= 3`. Method `contrast check on large headings`.
+- Keyboard-only path to each primary action. Target `pass`. Method `manual tab walk recorded in evidence`.
+- Layout at 1440, 768 and 390 px. Target `pass`. Method `render each page at the three widths and inspect for clipped text`.
 
 **business** (`dimension: business`)
 
-- Contribution margin per unit, `>= target set in the plan`, method: the model's unit-economics sheet.
-- Payback period, `<= months in the plan`, method: CAC divided by monthly contribution.
-- Assumptions logged with a source, `all`, method: assumption register review.
+- Contribution margin per unit. Target `>= 0`. Method `compute the unit-economics sheet, base case`.
+- Payback period on CAC. Target `<= 12 months`. Method `calculate CAC divided by monthly contribution`.
+- Assumptions logged with a source. Target `all assumptions`. Method `review the assumption register`.
 
 **legal** (`dimension: legal`)
 
-- Clauses traceable to a source, `all`, method: clause-to-source table.
-- Compliance owner named, `yes`, method: policy or contract header.
-- Open compliance findings at the gate, `zero blocking`, method: the compliance review checklist.
+- Clauses traceable to a source. Target `all clauses`. Method `review the clause-to-source table`.
+- Compliance owner named. Target `present`. Method `review the policy or contract header`.
+- Open blocking compliance findings. Target `zero`. Method `run the compliance review checklist`.
 
 **marketing** (`dimension: marketing`)
 
-- Published claims carrying a source, `100%`, method: claim inventory against source list.
-- Brand voice rules applied, `all pieces reviewed`, method: review checklist per piece.
+- Published claims carrying a source. Target `all published claims`. Method `review the claim inventory against the source list`.
+- Brand voice rules applied. Target `all pieces`. Method `review each piece against the voice checklist`.
 
 **financial** (`dimension: financial`)
 
-- Every cost and price input sourced, `all`, method: input register.
-- Unit economics under the pessimistic case, `>= 0`, method: the sensitivity table's lowest scenario.
+- Every cost and price input sourced. Target `all cost inputs`. Method `review the input register`.
+- Unit economics under the pessimistic case. Target `>= 0`. Method `read the lowest scenario in the sensitivity table`.
 
 **management** (`dimension: management`)
 
-- Roles named for every deliverable, `all`, method: RACI review.
-- Single points of failure, `zero blocking`, method: team and ownership map review.
+- Roles named for every deliverable. Target `all deliverables`. Method `review the RACI table`.
+- Single points of failure. Target `zero`. Method `review the team and ownership map`.
 
 **product** (`dimension: product`)
 
-- Roadmap items with a recorded priority score, `all`, method: roadmap table.
-- Competitive baseline sourced, `>= 3 sources`, method: the source list.
+- Roadmap items with a recorded priority score. Target `all roadmap items`. Method `review the roadmap table`.
+- Competitive baseline sourced. Target `>= 3`. Method `count the sources in the source list`.
 
 **operations** (`dimension: operations`)
 
-- Deployment is repeatable, `pass`, method: the named deploy command run in a clean environment.
-- Rollback tested, `pass`, method: the named rollback command.
-- Alerting on the stated SLO, `present`, method: alert definition review.
+- Deployment is repeatable. Target `pass`. Method `run the named deploy command in a clean environment`.
+- Rollback tested. Target `pass`. Method `run the named rollback command`.
+- Alerting on the stated SLO. Target `present`. Method `review the alert definition`.
 
 ## 9. Worked example
 
-A small fix to a validator bug. Two items, both measurable, one blocking:
+A small fix to a validator bug. Two items, both measurable, one blocking. Committed with this frozen snapshot
+before the first action, then closed by the gate with results.
 
 ```json
 {
@@ -200,19 +223,22 @@ A small fix to a validator bug. Two items, both measurable, one blocking:
   "items": [
     {"id": "C1", "kpi": "Regression fixed", "metric": "failing tests in internal/validate", "target": "zero", "method": "go test ./internal/validate/", "blocking": true},
     {"id": "C2", "kpi": "Changed function covered", "metric": "statement coverage of the changed function", "target": ">= 90", "method": "go test -cover ./internal/validate/", "blocking": false}
-  ]
+  ],
+  "amendments": [],
+  "waivers": []
 }
 ```
 
-The validator accepts this file, and it passes the gate once both results are recorded with
-an actual value that satisfies the target. The full template is
-`templates/success-contract.template.md`.
+The validator accepts this file as open. It passes the gate once both results are recorded, with evidence that
+exists and actual values that satisfy the targets. The full template is `templates/success-contract.template.md`.
 
 ## 10. Relation to other rules
 
-- `quality-gates` Gate 0 refuses a phase with no valid, frozen contract, and the contract
-  comparison is part of the gate output. Completion claims without it are invalid.
-- `tasks` acceptance criteria are the story-level form of the same idea. A story's criteria may
-  be copied into a contract as items; they are not a substitute for one.
-- The constitution sets the thresholds. This file sets how a phase records them. A phase may
-  never weaken a constitution threshold; it may only record a measured value against it.
+- `quality-gates` Gate 0 refuses a phase with no valid, committed, frozen contract, and the contract comparison is
+  part of the gate output. Completion claims without it are invalid.
+- Constitution NN-08 makes this rule non-negotiable: no phase reports completion while a blocking item is unmet
+  or unmeasured.
+- `tasks` acceptance criteria are the story-level form of the same idea. A story's criteria may be copied into a
+  contract as items; they are not a substitute for one.
+- The constitution sets the thresholds. This file sets how a phase records them. A phase may never weaken a
+  constitution threshold; it may only record a measured value against it.

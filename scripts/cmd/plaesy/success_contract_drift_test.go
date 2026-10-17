@@ -12,10 +12,11 @@ import (
 // To change the rule, change this constant and the same text in every prompt, then
 // run plaesy reload so the embedded copies follow.
 const successContractBlock = "## Success Contract\n\n" +
-	"Before the first action, write the contract and freeze it: rule in `.plaesy/instructions/success-contract.md`, template in\n" +
-	"`.plaesy/templates/success-contract.template.md`, check with `plaesy validate contract <file>`. At the end, compare every item\n" +
-	"with its result (Gate 0 and the Contract comparison table in `.plaesy/instructions/quality-gates.md`). Do not report completion\n" +
-	"while a blocking item is unmet or unmeasured.\n"
+	"Before any work begins, after any routing or persona step above, write the contract, freeze it and commit it: rule in\n" +
+	"`.plaesy/instructions/success-contract.md`, template in `.plaesy/templates/success-contract.template.md`, check with\n" +
+	"`plaesy validate contract <file>`. At the end, compare every item with its result (Gate 0 and the Contract comparison\n" +
+	"table in `.plaesy/instructions/quality-gates.md`). Do not report completion while a blocking item is unmet or unmeasured\n" +
+	"(constitution NN-08).\n"
 
 // Every phase prompt, including the per-dimension variants, carries the block exactly once.
 func TestEveryPromptCarriesTheSuccessContractBlockOnce(t *testing.T) {

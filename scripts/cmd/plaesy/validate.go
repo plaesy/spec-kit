@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/plaesy/spec-kit/internal/common"
+	"github.com/plaesy/spec-kit/internal/contract"
 	"github.com/plaesy/spec-kit/internal/mdlint"
 	"github.com/plaesy/spec-kit/internal/validate"
 	"github.com/spf13/cobra"
@@ -47,6 +48,7 @@ var validateTargets = []validateTarget{
 	{name: "design", build: newDesignCmd},
 	{name: "evals", noArgs: true, build: newEvalsCmd},
 	{name: "contract", build: newContractCmd},
+	{name: "contracts", repoWide: true, build: newContractsCmd},
 }
 
 func init() {
@@ -70,8 +72,8 @@ func newValidateCmd() *cobra.Command {
 		Short: "Validate a constitution, memory, Markdown, or an OOXML document",
 		Long: `Run every check, or one of them.
 
-With no arguments, runs each project-wide check — constitution, memory, and
-Markdown — and prints a summary naming what ran, what was skipped, and why:
+With no arguments, runs each project-wide check — constitution, memory, Markdown, and contracts —
+and prints a summary naming what ran, what was skipped, and why:
 
   plaesy validate
 
@@ -189,6 +191,19 @@ func runValidateProject() error {
 				return c.RunE(c, nil)
 			},
 		},
+	}
+
+	// Success Contracts: open ones by schema and freeze, closed ones at the gate. The check
+	// is listed only when the repository has a contracts directory: a project with no phase
+	// contracts yet has no contract check to skip, so none is reported.
+	if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(contract.Dir))); err == nil {
+		checks = append(checks, projectCheck{
+			name: "contracts",
+			run: func() error {
+				c := newContractsCmd()
+				return c.RunE(c, nil)
+			},
+		})
 	}
 
 	fmt.Printf("[INFO] Validating project at %s\n", root)

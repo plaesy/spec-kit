@@ -289,6 +289,7 @@ Need: Get user data
 - **Individual memory/*.md**: Can be substantial, organize by topic
 - **instructions.md**: Keep as index only
 - **Individual instructions/*.md**: Can be substantial, organize by topic
+- **Success Contracts** (`.plaesy/contracts/*.contract.md`): one file per phase, at most 150 lines; `plaesy validate contract` reports an error above that cap. Kept in git, not deleted.
 - Check size before write: `wc -l .plaesy/context.md`
 - Move completed sessions to memory/ archive as needed
 
