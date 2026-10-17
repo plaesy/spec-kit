@@ -9,17 +9,10 @@
     "Bash"
   ],
   "counts": {
-<<<<<<< Updated upstream
-    "goFilesCmd": 33,
-    "goFilesInternal": 141,
+    "goFilesCmd": 36,
+    "goFilesInternal": 145,
     "internalPackages": 25,
-    "cobraCommandConstructors": 68,
-=======
-    "goFilesCmd": 32,
-    "goFilesInternal": 139,
-    "internalPackages": 22,
-    "cobraCommandConstructors": 67,
->>>>>>> Stashed changes
+    "cobraCommandConstructors": 71,
     "topLevelRegisteredParents": 24,
     "platforms": 20,
     "instructionFiles": 80,
@@ -27,15 +20,9 @@
     "dimensionSubPrompts": 61,
     "agentFiles": 28,
     "checklistFiles": 7,
-<<<<<<< Updated upstream
     "templateFiles": 62,
-    "goTestFiles": 161,
-    "goTestFunctions": 1414,
-=======
-    "templateFiles": 61,
-    "goTestFiles": 158,
-    "goTestFunctions": 1322,
->>>>>>> Stashed changes
+    "goTestFiles": 166,
+    "goTestFunctions": 1441,
     "nestedSubPrompts": 0
   },
   "countsHowToVerify": {

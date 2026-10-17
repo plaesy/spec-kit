@@ -141,15 +141,8 @@ func TestSessionStatePathsAreTrackable(t *testing.T) {
 		".plaesy/context.md",
 		".plaesy/memory.md",
 		".plaesy/state.json",
-<<<<<<< Updated upstream
 		".plaesy/tasks/README.md",
 		".plaesy/contracts/example.contract.md", // a contract is session state too: its freeze is anchored to git history
-	}
-	taskDirs, err := os.ReadDir(filepath.Join(root, ".plaesy", "tasks"))
-	if err != nil {
-		t.Fatalf("cannot read .plaesy/tasks: %v", err)
-=======
->>>>>>> Stashed changes
 	}
 	// Tasks live in each spec: .plaesy/specs/<spec>/tasks/<status>/<file>.md,
 	// plus a README per spec's tasks directory. Walk every spec, so a task in
