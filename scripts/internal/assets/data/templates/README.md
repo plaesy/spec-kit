@@ -24,10 +24,10 @@ otherwise); this file is the human index.
 **Note on task tracking**: the three templates above describe a richer
 epic/story/JSON-status model that the `plaesy tasks` command does **not**
 implement — it only moves flat `.md` files between
-`.plaesy/tasks/{backlog,todo,doing,done,blocked}/`, with no epic/story
+`.plaesy/specs/{spec}/tasks/{backlog,todo,doing,done,blocked}/`, with no epic/story
 nesting and no JSON status fields populated or read. Treat these three templates
 as a design reference for a possible future task model, not the current one;
-the flat `.plaesy/tasks/{{STATUS}}/*.md` layout (see `.plaesy/instructions/tasks.md`)
+the flat `.plaesy/specs/{spec}/tasks/{{STATUS}}/*.md` layout (see `.plaesy/instructions/tasks.md`)
 is what `/implement`, `/continue`, and `/save` actually read and write.
 
 ## Decisions & governance

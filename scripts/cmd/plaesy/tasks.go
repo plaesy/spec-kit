@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 
+	"github.com/plaesy/spec-kit/internal/common"
 	"github.com/plaesy/spec-kit/internal/taskmanage"
 	"github.com/spf13/cobra"
 )
 
-// `plaesy tasks` — the task lifecycle under .plaesy/tasks/.
+// `plaesy tasks` — the task lifecycle under .plaesy/specs/<spec>/tasks/.
+// Every spec owns its tasks; --spec picks one, the current branch by default.
 //
 // It was `plaesy task-manage`, which spells the resource as `task` and then
 // repeats the idea in `-manage`: `tasks list` already says everything
@@ -20,9 +22,13 @@ func init() { register(newTasksCmd()) }
 func newTasksCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "tasks",
-		Short: "Task lifecycle under .plaesy/tasks/ (backlog/todo/doing/done/blocked)",
-		Long: `Work with the tasks under .plaesy/tasks/.
+		Short: "Task lifecycle under .plaesy/specs/<spec>/tasks/ (backlog/todo/doing/done/blocked)",
+		Long: `Work with the tasks of one spec, under .plaesy/specs/<spec>/tasks/.
 
+The spec is the one whose folder name ends in the current git branch. Use
+--spec <folder> to act on another spec.
+
+  plaesy tasks add <priority> <slug> <title>  add a task to the backlog
   plaesy tasks list                 every task, across every status
   plaesy tasks list-status <status> tasks in one status
   plaesy tasks next                 the next todo task
@@ -32,15 +38,20 @@ func newTasksCmd() *cobra.Command {
   plaesy tasks unblock <file>       move a task back to todo
   plaesy tasks move <file> <from> <to>
   plaesy tasks show <file> [status]
+  plaesy tasks run --chain <name>   hand todo tasks to a delegate provider
 
 With no subcommand, prints this list.`,
-		Example: `  plaesy tasks list
+		Example: `  plaesy tasks add high login-form "Build the login form"
+  plaesy tasks list
   plaesy tasks next
-  plaesy tasks complete 003-add-dark-mode-tasks.md`,
+  plaesy tasks --spec 20261015-143022-auth-login complete high_login-form.md`,
 		Args: cobra.NoArgs,
 	}
 
+	cmd.PersistentFlags().StringVar(&tasksSpec, "spec", "", "spec folder to act on (default: the spec for the current branch)")
+
 	cmd.AddCommand(
+		newTasksAddCmd(),
 		newTasksListCmd(),
 		newTasksListStatusCmd(),
 		newTasksNextCmd(),
@@ -50,17 +61,34 @@ With no subcommand, prints this list.`,
 		newTasksUnblockCmd(),
 		newTasksMoveCmd(),
 		newTasksShowCmd(),
+		newTasksRunCmd(),
 	)
 
 	return showHelpWhenBare(cmd)
 }
 
+// tasksSpec is the --spec flag. Empty means "the spec for the current branch".
+var tasksSpec string
+
+// tasksDirOrErr returns the task directory of the spec the command acts on.
+// --spec names it directly; otherwise the current git branch selects it.
 func tasksDirOrErr() (string, error) {
 	root, err := taskmanage.FindProjectRoot()
 	if err != nil {
 		return "", err
 	}
-	return taskmanage.TasksDir(root), nil
+	specID := tasksSpec
+	if specID == "" {
+		branch, err := common.GetCurrentBranch()
+		if err != nil {
+			return "", err
+		}
+		specID, err = taskmanage.ResolveSpec(root, branch)
+		if err != nil {
+			return "", err
+		}
+	}
+	return taskmanage.TasksDir(root, specID), nil
 }
 
 func printTaskList(tasksDir, status string) error {

@@ -111,7 +111,7 @@ func goDocCommentsOrNil(content string) map[string]string {
 // so no graph node can carry them even though symbolsOf handles them. They are
 // listed here because symbolsOf clearly intends to support them, and the fix
 // belongs in internal/graph rather than here. Tracked as
-// .plaesy/tasks/backlog/medium_graph-include-ext-missing-hh-cxx.md.
+// .plaesy/specs/<spec>/tasks/backlog/medium_graph-include-ext-missing-hh-cxx.md.
 var docsByExt = map[string]contentExtractor{
 	".go":  goDocCommentsOrNil,
 	".js":  jsDocComments,

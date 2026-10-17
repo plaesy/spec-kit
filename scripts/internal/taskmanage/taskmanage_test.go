@@ -121,8 +121,8 @@ func TestValidateStatus(t *testing.T) {
 }
 
 func TestTasksDir(t *testing.T) {
-	got := TasksDir("/repo")
-	want := filepath.Join("/repo", ".plaesy", "tasks")
+	got := TasksDir("/repo", "20261015-143022-auth-login")
+	want := filepath.Join("/repo", ".plaesy", "specs", "20261015-143022-auth-login", "tasks")
 	if got != want {
 		t.Errorf("TasksDir = %q, want %q", got, want)
 	}

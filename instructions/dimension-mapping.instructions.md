@@ -128,7 +128,7 @@ below — so a reader can tell from this one file what is routed and what is not
 | `.plaesy/roles/sa.md`, `.plaesy/roles/security.md` | **Dimension-conditional.** Loaded for `technical` only when system design, integration boundaries, or threat modeling is itself a scored finding (see the Conditional Roles table in `/assess`). |
 | `/doc` | **Dimension-agnostic.** Documented deliverables in any dimension; dimension-agnostic by design (produces the Handoff Spec for non-code dimensions) |
 | `/create:images`, `/create:storyboard`, `/create:diagram` | **Not dimensions.** Asset-generation scopes (pixels/vectors) — `/create` router, not a routing destination |
-| `/create:tasks` | **Not a dimension.** Structured-text asset generation (task files under `.plaesy/tasks/`) — `/create` router |
+| `/create:tasks` | **Not a dimension.** Structured-text asset generation (task files under `.plaesy/specs/{spec}/tasks/`) — `/create` router |
 | `/spec:design` | **Not a dimension, despite the shape.** The selector looks like `{family}:{dimension}` and `design` is one of the nine canonical dimensions, but it names a *document type* — the design-system specification at `.plaesy/memory/design.md` — not a lens. Routing an assessment finding to `/spec:design` is a category error; a design-dimension finding goes to `/assess:design` or `/implement:design` |
 | `/spec` (bare) | **No scope selector.** Specification-document router, out of phase scope — see `prompts/spec.md` |
 | `/save`, `/start`, `/continue`, `/create`, `/spec`, `/loop` (bare) | **No scope selector.** Session/project orchestration commands, out of phase scope — see `.plaesy/instructions/workflow-phases.md` |

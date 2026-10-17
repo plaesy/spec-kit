@@ -28,18 +28,18 @@ plaesy features validate --help
 
 | Check | Description | Required File/Directory |
 |-------|-------------|-------------------------|
-| **Feature Branch** | Must be on a feature branch | Branch format: `XXX-feature-name` |
-| **Feature Directory** | Feature specification directory | `.plaesy/specs/XXX-feature-name/` |
-| **Implementation Plan** | Detailed implementation plan | `.plaesy/specs/XXX-feature-name/plan.md` |
+| **Feature Branch** | Must be on a feature branch | Branch: any non-trunk branch (not main, master or HEAD) |
+| **Feature Directory** | Feature specification directory | `.plaesy/specs/<timestamp>-<branch>/` |
+| **Implementation Plan** | Detailed implementation plan | `.plaesy/specs/<timestamp>-<branch>/plan.md` |
 
 ### Optional Documentation
 
 | Check | Description | File/Directory |
 |-------|-------------|----------------|
-| **Research Documentation** | Background research | `.plaesy/specs/XXX-feature-name/research.md` |
-| **Data Model** | Data structure specifications | `.plaesy/specs/XXX-feature-name/data-model.md` |
-| **API Contracts** | API specifications | `.plaesy/specs/XXX-feature-name/contracts/` |
-| **Quick Start Guide** | Implementation quick start | `.plaesy/specs/XXX-feature-name/quickstart.md` |
+| **Research Documentation** | Background research | `.plaesy/specs/<timestamp>-<branch>/research.md` |
+| **Data Model** | Data structure specifications | `.plaesy/specs/<timestamp>-<branch>/data-model.md` |
+| **API Contracts** | API specifications | `.plaesy/specs/<timestamp>-<branch>/contracts/` |
+| **Quick Start Guide** | Implementation quick start | `.plaesy/specs/<timestamp>-<branch>/quickstart.md` |
 
 ## Options
 
@@ -49,7 +49,7 @@ plaesy features validate --help
 | `--help` / `-h` | Print usage and exit |
 
 The command resolves feature paths via `internal/common.GetFeaturePaths()`,
-verifies the current branch matches `XXX-feature-name`, then checks for
+verifies the current branch matches `<branch>`, then checks for
 `plan.md` (required) and `research.md`, `data-model.md`, `contracts/`,
 `quickstart.md` (optional).
 
@@ -91,7 +91,7 @@ Exits non-zero; the equivalent message for a missing `plan.md` is
 
 ```text
 
-.plaesy/specs/XXX-feature-name/
+.plaesy/specs/<timestamp>-<branch>/
 ├── plan.md                       # Implementation plan (REQUIRED)
 ├── research.md                   # Background research (optional)
 ├── data-model.md                 # Data specifications (optional)
@@ -115,10 +115,10 @@ fi
 
 ```text
 
-Error: not on a feature branch (current: main); feature branches should be named like: 001-feature-name
+Error: not on a feature branch (current: main); run this from a feature branch
 ```
 
-Switch to or create a branch matching `XXX-feature-name` (e.g. via
+Switch to or create a branch matching `<branch>` (e.g. via
 `plaesy features create`).
 
 ### Feature directory or plan.md not found

@@ -38,7 +38,7 @@ helpers so individual commands don't reimplement them.
 | `NormalizeVersion(raw)` | Sanitizes a version string to strict semver, falling back to `0.0.0` |
 | `GetRepoRoot()` | `git rev-parse --show-toplevel` |
 | `GetCurrentBranch()` | `git rev-parse --abbrev-ref HEAD` |
-| `CheckFeatureBranch(branch)` | Validates branch name matches `NNN-*` |
+| `CheckFeatureBranch(branch)` | Rejects the trunk branches (main, master, HEAD); any other branch is a feature |
 | `GetFeatureDir(repoRoot, branch)` | Builds `<repoRoot>/.plaesy/specs/<branch>` |
 | `GetFeaturePaths()` | Returns a `*FeaturePaths` struct with `RepoRoot`, `CurrentBranch`, `FeatureDir`, `FeatureSpec`, `ImplPlan`, `Tasks`, `Research`, `DataModel`, `Quickstart`, `ContractsDir` |
 | `(*FeaturePaths).ShellLines()` | Renders the same fields as shell-sourceable `KEY='value'` lines, for anything that still wants to `eval` this output (see [features-paths.md](./features-paths.md)) |

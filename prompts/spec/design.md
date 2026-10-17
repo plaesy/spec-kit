@@ -16,7 +16,7 @@ project rule is that stack-specific scaffolding belongs in `instructions/`
 because it is knowledge an agent loads, not an asset. `design.md` is the
 opposite: it is a *named deliverable file* with a fixed path, a fixed schema and
 a validation step — the same class of thing as `/create:tasks` writing task
-files into `.plaesy/tasks/`. The *rules for filling it in* stay in
+files into `.plaesy/specs/{spec}/tasks/`. The *rules for filling it in* stay in
 `.plaesy/instructions/how-to-create-designmd.md`; this command generates it.
 
 ## Success Contract

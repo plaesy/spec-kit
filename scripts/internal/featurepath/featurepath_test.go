@@ -95,6 +95,11 @@ func runGitShim() int {
 	failThis := func(what string) bool { return fail == what }
 
 	switch {
+	case len(args) >= 2 && args[0] == "rev-parse" && args[1] == "--path-format=absolute":
+		// `git rev-parse --path-format=absolute --git-common-dir`: the main
+		// checkout's .git directory, whose parent is the main checkout.
+		fmt.Println(filepath.Join(os.Getenv(shimRootEnv), ".git"))
+		return 0
 	case len(args) >= 2 && args[0] == "rev-parse" && args[1] == "--show-toplevel":
 		if failThis("root") {
 			return 1
@@ -130,6 +135,23 @@ func runGitShim() int {
 			if _, err := fmt.Fprintf(f, "checkout %s\n", args[2]); err != nil {
 				return 1
 			}
+		}
+		return 0
+	case len(args) >= 7 && args[0] == "-C" && args[2] == "worktree" && args[3] == "add" && args[4] == "-b":
+		// `git -C <main> worktree add -b <branch> <path>`: the shim makes the
+		// directory the real command would make, and logs the request.
+		if log := os.Getenv(shimLogEnv); log != "" {
+			f, err := os.OpenFile(log, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+			if err != nil {
+				return 1
+			}
+			defer f.Close()
+			if _, err := fmt.Fprintf(f, "worktree add %s %s\n", args[5], args[6]); err != nil {
+				return 1
+			}
+		}
+		if err := os.MkdirAll(args[6], 0o755); err != nil {
+			return 1
 		}
 		return 0
 	default:
@@ -267,61 +289,54 @@ func TestCreateNewFeature(t *testing.T) {
 	}{
 		{
 			name: "first feature in an empty tree", desc: "Add user login",
-			wantBranch: "001-add-user-login",
+			wantBranch: "add-user-login",
 		},
 		{
 			name: "description is lowercased", desc: "Add User Login",
-			wantBranch: "001-add-user-login",
+			wantBranch: "add-user-login",
 		},
 		{
 			name: "only three words are kept", desc: "add user login with oauth sso",
-			wantBranch: "001-add-user-login",
+			wantBranch: "add-user-login",
 		},
 		{
 			name: "runs of non alphanumerics collapse to one dash", desc: "Fix   the__bug--now",
-			wantBranch: "001-fix-the-bug",
+			wantBranch: "fix-the-bug",
 		},
 		{
 			name: "leading and trailing punctuation is trimmed", desc: "!!! ship it !!!",
-			wantBranch: "001-ship-it",
+			wantBranch: "ship-it",
 		},
 		{
 			name: "surrounding whitespace is trimmed", desc: "   add login   ",
-			wantBranch: "001-add-login",
+			wantBranch: "add-login",
 		},
 		{
 			name: "numbers inside the description are kept", desc: "Support OAuth2 logins",
-			wantBranch: "001-support-oauth2-logins",
+			wantBranch: "support-oauth2-logins",
 		},
 		{
 			// Documents the slug's ASCII-only rule: accented letters are not
 			// transliterated, they are dropped, which can leave a single
 			// letter standing in for a word.
 			name: "non ascii letters are dropped", desc: "Añadir café",
-			wantBranch: "001-a-adir-caf",
+			wantBranch: "a-adir-caf",
 		},
 		{
-			// Degenerate input: nothing survives slugging, so the branch is
-			// just the number and a separator. It still satisfies
-			// common.CheckFeatureBranch's ^[0-9]{3}- pattern.
-			name: "description with no usable characters", desc: "***",
-			wantBranch: "001-",
-		},
-		{
-			name:       "numbering continues past the highest existing feature",
-			specs:      []string{"001-alpha", "007-gamma", "notanumber", "12-numeric"},
-			wantBranch: "013-add-login",
+			name:       "existing specs do not change the new spec name",
+			specs:      []string{"001-alpha", "20260101-000000-gamma", "notanumber", "12-numeric"},
+			wantBranch: "add-login",
 			desc:       "add login",
 		},
 		{
 			name:  "non directory entries in the specs dir are ignored",
 			files: []string{"042-file.md", "notanumber"},
-			desc:  "add login", wantBranch: "001-add-login",
+			desc:  "add login", wantBranch: "add-login",
 		},
 		{
 			name:     "template content is copied into spec.md",
 			template: "# Feature: template\n", desc: "add login",
-			wantBranch: "001-add-login",
+			wantBranch: "add-login",
 		},
 		{
 			// The installed location, as produced by `plaesy init`. This is
@@ -330,14 +345,14 @@ func TestCreateNewFeature(t *testing.T) {
 			// produced a zero-byte spec.md.
 			name:       "template is read from the installed .plaesy location",
 			templateAt: "installed", template: "# Installed\n",
-			desc: "add login", wantBranch: "001-add-login",
+			desc: "add login", wantBranch: "add-login",
 		},
 		{
 			// Both locations present: the installed copy wins, matching the
 			// order in specTemplateCandidates.
 			name:       "installed template takes precedence over the source-tree path",
 			templateAt: "both", template: "# Installed\n",
-			desc: "add login", wantBranch: "001-add-login",
+			desc: "add login", wantBranch: "add-login",
 		},
 	}
 	for _, tt := range tests {
@@ -373,18 +388,18 @@ func TestCreateNewFeature(t *testing.T) {
 				tt.template = body
 			}
 
-			res, err := CreateNewFeature(tt.desc)
+			res, err := CreateNewFeatureWith(tt.desc, CreateOptions{Now: fixedClock})
 			if err != nil {
-				t.Fatalf("CreateNewFeature: %v", err)
+				t.Fatalf("CreateNewFeatureWith: %v", err)
 			}
 			if res.BranchName != tt.wantBranch {
 				t.Errorf("branch = %q, want %q", res.BranchName, tt.wantBranch)
 			}
-			wantNum := res.BranchName[:3]
-			if res.FeatureNum != wantNum {
-				t.Errorf("feature number = %q, want the branch prefix %q", res.FeatureNum, wantNum)
+			wantSpecName := "20261015-143022-" + tt.wantBranch
+			if res.SpecName != wantSpecName {
+				t.Errorf("spec name = %q, want %q", res.SpecName, wantSpecName)
 			}
-			wantSpec := filepath.Join(root, ".plaesy", "specs", tt.wantBranch, "spec.md")
+			wantSpec := filepath.Join(root, ".plaesy", "specs", wantSpecName, "spec.md")
 			if res.SpecFile != wantSpec {
 				t.Errorf("spec file = %q, want %q", res.SpecFile, wantSpec)
 			}
@@ -451,7 +466,7 @@ func TestCreateNewFeatureReportsGitFailure(t *testing.T) {
 	if err == nil {
 		t.Fatalf("expected an error, got %+v", res)
 	}
-	if !strings.Contains(err.Error(), "git checkout -b 001-add-login") {
+	if !strings.Contains(err.Error(), "git checkout -b add-login") {
 		t.Errorf("error should name the branch command, got %q", err)
 	}
 	if res != nil {
@@ -503,10 +518,10 @@ func TestCreateNewFeatureSpecsPathBlocked(t *testing.T) {
 func TestCreateNewFeatureFeatureDirBlocked(t *testing.T) {
 	root := t.TempDir()
 	installGitShim(t, root, "main")
-	// Not a directory, so the numbering scan skips it as well.
-	writeFile(t, filepath.Join(root, ".plaesy", "specs", "001-add-login"), "blocked\n")
+	// The spec folder path is occupied by a file.
+	writeFile(t, filepath.Join(root, ".plaesy", "specs", "20261015-143022-add-login"), "blocked\n")
 
-	res, err := CreateNewFeature("add login")
+	res, err := CreateNewFeatureWith("add login", CreateOptions{Now: fixedClock})
 	if err == nil {
 		t.Fatalf("expected an error, got %+v", res)
 	}
@@ -544,7 +559,7 @@ func TestGetPathsReport(t *testing.T) {
 		if !strings.Contains(got, "BRANCH: main\n") {
 			t.Errorf("report should still name the current branch:\n%s", got)
 		}
-		if !strings.HasSuffix(got, "INFO: Not on a feature branch (format: XXX-feature-name)\n") {
+		if !strings.HasSuffix(got, "INFO: Not on a feature branch (create one with `plaesy features create`)\n") {
 			t.Errorf("report should end with the feature-branch notice:\n%s", got)
 		}
 		// The paths are still reported, relative to the current branch.
@@ -561,11 +576,11 @@ func TestGetPathsReport(t *testing.T) {
 		}
 	})
 
-	t.Run("branch without the numeric prefix is not a feature branch", func(t *testing.T) {
+	t.Run("any non-trunk branch is a feature branch", func(t *testing.T) {
 		root := t.TempDir()
-		installGitShim(t, root, "feature/001-add-login")
-		if !strings.Contains(GetPathsReport(), "Not on a feature branch") {
-			t.Error("feature/001-add-login does not start with NNN- and must be reported as off-branch")
+		installGitShim(t, root, "feature/add-login")
+		if strings.Contains(GetPathsReport(), "Not on a feature branch") {
+			t.Error("feature/add-login is a non-trunk branch and must not be reported as off-branch")
 		}
 	})
 

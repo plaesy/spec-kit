@@ -34,7 +34,7 @@ func GetPathsReport() string {
 		fmt.Fprintf(&b, "FEATURE_SPEC: %s\n", fp.FeatureSpec)
 		fmt.Fprintf(&b, "IMPL_PLAN: %s\n", fp.ImplPlan)
 		fmt.Fprintf(&b, "TASKS: %s\n", fp.Tasks)
-		fmt.Fprintf(&b, "INFO: Not on a feature branch (format: XXX-feature-name)\n")
+		fmt.Fprintf(&b, "INFO: Not on a feature branch (create one with `plaesy features create`)\n")
 		return b.String()
 	}
 

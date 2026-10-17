@@ -9,6 +9,10 @@ import (
 	"github.com/plaesy/spec-kit/internal/taskmanage"
 )
 
+// testSpec is the spec every fixture belongs to. Tests pass it with --spec, so
+// they do not depend on the git branch of the machine running them.
+const testSpec = "20261015-143022-auth-login"
+
 // Tests for the `plaesy task-manage` command surface: the wiring between cobra
 // and internal/taskmanage, and the output the user actually sees. The package
 // itself is covered at 92% (taskmanage_test.go), so what is untested here is
@@ -35,7 +39,7 @@ type taskFile struct {
 func makeTasksTree(t *testing.T, seed map[string][]taskFile) string {
 	t.Helper()
 	dir := tempProject(t)
-	tasksDir := filepath.Join(dir, ".plaesy", "tasks")
+	tasksDir := tasksDirOf(dir)
 	for _, s := range taskmanage.Statuses {
 		if err := os.MkdirAll(filepath.Join(tasksDir, s), 0o755); err != nil {
 			t.Fatalf("mkdir %s: %v", s, err)
@@ -55,11 +59,11 @@ func makeTasksTree(t *testing.T, seed map[string][]taskFile) string {
 	return dir
 }
 
-// tasksDirOf returns PROJECT_ROOT/.plaesy/tasks for a fixture built by
+// tasksDirOf returns the tasks directory of testSpec in a fixture built by
 // makeTasksTree, so filesystem assertions can address the tree directly
 // without re-deriving the path inside (and re-chdir'ing for) each command.
 func tasksDirOf(projectRoot string) string {
-	return filepath.Join(projectRoot, ".plaesy", "tasks")
+	return taskmanage.TasksDir(projectRoot, testSpec)
 }
 
 // runTaskManage chdirs into dir so tasksDirOrErr resolves the fixture from cwd,
@@ -70,7 +74,7 @@ func runTasks(t *testing.T, dir string, args ...string) (string, error) {
 	t.Helper()
 	withWorkingDirectory(t, dir)
 	cmd := newTasksCmd()
-	cmd.SetArgs(args)
+	cmd.SetArgs(append([]string{"--spec", testSpec}, args...))
 	return captureStdout(t, func() error {
 		return cmd.Execute()
 	})
@@ -114,6 +118,8 @@ func TestTasksDirOrErr(t *testing.T) {
 	t.Run("found returns tasks dir when .plaesy is present", func(t *testing.T) {
 		dir := makeTasksTree(t, nil)
 		withWorkingDirectory(t, dir)
+		tasksSpec = testSpec
+		t.Cleanup(func() { tasksSpec = "" })
 		got, err := tasksDirOrErr()
 		if err != nil {
 			t.Fatalf("tasksDirOrErr: %v", err)

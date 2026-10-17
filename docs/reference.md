@@ -278,27 +278,31 @@ drift tests enforce.
 
 ```bash
 
-plaesy features create <feature_description> [--json]
+plaesy features create <feature_description> [--worktree] [--json]
+plaesy features clean [--apply]
 ```
 
-Creates the next `NNN-slug` branch, checks it out, and seeds
-`.plaesy/specs/<branch>/spec.md`. Numbering is `highest + 1` across existing
-`NNN-*` directories. Details: [prompts/create.md](../prompts/create.md) —
-there is no `docs/scripts/create.md`; the `/create` prompt is the only
-specification of this command.
+`create` names the branch after the first three words of the description
+(`auth-login`) and the spec folder `{TIMESTAMP}-{BRANCH}`
+(`.plaesy/specs/20261015-143022-auth-login/`), with `tasks/` and `spec.md`.
+`--worktree` makes the feature in its own git worktree outside the repository,
+so several features can be in progress at once. `clean` lists the feature
+worktrees and, with `--apply`, removes the merged ones. Details:
+[features.md](scripts/features.md).
 
 | Flag | Default | Description |
 |---|---|---|
+| `--worktree` | `false` | Create the feature in its own worktree under the worktree home |
 | `--json` | `false` | Output as JSON |
 
-**Example**: `plaesy features create "Add dark mode toggle"`
+**Example**: `plaesy features create --worktree "Add dark mode toggle"`
 
 ### `features` (list)
 
-Lists every feature directory, ordered by number then name, with the design
-documents present in each and `*` on the checked-out branch. A directory that
-is not `NNN-slug` is skipped. On a project with no `.plaesy/specs/`, prints the
-command to create one rather than an empty block.
+Lists every spec folder, ordered by name (so timestamps run in chronological
+order), with the design documents present in each and `*` on the spec of the
+checked-out branch. On a project with no `.plaesy/specs/`, prints the command to
+create one rather than an empty block.
 
 **Example**: `plaesy features`
 
@@ -641,12 +645,15 @@ Show Plaesy CLI version and environment status. Reports:
 plaesy tasks [subcommand]
 ```
 
-Task lifecycle management for `.plaesy/tasks/{backlog,todo,doing,done,blocked}/`.
+Task lifecycle management for `.plaesy/specs/<spec>/tasks/{backlog,todo,doing,done,blocked}/`.
+The spec is the folder whose name ends in the current git branch. `--spec <folder>`
+selects another spec.
 
 ### Subcommands
 
 | Subcommand | Args | Description |
 |---|---|---|
+| `add` | `<priority> <slug> <title>` | Add a task to the backlog of the current spec |
 | `list` | — | List all tasks across every status |
 | `list-status` | `<status>` | List tasks in one status |
 | `next` | — | Move the next backlog task into `todo` and report it |
@@ -656,6 +663,7 @@ Task lifecycle management for `.plaesy/tasks/{backlog,todo,doing,done,blocked}/`
 | `unblock` | `<task>` | Unblock a task |
 | `move` | `<task_file> <from> <to>` | Move between arbitrary statuses |
 | `show` | `<task_file> [status]` | Display task content |
+| `run` | `--chain <name>` or `--provider <name>`, `[--max N]`, `[--timeout D]`, `[--confirm]` | Claim todo tasks of the spec (highest priority first) and send each to a delegate provider or chain, in the project root. Output goes to `<spec>/runs/`; the task stays in `doing` until reviewed, and a failed run moves it to `blocked` |
 
 Valid statuses: `backlog`, `todo`, `doing`, `done`, `blocked`.
 

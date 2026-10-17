@@ -1,16 +1,16 @@
 ---
-description: "Generate task backlog from requirements specifications — produces `.plaesy/tasks/` frontmatter-formatted task files conforming to .plaesy/instructions/tasks.md"
+description: "Generate task backlog from requirements specifications — produces `.plaesy/specs/{spec}/tasks/` frontmatter-formatted task files conforming to .plaesy/instructions/tasks.md"
 ---
 
 # `/create:tasks` command instructions
 
 This is the **tasks**-scoped entry point into `/create`. It produces real
-task files (`.md`) conforming to `.plaesy/tasks/` structure, not freeform markdown or descriptions.
+task files (`.md`) conforming to `.plaesy/specs/{spec}/tasks/` structure, not freeform markdown or descriptions.
 
 **CRITICAL**: All generated tasks MUST conform to `.plaesy/instructions/tasks.md` format:
 
 - Frontmatter: `title`, `phase`, `status`, `createdAt`, `updatedAt`
-- Directory: `.plaesy/tasks/backlog/` (new tasks always start in backlog; `/continue` or `/implement` promotes them)
+- Directory: `.plaesy/specs/{spec}/tasks/backlog/` (new tasks always start in backlog; `/continue` or `/implement` promotes them)
 - Naming: `{priority}_{title}.md` (critical_, high_, medium_, low_ prefixes)
 - Sections: Description, Acceptance Criteria, Dependencies, References
 
@@ -27,7 +27,7 @@ table in `.plaesy/instructions/quality-gates.md`). Do not report completion whil
 ```bash
 
 /create:tasks "requirements.md" --format markdown
-/create:tasks "requirements.md" --epic "EPIC-001" --format json --out .plaesy/tasks/backlog/features.json
+/create:tasks "requirements.md" --epic "EPIC-001" --format json --out .plaesy/specs/{spec}/tasks/backlog/features.json
 /create:tasks --for .plaesy/memory/design.md --requirements-section "Feature Scope" --stories-only
 ```
 
@@ -37,8 +37,8 @@ table in `.plaesy/instructions/quality-gates.md`). Do not report completion whil
 - **Flag**: `--epic-id`; **Default**: auto-generated; **Meaning**: Parent epic ID (if adding stories to existing epic); omit to create new epic
 - **Flag**: `--stories-only`; **Default**: false; **Meaning**: Generate only user stories/acceptance criteria; skip technical tasks
 - **Flag**: `--tasks-only`; **Default**: false; **Meaning**: Generate only technical tasks; assumes stories already exist
-- **Flag**: `--out`; **Default**: `.plaesy/tasks/backlog/` (per-task files) /
-  `.plaesy/tasks/backlog/backlog.json` (`--format json`); **Meaning**: Where the backlog is written;
+- **Flag**: `--out`; **Default**: `.plaesy/specs/{spec}/tasks/backlog/` (per-task files) /
+  `.plaesy/specs/{spec}/tasks/backlog/backlog.json` (`--format json`); **Meaning**: Where the backlog is written;
   a directory for `markdown`, a file path for `json`
 - **Flag**: `--estimate`; **Default**: true; **Meaning**: Include story point estimates (Fibonacci: 1-13)
 - **Flag**: `--gwt-format`; **Default**: true; **Meaning**: Use Given-When-Then for acceptance criteria (vs. checklist-only)
@@ -96,16 +96,16 @@ For each task, LLM will:
 6. **Identify dependencies**: blocking tasks, external blockers
 7. **Generate frontmatter**: title, phase, status (always "backlog" for new), createdAt, updatedAt
 
-### Step 4: Write Task Files to `.plaesy/tasks/` Structure
+### Step 4: Write Task Files to `.plaesy/specs/{spec}/tasks/` Structure
 
 Write individual task files conforming to `.plaesy/instructions/tasks.md`:
 
-**File location**: `.plaesy/tasks/backlog/{priority}_{title}.md`
+**File location**: `.plaesy/specs/{spec}/tasks/backlog/{priority}_{title}.md`
 **Naming examples**:
 
-- `.plaesy/tasks/backlog/critical_setup-auth-middleware.md`
-- `.plaesy/tasks/backlog/high_implement-user-model.md`
-- `.plaesy/tasks/backlog/medium_add-tests-for-api.md`
+- `.plaesy/specs/{spec}/tasks/backlog/critical_setup-auth-middleware.md`
+- `.plaesy/specs/{spec}/tasks/backlog/high_implement-user-model.md`
+- `.plaesy/specs/{spec}/tasks/backlog/medium_add-tests-for-api.md`
 
 **File format** (must follow `.plaesy/instructions/tasks.md`):
 
@@ -153,12 +153,12 @@ Before reporting complete:
 
 1. **Format validation**:
   - Each task has required frontmatter (title, phase, status, createdAt, updatedAt)
-  - All tasks use correct directory: `.plaesy/tasks/backlog/`
+  - All tasks use correct directory: `.plaesy/specs/{spec}/tasks/backlog/`
   - All filenames follow pattern: `{priority}_{title}.md`
 
 2. **Content validation**:
   - Each task has Description + Acceptance Criteria (minimum)
-  - Dependencies are valid cross-references to other `.plaesy/tasks/` files
+  - Dependencies are valid cross-references to other `.plaesy/specs/{spec}/tasks/` files
   - TDD tasks mark RED phase test generation first
 
 3. **Integration validation**:
@@ -176,10 +176,10 @@ Before reporting complete:
 Build the task set once, then serialize it per `--format`:
 
 - **`--format markdown`** (default) — one file per task in
-  `.plaesy/tasks/backlog/{priority}_{title}.md`, exactly as written in Step 4.
-  This is the primary contract and the shape `.plaesy/tasks/` expects.
+  `.plaesy/specs/{spec}/tasks/backlog/{priority}_{title}.md`, exactly as written in Step 4.
+  This is the primary contract and the shape `.plaesy/specs/{spec}/tasks/` expects.
 - **`--format json`** — the *same* tasks serialized as one JSON index at `--out`
-  (default `.plaesy/tasks/backlog/backlog.json`). It is a derived index of those
+  (default `.plaesy/specs/{spec}/tasks/backlog/backlog.json`). It is a derived index of those
   per-task files, never a differently-shaped second backlog.
 - **`--format both`** — the per-task Markdown files *and* the JSON index.
 
@@ -246,7 +246,7 @@ JSON index shape (used by `--format json` and `both`):
     {
       "id": "TASK-001",
       "story_id": "STORY-001",
-      "path": ".plaesy/tasks/backlog/high_implement-user-model.md",
+      "path": ".plaesy/specs/{spec}/tasks/backlog/high_implement-user-model.md",
       "type": "implementation|test|documentation",
       "depends_on": []
     }
@@ -262,11 +262,11 @@ path. When the spec cannot be decomposed, the brief is returned instead and `fil
 
 ## What a Good Task File Does
 
-- **Generate structured `.plaesy/tasks/` files** — the format is what makes a task
+- **Generate structured `.plaesy/specs/{spec}/tasks/` files** — the format is what makes a task
   addressable by the rest of the workflow
 - **Follow the format requirements in `.plaesy/instructions/tasks.md`**,
   frontmatter included
-- **Write task files into `.plaesy/tasks/backlog/`** unless the user explicitly asks
+- **Write task files into `.plaesy/specs/{spec}/tasks/backlog/`** unless the user explicitly asks
   for another location
 - **Prefix task filenames with priority** (`{priority}_{title}.md`) so the queue
   sorts by it
@@ -316,7 +316,7 @@ path. When the spec cannot be decomposed, the brief is returned instead and `fil
   file is missing, derive positioning from existing product docs/README,
   otherwise label it `ASSUMED — generic positioning` and record it
 - `.plaesy/memory/constitution.md` — tech stack, team size, timeline (affects task scope/estimate)
-- Existing `.plaesy/tasks/{backlog|todo}/*.md` — avoid duplicate tasks
+- Existing `.plaesy/specs/{spec}/tasks/{backlog|todo}/*.md` — avoid duplicate tasks
 
 If `.plaesy/memory/design.md` exists, additionally:
 
@@ -328,7 +328,7 @@ If `.plaesy/memory/design.md` exists, additionally:
 
 If generating tasks for a **feature within a larger project**, organize by feature:
 
-- Name feature-related tasks `.plaesy/tasks/backlog/{priority}_{feature-name}_{title}.md`, keeping the `{priority}_{title}` pattern
+- Name feature-related tasks `.plaesy/specs/{spec}/tasks/backlog/{priority}_{feature-name}_{title}.md`, keeping the `{priority}_{title}` pattern
 - Link to feature spec in `.plaesy/specs/[###-feature-name]/` if it exists
 
 ## Programmatic Invocation (Called By Other Prompts)
@@ -340,10 +340,10 @@ A prompt that needs a task backlog mid-run (`/implement`, `/doc`, `/assess`) cal
 CALL /create:tasks
   spec: <requirements document path or inline text>
   format: markdown | json | both
-  out: .plaesy/tasks/backlog/            # directory for markdown, file path for json
+  out: .plaesy/specs/{spec}/tasks/backlog/            # directory for markdown, file path for json
   prioritize: true
 RETURNS
-  directory: .plaesy/tasks/backlog/
+  directory: .plaesy/specs/{spec}/tasks/backlog/
   file_count: <number of task files created, 0 if generation was skipped>
   files: [critical_task1.md, high_task2.md, …]
   index: <list of all task filenames with frontmatter summary>
@@ -364,7 +364,7 @@ fabricate paths.
 
 A task backlog is complete when:
 
-- ✅ All tasks use `.plaesy/tasks/backlog/{priority}_{title}.md` format
+- ✅ All tasks use `.plaesy/specs/{spec}/tasks/backlog/{priority}_{title}.md` format
 - ✅ Each task has frontmatter (title, phase, status, createdAt, updatedAt)
 - ✅ Description is clear and concise
 - ✅ Acceptance criteria are testable (not just checklist items)

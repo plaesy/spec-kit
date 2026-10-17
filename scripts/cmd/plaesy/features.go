@@ -34,14 +34,18 @@ func newFeaturesCmd() *cobra.Command {
 		Long: `Work with feature branches.
 
   plaesy features                       list every feature in .plaesy/specs/
-  plaesy features create <description>  branch, directories, and spec.md
+  plaesy features create <description>  branch, spec folder and spec.md
+  plaesy features create --worktree ...  the same, in its own git worktree
   plaesy features paths                 paths for the current feature
   plaesy features validate              is the current feature ready for tasks
+  plaesy features clean [--apply]       remove worktrees of merged features
 
 With no subcommand, lists the features that exist.`,
 		Example: `  plaesy features
   plaesy features create "Add dark mode toggle"
+  plaesy features create --worktree "Add billing page"
   plaesy features paths
+  plaesy features clean
   plaesy features validate --json`,
 		Args: cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -57,6 +61,7 @@ With no subcommand, lists the features that exist.`,
 		newFeaturesCreateCmd(),
 		newFeaturesPathsCmd(),
 		newFeaturesValidateCmd(),
+		newFeaturesCleanCmd(),
 	)
 	return cmd
 }

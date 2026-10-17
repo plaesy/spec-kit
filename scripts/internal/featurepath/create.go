@@ -9,66 +9,171 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"strconv"
 	"strings"
+	"time"
 
 	"github.com/plaesy/spec-kit/internal/common"
+	"github.com/plaesy/spec-kit/internal/taskmanage"
 )
 
-// CreateResult mirrors the fields emitted by create-new-feature.sh.
+// CreateResult describes a new feature.
 type CreateResult struct {
+	// BranchName is the git branch, e.g. "auth-login".
 	BranchName string
-	SpecFile   string
-	FeatureNum string
+	// SpecName is the spec folder, {TIMESTAMP}-{BRANCH}, e.g.
+	// "20261015-143022-auth-login".
+	SpecName string
+	// SpecFile is the spec.md inside the spec folder.
+	SpecFile string
+	// WorktreePath is the linked worktree the feature lives in. It is empty
+	// when the feature was created in the current working tree.
+	WorktreePath string
+	// Warning is set when the new spec would not be committed, for example
+	// because git ignores it. It is empty when there is nothing to report.
+	Warning string
 }
 
-var (
-	leadingNumberRE = regexp.MustCompile(`^[0-9]+`)
-	nonAlnumRE      = regexp.MustCompile(`[^a-z0-9]+`)
-)
+// CreateOptions controls where a feature is created.
+type CreateOptions struct {
+	// Worktree creates the feature in its own git worktree outside the
+	// repository, so several features can be in progress at once. Without it
+	// the feature branch is checked out in the current working tree.
+	Worktree bool
+	// Now supplies the timestamp. Nil means the current time. Tests set it.
+	Now func() time.Time
+}
 
-// CreateNewFeature mirrors create-new-feature.sh: computes the next feature
-// number, creates a NNN-slug branch, and seeds .plaesy/specs/<branch>/spec.md from
-// templates/spec.template.md.
+var nonAlnumRE = regexp.MustCompile(`[^a-z0-9]+`)
+
+// CreateNewFeature creates a feature in the current working tree.
 func CreateNewFeature(description string) (*CreateResult, error) {
+	return CreateNewFeatureWith(description, CreateOptions{})
+}
+
+// CreateNewFeatureWith creates a feature. Its branch is named after the first
+// words of the description, and its spec folder is {TIMESTAMP}-{BRANCH}.
+func CreateNewFeatureWith(description string, opts CreateOptions) (*CreateResult, error) {
 	description = strings.TrimSpace(description)
 	if description == "" {
 		return nil, fmt.Errorf("feature description is required")
+	}
+
+	slug := branchSlug(description)
+	if slug == "" {
+		return nil, fmt.Errorf("feature description %q has no letters or digits to name the branch", description)
 	}
 
 	repoRoot, err := common.GetRepoRoot()
 	if err != nil {
 		return nil, err
 	}
+	// Templates are git-ignored, so only the main checkout has them. A
+	// worktree reads them from there.
+	mainRoot, err := common.MainCheckoutRoot()
+	if err != nil {
+		return nil, err
+	}
 
+	now := time.Now
+	if opts.Now != nil {
+		now = opts.Now
+	}
+	specName := common.NewSpecName(now(), slug)
+
+	if opts.Worktree {
+		return createInWorktree(mainRoot, slug, specName)
+	}
+	return createInPlace(repoRoot, mainRoot, slug, specName)
+}
+
+// createInPlace checks the feature branch out in the current working tree.
+func createInPlace(repoRoot, mainRoot, branch, specName string) (*CreateResult, error) {
 	specsDir := filepath.Join(repoRoot, ".plaesy", "specs")
 	if err := os.MkdirAll(specsDir, 0o755); err != nil {
 		return nil, fmt.Errorf("creating specs dir: %w", err)
 	}
 
-	highest := 0
-	entries, _ := os.ReadDir(specsDir)
-	for _, e := range entries {
-		if !e.IsDir() {
-			continue
-		}
-		match := leadingNumberRE.FindString(e.Name())
-		if match == "" {
-			continue
-		}
-		n, err := strconv.Atoi(match)
-		if err == nil && n > highest {
-			highest = n
-		}
+	if out, err := exec.Command("git", "checkout", "-b", branch).CombinedOutput(); err != nil {
+		return nil, fmt.Errorf("git checkout -b %s: %w: %s", branch, err, string(out))
 	}
 
-	featureNum := fmt.Sprintf("%03d", highest+1)
+	specDir := filepath.Join(specsDir, specName)
+	return seedSpec(mainRoot, repoRoot, specDir, branch, specName, "")
+}
 
-	slug := strings.ToLower(description)
-	slug = nonAlnumRE.ReplaceAllString(slug, "-")
-	slug = strings.Trim(slug, "-")
+// createInWorktree adds a linked worktree for the feature branch, outside the
+// repository, and creates the spec inside it. The branch starts from the
+// main checkout's current commit.
+func createInWorktree(mainRoot, branch, specName string) (*CreateResult, error) {
+	projectDir, err := ProjectWorktreeDir(mainRoot)
+	if err != nil {
+		return nil, err
+	}
+	if err := os.MkdirAll(projectDir, 0o755); err != nil {
+		return nil, fmt.Errorf("creating worktree dir: %w", err)
+	}
 
-	words := []string{}
+	wtPath := filepath.Join(projectDir, specName)
+	if _, err := os.Stat(wtPath); err == nil {
+		return nil, fmt.Errorf("worktree path already exists: %s", wtPath)
+	}
+
+	if out, err := exec.Command("git", "-C", mainRoot, "worktree", "add", "-b", branch, wtPath).CombinedOutput(); err != nil {
+		return nil, fmt.Errorf("git worktree add -b %s %s: %w: %s", branch, wtPath, err, string(out))
+	}
+
+	specDir := filepath.Join(wtPath, ".plaesy", "specs", specName)
+	result, err := seedSpec(mainRoot, wtPath, specDir, branch, specName, wtPath)
+	if err != nil {
+		// Undo only what this call created: the new worktree and its branch.
+		_ = exec.Command("git", "-C", mainRoot, "worktree", "remove", "--force", wtPath).Run()
+		_ = exec.Command("git", "-C", mainRoot, "branch", "-D", branch).Run()
+		return nil, err
+	}
+	return result, nil
+}
+
+// seedSpec creates the spec folder with its status directories and spec.md.
+// templateRoot is where the template is read from; gitDir is the working tree
+// the spec belongs to, used to warn when git ignores the new spec.
+func seedSpec(templateRoot, gitDir, specDir, branch, specName, worktreePath string) (*CreateResult, error) {
+	if err := os.MkdirAll(specDir, 0o755); err != nil {
+		return nil, fmt.Errorf("creating feature dir: %w", err)
+	}
+	// Tasks belong to the spec, so the spec starts with its own status folders.
+	if err := taskmanage.CreateStatusDirs(filepath.Join(specDir, "tasks")); err != nil {
+		return nil, fmt.Errorf("creating task dirs: %w", err)
+	}
+	specFile := filepath.Join(specDir, "spec.md")
+	if err := seedSpecFromTemplate(templateRoot, specFile); err != nil {
+		return nil, err
+	}
+	return &CreateResult{
+		BranchName:   branch,
+		SpecName:     specName,
+		SpecFile:     specFile,
+		WorktreePath: worktreePath,
+		Warning:      ignoredWarning(gitDir, specFile),
+	}, nil
+}
+
+// ignoredWarning returns a warning when git ignores the spec file, so the
+// spec would never be committed. It returns "" when the file is tracked-able
+// or when git cannot tell.
+func ignoredWarning(gitDir, specFile string) string {
+	cmd := exec.Command("git", "-C", gitDir, "check-ignore", "-q", specFile)
+	err := cmd.Run()
+	if err == nil {
+		return fmt.Sprintf("git ignores %s, so the spec will not be committed. Check your gitignore rules for .plaesy/ (a global ignore file often has one).", specFile)
+	}
+	return ""
+}
+
+// branchSlug turns a description into a branch name: its first three words,
+// lower-cased and joined by hyphens.
+func branchSlug(description string) string {
+	slug := strings.Trim(nonAlnumRE.ReplaceAllString(strings.ToLower(description), "-"), "-")
+	var words []string
 	for _, w := range strings.Split(slug, "-") {
 		if w == "" {
 			continue
@@ -78,27 +183,10 @@ func CreateNewFeature(description string) (*CreateResult, error) {
 			break
 		}
 	}
-
-	branchName := featureNum + "-" + strings.Join(words, "-")
-
-	if out, err := exec.Command("git", "checkout", "-b", branchName).CombinedOutput(); err != nil {
-		return nil, fmt.Errorf("git checkout -b %s: %w: %s", branchName, err, string(out))
-	}
-
-	featureDir := filepath.Join(specsDir, branchName)
-	if err := os.MkdirAll(featureDir, 0o755); err != nil {
-		return nil, fmt.Errorf("creating feature dir: %w", err)
-	}
-
-	specFile := filepath.Join(featureDir, "spec.md")
-	if err := seedSpecFromTemplate(repoRoot, specFile); err != nil {
-		return nil, err
-	}
-
-	return &CreateResult{BranchName: branchName, SpecFile: specFile, FeatureNum: featureNum}, nil
+	return strings.Join(words, "-")
 }
 
-// specTemplateName is the file seeded into .plaesy/specs/<branch>/spec.md.
+// specTemplateName is the file seeded into .plaesy/specs/<spec>/spec.md.
 const specTemplateName = "spec.template.md"
 
 // specTemplateCandidates lists, in order, where the spec template may live

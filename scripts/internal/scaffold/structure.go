@@ -9,42 +9,9 @@ import (
 	"github.com/plaesy/spec-kit/internal/common"
 )
 
-const tasksReadme = `# Task Management
-
-Tasks are organized by status:
-
-- **backlog/** — Ideas, features, bugs (unscheduled)
-- **todo/** — Ready to start (next in queue)
-- **doing/** — In active work
-- **done/** — Completed and validated
-- **blocked/** — Waiting on dependency
-
-## Task Lifecycle
-
-` + "```" + `
-backlog → todo → doing → [quality-gates] → done / blocked
-` + "```" + `
-
-Move tasks between directories as status changes. Use ` + "`/continue`" + ` or ` + "`/loop`" + ` for automated workflow.
-
-**See ` + "`.plaesy/instructions/tasks.md`" + ` for detailed task management instructions.**
-`
-
-// createTaskStructure ports create_task_structure().
-func createTaskStructure(targetDir string) error {
-	common.LogInfo("Creating task management structure...")
-	for _, d := range []string{"backlog", "todo", "doing", "done", "blocked"} {
-		if err := os.MkdirAll(filepath.Join(targetDir, "tasks", d), 0o755); err != nil {
-			return err
-		}
-	}
-	readmePath := filepath.Join(targetDir, "tasks", "README.md")
-	if err := os.WriteFile(readmePath, []byte(tasksReadme), 0o644); err != nil {
-		return err
-	}
-	common.LogSuccess("Task structure created")
-	return nil
-}
+// Tasks are no longer created at init. Each spec owns its tasks/ folder, which
+// featurepath.CreateNewFeature creates with the spec. See
+// .plaesy/instructions/tasks.md.
 
 // createMemoryStructure ports create_memory_structure().
 func createMemoryStructure(home, targetDir string, pol copyPolicy) error {
@@ -215,13 +182,6 @@ func createStructure(home, targetDir string, cfg *PlatformConfig, pol copyPolicy
 		return err
 	}
 	if err := copyScripts(home, baseDir, pol); err != nil {
-		return err
-	}
-	// createTaskStructure is deliberately NOT policy-gated: it overwrites
-	// tasks/README.md unconditionally (os.WriteFile, not copyFile) because
-	// that file is constant generated prose. Reload does not call this path at
-	// all — a refresh must not rewrite anything the user owns.
-	if err := createTaskStructure(baseDir); err != nil {
 		return err
 	}
 	if err := createMemoryStructure(home, baseDir, pol); err != nil {

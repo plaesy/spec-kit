@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -13,7 +14,8 @@ import (
 
 // Feature is one entry under .plaesy/specs/.
 type Feature struct {
-	// Name is the directory name, which is also the branch name: NNN-slug.
+	// Name is the spec folder name: {TIMESTAMP}-{BRANCH}, or NNN-slug for a
+	// feature created before timestamps.
 	Name string
 	// Number is the leading NNN as a string, zero-padded, so it can be
 	// printed without re-formatting.
@@ -27,6 +29,10 @@ type Feature struct {
 	// "nothing here yet" is the thing a reader needs to see.
 	Documents []string
 }
+
+// leadingNumberRE matches the leading digits of a spec folder name. For a
+// timestamped folder that is the date, which sorts chronologically.
+var leadingNumberRE = regexp.MustCompile(`^[0-9]+`)
 
 // designDocuments are the files a feature directory accumulates, in the order
 // they are written by /implement. Only the ones present are listed.
@@ -98,7 +104,7 @@ func ListFeatures() ([]Feature, error) {
 			Name:      name,
 			Number:    number,
 			Dir:       dir,
-			Current:   name == current,
+			Current:   common.SpecBranch(name) == current,
 			Documents: presentDocuments(dir),
 		})
 	}

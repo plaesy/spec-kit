@@ -13,7 +13,7 @@ consumed by the CLI and AI assistants; the matching page here explains it.
 | **Agents** | [agents/](../agents/) — AI role configurations | [agents/](agents/README.md) |
 | **Checklists** | [checklists/](../checklists/) — quality gate checklists | [checklists/](checklists/README.md) |
 | **Testing** | [testing/](testing/README.md) — test strategy assets | see `docs/testing/README.md` |
-| **Tasks** | [.plaesy/tasks/](../.plaesy/tasks/) — per-project task tracking | [tasks/](tasks/README.md) |
+| **Tasks** | [.plaesy/specs/](../.plaesy/specs/) — per-spec task tracking (`specs/<spec>/tasks/`) | [tasks/](tasks/README.md) |
 
 See the [root README](../README.md) for the framework overview and quick start.
 

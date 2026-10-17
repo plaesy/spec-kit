@@ -44,7 +44,7 @@ container. Add a link here only once the file it points at exists.
 - Scripts → `.plaesy/scripts/{powershell,bash}/`
 - Configs → `.plaesy/scripts/configs/`
 - Analysis → `.plaesy/analysis/`
-- Tasks → `.plaesy/tasks/{backlog,todo,doing,done,blocked}/`
+- Tasks → `.plaesy/specs/{spec}/tasks/{backlog,todo,doing,done,blocked}/`
 
 ---
 

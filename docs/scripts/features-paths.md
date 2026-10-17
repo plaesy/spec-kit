@@ -35,7 +35,7 @@ TASKS: /home/user/project/.plaesy/specs/001-user-authentication/tasks.md
 ```
 
 Paths are not checked for existence — they are computed from the repo root
-and current branch name only (`.plaesy/specs/<branch>/...`).
+and current branch name only (`.plaesy/specs/<timestamp>-<branch>/...`).
 
 ## Behavior When Not on a Feature Branch
 
@@ -43,7 +43,7 @@ This command always follows the old bash script's forgiving behavior (the
 Go port standardized on it, rather than porting the PowerShell script's
 stricter one — see "Migration note" below): it still prints all six lines
 (using the actual current branch, e.g. `BRANCH: main`), then appends
-`INFO: Not on a feature branch (format: XXX-feature-name)` and exits `0`.
+`INFO: Not on a feature branch (create one with `plaesy features create`)` and exits `0`.
 
 If `git rev-parse` fails entirely (e.g. not a git repo), it falls back to
 `REPO_ROOT: <cwd>`, `BRANCH: unknown`, `FEATURE_DIR: Not available`, etc.,

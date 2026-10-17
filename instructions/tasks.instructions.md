@@ -1,13 +1,13 @@
 ---
 description: "Task management and workflow organization"
-applyTo: ".plaesy/tasks/**"
+applyTo: ".plaesy/specs/*/tasks/**"
 ---
 
 # Task Management Instructions
 
 ## Overview
 
-Tasks in Plaesy are organized by status in the `.plaesy/tasks/` directory structure. Each task moves through lifecycle stages from conception to completion.
+Tasks in Plaesy are organized by status in the `.plaesy/specs/{spec}/tasks/` directory structure. Each task moves through lifecycle stages from conception to completion.
 
 ## Task Organization
 
@@ -15,7 +15,7 @@ Tasks in Plaesy are organized by status in the `.plaesy/tasks/` directory struct
 
 ```text
 
-.plaesy/tasks/
+.plaesy/specs/{spec}/tasks/
 ├── backlog/       → Ideas, features, bugs (unscheduled)
 ├── todo/          → Ready to start (next in queue)
 ├── doing/         → In active work
@@ -73,7 +73,7 @@ Clear description of what needs to be done.
 - ... list `.plaesy/memory/{topics}.md` for reference
 
 ## Dependencies
-- path file another tasks (if blocked by another task, ex: `.plaesy/tasks/{status}/*.md`)
+- path file another tasks (if blocked by another task, ex: `.plaesy/specs/{spec}/tasks/{status}/*.md`)
 - External dependency (if any)
 
 ## Notes
@@ -89,7 +89,7 @@ Next todo list for this tasks
 
 - Move task file between status directories as work progresses
 - Update file timestamp on move (git will track this)
-- Don't delete tasks — move to appropriate directory status (`.plaesy/tasks/{status}/{topic}.md`)
+- Don't delete tasks — move to appropriate directory status (`.plaesy/specs/{spec}/tasks/{status}/{topic}.md`)
 - Use `plaesy tasks move <task_file> <from_status> <to_status>` (or
   `plaesy tasks block <task_file> [reason]` when moving to `blocked/`)
   for a manual/ad-hoc move — `block` appends a `## Blocked Reason` section
@@ -137,10 +137,10 @@ Use `/continue` with task management for autonomous workflow:
 
 This workflow:
 
-1. Reads tasks from `.plaesy/tasks/todo/` directory (if any exist)
+1. Reads tasks from `.plaesy/specs/{spec}/tasks/todo/` directory (if any exist)
 2. Auto-detects project state and executes remaining phases
-3. Completes current task and moves to `.plaesy/tasks/done/*.md`
-4. Blocked items move to `.plaesy/tasks/blocked/*.md` with reason
+3. Completes current task and moves to `.plaesy/specs/{spec}/tasks/done/*.md`
+4. Blocked items move to `.plaesy/specs/{spec}/tasks/blocked/*.md` with reason
 5. Reports progress to `.plaesy/context.md`
 6. Can loop autonomously via `/loop` for repeated execution
 

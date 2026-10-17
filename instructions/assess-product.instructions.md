@@ -230,7 +230,7 @@ Only this dimension's specifics follow.
 **Worked example**:
 
 ```text
-I could not assess backlog hygiene because `.plaesy/tasks/` holds only the
+I could not assess backlog hygiene because `.plaesy/specs/{spec}/tasks/` holds only the
 auto-created scaffold.
 To improve confidence, provide a populated backlog, or state that this project
 runs without one so the check reports N/A rather than a finding.

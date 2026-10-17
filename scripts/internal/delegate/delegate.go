@@ -17,6 +17,10 @@ type Request struct {
 	Prompt          string
 	MaxOutputTokens int           // 0 means the provider default; CLI providers ignore it
 	Timeout         time.Duration // 0 means no timeout beyond the context
+	// Dir is the working directory a CLI provider runs in, so an agent that
+	// edits files edits the right tree. Empty means the process directory.
+	// API providers ignore it.
+	Dir string
 }
 
 // Response is what a provider returns for one call. Token counts are nil when

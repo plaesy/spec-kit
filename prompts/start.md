@@ -64,7 +64,7 @@ disagreeing about what Phase 3 is.
 1. Load memory state from `.plaesy/memory/`
 2. Sub-step 1.0 — Constitution (below)
 3. Sub-step 1.1 — Ambiguity Resolution (below)
-4. Seed `.plaesy/tasks/`
+4. Seed `.plaesy/specs/{spec}/tasks/`
 5. Report the phase ladder position and hand off to `/continue`
 
 ### Sub-step 1.0: Constitution (One-Time, Before Anything Else)
@@ -119,7 +119,7 @@ Create project task infrastructure:
 
 ```text
 
-.plaesy/tasks/
+.plaesy/specs/{spec}/tasks/
 ├── backlog/           # Ideas, features, bugs not yet scheduled
 ├── todo/              # Scheduled for current phase
 ├── doing/             # In active work
@@ -130,7 +130,7 @@ Create project task infrastructure:
 **Seed initial tasks from project description** (optional):
 
 1. Extract key work items from requirements / architecture specifications
-2. Create task files in `.plaesy/tasks/backlog/`
+2. Create task files in `.plaesy/specs/{spec}/tasks/backlog/`
 3. Each task includes YAML frontmatter defining Status, Phase, Description, Acceptance Criteria, Priority
 
 **Integration across phases**:
@@ -209,7 +209,7 @@ counted separately (see `.plaesy/instructions/plaesy.md`).
 - ✅ Project type detected, or the ambiguity that prevents it is reported and asked
 - ✅ `.plaesy/memory/constitution.md` exists, is filled, and passes `plaesy validate constitution`
 - ✅ Active dimensions reported, so the next phase reads the right thresholds
-- ✅ `.plaesy/tasks/{backlog,todo,doing,done,blocked}/` exist
+- ✅ `.plaesy/specs/{spec}/tasks/{backlog,todo,doing,done,blocked}/` exist
 - ✅ Phase position reported against the canonical ladder, and `/continue` named as the handoff
 
 ## What Counts as Done
@@ -232,7 +232,7 @@ START — Project Initialized
 Project Type: [software | business | legal | marketing | design | product | mixed]
 Active Dimensions: [list from constitution.md]
 Constitution: [path to .plaesy/memory/constitution.md — validated]
-Task System: [.plaesy/tasks/{backlog,todo,doing,done,blocked}/ created]
+Task System: [.plaesy/specs/{spec}/tasks/{backlog,todo,doing,done,blocked}/ created]
 Phase Position: 1/9 (Sub-step 1.0 + 1.1 complete)
 Handoff: /continue
 ```
@@ -240,7 +240,7 @@ Handoff: /continue
 **Files created**:
 
 - `.plaesy/memory/constitution.md` — active dimensions + thresholds (validated by `plaesy validate constitution`)
-- `.plaesy/tasks/{backlog,todo,doing,done,blocked}/` — task directory structure
+- `.plaesy/specs/{spec}/tasks/{backlog,todo,doing,done,blocked}/` — task directory structure
 - `.plaesy/context.md` — initial session state (phase, next steps)
 - `.plaesy/memory.md` — knowledge index (empty, ready for entries)
 - `.plaesy/decisions.md` — decisions index (empty, ready for entries)
@@ -269,14 +269,14 @@ START — Project Initialized
 Project Type: mixed
 Active Dimensions: [technical, business, legal, operations, product]
 Constitution: .plaesy/memory/constitution.md — validated
-Task System: .plaesy/tasks/{backlog,todo,doing,done,blocked}/ created
+Task System: .plaesy/specs/{spec}/tasks/{backlog,todo,doing,done,blocked}/ created
 Phase Position: 1/9 (Sub-step 1.0 + 1.1 complete)
 Handoff: /continue
 
 Files created:
 - .plaesy/memory/constitution.md (technical: coverage≥90 p95<200ms; business: CAC payback≤12mo;
   legal: GDPR audit; operations: RTO<1hr; product: roadmap traceability)
-- .plaesy/tasks/ directories ready
+- .plaesy/specs/{spec}/tasks/ directories ready
 - .plaesy/context.md (phase=1, next=/continue)
 - .plaesy/memory.md (empty index)
 - .plaesy/decisions.md (empty index)

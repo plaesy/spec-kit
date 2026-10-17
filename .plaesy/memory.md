@@ -1,13 +1,13 @@
 ---
 title: "Memory & Knowledge Index"
 description: "Central index for project memory, guidance, and reference"
-updatedAt: "2026-10-10T20:30:00.000Z"
+updatedAt: "2026-10-15T00:00:00.000Z"
 ---
 
 # Memory Index & Navigation
 
 **Project:** plaesy/spec-kit — the config-driven spec-kit fork
-**Last Updated:** 2026-10-10
+**Last Updated:** 2026-10-15
 **Purpose:** Navigation surface for durable project knowledge.
 
 This file is an index only. Detail lives in `.plaesy/memory/[topic].md`.
@@ -70,7 +70,7 @@ that file exists.
 `.plaesy/instructions/[name].md`; agents → `.plaesy/roles/[name].md`;
 scripts → `.plaesy/scripts/{powershell,bash}/`; configs →
 `.plaesy/scripts/configs/`; analysis → `.plaesy/analysis/`; tasks →
-`.plaesy/tasks/{backlog,todo,doing,done,blocked}/`; knowledge →
+`.plaesy/specs/<spec>/tasks/{backlog,todo,doing,done,blocked}/`; knowledge →
 `.plaesy/memory/[topic].md`. Full table in `memory/git-and-state.md`.
 
 ---
@@ -92,5 +92,7 @@ scripts → `.plaesy/scripts/{powershell,bash}/`; configs →
 **Status:** Index rebuilt 2026-10-10 with session-2026-10-10 topic. Constitution ratified (technical; internet_access removed 2026-10-14 in 2.0.0). Search F2 hybrid eval harness completed with 20 tests. Coverage gaps identified: 7/12 packages below 90% constitutional threshold. Bleve upgraded to v2.6.1 fixing geo plugin build. Search config loading bug fixed (UnifiedConfig extraction). Next: coverage remediation per Constitution Rule 3, HTTP fallback adapters for 7 CLI-only platforms.
 
 - [Session 2026-10-14](memory/session-2026-10-14.md) — wrong CLI verb in prompts, broken constitution template, rejected external-skill delegation, Nara-first routing
+- [Session 2026-10-15](memory/session-2026-10-15.md) — spec timestamps, per-spec tasks, feature worktrees, `tasks run` with a lock-based claim
+- [Spec tasks and worktrees](memory/spec-tasks-and-worktrees.md) — spec folder names, templates ignored by git, Windows rename is not exclusive, metadata counts
 
 **Next:** Add project-specific topics as they arise; every link above must resolve.

@@ -62,13 +62,13 @@ Load memory state → Detect current phase → Execute remaining workflow
 
 **Follow**: `.plaesy/instructions/tasks.md` → Task Management Rules
 
-1. **Scan `.plaesy/tasks/`**: count tasks in `backlog/`, `todo/`, `doing/`, `done/`,
+1. **Scan `.plaesy/specs/{spec}/tasks/`**: count tasks in `backlog/`, `todo/`, `doing/`, `done/`,
    `blocked/`; parse each task's YAML frontmatter for Status, Phase, Acceptance
    Criteria, Related dependencies
 2. **Extract phase/status**: load current active phase from `.plaesy/context.md`;
    filter `todo/`+`doing/` tasks matching it; flag `doing/` tasks with unmet
    acceptance criteria (unchecked boxes) as incomplete
-3. **Alert on blocked tasks**: if `.plaesy/tasks/blocked/` has entries, surface the
+3. **Alert on blocked tasks**: if `.plaesy/specs/{spec}/tasks/blocked/` has entries, surface the
    blocker reason and blocking task references (e.g. "2 tasks blocked (waiting on:
    implementation phase, external API)") — user must resolve manually
 4. **Load task summary into context**: add "## In-Flight Tasks" to
@@ -79,7 +79,7 @@ Load memory state → Detect current phase → Execute remaining workflow
 
 ### Detection Process
 
-1. **Load task state**: Scan `.plaesy/tasks/` for active work
+1. **Load task state**: Scan `.plaesy/specs/{spec}/tasks/` for active work
 2. **Scan `.plaesy/specs/` Directory**: Identify active project folders
 3. **File Existence Check**: Verify which specification files exist
 4. **Content Analysis**: Check completion status of existing files
@@ -198,7 +198,7 @@ ELSE  (no state above matched)
     cascade does not describe — usually a `.plaesy/memory/context.md` phase
     value that no phase owns, or a project with no constitution.
   → Report the four inputs that decide the branch: the `phase` recorded in
-    context.md, the task counts per status in `.plaesy/tasks/`, whether
+    context.md, the task counts per status in `.plaesy/specs/{spec}/tasks/`, whether
     `/assess` has run and its score, and whether `/optimize` has run.
   → If `.plaesy/memory/constitution.md` is missing → route to `/start` (the
     constitution sets the dimensions every other decision depends on).
@@ -320,7 +320,7 @@ Next: [none — project complete, or /improve if improvements remain]
 - `.plaesy/context.md` — current session state (≤100 lines)
 - `.plaesy/memory.md` — knowledge index updated
 - `.plaesy/decisions.md` — decisions index updated
-- `.plaesy/tasks/` — task status changes
+- `.plaesy/specs/{spec}/tasks/` — task status changes
 
 ---
 

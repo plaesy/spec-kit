@@ -35,6 +35,7 @@ func (p *cliProvider) Capabilities() []string { return []string{CapText} }
 
 func (p *cliProvider) Complete(ctx context.Context, req Request) (Response, error) {
 	cmd := exec.CommandContext(ctx, p.command, p.args...)
+	cmd.Dir = req.Dir
 	cmd.Stdin = strings.NewReader(req.Prompt)
 	// Without a bound, a grandchild holding stdout can keep Wait blocked after
 	// the context kills the direct child.

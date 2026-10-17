@@ -191,7 +191,7 @@ mandatory:
 **If verification fails**:
 
 - Revert the fix's edits (Revert Rule, below)
-- Move (or create) the task file to `.plaesy/tasks/backlog/` with the failure noted in
+- Move (or create) the task file to `.plaesy/specs/{spec}/tasks/backlog/` with the failure noted in
   its frontmatter — this is the only backlog; there is no separate `backlog.md`
 - Mark as "needs review"
 - Continue to the next issue
@@ -521,7 +521,7 @@ a completion banner:
 ├─ Iterations completed: 5
 ├─ Issues Fixed: 12
 ├─ Last failure: audit harness could not reach the network; 3 fixes unverified
-├─ Left behind: 3 fixes rolled back, tasks filed in .plaesy/tasks/backlog/
+├─ Left behind: 3 fixes rolled back, tasks filed in .plaesy/specs/{spec}/tasks/backlog/
 └─ Resume: re-run /loop once the dependency is restored
 ```
 
@@ -555,7 +555,7 @@ ends on a stop condition has not completed the work.
 ├─ Iterations completed: [N]
 ├─ Issues Fixed: [N]
 ├─ Last failure: [description of what failed]
-├─ Left behind: [N] fixes rolled back, tasks filed in .plaesy/tasks/backlog/
+├─ Left behind: [N] fixes rolled back, tasks filed in .plaesy/specs/{spec}/tasks/backlog/
 └─ Resume: re-run /loop once the dependency is restored
 ```
 

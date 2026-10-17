@@ -99,7 +99,7 @@ func Update(agentType string) error {
 	if err != nil {
 		return err
 	}
-	featureDir := filepath.Join(repoRoot, ".plaesy", "specs", branch)
+	featureDir := common.GetFeatureDir(repoRoot, branch)
 	planPath := filepath.Join(featureDir, "plan.md")
 
 	if _, err := os.Stat(planPath); err != nil {

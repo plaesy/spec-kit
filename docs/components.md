@@ -190,9 +190,10 @@ Ports `plaesy features create` / `plaesy features paths` /
 `plaesy features validate` (formerly `create-new-feature.sh`,
 `get-feature-paths.sh`, and `check-task-prerequisites.sh`): feature-branch workflow helpers.
 
-- **`CreateNewFeature(desc)`** — computes next NNN-slug number, creates git
-  branch, seeds `.plaesy/specs/<branch>/spec.md` from template
-  (`scripts/internal/featurepath/create.go:33`).
+- **`CreateNewFeature(desc)`** — derives the branch from the description, creates
+  it (in place, or as a worktree with `CreateNewFeatureWith`), and seeds
+  `.plaesy/specs/<timestamp>-<branch>/spec.md` from the template
+  (`scripts/internal/featurepath/create.go`).
 - **`GetPathsReport()`** — prints shell-sourceable `REPO_ROOT=` /
   `FEATURE_DIR=` / etc. (`scripts/internal/featurepath/prereq.go`).
 - **`CheckTaskPrerequisites()`** — validates current feature has `plan.md`,
@@ -203,7 +204,7 @@ Ports `plaesy features create` / `plaesy features paths` /
 ## `internal/taskmanage`
 
 Ports `plaesy tasks` (formerly `plaesy-task-manage.sh`): task lifecycle management for
-`.plaesy/tasks/{backlog,todo,doing,done,blocked}/`.
+`.plaesy/specs/<spec>/tasks/{backlog,todo,doing,done,blocked}/`.
 
 - **`Statuses`** — the 5 valid status directories in order
   (`scripts/internal/taskmanage/taskmanage.go:17`).

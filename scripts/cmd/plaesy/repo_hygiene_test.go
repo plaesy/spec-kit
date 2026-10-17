@@ -141,32 +141,44 @@ func TestSessionStatePathsAreTrackable(t *testing.T) {
 		".plaesy/context.md",
 		".plaesy/memory.md",
 		".plaesy/state.json",
+<<<<<<< Updated upstream
 		".plaesy/tasks/README.md",
 		".plaesy/contracts/example.contract.md", // a contract is session state too: its freeze is anchored to git history
 	}
 	taskDirs, err := os.ReadDir(filepath.Join(root, ".plaesy", "tasks"))
 	if err != nil {
 		t.Fatalf("cannot read .plaesy/tasks: %v", err)
+=======
+>>>>>>> Stashed changes
 	}
+	// Tasks live in each spec: .plaesy/specs/<spec>/tasks/<status>/<file>.md,
+	// plus a README per spec's tasks directory. Walk every spec, so a task in
+	// any spec is checked, not only the ones that exist today.
 	taskFiles := 0
-	for _, d := range taskDirs {
-		if !d.IsDir() {
-			continue
-		}
-		entries, err := os.ReadDir(filepath.Join(root, ".plaesy", "tasks", d.Name()))
+	walkErr := filepath.WalkDir(filepath.Join(root, ".plaesy", "specs"), func(p string, d os.DirEntry, err error) error {
 		if err != nil {
-			t.Fatal(err)
+			return err
 		}
-		for _, e := range entries {
-			if e.IsDir() || !strings.HasSuffix(e.Name(), ".md") {
-				continue
-			}
-			taskFiles++
-			tracked = append(tracked, ".plaesy/tasks/"+d.Name()+"/"+e.Name())
+		if d.IsDir() || !strings.HasSuffix(d.Name(), ".md") {
+			return nil
 		}
+		rel, err := filepath.Rel(root, p)
+		if err != nil {
+			return err
+		}
+		rel = filepath.ToSlash(rel)
+		if !strings.Contains(rel, "/tasks/") {
+			return nil
+		}
+		taskFiles++
+		tracked = append(tracked, rel)
+		return nil
+	})
+	if walkErr != nil {
+		t.Fatalf("cannot read .plaesy/specs: %v", walkErr)
 	}
 	if taskFiles == 0 {
-		t.Fatal("no task files found under .plaesy/tasks/; this would pass without checking anything")
+		t.Fatal("no task files found under .plaesy/specs/*/tasks/; this would pass without checking anything")
 	}
 
 	for _, rel := range tracked {

@@ -147,7 +147,7 @@ plaesy features                # List every feature in .plaesy/specs/
 plaesy features create "<desc>"  # Create feature branch, directories, and spec.md
 plaesy features paths          # Print current feature paths without creating anything
 plaesy features validate       # Verify the current feature has a plan.md
-plaesy tasks                   # Task lifecycle under .plaesy/tasks/
+plaesy tasks                   # Task lifecycle under .plaesy/specs/<spec>/tasks/
 plaesy context update          # Sync an existing agent context file with plan.md
 plaesy stack detect            # List instruction files for a target tech stack
 plaesy trim                    # Token and context compression
@@ -183,7 +183,7 @@ plaesy features          # List every feature in .plaesy/specs/
 plaesy features create "<desc>"  # Create feature branch, directories, and spec.md
 plaesy features paths    # Print current feature paths without creating anything
 plaesy features validate # Verify the current feature has a plan.md
-plaesy tasks             # Task lifecycle under .plaesy/tasks/
+plaesy tasks             # Task lifecycle under .plaesy/specs/<spec>/tasks/
 plaesy context update    # Sync an existing agent context file with plan.md
 plaesy stack detect      # List instruction files for a target tech stack
 plaesy trim              # Token and context compression

@@ -182,19 +182,12 @@ func TestInitBuildsTheStructure(t *testing.T) {
 		".plaesy/memory/",
 		".plaesy/decisions/",
 		".plaesy/instructions/",
-		".plaesy/tasks/",
-		// Project directory from platform.json.
+		// Project directory from platform.json. Tasks live inside each spec,
+		// so init creates no task folders.
 		".plaesy/specs/",
 		// always_load, with ".instructions" stripped from the name.
 		".plaesy/instructions/core.md",
 		".plaesy/instructions/scoped.md",
-		// Task management.
-		".plaesy/tasks/backlog/",
-		".plaesy/tasks/todo/",
-		".plaesy/tasks/doing/",
-		".plaesy/tasks/done/",
-		".plaesy/tasks/blocked/",
-		".plaesy/tasks/README.md",
 		// Memory and analysis.
 		".plaesy/context.md",
 		".plaesy/analysis/",

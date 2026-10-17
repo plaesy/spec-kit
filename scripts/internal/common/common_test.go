@@ -164,14 +164,12 @@ func TestCheckFeatureBranch(t *testing.T) {
 	}{
 		{"001-feature-name", false},
 		{"042-add-oauth", false},
-		{"999-", false},
-		{"001", true},
-		{"01-short", true},
-		{"1-no-pad", true},
+		{"auth-login", false},
+		{"feature/add-login", false},
 		{"main", true},
+		{"master", true},
+		{"HEAD", true},
 		{"", true},
-		{"x001-name", true},
-		{"001x-name", true},
 	}
 	for _, tc := range cases {
 		err := CheckFeatureBranch(tc.branch)

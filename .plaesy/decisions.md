@@ -94,5 +94,9 @@ staleness check left open.
 - [Remove the internet_access dimension](decisions/remove-internet-access-dimension.md) — nine dimensions again; platform health stays in `plaesy doctor` · 2026-10-14
 - [Revert without history reset](decisions/revert-without-history-reset.md) — pre-edit snapshots under `.plaesy/tmp`, no `git reset` · 2026-10-14
 - [Research fan-out inside plaesy](decisions/research-fan-out-in-plaesy.md) — `researcher` subagents, no external skill · 2026-10-14
+- [Spec folders are {TIMESTAMP}-{BRANCH}; tasks live inside each spec](decisions/spec-folder-timestamp-and-spec-tasks.md) — replaces NNN numbering and the global `.plaesy/tasks/` · 2026-10-15
+
+- [Feature worktrees live outside the repository; cleanup never forces](decisions/spec-worktrees-outside-repo.md) — `--worktree` create, dry-run `features clean` · 2026-10-15
+- [Task claims use a mkdir lock; delegated runs stay in doing until reviewed](decisions/task-claim-lock-and-run-review.md) — rename is not exclusive on Windows · 2026-10-15
 
 **Next:** Add project-specific decision entries as they arise; every link above must resolve.

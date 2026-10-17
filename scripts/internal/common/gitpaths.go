@@ -11,8 +11,6 @@ import (
 	"strings"
 )
 
-var featureBranchRE = regexp.MustCompile(`^[0-9]{3}-`)
-
 // msysDriveRE matches an MSYS2/Git-Bash style drive prefix like "/c/" or "/D/".
 var msysDriveRE = regexp.MustCompile(`^/([a-zA-Z])/`)
 
@@ -120,16 +118,22 @@ func GetCurrentBranch() (string, error) {
 	return strings.TrimSpace(out), nil
 }
 
-// CheckFeatureBranch mirrors check_feature_branch: enforces NNN-name naming.
+// CheckFeatureBranch mirrors check_feature_branch. Any branch except a trunk
+// branch (main, master, detached HEAD) is a feature branch; its spec is found
+// by name, see FindSpecName.
 func CheckFeatureBranch(branch string) error {
-	if !featureBranchRE.MatchString(branch) {
-		return fmt.Errorf("not on a feature branch (current: %s); feature branches should be named like: 001-feature-name", branch)
+	if IsDefaultBranch(branch) {
+		return fmt.Errorf("not on a feature branch (current: %s); run this from a feature branch such as the one `plaesy features create` makes", branch)
 	}
 	return nil
 }
 
-// GetFeatureDir mirrors get_feature_dir.
+// GetFeatureDir returns the spec folder of a branch. When no spec exists yet
+// it returns the path a new spec would use, so callers can report it.
 func GetFeatureDir(repoRoot, branch string) string {
+	if name, err := FindSpecName(repoRoot, branch); err == nil {
+		return filepath.Join(repoRoot, ".plaesy", "specs", name)
+	}
 	return filepath.Join(repoRoot, ".plaesy", "specs", branch)
 }
 

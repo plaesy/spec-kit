@@ -1,5 +1,5 @@
 // Package taskmanage ports scripts/bash/plaesy-task-manage.sh: task lifecycle
-// management for the .plaesy/tasks/ directory (backlog/todo/doing/done/blocked).
+// management for the .plaesy/specs/<spec>/tasks/ directory (backlog/todo/doing/done/blocked).
 // Task files are moved between status subdirectories by simple os.Rename;
 // the bash script never parses task file content except to append a
 // "## Blocked Reason" section on task_block, so this port does the same.
@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/plaesy/spec-kit/internal/common"
 )
 
 // Statuses are the five valid task status directories, in bash case-statement order.
@@ -45,9 +47,74 @@ func FindProjectRoot() (string, error) {
 	}
 }
 
-// TasksDir returns PROJECT_ROOT/.plaesy/tasks.
-func TasksDir(projectRoot string) string {
-	return filepath.Join(projectRoot, ".plaesy", "tasks")
+// SpecsDir returns PROJECT_ROOT/.plaesy/specs, the parent of every spec.
+func SpecsDir(projectRoot string) string {
+	return filepath.Join(projectRoot, ".plaesy", "specs")
+}
+
+// TasksDir returns the task directory owned by one spec:
+// PROJECT_ROOT/.plaesy/specs/<specID>/tasks. Tasks belong to a spec, so there
+// is no project-wide task directory.
+func TasksDir(projectRoot, specID string) string {
+	return filepath.Join(SpecsDir(projectRoot), specID, "tasks")
+}
+
+// ResolveSpec returns the spec folder name for a git branch. The rule lives in
+// common.FindSpecName so features and tasks agree on it.
+func ResolveSpec(projectRoot, branch string) (string, error) {
+	return common.FindSpecName(projectRoot, branch)
+}
+
+// CreateStatusDirs creates the five status directories under a spec's tasks
+// directory. It is called when a spec is created, so every spec starts with
+// the same lifecycle layout.
+func CreateStatusDirs(tasksDir string) error {
+	for _, s := range Statuses {
+		if err := os.MkdirAll(filepath.Join(tasksDir, s), 0o755); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AddTask writes a new task file into a spec's backlog and returns its file
+// name. The name follows {priority}_{slug}.md from .plaesy/instructions/tasks.md.
+// It refuses to overwrite an existing file, so an added task never replaces
+// one that is already in another status.
+func AddTask(tasksDir, priority, slug, title string) (string, error) {
+	if err := ValidatePriority(priority); err != nil {
+		return "", err
+	}
+	if slug == "" || strings.ContainsAny(slug, `/\`) {
+		return "", fmt.Errorf("invalid task slug %q", slug)
+	}
+	fileName := priority + "_" + slug + ".md"
+	if _, _, found := FindTask(tasksDir, fileName); found {
+		return "", fmt.Errorf("task already exists: %s", fileName)
+	}
+	backlog := filepath.Join(tasksDir, "backlog")
+	if err := os.MkdirAll(backlog, 0o755); err != nil {
+		return "", err
+	}
+	body := fmt.Sprintf("---\ntitle: %s\nphase: implement\nstatus: backlog\n---\n\n## Description\n\n## Acceptance Criteria\n\n- [ ] \n", title)
+	f, err := os.OpenFile(filepath.Join(backlog, fileName), os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+	if _, err := f.WriteString(body); err != nil {
+		return "", err
+	}
+	return fileName, nil
+}
+
+// ValidatePriority accepts the priority prefixes used in task file names.
+func ValidatePriority(priority string) error {
+	switch priority {
+	case "critical", "high", "medium", "low", "backlog":
+		return nil
+	}
+	return fmt.Errorf("invalid priority: %s (must be: critical, high, medium, low, backlog)", priority)
 }
 
 // GetNextTask mirrors get_next_task(): the alphabetically-last *.md file in

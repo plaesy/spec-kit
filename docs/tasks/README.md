@@ -4,7 +4,9 @@
 
 ## Overview
 
-Tasks live in `.plaesy/tasks/` as markdown files, organized by status (backlog, todo, doing, done, blocked). They bridge project planning with automated workflow execution.
+Each spec owns its tasks. They live in `.plaesy/specs/<spec>/tasks/` as markdown files, organized by status (backlog, todo, doing, done, blocked).
+
+A spec is one feature on one branch, so its tasks travel with that branch. They bridge project planning with automated workflow execution.
 
 ### Key Features
 
@@ -18,7 +20,7 @@ Tasks live in `.plaesy/tasks/` as markdown files, organized by status (backlog, 
 
 ```text
 
-.plaesy/tasks/
+.plaesy/specs/<timestamp>-<branch>/tasks/
 ├── backlog/      # Ideas, features, bugs — unscheduled
 ├── todo/         # Ready to start — next in queue
 ├── doing/        # In active work — phase executing now
@@ -73,7 +75,7 @@ Priority: critical|high|medium|low
 
 ### /start
 
-- **Creates**: Initial `.plaesy/tasks/` directory structure
+- **Creates**: The `tasks/` status folders of the spec, when `plaesy features create` makes it
 - **Seeds** (optional): Tasks in backlog if project plan provides them
 
 ### /continue
@@ -95,7 +97,7 @@ Priority: critical|high|medium|low
 
 When you run `plaesy init . --ai claude`:
 
-1. ✅ Creates `.plaesy/tasks/` with all status directories
+1. ✅ Creates no task folders; each spec creates its own `tasks/` when it is made (`plaesy features create`)
 2. ✅ Copies task templates from `templates/` (flat — `task-readme.template.md`,
    `task-structure-guide.template.md`, `task-status.template.json`)
 3. ✅ Adds task management to project setup

@@ -94,10 +94,10 @@ When `plaesy init` runs, bootstrap files are created from templates in
 
 When creating task structure:
 
-- Creates task status directories (backlog, todo, doing, done, blocked) under `.plaesy/tasks/`
-  — this is the single source of truth for tasks (one file per task, YAML frontmatter,
-  folder = status). `/start`, `/continue`, and `/loop` all read/write here.
-- Creates `.plaesy/tasks/README.md` with a quick reference
+- Creates no task folders. Tasks belong to a spec, so each spec gets its own
+  `tasks/` status folders (backlog, todo, doing, done, blocked) when
+  `plaesy features create` makes it, under `.plaesy/specs/<spec>/tasks/`. Folder = status,
+  one file per task, YAML frontmatter. `/start`, `/continue`, and `/loop` read and write there.
 - Task management instructions are auto-loaded from `tasks.instructions.md` during init
 
 ---
