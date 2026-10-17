@@ -192,7 +192,11 @@ adversarial check rather than a neutral review that tends to rubber-stamp.
 4. **Blocking findings** — a finding that contradicts an acceptance criterion
    or violates a constitution non-negotiable is a **gate failure**, not a
    suggestion. Do not proceed past quality gates until every blocking finding
-   is resolved.
+   is resolved. Anything else (style, optional refactors, "could be simpler")
+   goes in a separate non-blocking list. A reviewer told to find defects will
+   usually report some even when the work is sound, and acting on all of them
+   produces extra abstraction and defensive code (Anthropic, Claude Code best
+   practices, https://code.claude.com/docs/en/best-practices, retrieved 2026-10-17).
 5. **Iteration cap** — allow at most one re-implement + re-verify cycle before
    escalating to `.plaesy/instructions/error-recovery.md`. Prevents infinite
    verify-fail loops where the implementer patches surface symptoms without

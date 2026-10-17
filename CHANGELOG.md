@@ -9,6 +9,21 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
 
 ### Added
 
+- **Agent and tool trust boundaries** in `security-design-principles`: repository files, web pages, issue and PR text, tool output and MCP
+  descriptions are untrusted data (constitution SC-01 extended to these channels). An action requested only by untrusted content is never
+  taken. Repository-defined MCP and hook configuration is reviewed before first use. Pointer added to `plaesy.instructions.md`.
+- **Dependency existence check** in `security-and-owasp` §6.2: every new package name is checked against its registry before it enters a
+  manifest, with a committed lockfile. Based on Spracklen et al., arXiv:2406.10279 (USENIX Security 2025).
+- **Agent secret hygiene** in `git` §7: no printing of secret files into the transcript, named staging instead of `git add -A`, and a secret
+  scan of the staged diff before every commit. **Checkpoint before risky agent edits** in `git` §1.
+- **Failure modes and controls** table and the simplest-pattern rule in `multi-agent-patterns`, plus the Orchestrator-Workers and
+  Evaluator-Optimizer patterns that were missing from its table.
+- **Trials and consistency** section in `evals/README.md`: pass@k vs pass^k, grade outcomes not paths, read transcripts, start from real
+  failures. Records that brief cases currently run once, with no k-trial runner.
+- **Static eval cases** for every rule above under `evals/cases/` (`security-design-principles`, `security-and-owasp`, `git`,
+  `multi-agent-patterns`, `plaesy`, and a new `quality-gates` entry).
+- **DoD checklist items** in `story-done`: dependency check and lockfile, secret scan, small batches with checkpoints, no duplicated blocks.
+
 - **Success Contract (mandatory for every phase).** Before a phase starts it writes a measurable KPI set and checklist, freezes it, and at
   the end compares every item with its result. Full rule: `instructions/success-contract.instructions.md` (installed as
   `.plaesy/instructions/success-contract.md`, scope-loaded). Template: `templates/success-contract.template.md`. A short pointer is in
@@ -33,6 +48,10 @@ this project uses [Semantic Versioning](https://semver.org/) once it reaches 1.0
 - `redesign`: a contrast rule (WCAG 2.2 AA on every changed colour pair).
 
 ### Changed
+
+- Quality gate verifier: findings block only when they break an acceptance criterion, a constitution article or correctness. Other findings
+  go in a non-blocking list (`quality-gates`).
+- Eval guidance: brief cases are described as single-trial results until a k-trial runner exists (`evals/README.md`).
 
 - Accessibility standard is WCAG 2.2 AA (was WCAG 2.1 AA) across the instructions, agents, templates, prompts and docs. Text contrast is
   4.5:1 for normal text and 3:1 for large text and UI components (SC 1.4.3, 1.4.11). Updated: `assess-design`, `assess-technical`,

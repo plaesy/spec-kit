@@ -1,0 +1,20 @@
+{
+  "instruction": "instructions/multi-agent-patterns.instructions.md",
+  "static": [
+    {
+      "id": "map-failure-modes",
+      "description": "The failure-mode table names compounding errors, lost handoff context and untrusted handoff content, each with a control",
+      "requires": ["## Failure Modes and Controls", "Compounding errors", "Context lost at handoff", "Untrusted handoff content"]
+    },
+    {
+      "id": "map-simplest-pattern",
+      "description": "A subagent is added only when a measured result shows the single-agent version fails",
+      "requires": ["Start with the simplest pattern that works", "a measured result"]
+    },
+    {
+      "id": "map-named-patterns",
+      "description": "The two Anthropic named patterns that were missing from the table are listed",
+      "requires": ["| Orchestrator-Workers |", "| Evaluator-Optimizer |"]
+    }
+  ]
+}
