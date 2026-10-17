@@ -1,0 +1,10 @@
+{
+  "instruction": "instructions/plaesy.instructions.md",
+  "static": [
+    {
+      "id": "plaesy-untrusted-pointer",
+      "description": "The always-loaded file says untrusted content is data and points to the trust-boundary section",
+      "requires": ["untrusted data", "SC-01", "Agent and tool trust boundaries"]
+    }
+  ]
+}

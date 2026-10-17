@@ -15,6 +15,11 @@
       "id": "qg-numbering-stable",
       "description": "The numbered gates keep their numbers, because other files cite them",
       "requires": ["1. **Build**", "2. **Tests**", "7. **Accessibility**"]
+    },
+    {
+      "id": "qg-blocking-only-correctness",
+      "description": "The adversarial verifier blocks only on requirement or correctness findings; other findings go in a non-blocking list",
+      "requires": ["goes in a separate non-blocking list"]
     }
   ]
 }
