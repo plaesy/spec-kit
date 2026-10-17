@@ -233,7 +233,9 @@ func TestSpecVagueListMatchesTheValidator(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	text := string(raw)
+	// A Windows checkout has CRLF line endings. The paragraph cut below looks
+	// for a blank line, so normalise first or the cut never matches.
+	text := strings.ReplaceAll(string(raw), "\r\n", "\n")
 	start := strings.Index(text, "**Rejected by the validator.**")
 	if start < 0 {
 		t.Fatal("the spec no longer has the 'Rejected by the validator' paragraph")
