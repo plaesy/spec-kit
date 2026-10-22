@@ -1,0 +1,50 @@
+[
+  {
+    "timestamp": "2026-10-03T04:45:31Z",
+    "layer": "layer1",
+    "path": "go test ./... --dir scripts",
+    "before": 23,
+    "after": 23,
+    "saved_pct": 0
+  },
+  {
+    "timestamp": "2026-10-13T07:01:36Z",
+    "layer": "layer1:git-diff",
+    "path": "git diff",
+    "before": 49693,
+    "after": 943,
+    "saved_pct": 98.1
+  },
+  {
+    "timestamp": "2026-10-13T07:01:36Z",
+    "layer": "layer1:git-status",
+    "path": "git status",
+    "before": 1569,
+    "after": 293,
+    "saved_pct": 81.3
+  },
+  {
+    "timestamp": "2026-10-13T07:01:37Z",
+    "layer": "layer1:git-log",
+    "path": "git log -n 15",
+    "before": 39,
+    "after": 17,
+    "saved_pct": 56.4
+  },
+  {
+    "timestamp": "2026-10-13T07:01:37Z",
+    "layer": "layer1:grep",
+    "path": "grep -rn func scripts/internal/trimmer",
+    "before": 4299,
+    "after": 1159,
+    "saved_pct": 73
+  },
+  {
+    "timestamp": "2026-10-13T07:01:37Z",
+    "layer": "layer1:listing",
+    "path": "ls -la scripts/internal/trimmer",
+    "before": 207,
+    "after": 205,
+    "saved_pct": 1
+  }
+]

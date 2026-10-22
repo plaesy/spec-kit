@@ -1,0 +1,67 @@
+{
+  "instruction": "instructions/redesign.instructions.md",
+  "static": [
+    {
+      "id": "rd-no-picsum",
+      "description": "No placeholder service is recommended for pictures",
+      "forbids": ["picsum"]
+    },
+    {
+      "id": "rd-no-invented-figures",
+      "description": "Invented figures and invented brand names are not recommended",
+      "forbids": ["Use organic, messy data", "Invent contextual, believable brand names"]
+    },
+    {
+      "id": "rd-licence-imagery",
+      "description": "Imagery needs a licence that allows commercial use, with a credit on the page",
+      "requires": ["licence that allows commercial use", "credit recorded on the page"]
+    },
+    {
+      "id": "rd-no-invented-proof",
+      "description": "Proof (statistics, customers, testimonials) is never invented",
+      "requires": ["Do not invent statistics"]
+    },
+    {
+      "id": "rd-tabular-figures",
+      "description": "Numbers use tabular figures; monospace is limited to code-like data",
+      "requires": ["tabular-nums", "code-like data"],
+      "forbids": ["Use a monospace font or enable"]
+    },
+    {
+      "id": "rd-opt-in-surfaces",
+      "description": "Surface effects are opt-in and need a Keystone reason",
+      "requires": ["These are opt-in"]
+    },
+    {
+      "id": "rd-verify",
+      "description": "A redesign is verified by renders at the three required widths",
+      "requires": ["Verify the visual result", "1440, 768 and 390 px"]
+    },
+    {
+      "id": "rd-aa-contrast",
+      "description": "Text contrast meets WCAG 2.2 AA on every changed colour pair",
+      "requires": ["WCAG 2.2 AA", "4.5:1"]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "clean-redesign-passes",
+      "description": "A redesigned page with AA-passing colours and own assets has no FAIL",
+      "fixture": "evals/fixtures/frontend-clean",
+      "expect": "pass"
+    },
+    {
+      "id": "low-contrast-redesign-fails",
+      "description": "A redesign that keeps a failing text colour fails the contrast check",
+      "fixture": "evals/fixtures/frontend-low-contrast",
+      "expect": "fail",
+      "rules": ["DL-CONTRAST"]
+    }
+  ],
+  "briefs": [
+    {
+      "id": "pricing-page-overhaul",
+      "brief": "Redesign this existing pricing page: three equal cards, Inter everywhere, a purple gradient hero and a grey footer. Keep the same stack, the same copy and the same prices. Verify at 1440, 768 and 390 px."
+    }
+  ]
+}

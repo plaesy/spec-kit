@@ -1,0 +1,61 @@
+{
+  "id": "save-2026-10-21",
+  "checklist": [
+    {
+      "id": "C2",
+      "check": "decision topics exist and are indexed",
+      "run": "test -f .plaesy/decisions/platform-hooks-per-provider.md \u0026\u0026 test -f .plaesy/decisions/provider-verification-and-removals.md \u0026\u0026 grep -q platform-hooks-per-provider .plaesy/decisions.md \u0026\u0026 grep -q provider-verification-and-removals .plaesy/decisions.md",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C1",
+      "check": "context.md line count",
+      "run": "wc -l \u003c .plaesy/context.md",
+      "expected": "\u003c= 100",
+      "status": "passed",
+      "histories": [
+        {
+          "at": "2026-10-22T06:54:04Z",
+          "actual": "actual must be a number with the target's unit, for example 1.5 s for a target in s",
+          "run": "wc -l .plaesy/context.md"
+        },
+        {
+          "at": "2026-10-22T07:13:57Z",
+          "actual": "actual must be a number with the target's unit, for example 1.5 s for a target in s",
+          "run": "wc -l .plaesy/context.md"
+        },
+        {
+          "at": "2026-10-22T07:22:13Z",
+          "actual": "actual must be a number with the target's unit, for example 1.5 s for a target in s",
+          "run": "wc -l .plaesy/context.md"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "check": "every memory and decision index link resolves",
+      "run": "! grep -ho '(\\(memory\\|decisions\\)/[^)]*\\.md)' .plaesy/memory.md .plaesy/decisions.md | tr -d '()' | sed 's#^#.plaesy/#' | while read -r f; do test -f \"$f\" || echo \"$f\"; done | grep -q .",
+      "expected": "pass",
+      "status": "passed",
+      "histories": [
+        {
+          "at": "2026-10-22T06:54:04Z",
+          "actual": "exit code 127",
+          "run": "bash loop over memory and decision links in .plaesy/memory.md and .plaesy/decisions.md"
+        },
+        {
+          "at": "2026-10-22T07:13:57Z",
+          "actual": "exit code 127",
+          "run": "bash loop over memory and decision links in .plaesy/memory.md and .plaesy/decisions.md"
+        },
+        {
+          "at": "2026-10-22T07:22:13Z",
+          "actual": "exit code 127",
+          "run": "bash loop over memory and decision links in .plaesy/memory.md and .plaesy/decisions.md"
+        }
+      ]
+    }
+  ]
+}

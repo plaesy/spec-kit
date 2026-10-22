@@ -1,0 +1,30 @@
+{
+  "instruction": "instructions/writing-anti-slop.instructions.md",
+  "static": [
+    {
+      "id": "was-no-invented-facts",
+      "description": "A rewrite may not add a fact, name, number, date, quote or citation the source did not supply",
+      "requires": ["without adding", "name, number, date, quote or citation"]
+    },
+    {
+      "id": "was-strength-order",
+      "description": "Patterns are ordered by strength, and a weak pattern needs company before it justifies an edit",
+      "requires": ["strongest first", "weak"]
+    },
+    {
+      "id": "was-voice-sample-wins",
+      "description": "A user's own writing sample overrides every rule in the file",
+      "requires": ["Voice sample overrides the rules", "The sample wins over"]
+    },
+    {
+      "id": "was-claim-kept",
+      "description": "Dropping a supported claim is an error unless a pattern calls for it",
+      "requires": ["dropping a claim is an error"]
+    },
+    {
+      "id": "was-sources-cited",
+      "description": "The patterns cite their MIT sources, retrieval date included",
+      "requires": ["stop-slop", "humanizer", "retrieved 2026-10-20"]
+    }
+  ]
+}

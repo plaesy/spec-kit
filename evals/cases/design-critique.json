@@ -1,0 +1,30 @@
+{
+  "instruction": "instructions/design-critique.instructions.md",
+  "static": [
+    {
+      "id": "dc-fourteen-passes",
+      "description": "The critique runs fourteen passes, each on its own",
+      "requires": ["Fourteen passes", "Make each pass on its own"]
+    },
+    {
+      "id": "dc-weights",
+      "description": "Weights are design 40%, usability 30%, creativity 20%, content 10%",
+      "requires": ["design (40%)", "usability (30%)", "creativity (20%)", "content (10%)"]
+    },
+    {
+      "id": "dc-caps-override",
+      "description": "Caps override the arithmetic, so a visible defect cannot be averaged away",
+      "requires": ["These override the arithmetic"]
+    },
+    {
+      "id": "dc-judge-pictures",
+      "description": "The critique judges the screenshots, not the code",
+      "requires": ["Judge the screenshots", "never the code"]
+    },
+    {
+      "id": "dc-round-cap",
+      "description": "The fix loop stops after three rounds",
+      "requires": ["list what remains open in the handoff"]
+    }
+  ]
+}

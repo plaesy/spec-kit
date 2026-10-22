@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  go:
+    name: Build, vet, test (Go)
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: Generate embedded assets
+        working-directory: scripts
+        run: go run ./internal/assets/gen
+      - name: go build
+        working-directory: scripts
+        run: go build ./...
+      - name: go vet
+        working-directory: scripts
+        run: go vet ./...
+      # Several tests check this repository's own .plaesy/ against its
+      # sources (dead links into .plaesy/instructions/, template-skeleton
+      # drift under .plaesy/templates/, platform.json's default path at
+      # .plaesy/configs/, reload idempotency). .plaesy/'s generated
+      # subtrees (templates, instructions, scripts, checklists, roles,
+      # analysis — see .gitignore) are deliberately NOT committed, so a
+      # fresh checkout does not have them: only a maintainer's working copy
+      # does, after they ran `plaesy reload` locally. Reproducing that setup
+      # here is what makes those tests meaningful on a clean checkout
+      # instead of failing on every CI run for a reason unrelated to the OS.
+      - name: build plaesy (to populate .plaesy/ for self-consistency tests)
+        working-directory: scripts
+        run: go build -o plaesy.exe ./cmd/plaesy
+      - name: populate .plaesy/ from this repository
+        run: |
+          ./scripts/plaesy.exe init .
+          ./scripts/plaesy.exe reload
+      - name: go test
+        working-directory: scripts
+        run: go test ./...
+
+  # The Go suite guards structural drift (dead links, mirror parity, counts).
+  # It does not read the corpus the way a user does, so the corpus gets its own
+  # gate: `plaesy markdown validate` is the ratchet that holds line length,
+  # list style, heading hygiene and fence languages across prompts/,
+  # instructions/, templates/ and agents/.
+  #
+  # `plaesy constitution validate` is deliberately NOT run here. This repository
+  # has a ratified `.plaesy/memory/constitution.md`, but it is the framework's own
+  # source of truth, changed only through its amendment procedure. The check is a
+  # per-project gate for consuming projects, so it belongs in their CI, not this one.
+  corpus:
+    name: Validate the corpus (prompts, instructions, templates, agents)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: Generate embedded assets
+        working-directory: scripts
+        run: go run ./internal/assets/gen
+      - name: build plaesy
+        working-directory: scripts
+        run: go build -o plaesy.exe ./cmd/plaesy
+      - name: markdown ratchet
+        run: ./scripts/plaesy.exe validate markdown
+      - name: memory self-containment
+        run: ./scripts/plaesy.exe validate memory
+      - name: success contracts
+        run: ./scripts/plaesy.exe validate contracts
+
+  # NN-01 (constitution §5): never store secrets in source control. This job is
+  # the detection anchor. gitleaks is pinned to a release and built from source
+  # by the Go toolchain, so no third-party action or licence key is needed.
+  # Scans the full git history, since a secret removed from HEAD still leaks.
+  secrets:
+    name: Secret scan (NN-01)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: gitleaks (pinned v8.30.1)
+        run: go run github.com/zricethezav/gitleaks/v8@v8.30.1 git --redact --exit-code 1 --verbose .

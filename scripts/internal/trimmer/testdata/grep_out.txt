@@ -1,0 +1,17 @@
+../trimmer/layer1.go:21:func CompressCommandOutput(lines []string, maxLines int, dedupe bool, mode string) []string {
+../trimmer/layer1.go:64:func collapseLine(line string, count int) string {
+../trimmer/layer1.go:71:func compressTestResults(lines []string) []string {
+../trimmer/layer1.go:111:func matchLayer1Rule(rules *Rules, cmdString string) Layer1Rule {
+../trimmer/layer1.go:146:func Run(rules *Rules, statsPath string, args []string) (*RunResult, error) {
+../trimmer/layer1.go:200:func splitLines(s string) []string {
+../trimmer/layer2.go:35:func getNodeDegree(graphPath, relative string) (int, bool) {
+../trimmer/layer2.go:59:func ResolveLevel(rules *Rules, graphPath, relative, requested string) string {
+../trimmer/layer2.go:84:func compiledFillerPatterns(rules *Rules) []struct {
+../trimmer/layer2.go:109:func applyLevel(piece, level string, rules *Rules) string {
+../trimmer/layer2.go:128:func replacePerLine(text string, f func(string) string) string {
+../trimmer/layer2.go:139:func CompressProse(text, level string, rules *Rules) string {
+../trimmer/layer2.go:181:func splitLinesKeepTrailing(text string) []string {
+../trimmer/layer2.go:198:func (r FileCompressResult) String() string {
+../trimmer/layer2.go:202:func formatPct(p float64) string {
+../trimmer/layer2.go:210:func CompressOneFile(rules *Rules, repoRoot, graphPath, statsPath, file, requestedLevel string, dryRun bool) (FileCompressResult, error) {
+../trimmer/layer2.go:245:func CompressPath(rules *Rules, repoRoot, graphPath, statsPath, path, level string, recurse, dryRun bool) ([]FileCompressResult, error) {

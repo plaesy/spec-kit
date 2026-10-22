@@ -1,0 +1,107 @@
+name: Installers
+
+on:
+  pull_request:
+    paths:
+      - install.sh
+      - install.ps1
+      - install.nu
+      - scripts/**
+      - .github/workflows/installers.yml
+  push:
+    branches: [main]
+    paths:
+      - install.sh
+      - install.ps1
+      - install.nu
+      - scripts/**
+      - .github/workflows/installers.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Each job builds the CLI, serves it with the same asset names and SHA256SUMS
+# layout as a release, and runs the installer against that local server. HOME
+# and LOCALAPPDATA point into the runner temp directory, so nothing touches a
+# real profile. install.nu is not covered: nushell is not on the hosted runners.
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: Build release-style assets
+        working-directory: scripts
+        run: |
+          mkdir -p ../served ../served-bad
+          go build -o ../served/plaesy-linux-amd64 ./cmd/plaesy
+          cd ../served && sha256sum plaesy-linux-amd64 > SHA256SUMS
+          cp ../served/plaesy-linux-amd64 ../served-bad/
+          echo "0000000000000000000000000000000000000000000000000000000000000000  plaesy-linux-amd64" > ../served-bad/SHA256SUMS
+      - name: Serve assets
+        run: |
+          python3 -m http.server 8000 --directory served >/dev/null 2>&1 &
+          python3 -m http.server 8001 --directory served-bad >/dev/null 2>&1 &
+          for port in 8000 8001; do
+            for _ in $(seq 1 20); do
+              curl -fsS "http://127.0.0.1:$port/SHA256SUMS" >/dev/null && break
+              sleep 0.5
+            done
+          done
+      - name: install.sh installs the verified binary
+        env:
+          PLAESY_BASE_URL: http://127.0.0.1:8000
+          HOME: ${{ runner.temp }}/home
+        run: |
+          mkdir -p "$HOME"
+          bash install.sh
+          test -x "$HOME/.local/bin/plaesy"
+          "$HOME/.local/bin/plaesy" --help >/dev/null
+      - name: install.sh refuses a checksum mismatch
+        env:
+          PLAESY_BASE_URL: http://127.0.0.1:8001
+          HOME: ${{ runner.temp }}/home-bad
+        run: |
+          mkdir -p "$HOME"
+          if bash install.sh; then
+            echo "::error::install.sh installed a binary with a bad checksum"
+            exit 1
+          fi
+          test ! -e "$HOME/.local/bin/plaesy"
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: scripts/go.mod
+      - name: Build release-style assets
+        shell: bash
+        working-directory: scripts
+        run: |
+          mkdir -p ../served
+          go build -o ../served/plaesy-windows-amd64.exe ./cmd/plaesy
+          cd ../served && sha256sum plaesy-windows-amd64.exe > SHA256SUMS
+      - name: Serve assets
+        shell: bash
+        run: |
+          python -m http.server 8000 --directory served >/dev/null 2>&1 &
+          for _ in $(seq 1 20); do
+            curl -fsS "http://127.0.0.1:8000/SHA256SUMS" >/dev/null && break
+            sleep 0.5
+          done
+      - name: install.ps1 installs the verified binary
+        shell: pwsh
+        env:
+          PLAESY_BASE_URL: http://127.0.0.1:8000
+          LOCALAPPDATA: ${{ runner.temp }}\localappdata
+        run: |
+          New-Item -ItemType Directory -Force -Path $env:LOCALAPPDATA | Out-Null
+          & ./install.ps1
+          if ($LASTEXITCODE -ne 0) { throw "install.ps1 failed" }
+          & "$env:LOCALAPPDATA\Plaesy\bin\plaesy.exe" --help | Out-Null
+          if ($LASTEXITCODE -ne 0) { throw "installed plaesy.exe did not run" }

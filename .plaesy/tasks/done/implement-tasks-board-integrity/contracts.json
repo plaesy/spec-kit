@@ -1,0 +1,37 @@
+{
+  "id": "implement-tasks-board-integrity",
+  "checklist": [
+    {
+      "id": "C1",
+      "check": "board lists tasks of every spec with status and title",
+      "run": "cd scripts \u0026\u0026 go test ./internal/tasks/ -run '^TestListAllTasks$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C2",
+      "check": "integrity detects status/folder mismatch, duplicate task across statuses, duplicate spec branch",
+      "run": "cd scripts \u0026\u0026 go test ./internal/tasks/ -run '^TestCheckIntegrity$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C3",
+      "check": "new task body carries goal, scope, context, checklist, decisions, references, KPI, verification",
+      "run": "cd scripts \u0026\u0026 go test ./internal/tasks/ -run '^TestAddTaskBodyHasGoalFields$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C4",
+      "check": "affected packages build",
+      "run": "cd scripts \u0026\u0026 go build ./cmd/plaesy/ ./internal/tasks/",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    }
+  ]
+}

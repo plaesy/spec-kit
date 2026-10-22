@@ -1,0 +1,14 @@
+total 104
+drwxr-xr-x 1 User 197121     0 Oct 13 13:59 ./
+drwxr-xr-x 1 User 197121     0 Oct 12 19:31 ../
+-rw-r--r-- 1 User 197121  1352 Oct 12 19:31 helpers_test.go
+-rw-r--r-- 1 User 197121  6202 Oct 12 19:31 layer1.go
+-rw-r--r-- 1 User 197121  8812 Oct 12 19:31 layer1_test.go
+-rw-r--r-- 1 User 197121  8710 Oct 12 19:31 layer2.go
+-rw-r--r-- 1 User 197121 13695 Oct 12 19:31 layer2_test.go
+-rw-r--r-- 1 User 197121  6954 Oct 12 19:31 llm.go
+-rw-r--r-- 1 User 197121 10812 Oct 12 19:31 llm_test.go
+-rw-r--r-- 1 User 197121  7481 Oct 12 19:31 rules.go
+-rw-r--r-- 1 User 197121  3497 Oct 12 19:31 stats.go
+-rw-r--r-- 1 User 197121  8984 Oct 12 19:31 stats_test.go
+drwxr-xr-x 1 User 197121     0 Oct 13 13:59 testdata/

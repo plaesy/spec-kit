@@ -1,0 +1,363 @@
+{
+  "version": "1.0",
+  "description": "Platform detection and file mapping for Plaesy Spec-Kit",
+  "plaesy": {
+    "base_directory": ".plaesy",
+    "core_directories": [
+      "memory",
+      "decisions",
+      "roles",
+      "analysis",
+      "instructions",
+      "templates",
+      "tasks",
+      "checklists"
+    ],
+    "project_directories": [],
+    "mapping": {
+      "core": {
+        "value": "instructions/agents.instructions.md"
+      },
+      "memory": {
+        "value": "memory/*",
+        "excludes": []
+      },
+      "roles": {
+        "value": "roles/*",
+        "excludes": [],
+        "description": "Agents copied to .plaesy/roles (platform-agnostic development storage)"
+      },
+      "tasks": {
+        "value": "tasks/*",
+        "excludes": [],
+        "description": "Task management system - universal across all platforms"
+      },
+      "instructions": {
+        "value": "instructions/*",
+        "excludes": [
+          "agents.instructions.md"
+        ]
+      },
+      "prompts": {
+        "value": "prompts/*",
+        "excludes": []
+      },
+      "agents": {
+        "value": "agents/*",
+        "excludes": [],
+        "description": "Agents copied to platform-specific agent directory (e.g. .claude/agents, .opencode/agents)"
+      },
+      "templates": {
+        "value": "templates/*",
+        "excludes": []
+      },
+      "checklists": {
+        "value": "checklists/*",
+        "excludes": []
+      },
+      "scripts": {
+        "value": "scripts/*",
+        "excludes": []
+      }
+    }
+  },
+  "platforms": {
+    "claude": {
+      "name": "Claude Code",
+      "provider": "Anthropic",
+      "category": "cli_tools",
+      "detection": [
+        ".claude/settings.local.json",
+        ".claude/commands",
+        "CLAUDE.md"
+      ],
+      "mapping": {
+        "core": "CLAUDE.md",
+        "instructions": ".claude/instructions",
+        "prompts": ".claude/commands",
+        "prune_prompts": "true",
+        "agents": ".claude/agents",
+        "hooks": ".claude/settings.json",
+        "hooks_format": "claude"
+      }
+    },
+    "codex": {
+      "name": "OpenAI Codex CLI",
+      "provider": "OpenAI",
+      "category": "cli_tools",
+      "detection": [
+        ".codex/hooks.json",
+        ".codex/prompts",
+        "AGENTS.md"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "prompts": ".codex/prompts",
+        "prune_prompts": "true",
+        "hooks": ".codex/hooks.json",
+        "hooks_format": "codex"
+      }
+    },
+    "gemini": {
+      "name": "Gemini CLI (replaced by Antigravity CLI)",
+      "provider": "Google",
+      "category": "cli_tools",
+      "detection": [
+        ".gemini/settings.json",
+        "GEMINI.md"
+      ],
+      "mapping": {
+        "core": "GEMINI.md",
+        "hooks": ".gemini/settings.json",
+        "hooks_format": "gemini"
+      }
+    },
+    "aider": {
+      "name": "Aider",
+      "provider": "Aider",
+      "category": "cli_tools",
+      "detection": [
+        ".aider.conf.yml",
+        "CONVENTIONS.md"
+      ],
+      "mapping": {
+        "core": "CONVENTIONS.md"
+      }
+    },
+    "opencode": {
+      "name": "OpenCode",
+      "provider": "OpenCode",
+      "category": "cli_tools",
+      "detection": [
+        ".opencode/agents",
+        ".opencode/commands",
+        ".opencode/config.json",
+        ".opencode/plugins"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "instructions": ".opencode/instructions",
+        "prompts": ".opencode/commands",
+        "prune_prompts": "true",
+        "agents": ".opencode/agents"
+      }
+    },
+    "cursor_ai": {
+      "name": "Cursor AI",
+      "provider": "Cursor",
+      "category": "ide_tools",
+      "detection": [
+        ".cursorrules",
+        ".cursor/rules",
+        ".cursor"
+      ],
+      "mapping": {
+        "core": ".cursor/rules/plaesy.mdc",
+        "instructions": ".cursor/instructions",
+        "prompts": ".cursor/rules",
+        "agents": ".cursor/agents",
+        "hooks": ".cursor/hooks.json",
+        "hooks_format": "cursor"
+      }
+    },
+    "github_copilot": {
+      "name": "GitHub Copilot",
+      "provider": "GitHub",
+      "category": "ide_tools",
+      "detection": [
+        ".github/copilot-instructions.md",
+        ".github/prompts"
+      ],
+      "mapping": {
+        "core": ".github/copilot-instructions.md",
+        "instructions": ".github/instructions",
+        "prompts": ".github/prompts",
+        "prune_prompts": "true",
+        "agents": ".github/agents",
+        "hooks": ".github/hooks/plaesy-design-lint.json",
+        "hooks_format": "copilot"
+      }
+    },
+    "cline": {
+      "name": "Cline",
+      "provider": "Cline AI",
+      "category": "vscode_extension",
+      "detection": [
+        ".clinerules",
+        ".cline/rules",
+        ".cline/prompts"
+      ],
+      "mapping": {
+        "core": ".clinerules/plaesy.md",
+        "instructions": ".cline/instructions",
+        "prompts": ".cline/prompts",
+        "prune_prompts": "true",
+        "agents": ".cline/agents"
+      }
+    },
+    "deepseek": {
+      "name": "DeepSeek (Codewhale, formerly DeepSeek-TUI)",
+      "provider": "DeepSeek AI",
+      "category": "api_based",
+      "detection": [
+        ".codewhale",
+        ".deepseek/instructions.md",
+        "deepseek.config.json"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "instructions": ".deepseek/instructions",
+        "prompts": ".deepseek/prompts",
+        "prune_prompts": "true",
+        "agents": ".deepseek/agents",
+        "hooks": ".codewhale/hooks.toml",
+        "hooks_format": "codewhale"
+      }
+    },
+    "kilo": {
+      "name": "Kilo Code",
+      "provider": "Kilo Code",
+      "category": "api_based",
+      "detection": [
+        ".kilorules",
+        ".kilo/rules",
+        ".kilo"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "prompts": ".kilo/commands",
+        "prune_prompts": "true",
+        "agents": ".kilo/agents"
+      }
+    },
+    "qoder": {
+      "name": "Qoder AI",
+      "provider": "Qoder",
+      "category": "api_based",
+      "detection": [
+        ".qoderrules",
+        ".qoder/rules",
+        ".qoder"
+      ],
+      "mapping": {
+        "core": ".qoder/rules/plaesy.mdc",
+        "instructions": ".qoder/instructions",
+        "prompts": ".qoder/rules",
+        "agents": ".qoder/agents",
+        "hooks": ".qoder/settings.json",
+        "hooks_format": "qoder"
+      }
+    },
+    "windsurf_ai": {
+      "name": "Windsurf AI",
+      "provider": "Windsurf",
+      "category": "multi_agent",
+      "detection": [
+        ".windsurf/workflow.yaml",
+        ".windsurfrules"
+      ],
+      "mapping": {
+        "core": "AGENTS.md",
+        "instructions": ".windsurf/instructions",
+        "prompts": ".windsurf/prompts",
+        "prune_prompts": "true",
+        "agents": ".windsurf/agents",
+        "hooks": ".devin/hooks.json",
+        "hooks_format": "windsurf"
+      }
+    },
+    "continue_dev": {
+      "name": "Continue.dev",
+      "provider": "Continue",
+      "category": "vscode_extension",
+      "detection": [
+        ".continue/config.json",
+        ".continuerc",
+        ".continue-instructions.md"
+      ],
+      "mapping": {
+        "core": ".continue/rules/plaesy.md",
+        "instructions": ".continue/instructions",
+        "prompts": ".continue/prompts",
+        "prune_prompts": "true",
+        "agents": ".continue/agents"
+      }
+    },
+    "tabnine": {
+      "name": "Tabnine",
+      "provider": "Tabnine",
+      "category": "ide_tools",
+      "detection": [
+        ".tabnine-config.json",
+        ".tabnine/settings.json",
+        ".tabnine"
+      ],
+      "mapping": {
+        "core": ".tabnine/guidelines/plaesy.md",
+        "instructions": ".tabnine/instructions",
+        "prompts": ".tabnine/prompts",
+        "prune_prompts": "true",
+        "agents": ".tabnine/agent/agents"
+      }
+    },
+    "studio_bot": {
+      "name": "Android Studio (Gemini)",
+      "provider": "Google",
+      "category": "ide_tools",
+      "detection": [
+        ".studio-bot/config.json",
+        ".android/studio-bot",
+        ".studiobot"
+      ],
+      "mapping": {
+        "instructions": ".studio-bot/instructions",
+        "prompts": ".studio-bot/prompts",
+        "prune_prompts": "true",
+        "agents": ".studio-bot/agents",
+        "core": "AGENTS.md"
+      }
+    },
+    "replit_ghostwriter": {
+      "name": "Replit Agent",
+      "provider": "Replit",
+      "category": "cloud_ide",
+      "detection": [
+        ".replit/config.json",
+        "ghostwriter.config.json",
+        ".replit-ghostwriter"
+      ],
+      "mapping": {
+        "instructions": ".replit/instructions",
+        "prompts": ".replit/prompts",
+        "prune_prompts": "true",
+        "agents": ".replit/agents",
+        "core": "replit.md"
+      }
+    },
+    "generic_ai": {
+      "name": "Generic AI",
+      "provider": "Various",
+      "category": "fallback",
+      "detection": [],
+      "mapping": {
+        "core": "AI-INSTRUCTIONS.md",
+        "instructions": "ai-config/instructions",
+        "prompts": "ai-config/prompts",
+        "prune_prompts": "true",
+        "agents": "ai-config/agents"
+      }
+    },
+    "kiro": {
+      "name": "Kiro",
+      "provider": "AWS",
+      "category": "ide",
+      "detection": [
+        ".kiro/steering",
+        ".kiro"
+      ],
+      "mapping": {
+        "core": ".kiro/steering/plaesy.md"
+      }
+    }
+  }
+}

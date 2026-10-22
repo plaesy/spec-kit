@@ -1,0 +1,20 @@
+{
+  "instruction": "instructions/git.instructions.md",
+  "static": [
+    {
+      "id": "git-checkpoint-before-risky-edits",
+      "description": "Agent edits that are multi-file, generated or destructive start from a committed checkpoint and roll back with git",
+      "requires": ["Checkpoint before risky agent edits", "git restore", "git revert"]
+    },
+    {
+      "id": "git-named-staging-and-scan",
+      "description": "Agents stage named files, not everything, and scan the staged diff before a commit",
+      "requires": ["Stage named files, not `git add -A`", "Run a secret scanner on the staged diff before every commit"]
+    },
+    {
+      "id": "git-no-secret-echo",
+      "description": "Agents do not print secret files into the transcript",
+      "requires": ["Do not print a secret file into the transcript"]
+    }
+  ]
+}

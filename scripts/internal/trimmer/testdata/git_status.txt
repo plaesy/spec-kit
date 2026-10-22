@@ -1,0 +1,116 @@
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	renamed:    docs/scripts/plaesy-graph.md -> docs/scripts/plaesy-analyze-graph.md
+	deleted:    scripts/cmd/plaesy/graph.go
+	deleted:    scripts/internal/search/config.go
+	deleted:    scripts/internal/search/embedder/onnx.go
+	deleted:    scripts/internal/search/embedder/onnx_windows.go
+	renamed:    scripts/internal/search/eval/adapter.go -> scripts/internal/search/eval/adapter_test.go
+	deleted:    scripts/internal/search/eval/cli.go
+	deleted:    scripts/internal/search/search.go
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .gitignore
+	modified:   .plaesy/context.md
+	modified:   .plaesy/decisions.md
+	modified:   .plaesy/decisions/release-native-matrix-cgo.md
+	modified:   .plaesy/memory.md
+	modified:   .plaesy/tasks/README.md
+	modified:   .plaesy/tasks/backlog/high_search-f2-hybrid-eval.md
+	modified:   README.md
+	modified:   docs/architecture.md
+	modified:   docs/components.md
+	modified:   docs/instructions/README.md
+	modified:   docs/metadata.json
+	modified:   docs/overview.md
+	modified:   docs/reference.md
+	modified:   docs/scripts/README.md
+	modified:   docs/scripts/plaesy-analyze-graph.md
+	modified:   docs/scripts/plaesy-analyze.md
+	modified:   docs/scripts/plaesy-search.md
+	modified:   docs/scripts/plaesy-trim.md
+	modified:   instructions/context-engineering.instructions.md
+	modified:   instructions/plaesy.instructions.md
+	modified:   scripts/cmd/plaesy/analyze.go
+	modified:   scripts/cmd/plaesy/changelog_drift_test.go
+	modified:   scripts/cmd/plaesy/e2e_smoke_test.go
+	modified:   scripts/cmd/plaesy/eval.go
+	modified:   scripts/cmd/plaesy/reach.go
+	modified:   scripts/cmd/plaesy/search.go
+	modified:   scripts/cmd/plaesy/search_index.go
+	modified:   scripts/cmd/plaesy/stats.go
+	modified:   scripts/go.mod
+	modified:   scripts/go.sum
+	modified:   scripts/internal/analyze/analyze.go
+	modified:   scripts/internal/analyze/analyze_test.go
+	modified:   scripts/internal/assets/data/instructions/context-engineering.instructions.md
+	modified:   scripts/internal/assets/data/instructions/plaesy.instructions.md
+	modified:   scripts/internal/config/schema.go
+	modified:   scripts/internal/graph/build.go
+	modified:   scripts/internal/graph/graph.go
+	modified:   scripts/internal/graph/mentions.go
+	modified:   scripts/internal/graph/query.go
+	modified:   scripts/internal/graph/query_test.go
+	modified:   scripts/internal/graph/symbols.go
+	modified:   scripts/internal/scaffold/copy_test.go
+	modified:   scripts/internal/search/chunker/chunker_test.go
+	modified:   scripts/internal/search/chunker/interface.go
+	modified:   scripts/internal/search/chunker/structure_aware.go
+	modified:   scripts/internal/search/embedder/embedder_test.go
+	modified:   scripts/internal/search/embedder/factory.go
+	modified:   scripts/internal/search/embedder/interface.go
+	modified:   scripts/internal/search/indexer/indexer_test.go
+	modified:   scripts/internal/search/indexer/pipeline.go
+	modified:   scripts/internal/search/retriever/hybrid.go
+	modified:   scripts/internal/search/retriever/retriever_test.go
+	modified:   scripts/internal/search/store/store_test.go
+	modified:   scripts/internal/search/textindex/bleve.go
+	modified:   scripts/internal/search/vectorstore/chromem.go
+	modified:   scripts/internal/search/vectorstore/interface.go
+	modified:   scripts/internal/search/vectorstore/vectorstore_test.go
+	modified:   scripts/internal/semantic/semantic.go
+	modified:   scripts/internal/semantic/semantic_test.go
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	.plaesy/decisions/chunk-cap-model-tokens.md
+	.plaesy/decisions/delegation-provider-and-token-savers.md
+	.plaesy/decisions/hybrid-matches-before-parent-child.md
+	.plaesy/decisions/remove-onnx-and-http-embedders.md
+	.plaesy/decisions/retrieval-prefix-and-cap-101-labels.md
+	.plaesy/decisions/search-single-verb-and-e5-index.md
+	.plaesy/memory/retrieval-eval-and-chunking.md
+	.plaesy/memory/search-cli-and-indexing.md
+	.plaesy/tasks/backlog/high_delegate-fallback-chain.md
+	.plaesy/tasks/backlog/high_delegate-provider-interface.md
+	.plaesy/tasks/backlog/high_doc-index-in-analyze.md
+	.plaesy/tasks/backlog/high_trim-typed-output-filters.md
+	.plaesy/tasks/backlog/medium_delegate-per-provider-usage.md
+	.plaesy/tasks/doing/
+	.plaesy/tasks/done/high_retrieval-eval-expand-labels.md
+	scripts/cmd/plaesy/analyze_graph.go
+	scripts/cmd/plaesy/search_index_clean_test.go
+	scripts/internal/analyze/watch.go
+	scripts/internal/graph/extensions_test.go
+	scripts/internal/search/chunker/cap_test.go
+	scripts/internal/search/chunker/counter_test.go
+	scripts/internal/search/chunker/finalize_test.go
+	scripts/internal/search/embedder/rembed.go
+	scripts/internal/search/embedder/rembed_test.go
+	scripts/internal/search/eval/golden_docs_test.go
+	scripts/internal/search/eval/index_adapter.go
+	scripts/internal/search/eval/index_adapter_test.go
+	scripts/internal/search/eval/index_integration_test.go
+	scripts/internal/search/eval/index_open.go
+	scripts/internal/search/retriever/parentchild_order_test.go
+	scripts/internal/search/textindex/bleve_search_test.go
+	scripts/internal/search/vectorstore/chromem_search_test.go
+	scripts/internal/semantic/gounits.go
+	scripts/internal/semantic/gounits_test.go
+	scripts/internal/trimmer/testdata/
+	scripts/testdata/golden_code.jsonl
+	scripts/testdata/golden_docs.jsonl
+

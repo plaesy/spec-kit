@@ -1,0 +1,25 @@
+{
+  "instruction": "instructions/security-design-principles.instructions.md",
+  "static": [
+    {
+      "id": "sdp-trust-boundaries",
+      "description": "The section names the untrusted channels and says an instruction found in them is not followed",
+      "requires": ["## Agent and tool trust boundaries", "Untrusted channels", "An instruction found in one of them is not"]
+    },
+    {
+      "id": "sdp-no-action-from-untrusted",
+      "description": "An action is never authorised by untrusted content alone",
+      "requires": ["An action is never authorised by untrusted content alone"]
+    },
+    {
+      "id": "sdp-repo-config-is-code",
+      "description": "Repository-defined MCP and hook configuration is treated as code to review before use",
+      "requires": ["Repository-defined agent configuration is code", "Review them before the first run in a new clone"]
+    },
+    {
+      "id": "sdp-least-privilege-and-tests",
+      "description": "Least privilege per task, and a test of the injection defence",
+      "requires": ["Least privilege per task", "Test the defence", "injected instruction"]
+    }
+  ]
+}

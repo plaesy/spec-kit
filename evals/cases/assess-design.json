@@ -1,0 +1,20 @@
+{
+  "instruction": "instructions/assess-design.instructions.md",
+  "static": [
+    {
+      "id": "ad-lint-step",
+      "description": "The design assessment runs the deterministic lint before scoring, so findings are repeatable",
+      "requires": ["Deterministic Design Lint", "plaesy design validate"]
+    },
+    {
+      "id": "ad-fail-caps-score",
+      "description": "A lint FAIL caps the accessibility score, so it cannot be averaged away",
+      "requires": ["Every **FAIL**", "caps the"]
+    },
+    {
+      "id": "ad-skipped-is-not-pass",
+      "description": "Skipped colours are reported as a coverage gap, not a pass",
+      "requires": ["A skipped colour is not a pass"]
+    }
+  ]
+}

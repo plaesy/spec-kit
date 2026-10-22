@@ -1,0 +1,37 @@
+{
+  "instruction": "instructions/success-contract.instructions.md",
+  "static": [
+    {
+      "id": "sc-where",
+      "description": "Each task keeps its checklist as contracts.json inside its own task folder",
+      "requires": [
+        "contracts.json",
+        "task folder"
+      ]
+    },
+    {
+      "id": "sc-checks",
+      "description": "Every item has a run command that proves it and an expected value its output must reach",
+      "requires": [
+        "run",
+        "expected"
+      ]
+    },
+    {
+      "id": "sc-run",
+      "description": "plaesy tasks validate runs the checks and records the results",
+      "requires": [
+        "plaesy tasks validate"
+      ]
+    },
+    {
+      "id": "sc-done",
+      "description": "A task is done only when every item is passed, and failures are kept in histories",
+      "requires": [
+        "passed",
+        "histories",
+        "never moved to `done`"
+      ]
+    }
+  ]
+}

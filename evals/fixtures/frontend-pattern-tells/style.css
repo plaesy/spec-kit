@@ -1,0 +1,33 @@
+:root {
+  --ink: #1a1a1a;
+  --paper: #f5f5f0;
+  --accent: #1f5f4a;
+}
+
+body {
+  font-family: "Geist", sans-serif;
+  font-size: 18px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* A side stripe, a glow and a hard shadow are each a WARN for a reason to review. */
+.note {
+  color: var(--ink);
+  border-left: 4px solid var(--accent);
+}
+
+.hero-title {
+  font-size: 40px;
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.panel {
+  box-shadow: 0 0 24px rgba(31, 95, 74, 0.5);
+}
+
+.tile {
+  box-shadow: 4px 4px 0 #1a1a1a;
+}

@@ -1,0 +1,61 @@
+{
+  "id": "loop-designlint-pattern-rules-2026-10-20",
+  "checklist": [
+    {
+      "id": "C1",
+      "check": "designlint unit tests for the four pattern rules pass",
+      "run": "cd scripts \u0026\u0026 go test -count=1 ./internal/designlint/",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C2",
+      "check": "each pattern rule has an outputs eval case that the evals gate runs",
+      "run": "grep -q pattern-tells-warn-only evals/cases/frontend-design.json \u0026\u0026 cd scripts \u0026\u0026 go run ./cmd/plaesy evals validate",
+      "expected": "pass",
+      "status": "passed",
+      "histories": [
+        {
+          "at": "2026-10-22T06:53:54Z",
+          "actual": "result not_met",
+          "run": "grep -c pattern-tells-warn-only evals/cases/frontend-design.json \u0026\u0026 cd scripts \u0026\u0026 go run ./cmd/plaesy validate evals"
+        },
+        {
+          "at": "2026-10-22T07:13:37Z",
+          "actual": "result not_met for target \"all 4 pattern rules covered\"",
+          "run": "grep -c pattern-tells-warn-only evals/cases/frontend-design.json \u0026\u0026 cd scripts \u0026\u0026 go run ./cmd/plaesy validate evals"
+        },
+        {
+          "at": "2026-10-22T07:21:55Z",
+          "actual": "result not_met for expected \"all 4 pattern rules covered\"",
+          "run": "grep -c pattern-tells-warn-only evals/cases/frontend-design.json \u0026\u0026 cd scripts \u0026\u0026 go run ./cmd/plaesy validate evals"
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "check": "evals gate (Makefile evals target) passes",
+      "run": "cd scripts \u0026\u0026 go test -count=1 ./internal/designlint/ \u0026\u0026 go test -count=1 ./cmd/plaesy/ -run '^(TestValidateDesign|TestValidateEvals)'",
+      "expected": "pass",
+      "status": "passed",
+      "histories": [
+        {
+          "at": "2026-10-22T06:53:55Z",
+          "actual": "exit code 127",
+          "run": "cd scripts \u0026\u0026 go test -count=1 ./internal/evals/ ./internal/designlint/ \u0026\u0026 go test -count=1 ./cmd/plaesy/ -run TestValidateDesign|TestValidateEvals"
+        },
+        {
+          "at": "2026-10-22T07:13:37Z",
+          "actual": "exit code 127",
+          "run": "cd scripts \u0026\u0026 go test -count=1 ./internal/evals/ ./internal/designlint/ \u0026\u0026 go test -count=1 ./cmd/plaesy/ -run TestValidateDesign|TestValidateEvals"
+        },
+        {
+          "at": "2026-10-22T07:21:55Z",
+          "actual": "exit code 127",
+          "run": "cd scripts \u0026\u0026 go test -count=1 ./internal/evals/ ./internal/designlint/ \u0026\u0026 go test -count=1 ./cmd/plaesy/ -run TestValidateDesign|TestValidateEvals"
+        }
+      ]
+    }
+  ]
+}

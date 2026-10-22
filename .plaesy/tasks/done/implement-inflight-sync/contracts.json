@@ -1,0 +1,29 @@
+{
+  "id": "implement-inflight-sync",
+  "checklist": [
+    {
+      "id": "C1",
+      "check": "in-flight lines include only the next-up and doing statuses, with spec, file and title",
+      "run": "cd scripts \u0026\u0026 go test ./internal/tasks/ -run '^TestRenderInFlight$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C2",
+      "check": "section replacement changes only the In-Flight section and keeps the rest of context.md",
+      "run": "cd scripts \u0026\u0026 go test ./internal/tasks/ -run '^TestReplaceSection$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C3",
+      "check": "affected packages build",
+      "run": "cd scripts \u0026\u0026 go build ./cmd/plaesy/ ./internal/tasks/",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    }
+  ]
+}

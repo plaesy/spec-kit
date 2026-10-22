@@ -1,0 +1,37 @@
+{
+  "id": "implement-resource-rename",
+  "checklist": [
+    {
+      "id": "C1",
+      "check": "every validator runs as plaesy \u003ctarget\u003e validate",
+      "run": "cd scripts \u0026\u0026 go test ./cmd/plaesy/ -run '^TestResourceValidateRuns$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C2",
+      "check": "old plaesy validate \u003ctarget\u003e forms still run and print the new location",
+      "run": "cd scripts \u0026\u0026 go test ./cmd/plaesy/ -run '^TestLegacyValidateNamesNewLocation$' -count=1",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C3",
+      "check": "no source still names the old validate target form",
+      "run": "grep -rlE 'plaesy validate (constitution|memory|markdown|assumptions|docx|pptx|xlsx|design|evals|contracts?)\\b' prompts instructions docs README.md CHANGELOG.md .github 2\u003e/dev/null | wc -l",
+      "expected": "zero",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C4",
+      "check": "affected packages build",
+      "run": "cd scripts \u0026\u0026 go build ./cmd/plaesy/",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "save-2026-10-18",
+  "checklist": [
+    {
+      "id": "C1",
+      "check": "repos recorded with URL and access date",
+      "run": "grep -c 'github.com/\\|hermes-agent.nousresearch.com' .plaesy/memory/research-memory-systems-2026-10-18.md",
+      "expected": "\u003e= 9",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C2",
+      "check": "decision for HMS recorded with reference and access date",
+      "run": "test -f .plaesy/decisions/hms-not-adopted.md",
+      "expected": "pass",
+      "status": "passed",
+      "histories": []
+    },
+    {
+      "id": "C3",
+      "check": "context.md line count",
+      "run": "wc -l \u003c .plaesy/context.md",
+      "expected": "\u003c= 100",
+      "status": "passed",
+      "histories": [
+        {
+          "at": "2026-10-22T06:54:04Z",
+          "actual": "actual must be a number with the target's unit, for example 1.5 s for a target in s",
+          "run": "wc -l .plaesy/context.md"
+        },
+        {
+          "at": "2026-10-22T07:13:55Z",
+          "actual": "actual must be a number with the target's unit, for example 1.5 s for a target in s",
+          "run": "wc -l .plaesy/context.md"
+        },
+        {
+          "at": "2026-10-22T07:22:11Z",
+          "actual": "actual must be a number with the target's unit, for example 1.5 s for a target in s",
+          "run": "wc -l .plaesy/context.md"
+        }
+      ]
+    }
+  ]
+}
