@@ -1,0 +1,39 @@
+{
+  "skill": "spec",
+  "description": "Checks that the spec skill writes Given/When/Then requirements, labels gaps, adds design.md and one complete HTML mock per page under references/ for any user interface, and adds api.md only when an API is in scope.",
+  "cases": [
+    {
+      "id": "frontend-login",
+      "query": "Topic name: login. Write the spec for a login page. Users enter email and password, and see an error when the password is wrong. After five wrong attempts the account is locked for 15 minutes.",
+      "files": [],
+      "expected": [
+        "Writes .plaesy/spec/<topic>/spec.md with one requirement ID per behaviour, each with a Given/When/Then criterion",
+        "Writes design.md listing the login screen and its empty, loading, error, and success states",
+        "Writes one mock per page under references/ (for example references/login.html), each with a section for every state named in design.md, and no network references",
+        "Labels the unstated behaviour, such as whether a successful login resets the counter, as UNKNOWN or ASSUMED",
+        "Lists non-goals and does not add requirements the request did not ask for"
+      ]
+    },
+    {
+      "id": "api-only",
+      "query": "Spec for an internal endpoint that returns the status of an export job. Other services poll it. No screens.",
+      "files": [],
+      "expected": [
+        "Writes spec.md and api.md, and does not write design.md or any references/ mock because there is no user interface",
+        "api.md lists the method, path, request fields, success response, and each error code with what the caller should do",
+        "Every requirement has a Given/When/Then acceptance criterion",
+        "Gaps such as the retention period of finished jobs are labeled UNKNOWN or ASSUMED"
+      ]
+    },
+    {
+      "id": "vague-request",
+      "query": "Make the app better.",
+      "files": [],
+      "expected": [
+        "Does not invent requirements from a vague request",
+        "Asks at most three questions in one message to narrow the scope, or records the open questions in spec.md as UNKNOWN",
+        "Does not present an invented requirement as one the user asked for"
+      ]
+    }
+  ]
+}

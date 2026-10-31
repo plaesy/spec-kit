@@ -1,0 +1,19 @@
+{
+  "name": "spec-kit",
+  "version": "0.0.1",
+  "description": "Plaesy agent skills: the Plaesy workflow, task management, and specialist skills for code, design, documents, and assessment.",
+  "author": {
+    "name": "Mahbub Zulkarnain"
+  },
+  "license": "MIT",
+  "keywords": ["skills", "plaesy", "workflow", "tasks", "assessment"],
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "Plaesy Skills",
+    "shortDescription": "Plaesy workflow, task management, and specialist skills for coding agents",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "defaultPrompt": ["Start a Plaesy task for this project."]
+  }
+}

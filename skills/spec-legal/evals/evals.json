@@ -1,0 +1,16 @@
+{
+  "skill": "spec-legal",
+  "description": "Checks that the spec-legal skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a legal spec for a mobile app that stores users' email addresses and phone numbers in Indonesia.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for personal data, consent, and retention, each with a Given/When/Then criterion",
+        "labels unverified legal claims UNKNOWN or ASSUMED",
+        "includes a Non-goals heading and does not give legal advice as fact."
+      ]
+    }
+  ]
+}

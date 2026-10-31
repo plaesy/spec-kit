@@ -1,0 +1,6 @@
+{
+  "name": "spec-kit",
+  "description": "Plaesy agent skills: the Plaesy workflow, task management, and specialist skills.",
+  "version": "0.0.1",
+  "contextFileName": "GEMINI.md"
+}

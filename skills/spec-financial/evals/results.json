@@ -1,0 +1,34 @@
+{
+  "skill": "spec-financial",
+  "run_date": "2026-10-30",
+  "runner": "claude",
+  "model": "claude-haiku-4-5",
+  "results": [
+    {
+      "id": "basic",
+      "status": "PASS",
+      "items": [
+        {
+          "expected": "Writes spec.md with R rows for budget, cost structure, and pricing, each with a Given/When/Then criterion",
+          "pass": true,
+          "reason": "File contains Requirements table with R1-R4 rows covering budget, pricing, break-even, and cost structure, all with Given/When/Then format"
+        },
+        {
+          "expected": "any unknown cost is labeled UNKNOWN",
+          "pass": true,
+          "reason": "Open questions section explicitly labels unknowns: 'UNKNOWN: What are the variable costs (COGS) per drink?' and 'UNKNOWN: What is the expected daily/monthly customer volume?'"
+        },
+        {
+          "expected": "includes a Non-goals heading",
+          "pass": true,
+          "reason": "Spec includes '## Non-goals' section with four bullet points clearly stating what is excluded"
+        }
+      ],
+      "files": [
+        ".plaesy/spec/cafe/spec.md"
+      ],
+      "reply": "xpenses are tallied, then total fixed costs must not exceed IDR 20,000,000 | open |\n| R2 | Standard drink pricing is set at 25 thousand rupiah per unit | Given a customer orders a drink, when the transaction is processed, then the price charged must be IDR 25,000 | open |\n| R3 | Break-even point requires 800 drinks sold per month | Given fixed costs of IDR 20,000,000 and drink price of IDR 25,000, when monthly sales are calculated, then 800 drinks must be sold to cover fixed costs (20,000,000 ÷ 25,000 = 800) | open |\n| R4 | Pricing covers variable costs and contributes to fixed cost recovery | Given each drink is priced at IDR 25,000, when cost of goods sold (COGS) is deducted, then the remaining margin must be sufficient to recover the fixed cost allocation | open |\n\n## Non-goals\n\n- This spec does not define variable costs per unit (COGS), staffing requirements, or inventory management\n- This spec does not address marketing, customer acquisition, or demand forecasting\n- This spec does not cover tax obligations, licensing, or legal requirements\n- This spec does not define operating hours, capacity, or equipment specifications\n\n## Open questions\n\n- UNKNOWN: What are the variable costs (COGS) per drink? Owner: Business analyst.\n- UNKNOWN: What is the expected daily/monthly customer volume? Owner: Sales/marketing team.\n- ASSUMED — Drink category is uniform: all drinks are priced equally at IDR 25,000. Why: Simplifies pricing model pending menu differentiation requirements.\n- ASSUMED — Fixed costs are rent, utilities, salaries, and overhead: does not include variable ingredients. Why: Standard cafe cost structure separation.\n\n## References\n\n(None provided in request)\n<<<END>>>\n\nMenghasilkan spec untuk kafe dengan biaya tetap 20 juta rupiah/bulan dan harga minuman 25 ribu rupiah. Spec mencakup 4 persyaratan utama yang mencakup budget, harga, dan break-even analysis (800 minuman/bulan). Ada 2 pertanyaan terbuka tentang biaya variabel dan volume penjualan yang diharapkan.\n",
+      "files_text": "--- FILE: .plaesy/spec/cafe/spec.md ---\n# Spec: Cafe Financial Model\n\nStatus: draft\nTopic: Cafe\n\n## Purpose\n\nThis spec defines the financial requirements for a cafe business with a fixed monthly operating cost of 20 million rupiah and a drink product priced at 25 thousand rupiah per unit. It establishes the cost structure, pricing, and break-even metrics that the business must operate within.\n\n## Requirements\n\n| ID | Requirement | Acceptance criterion (Given / When / Then) | Status |\n| --- | --- | --- | --- |\n| R1 | Monthly fixed costs are capped at 20 million rupiah | Given the cafe is in operation, when monthly expenses are tallied, then total fixed costs must not exceed IDR 20,000,000 | open |\n| R2 | Standard drink pricing is set at 25 thousand rupiah per unit | Given a customer orders a drink, when the transaction is processed, then the price charged must be IDR 25,000 | open |\n| R3 | Break-even point requires 800 drinks sold per month | Given fixed costs of IDR 20,000,000 and drink price of IDR 25,000, when monthly sales are calculated, then 800 drinks must be sold to cover fixed costs (20,000,000 ÷ 25,000 = 800) | open |\n| R4 | Pricing covers variable costs and contributes to fixed cost recovery | Given each drink is priced at IDR 25,000, when cost of goods sold (COGS) is deducted, then the remaining margin must be sufficient to recover the fixed cost allocation | open |\n\n## Non-goals\n\n- This spec does not define variable costs per unit (COGS), staffing requirements, or inventory management\n- This spec does not address marketing, customer acquisition, or demand forecasting\n- This spec does not cover tax obligations, licensing, or legal requirements\n- This spec does not define operating hours, capacity, or equipment specifications\n\n## Open questions\n\n- UNKNOWN: What are the variable costs (COGS) per drink? Owner: Business analyst.\n- UNKNOWN: What is the expected daily/monthly customer volume? Owner: Sales/marketing team.\n- ASSUMED — Drink category is uniform: all drinks are priced equally at IDR 25,000. Why: Simplifies pricing model pending menu differentiation requirements.\n- ASSUMED — Fixed costs are rent, utilities, salaries, and overhead: does not include variable ingredients. Why: Standard cafe cost structure separation.\n\n## References\n\n(None provided in request)"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "skill": "founder",
+  "description": "Checks that the founder skill computes its verdict from the numbers, never invents inputs, and never presents simulated answers as demand.",
+  "cases": [
+    {
+      "id": "profitable-with-basis",
+      "query": "Test my idea: a meal-prep subscription for office workers in Jakarta. Price 49 per box, it costs me 12 to make each box, my fixed costs are 600 a month. Five colleagues said they would pay 49 for a weekly box, and two of them already paid a deposit. Is it profitable?",
+      "files": [],
+      "expected": [
+        "Writes .plaesy/ideas/<topic>/idea.md, .plaesy/ideas/<topic>/economics.md and .plaesy/ideas/<topic>/plan.md",
+        "Computes contribution margin 37 (49 minus 12) and break-even 17 sales per month (600 divided by 37, rounded up)",
+        "Uses an expected sales figure with a stated basis (the five colleagues and the two deposits) and labels it as an estimate, not a count of customers",
+        "Gives the verdict Profitable with a margin of safety stated",
+        "Any market size, competitor, or channel reach has a source URL and an access date, or is labeled ASSUMED"
+      ]
+    },
+    {
+      "id": "not-yet-below-break-even",
+      "query": "Is this profitable? I sell hand-poured candles for 20 each. They cost me 15 in wax and wick. Fixed costs are 600 a month. I expect to sell about 40 a month.",
+      "files": [],
+      "expected": [
+        "Computes contribution margin 5 (20 minus 15) and break-even 120 sales per month (600 divided by 5)",
+        "Gives the verdict Not yet and names the failing numbers: expected 40 is below break-even 120",
+        "Marks the 40 sales as an estimate and asks for its basis, since the user gave no evidence for it",
+        "Does not change the price or cost to make the numbers pass"
+      ]
+    },
+    {
+      "id": "incomplete-missing-fixed-cost",
+      "query": "Write my business plan. It is a mobile car wash service: 35 per wash, about 8 in water and supplies per wash. I have no real customers yet, so I do not have a sales number.",
+      "files": [],
+      "expected": [
+        "Asks for the missing fixed cost per month in at most three questions in one message, instead of assuming a value",
+        "Computes contribution margin 27 (35 minus 8) and says break-even cannot be computed without fixed cost",
+        "Records that there are no real interviews and that the expected sales figure has no basis",
+        "Gives the verdict Incomplete, not Profitable or Not yet",
+        "Does not present an invented sales estimate as demand"
+      ]
+    },
+    {
+      "id": "not-yet-negative-margin",
+      "query": "I want to sell imported phone cases for 10 each. They cost me 12 to buy. Fixed cost is 300 a month and I think I can sell 200 a month. Give me the verdict.",
+      "files": [],
+      "expected": [
+        "Computes contribution margin -2 (10 minus 12) and states it is negative",
+        "Gives the verdict Not yet and names the negative margin as the failing number",
+        "Does not compute a break-even volume as if it were meaningful, or explicitly states that a negative margin has no break-even",
+        "Does not treat the 200 sales estimate as evidence that the business works"
+      ]
+    },
+    {
+      "id": "no-simulated-demand",
+      "query": "Add a buyer panel to my plan. Simulate 100 buyers for my bakery idea and report how many would buy, so I can put the buy rate in the plan as real demand.",
+      "files": [],
+      "expected": [
+        "Refuses to present simulated answers as real demand, and says so plainly",
+        "Offers instead to record real conversations in .plaesy/ideas/<topic>/buyers.md, and states how many real conversations exist so far",
+        "Does not write a buy rate into the plan as if it came from customers"
+      ]
+    },
+    {
+      "id": "idea-discovery-no-idea",
+      "query": "I have 2000 dollars and two weekends a month. I like cooking and I live in Jakarta. Find me a business idea I can start.",
+      "files": [],
+      "expected": [
+        "Asks at most three questions in one message if any of interests, budget, time, or selling area are missing, instead of assuming them",
+        "Runs at least three web searches and opens the sources, not only search snippets",
+        "Writes three candidate folders, .plaesy/ideas/<candidate-topic>/idea.md, each with status candidate and fields for problem, who pays, why now, existing sellers, and unknowns, and adds one line per candidate to .plaesy/ideas.md",
+        "Gives a source URL and an access date for every market claim, and labels anything unsourced as an assumption",
+        "Asks the user to choose one candidate, and does not mark any candidate chosen before the user answers",
+        "Does not state a market size or a recommended idea as fact"
+      ]
+    }
+  ]
+}

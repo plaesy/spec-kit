@@ -1,0 +1,16 @@
+{
+  "skill": "spec-financial",
+  "description": "Checks that the spec-financial skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a financial spec for a cafe with fixed costs of 20 million rupiah per month and a drink price of 25 thousand rupiah.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for budget, cost structure, and pricing, each with a Given/When/Then criterion",
+        "any unknown cost is labeled UNKNOWN",
+        "includes a Non-goals heading."
+      ]
+    }
+  ]
+}

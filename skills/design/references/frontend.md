@@ -1,0 +1,283 @@
+---
+name: frontend-design
+description: Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.
+applyTo: "**/components/**,**/*.tsx,**/*.jsx,**/*.vue,**/*.svelte,**/*.css,**/*.scss,**/*.html"
+---
+
+# Frontend Design
+
+**Scope vs. siblings.** This file is about *aesthetic distinctiveness* — palette,
+type, layout, motion choices that avoid the generic AI-default look. It does not
+cover usability mechanics (hierarchy, feedback, affordance, Fitts's law) — see
+`.plaesy/instructions/ui-ux-design-principles.md` for that — or the project's persisted
+token source of truth — see `.plaesy/instructions/how-to-create-designmd.md` for
+the `.plaesy/memory/design.md` field rules and liveliness dials. Apply all three:
+this file sets the taste direction, `how-to-create-designmd` records it as tokens,
+`ui-ux-design-principles` keeps the result usable.
+
+Approach this as the design lead at a design studio known for giving every client
+a distinct visual identity that is not mistaken for anyone else's. This client has
+already rejected proposals that felt cliché or templated, and is paying for a
+distinctive point of view: make deliberate, opinionated choices about palette,
+typography, and layout that are specific to this brief, and take aesthetic risk if
+justified.
+
+## Ground your designs in the subject matter
+
+If the brief does not identify what the product or subject matter is, identify it
+yourself before designing, and confirm with the client. You can come up with one
+concrete subject, the design's audience, and the design's primary job, as a
+proposal. If there's any information in your memory about the client's preferences
+or context about what they're building, use that as a hint. The subject's industry,
+subject matter, materials, and vernacular are where distinctive visual choices come
+from — a design for a toy for girls aged 8–11 will be very aesthetically different
+from a dashboard for financial analysts. Build with the brief's real content and
+subject matter throughout.
+
+**The idea test.** Write one sentence in your notes before building: "On this page,
+*[something that belongs to this subject]* becomes *[the device the layout calls
+for]*." Fill the first blank from the subject's own material (its name and what it
+means, its place, its output, its printed artefacts), not from the category. Then
+put the nearest real competitor into the sentence. If the sentence still works, the
+idea belongs to the category: a generic idea is the one most likely to produce a
+templated page. Carry the idea into every section, including pricing, FAQ and
+footer, not only the hero.
+
+**Inventory the subject first.** Before choosing the idea, list eight to twelve things
+that belong to this client and to no competitor: its name and what the name means; the
+place it stands and what that place looks like; the numbers in the brief (capacity,
+price, year, hours); the constraint it lives with (only one batch a month, closed in
+winter); its materials, colours and rituals; the printed things of its world (a
+timetable, a label, a ticket). Fill the idea's first blank from this list. Where the
+brief has no real material, say so in the handoff rather than inventing it.
+
+**Argue before you style.** Write each section as a claim and the proof it needs, one
+line each. A section with no claim is deleted. This keeps the page from defaulting to
+the stock sequence of hero, logos, three features, testimonial, pricing and call to
+action.
+
+**Richness is not optional.** An austere page is not a restrained one. Removing
+ornament leaves space, and that space is filled with scale (the main thing made larger),
+with the full content the brief asks for, with a picture made for this subject, or with a
+field of flat colour. It is left empty on purpose at most once per page.
+
+## Design principles
+
+For web designs, the hero is the first thing viewers will see. Open with the most
+characteristic thing in the subject's world, in the form that is most appropriate: a
+headline, an image, an animation, a live demo, an interactive moment, or other
+treatments. Be deliberate with your choice: a big number with a small label,
+supporting stats, and a gradient accent is the default treatment, so only use it if
+that's truly the best option.
+
+Typography carries the personality of the page. You don't need a different typeface
+for display or headline text and body content: use one family or two, and if two,
+make them clearly distinct.
+
+Choose your typefaces deliberately, not the default families you would reach for on
+any other project, and set a clear type scale following the default guidance of The
+Elements of Typographic Style with intentional weights, widths, and spacing. When
+type is used as a headline or visual element, use the type treatment itself as an
+active part of the design, not a neutral delivery vehicle for the content.
+
+Default to line lengths of less than 80 characters. Serif typefaces can have
+slightly longer line lengths; give serif body text slightly more line-height than a
+sans-serif.
+
+Avoid these default typographic treatments; they are the commonest tells of a
+generated page:
+
+- Accenting just a single word or phrase in a headline, like putting one word in
+  italic/bold or a different color.
+- Using all caps for labels.
+- Adding unnecessary typographic labels above content.
+
+Visual structure is information. Structural devices like outlines, borders,
+numbering, eyebrows, dividers, labels, etc., encode useful information about the
+content rather than decorate it. Many generic designs use numbered markers
+(01 / 02 / 03), but that's only appropriate if the content actually is a sequence —
+like a stepped process or a timeline. Before adding numbered markers, check the
+content really is a sequence.
+
+Use non-user-triggered motion sparingly and deliberately, only to draw attention. A
+single orchestrated moment — one page-load sequence or one reveal — lands better
+than scattered effects; fade-and-slide-up entrances on each section and hover
+transitions on every card are the generic default and read as AI-generated. Motion
+that answers a person's action (opening, expanding, confirming) is welcome when it
+shows what changed.
+
+Consider written content carefully. Often a design brief may not contain real
+content, and it's up to you to come up with copy and placeholder content. Copy can
+make a design feel as templated as the design itself. See the below section on
+writing for more guidance.
+
+## Surface mode: decide before you style
+
+The surface you are building decides how much expression it can carry. Choose the
+mode from the requested surface, not from the product: a tool's landing page is
+marketing, and its dashboard is an app.
+
+- **Persuade** (landing pages, campaigns, pricing, launch pages): the visitor decides
+  and acts, so design can be the product. Commit to one memorable element and make
+  the rest serve it.
+- **Operate** (app UI, dashboards, editors, admin, settings): scanability,
+  consistency and the real usage scene outrank expression. Ambition shows as
+  precision. Patterns the user already knows earn their place; a novel one must pay
+  for itself in task speed. Brand lives in small details, not in a hero treatment.
+- **Read** (docs, articles, guides, changelogs): structure for comprehension, keep the
+  measure at 65–75 characters, and make the reading experience worth staying in.
+
+The "take aesthetic risk" guidance above applies to Persuade. On Operate and Read
+surfaces, a risk that slows the user down is a defect, not a choice.
+
+## Process: plan, review against the brief, build, critique
+
+For calibration, AI-generated design right now clusters around some traits:
+
+1. a warm cream background (near #F4F1EA) with a high-contrast serif display and a
+   terracotta or warm-clay accent (often near #D97757 — Anthropic's own
+   Claude-interaction accent, so on a user's brief it reads as a tell);
+2. a near-black background with a single bright acid-green or vermilion accent;
+3. a broadsheet-style layout with hairline rules, zero border-radius, and dense
+   newspaper-like columns;
+4. the SaaS-card kit: content chopped into identical rounded cards, one
+   border-radius on everything regardless of hierarchy, the same soft grey shadow
+   (rgba(0,0,0,.1)) under each, and gradient washes as decoration;
+5. template chrome that appears whatever the subject: a tracked-out ALL-CAPS eyebrow
+   label above every heading; meta strings joined with middle dots ('A · B · C');
+   labels built as 'WORD — fragment' with a spaced em dash; tinted near-black
+   (#0B0B0B, #111) standing in for black; a monospace face for small data labels; a
+   '→' appended to link and button text.
+
+All traits are legitimate for some briefs, but they are defaults rather than
+choices, and they appear regardless of subject. Where the brief pins down a visual
+direction, follow it exactly — the brief's own words always win, including when it
+asks for one of these looks. Where it leaves an axis free, don't spend that freedom
+on one of these defaults. As with a hired human designer, there's often a careful
+balance between doing what you're good at and taking each project as a chance to
+experiment and learn.
+
+Work in two passes. First, brainstorm a short design plan based on the client's
+design brief: create a compact token system with color, type, layout, and
+principles.
+
+- Color: describe the core base palette as 4–6 named hex values.
+- Type: the typefaces and their roles.
+- Layout: a layout concept, using one-sentence prose descriptions and ASCII
+  wireframes to ideate and compare. Include alignment guidance; should the content
+  be left aligned, center aligned, justified?
+- Principles: the high-level guidance for what makes this page unique.
+
+Then review that plan against the brief before building: if any part of it reads
+like the generic default you would produce for any similar page (work through a
+similar prompt to see if you arrive somewhere similar) rather than a choice made for
+this specific brief — revise that part, say what you changed and why. Only after
+you've confirmed the relative uniqueness of your design plan should you start to
+write the code, following the revised plan.
+
+When writing the code, be careful of structuring your CSS selector specificities.
+It's easy to generate CSS classes that cancel each other out (especially with a
+type-based selector like .section and an element-based selector like .cta). This can
+happen often with padding/margin between sections.
+
+## Restraint and self-critique
+
+Spend your boldness in one place. Let one element be the memorable thing, keep
+everything around it quiet and disciplined, and cut any decoration that does not
+serve the brief. Build to a quality floor without announcing it: responsive down to
+mobile, visible keyboard focus, reduced motion respected, visually accessible,
+harmonious color palettes. Critique your own work as you build, taking screenshots
+to review if your environment supports it — a picture is worth 1000 tokens. Consider
+Chanel's advice: before leaving the house, take a look in the mirror and remove one
+accessory. Human creatives have memory and always try to do something new, so if you
+have a space to quickly jot down notes about what you've tried, it can help you in
+future passes.
+
+**Fullness.** Restraint removes decoration, not content. Each desktop screen should
+read as a composed poster: one dominant element and the content it needs. A screen
+of mostly empty background, a page of grey placeholder blocks, or a section that
+carries only a heading looks unfinished. taste-skill's juror notes (model jurors, not
+people; see `THIRD_PARTY_NOTICES.md`) name "a quiet page that read as empty" among
+the things they penalised. Write the full content the brief asks for (every menu
+item, every room, every price with what it includes) at a readable size.
+
+## Verify with renders
+
+Restraint is a judgement; a render is evidence. When a browser can run the page:
+
+1. Render the page at 1440, 768 and 390 px wide (desktop, tablet, phone) in a real
+   browser.
+2. Check each render against these conditions. Any one of them is a failure, not a
+   note:
+    - sideways scrolling, or content running past the edge, at any width;
+    - text cut off at the top, or lying under or over another element (a picture
+      covering a headline counts);
+    - a headline running past two lines at any width;
+    - a screen that is mostly empty ground (see "Fullness");
+    - a console error, or a control that does nothing when clicked (the Gate 7
+      click-through in `.plaesy/instructions/quality-gates.md`);
+    - a section that repeats the layout of the section before it;
+    - text contrast below WCAG 2.2 AA: 4.5:1 for normal text, 3:1 for large text
+      (18.66px bold or 24px and up), checked on the colours the page actually uses;
+    - a browser default left in place: text selection, the caret, scrollbars, focus
+      rings, underline offset, or tabular numerals still in the browser's own style
+      rather than the palette. This is the cheapest sign that a page was assembled
+      rather than designed;
+    - a missing state: any control or data view without its hover, focus, disabled,
+      loading, error or empty state.
+3. Write the top three problems, one line each, fix them, and render again.
+4. Stop after three rounds. List any remaining problems in the handoff as open. Do not
+   report a clean pass while they stand.
+5. If no browser can run (a static mockup, chat-only output), say so, and check the
+   same conditions by reading the code. Do not claim a render check that did not run.
+6. Run the deterministic checks without a browser: `plaesy design validate <path>`
+   covers contrast, default fonts, invented figures, placeholder image hosts, and the
+   pattern warnings DL-GRADIENT-TEXT, DL-SIDE-STRIPE, DL-GLOW-SHADOW and DL-HARD-SHADOW.
+   A WARN is a question to answer in the handoff, not a failure. Name each one you
+   kept and why the brief asks for it.
+7. Judge the screenshots with `.plaesy/instructions/design-critique.md`: fourteen passes,
+   a weighted score and the caps. The score is a juror's view, not the render check's.
+   Fix the top three problems, render again, and stop after three rounds.
+
+## Icons
+
+Draw every icon from one real icon set, at one stroke width and one size grid. Pick
+the set once for the whole product and do not mix two. Emoji and Unicode glyphs (▶,
+✦, →, ✓) are not icons; they render differently on every platform and carry no
+stroke system. When the environment has `better-icons` or another Iconify client,
+search it (`better-icons search <term>`) before drawing; otherwise use the set the
+project already imports. An icon tile above every heading is a template tell: an
+icon earns its place only when it names a function the user needs to recognise. Give
+every icon-only control an accessible name.
+
+## More on writing in design
+
+Words appear in a design for one reason: to make it easier to understand and use.
+They are design content, not decoration. Bring the same intentionality and
+minimalism to copywriting that you would bring to spacing and color. Before writing
+anything, ask what the design needs to say, and how it can best be said to help the
+person navigate the experience.
+
+Write from the end user's perspective. Name things by what users will understand in
+simple language, not by how the system is built. A user manages notifications, not
+webhook config. Describe what something is or does in plain terms rather than
+selling it. Being specific and legible to new users is always better than being
+clever.
+
+Use active voice as default. A CTA says exactly what happens when it is used: "Save
+changes," not "Submit." An action keeps the same name through the whole flow, so the
+button that says "Publish" produces a toast that says "Published." The vocabulary of
+an interface is the signposting for someone navigating the product. Cohesion and
+consistency are how people learn their way around.
+
+Treat failure and emptiness as moments for direction, not mood. Explain what went
+wrong and how to fix it, in the interface's voice rather than a person's. Errors
+don't apologize, and they are never vague about what happened. An empty screen is an
+invitation to act.
+
+Keep the tone conversational: plain verbs, sentence case, no filler, with tone
+matched to the brand and the audience. Let each written element do exactly one job.
+
+Before copy ships, run it through `.plaesy/instructions/writing-anti-slop.md`. Cut
+the staged openers, one-line closers and contrast sentences that make a page read as
+generated, and keep every claim the brief supports.

@@ -1,0 +1,16 @@
+{
+  "skill": "spec-marketing",
+  "description": "Checks that the spec-marketing skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a marketing spec for launching a coffee subscription in Jakarta with a budget of 5 million rupiah per month.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for audience, message, channels, and measures, each with a Given/When/Then criterion",
+        "any performance claim has a source or is labeled ASSUMED",
+        "includes a Non-goals heading."
+      ]
+    }
+  ]
+}

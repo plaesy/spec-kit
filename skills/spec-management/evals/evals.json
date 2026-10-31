@@ -1,0 +1,16 @@
+{
+  "skill": "spec-management",
+  "description": "Checks that the spec-management skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a management spec for a three-person team delivering a website in six weeks.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for owners, decisions, and schedule, each with a Given/When/Then criterion",
+        "any unnamed owner is labeled UNKNOWN",
+        "includes a Non-goals heading."
+      ]
+    }
+  ]
+}

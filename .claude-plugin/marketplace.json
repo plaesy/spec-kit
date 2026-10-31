@@ -1,0 +1,13 @@
+{
+  "name": "spec-kit",
+  "owner": { "name": "Mahbub Zulkarnain" },
+  "description": "Plaesy skills for Claude Code.",
+  "plugins": [
+    {
+      "name": "spec-kit",
+      "source": "./",
+      "description": "Plaesy agent skills: the Plaesy workflow, task management, and specialist skills.",
+      "category": "engineering"
+    }
+  ]
+}

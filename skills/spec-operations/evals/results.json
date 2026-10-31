@@ -1,0 +1,34 @@
+{
+  "skill": "spec-operations",
+  "run_date": "2026-10-30",
+  "runner": "claude",
+  "model": "claude-haiku-4-5",
+  "results": [
+    {
+      "id": "basic",
+      "status": "PASS",
+      "items": [
+        {
+          "expected": "Writes spec.md with R rows for deployment, monitoring, and support, each with a Given/When/Then criterion",
+          "pass": true,
+          "reason": "File spec.md contains 10 requirements (R1–R10) covering deployment (R4, R5), monitoring (R1, R2), and support (R3, R6, R9); all use Given/When/Then format"
+        },
+        {
+          "expected": "includes a Non-goals heading",
+          "pass": true,
+          "reason": "## Non-goals section present with 5 bulleted non-goals listed"
+        },
+        {
+          "expected": "labels unknown service levels UNKNOWN",
+          "pass": true,
+          "reason": "Three items in Open questions section explicitly labeled with UNKNOWN: prefix (timezone, business hours, critical incident definition)"
+        }
+      ],
+      "files": [
+        ".plaesy/spec/web-app-uptime/spec.md"
+      ],
+      "reply": "w in the defined timezone | open |\n| R9 | Runbooks exist for common incidents | Given a on-call engineer receives an alert, when they access runbook documentation, then they find step-by-step remediation for the top 5 incident types | open |\n| R10 | Database backups occur daily | Given the app stores persistent data, when the backup job runs, then a restorable backup is created and verified daily outside business hours | open |\n\n## Non-goals\n\n- This spec does not cover after-hours support or 24/7 operation\n- Performance optimization beyond the latency thresholds stated is out of scope\n- Capacity planning for future growth is not addressed here\n- Multi-region or disaster recovery is not addressed\n- User SLA agreements beyond the uptime percentage stated\n\n## Open questions\n\n- UNKNOWN: Which timezone defines \"business hours\"? Owner: Product or Operations lead.\n- UNKNOWN: What are the exact business hours (e.g., 9 AM–5 PM, Monday–Friday)? Owner: Product or Operations lead.\n- UNKNOWN: What constitutes a \"critical\" incident requiring escalation? Owner: Incident commander or On-call manager.\n- ASSUMED — Error rate threshold is 5% and p99 latency is 2 seconds for alert triggers; these should be validated against production baselines and user impact.\n- ASSUMED — Rollback to a previous version is always safe; a testing strategy to verify this should be defined elsewhere.\n- ASSUMED — On-call rotation exists and contact information is maintained; ownership and escalation contacts are defined in a separate runbook.\n\n## References\n\nNone at this time.\n<<<END>>>\n\n**Path:** `.plaesy/spec/web-app-uptime/spec.md`\n\n**Requirements:** 10 total (R1–R10)\n\n**Open questions:**\n- Which timezone defines business hours?\n- What are the exact business hours (e.g., 9 AM–5 PM, Mon–Fri)?\n- What constitutes a \"critical\" incident?\n- Are error/latency thresholds (5%, 2s p99) validated against production?\n- Is rollback-safety verified by tests?\n- Is on-call rotation and escalation defined in a runbook?\n",
+      "files_text": "--- FILE: .plaesy/spec/web-app-uptime/spec.md ---\n# Spec: Web App Business Hours Uptime\n\nStatus: draft\nTopic: web-app-uptime\n\n## Purpose\n\nThis spec defines the operational requirements for a web application that must remain available to users during designated business hours in a single timezone. It covers deployment practices, support procedures, monitoring, alerting, and service level objectives to ensure reliable operation during working hours.\n\n## Requirements\n\n| ID | Requirement | Acceptance criterion (Given / When / Then) | Status |\n| --- | --- | --- | --- |\n| R1 | Health checks must run continuously | Given the app is deployed, when a health check endpoint is called, then it responds with status 200 within 5 seconds | open |\n| R2 | Alerts fire within 5 minutes of service degradation | Given monitoring detects error rate >5% or latency >2s p99, when this condition persists for 1 minute, then an alert is sent to on-call support | open |\n| R3 | On-call support is assigned during business hours | Given business hours in the defined timezone are active, when a critical alert fires, then an on-call engineer is notified within 5 minutes | open |\n| R4 | Deployments can be executed in <10 minutes | Given code is merged to main and tests pass, when deployment is triggered, then the app is live in production within 10 minutes | open |\n| R5 | Rollback capability must be maintained | Given a deployment causes user-facing errors, when rollback is initiated, then the previous stable version is restored within 5 minutes | open |\n| R6 | Incident escalation path is defined | Given a critical issue is unresolved after 30 minutes, when escalation criteria are met, then the on-call manager is paged | open |\n| R7 | Service level: 99% uptime during business hours | Given any calendar day, when business hours pass in the defined timezone, then the app must be available (responding to requests) for at least 99% of that window | open |\n| R8 | Maintenance windows are scheduled outside business hours | Given maintenance is required, when it is scheduled, then it occurs outside the business hours window in the defined timezone | open |\n| R9 | Runbooks exist for common incidents | Given a on-call engineer receives an alert, when they access runbook documentation, then they find step-by-step remediation for the top 5 incident types | open |\n| R10 | Database backups occur daily | Given the app stores persistent data, when the backup job runs, then a restorable backup is created and verified daily outside business hours | open |\n\n## Non-goals\n\n- This spec does not cover after-hours support or 24/7 operation\n- Performance optimization beyond the latency thresholds stated is out of scope\n- Capacity planning for future growth is not addressed here\n- Multi-region or disaster recovery is not addressed\n- User SLA agreements beyond the uptime percentage stated\n\n## Open questions\n\n- UNKNOWN: Which timezone defines \"business hours\"? Owner: Product or Operations lead.\n- UNKNOWN: What are the exact business hours (e.g., 9 AM–5 PM, Monday–Friday)? Owner: Product or Operations lead.\n- UNKNOWN: What constitutes a \"critical\" incident requiring escalation? Owner: Incident commander or On-call manager.\n- ASSUMED — Error rate threshold is 5% and p99 latency is 2 seconds for alert triggers; these should be validated against production baselines and user impact.\n- ASSUMED — Rollback to a previous version is always safe; a testing strategy to verify this should be defined elsewhere.\n- ASSUMED — On-call rotation exists and contact information is maintained; ownership and escalation contacts are defined in a separate runbook.\n\n## References\n\nNone at this time."
+    }
+  ]
+}

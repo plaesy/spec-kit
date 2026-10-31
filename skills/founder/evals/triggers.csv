@@ -1,0 +1,12 @@
+id,should_trigger,prompt
+trig-01,true,"Use the founder skill to test my idea: a coffee cart at the train station"
+trig-02,true,"Is it worth building a meal-prep subscription for office workers? Pressure-test it"
+trig-03,true,"Write my business plan for the bakery I want to open next year"
+trig-04,true,"Before I quit my job, tell me whether my candle business would be profitable"
+trig-05,true,"I run a small tutoring company and want a verdict on expanding to a second city, with the numbers"
+trig-06,false,"Add a pricing table to my existing SaaS landing page"
+trig-07,false,"What is the break-even formula in accounting? Just the definition, no idea to test"
+trig-08,false,"Write a unit test for the invoice total function in my app"
+trig-09,true,"Find me a business idea I can start with 2000 dollars"
+trig-10,true,"I have no idea what to sell. Suggest some business ideas based on what is missing in my city"
+trig-11,false,"Summarize the history of the Jakarta stock exchange in three paragraphs"

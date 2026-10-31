@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Creator"
+  short_description: "Create a skill that follows current best practice"
+  default_prompt: "Use $skill-creator to turn this workflow into a skill with a clear description and a concise body."

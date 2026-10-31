@@ -1,0 +1,15 @@
+{
+  "skill": "spec-qa",
+  "description": "Checks that the spec-qa skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a QA spec for a checkout page that accepts card and bank transfer payments.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows covering test scope, acceptance tests per requirement, and exit criteria, each with a Given/When/Then criterion",
+        "includes a Non-goals heading."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "spec-kit",
+  "version": "0.0.1",
+  "description": "Plaesy agent skills: the Plaesy workflow, task management, and specialist skills.",
+  "author": { "name": "Mahbub Zulkarnain" },
+  "license": "MIT",
+  "keywords": ["skills", "spec-kit"]
+}

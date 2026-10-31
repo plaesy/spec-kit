@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock: [topic title]</title>
+  <style>
+    /* Design tokens. Copy the values from design.md, do not invent new ones. */
+    :root {
+      --color-text: #1a1a1a;
+      --color-muted: #5c5c5c;
+      --color-accent: #1f5fbf;
+      --color-danger: #b42318;
+      --color-surface: #ffffff;
+      --color-border: #d0d5dd;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --radius: 6px;
+      --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--color-text);
+      background: #f2f4f7;
+      line-height: 1.5;
+    }
+    header.mock-nav {
+      position: sticky;
+      top: 0;
+      background: #101828;
+      color: #ffffff;
+      padding: var(--space-1) var(--space-2);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-1);
+      align-items: center;
+    }
+    header.mock-nav a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: var(--radius);
+    }
+    header.mock-nav a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    main { max-width: 960px; margin: 0 auto; padding: var(--space-3) var(--space-2); }
+    section.screen {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+    section.screen > h2 { margin-top: 0; }
+    section.state { border-top: 1px dashed var(--color-border); padding-top: var(--space-2); margin-top: var(--space-2); }
+    section.state > h3 { font-size: 1rem; color: var(--color-muted); margin: 0 0 var(--space-1); }
+    .note { color: var(--color-muted); font-size: 0.9rem; }
+    .error { color: var(--color-danger); }
+    button {
+      font: inherit;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--color-accent);
+      background: var(--color-accent);
+      color: #ffffff;
+      cursor: pointer;
+    }
+    button.secondary { background: transparent; color: var(--color-accent); }
+    input {
+      font: inherit;
+      padding: 10px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 360px;
+    }
+    label { display: block; font-weight: 600; margin-bottom: 4px; }
+    .field { margin-bottom: var(--space-2); }
+    .spinner {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 3px solid var(--color-border); border-top-color: var(--color-accent);
+      display: inline-block;
+    }
+    @media (max-width: 600px) {
+      main { padding: var(--space-2); }
+      section.screen { padding: var(--space-2); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .spinner { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- One <section class="screen"> per screen in design.md. One <section class="state"> per state. -->
+  <header class="mock-nav" aria-label="Mock navigation">
+    <strong>Mock: [topic title]</strong>
+    <a href="#screen-1">Screen 1</a>
+    <a href="#screen-2">Screen 2</a>
+  </header>
+
+  <main>
+    <section class="screen" id="screen-1" aria-labelledby="screen-1-title">
+      <h2 id="screen-1-title">[Screen 1 name]</h2>
+      <p class="note">Requirements: R1. Entry: [how the user gets here].</p>
+
+      <section class="state" aria-label="Empty state">
+        <h3>Empty</h3>
+        <p>[What is shown when there is no data.]</p>
+        <button type="button">[Primary action]</button>
+      </section>
+
+      <section class="state" aria-label="Loading state">
+        <h3>Loading</h3>
+        <p><span class="spinner" role="status" aria-label="Loading"></span> [Loading message.]</p>
+      </section>
+
+      <section class="state" aria-label="Error state">
+        <h3>Error</h3>
+        <p class="error" role="alert">[Error message from design.md.]</p>
+        <button type="button" class="secondary">[Recovery action]</button>
+      </section>
+
+      <section class="state" aria-label="Success state">
+        <h3>Success</h3>
+        <p>[Confirmation from design.md.]</p>
+      </section>
+    </section>
+
+    <section class="screen" id="screen-2" aria-labelledby="screen-2-title">
+      <h2 id="screen-2-title">[Screen 2 name]</h2>
+      <div class="field">
+        <label for="field-1">[Field label]</label>
+        <input id="field-1" type="text" autocomplete="off">
+      </div>
+      <button type="button">[Submit]</button>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "skill": "spec-operations",
+  "description": "Checks that the spec-operations skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write an operations spec for a web app that must stay up during business hours in one timezone.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for deployment, monitoring, and support, each with a Given/When/Then criterion",
+        "includes a Non-goals heading",
+        "labels unknown service levels UNKNOWN."
+      ]
+    }
+  ]
+}

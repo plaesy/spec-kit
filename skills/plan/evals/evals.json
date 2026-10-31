@@ -1,0 +1,38 @@
+{
+  "skill": "plan",
+  "description": "Checks that the plan skill maps every requirement to a step and a verification, rejects broken dependencies, and includes risks, rollback, and a go/no-go gate.",
+  "cases": [
+    {
+      "id": "maps-every-requirement",
+      "query": "Plan the topic feature-login-form. The spec has R1 (lock after five failed attempts) and R2 (show remaining lock time on the login page).",
+      "files": [],
+      "expected": [
+        "Writes .plaesy/plan/feature-login-form/plan.md",
+        "The requirement map has a row for R1 and a row for R2, each with at least one step and one verification command",
+        "Every step ID is unique, and every dependency names an existing step ID",
+        "Each risk has impact, probability, owner, and mitigation",
+        "Includes a rollback section and a go/no-go gate with checkboxes"
+      ]
+    },
+    {
+      "id": "rejects-dependency-cycle",
+      "query": "Plan this topic. Step 2 needs step 3, and step 3 needs step 2.",
+      "files": [],
+      "expected": [
+        "Does not write a plan with a dependency cycle",
+        "Reports the cycle between steps 2 and 3 and asks which order is correct",
+        "Does not mark the plan approved"
+      ]
+    },
+    {
+      "id": "requirement-without-verification",
+      "query": "Plan the topic. R3 says the export must finish in under 2 seconds for 10,000 rows, but no one knows how to measure that.",
+      "files": [],
+      "expected": [
+        "Does not leave R3 without a verification",
+        "Either proposes a measurable check with its command, or records R3 as an open question with an owner",
+        "Does not claim R3 is planned if it has no verification"
+      ]
+    }
+  ]
+}

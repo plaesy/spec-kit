@@ -1,0 +1,16 @@
+{
+  "skill": "spec-product",
+  "description": "Checks that the spec-product skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a product spec for a habit-tracking app aimed at university students.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for users, problems, and features, each with a Given/When/Then criterion",
+        "lists out-of-scope items",
+        "includes a Non-goals heading."
+      ]
+    }
+  ]
+}

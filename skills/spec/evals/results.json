@@ -1,0 +1,104 @@
+{
+  "skill": "spec",
+  "run_date": "2026-10-30",
+  "runner": "claude",
+  "model": "claude-haiku-4-5",
+  "results": [
+    {
+      "id": "frontend-login",
+      "status": "PASS",
+      "items": [
+        {
+          "expected": "Writes .plaesy/spec/<topic>/spec.md with one requirement ID per behaviour, each with a Given/When/Then criterion",
+          "pass": true,
+          "reason": "spec.md has R1-R4, each with an ID and proper Given/When/Then acceptance criteria"
+        },
+        {
+          "expected": "Writes design.md listing the login screen and its empty, loading, error, and success states",
+          "pass": true,
+          "reason": "design.md correctly lists Login screen with Empty, Loading, Error (wrong password), Error (account locked), and Success states"
+        },
+        {
+          "expected": "Writes mock.html with a section for every screen and state named in design.md, and no network references",
+          "pass": true,
+          "reason": "mock.html has 1 screen section and 5 state sections matching design.md exactly, with all styles inline and no network references"
+        },
+        {
+          "expected": "Labels the unstated behaviour, such as whether a successful login resets the counter, as UNKNOWN or ASSUMED",
+          "pass": true,
+          "reason": "Both spec.md and design.md properly label unstated behaviors as UNKNOWN or ASSUMED"
+        },
+        {
+          "expected": "Lists non-goals and does not add requirements the request did not ask for",
+          "pass": true,
+          "reason": "spec.md has comprehensive Non-goals section (password reset, remember me, social login, registration, password strength) and all 4 requirements (R1-R4) come from the request"
+        }
+      ],
+      "files": [
+        ".eval-prompt.md",
+        ".plaesy/spec/login/design.md",
+        ".plaesy/spec/login/references/login.html",
+        ".plaesy/spec/login/spec.md"
+      ],
+      "reply": "Now let me check for existing spec topics and the assets:\nI'll read the skill and templates, then write the spec for the login topic.\n**Files written:**\n- `.plaesy/spec/login/spec.md` — 4 requirements (R1-R4) with Given/When/Then criteria\n- `.plaesy/spec/login/design.md` — lists Login screen with empty, loading, error (wrong password, locked), and success states\n- `.plaesy/spec/login/mock.html` — complete mock with all screens and states, no network references\n\n**Open questions (would ask if interactive):**\n1. What happens after a successful login?\n2. Does a successful login reset the failed attempt counter?\n3. What is the exact error message wording for wrong password and locked account?\n4. Is there a password reset flow?\n5. Should we confirm WCAG 2.2 AA accessibility level?\n"
+    },
+    {
+      "id": "vague-request",
+      "status": "PASS",
+      "items": [
+        {
+          "expected": "Does not invent requirements from a vague request",
+          "pass": true,
+          "reason": "The agent explicitly refused to invent requirements, wrote only a spec with R1 marked UNKNOWN, and stated it would not invent requirements per the spec skill."
+        },
+        {
+          "expected": "Asks at most three questions in one message to narrow the scope, or records the open questions in spec.md as UNKNOWN",
+          "pass": true,
+          "reason": "The agent recorded all open questions in spec.md as UNKNOWN rather than asking interactively, satisfying the second clause of the disjunction."
+        },
+        {
+          "expected": "Does not present an invented requirement as one the user asked for",
+          "pass": true,
+          "reason": "No invented requirement was presented as user-requested; the agent repeatedly characterized the task as vague and left all scope unknowns labeled UNKNOWN."
+        }
+      ],
+      "files": [
+        ".eval-prompt.md"
+      ],
+      "reply": "rmine what \"make the app better\" means in this context.\nLet me explore the three main apps in this workspace to understand their purpose and identify improvement opportunities.\nLet me check the memory integration and see how the CLI could be improved.\nI have enough context. The task \"Make the app better\" is vague — there is no existing spec, no named files, and no stated requirements. Per the `spec` skill, I must write only from the request and not invent requirements. Let me check for any existing spec or task folder, then write the spec with open questions.\nNow I have full context. The `.plaesy/spec/` directory already contains several specs. The task \"Make the app better\" is vague — it doesn't name which app (cli, memory, or spec-kit) or what \"better\" means. Per the `spec` skill, I must not invent requirements. I'll write the spec following the template exactly, with open questions for the unknowns.\nNow let me verify the spec follows the checklist and check the references:\nThe spec is complete and follows all checklist rules: every requirement has an ID, a Given/When/Then criterion, and a status; every gap is labeled `UNKNOWN`; non-goals are written; references point to files that exist; no plan or code was written.\n\n**Paths written**: `.plaesy/spec/make-app-better/spec.md` (only `spec.md` is needed — no UI, API, data, or security work named by the request).\n\n**Requirement count**: 1 (R1, status: UNKNOWN)\n\n**Open questions (cannot be answered from the repo; need the requester):**\n\n1. Which app? The workspace has `cli/` (Rust CLI), `memory/` (Rust memory engine), and `spec-kit/` (skills/agents).\n2. What does \"better\" mean? Performance, usability, correctness, features, maintainability, documentation, or accessibility?\n3. Is a specific file/command/behaviour in scope, or is the requester open to a proposal?\n4. Must the change keep existing clippy-clean builds and passing tests (315 in `cli`, 129 in `memory`)?\n5. Should the change be committed, or left uncommitted?\n"
+    },
+    {
+      "id": "api-only",
+      "status": "FAIL",
+      "items": [
+        {
+          "expected": "Writes spec.md and api.md, and does not write design.md or any references/ mock because there is no user interface",
+          "pass": true,
+          "reason": "Agent wrote spec.md and api.md as required, plus openapi.yaml (reasonable for API spec). No design.md or references/mock files written."
+        },
+        {
+          "expected": "api.md lists the method, path, request fields, success response, and each error code with what the caller should do",
+          "pass": false,
+          "reason": "Error codes (404, 500) are listed with examples, but lack explicit guidance on what the caller should do in each case (retry logic, handling strategy, etc.)."
+        },
+        {
+          "expected": "Every requirement has a Given/When/Then acceptance criterion",
+          "pass": true,
+          "reason": "All 4 requirements (R1–R4) in spec.md are written in proper Given/When/Then format."
+        },
+        {
+          "expected": "Gaps such as the retention period of finished jobs are labeled UNKNOWN or ASSUMED",
+          "pass": true,
+          "reason": "Agent labeled 6 open questions as UNKNOWN, including the retention period (question #3). Status values marked ASSUMED in Constraints section."
+        }
+      ],
+      "files": [
+        ".plaesy/spec/export-job-status/api.md",
+        ".plaesy/spec/export-job-status/openapi.yaml",
+        ".plaesy/spec/export-job-status/spec.md"
+      ],
+      "reply": "atedAt\n        - updatedAt\n      properties:\n        id:\n          type: string\n          description: Unique job identifier\n          example: job_123\n        status:\n          type: string\n          enum:\n            - pending\n            - running\n            - completed\n            - failed\n          description: Current job status\n        createdAt:\n          type: string\n          format: date-time\n          description: When the job was created\n        updatedAt:\n          type: string\n          format: date-time\n          description: When the job status was last updated\n        completedAt:\n          type: string\n          format: date-time\n          nullable: true\n          description: When the job completed (null if not done)\n        fileSize:\n          type: integer\n          nullable: true\n          minimum: 0\n          description: Exported file size in bytes (null if not completed)\n        errorMessage:\n          type: string\n          nullable: true\n          description: Error details if status is failed (null otherwise)\n    \n    Error:\n      type: object\n      required:\n        - error\n        - message\n      properties:\n        error:\n          type: string\n          description: Error code\n          example: job_not_found\n        message:\n          type: string\n          description: Human-readable error message\n          example: Export job with ID 'job_123' not found\n\ntags:\n  - name: Export Jobs\n    description: Export job status operations\n\n<<<END>>>\n\n---\n\n**Spec selesai:** `.plaesy/spec/export-job-status/`\n\n- **4 requirements** untuk status polling, metadata, dan error handling\n- **Open questions:** 6 poin tentang nilai status, error details, retention, rate limiting, progress tracking, dan failure modes\n- **Files created:** \n  - `spec.md` — requirements dan acceptance criteria\n  - `api.md` — dokumentasi API yang readable\n  - `openapi.yaml` — contract machine-readable\n\nTidak ada UI atau data schema khusus yang dibutuhkan untuk endpoint ini.\n",
+      "files_text": "--- FILE: .plaesy/spec/export-job-status/api.md ---\n---\ntitle: Export Job Status API\ndescription: Internal API for checking export job status\n---\n\n# Export Job Status API\n\n## Overview\n\nThe Export Job Status API allows internal services to poll the status of asynchronous export jobs.\n\n## Endpoint: Get Job Status\n\n`GET /internal/v1/export-jobs/{jobId}`\n\n### Path Parameters\n\n| Name  | Type   | Required | Description      |\n| ----- | ------ | -------- | --------------- |\n| jobId | string | Yes      | The export job ID |\n\n### Response (200 OK)\n\n```json\n{\n  \"id\": \"job_123\",\n  \"status\": \"running\",\n  \"createdAt\": \"2026-10-30T10:00:00Z\",\n  \"updatedAt\": \"2026-10-30T10:05:00Z\",\n  \"completedAt\": null,\n  \"fileSize\": null,\n  \"errorMessage\": null\n}\n```\n\n### Response Fields\n\n| Field          | Type      | Description                                  |\n| -------------- | --------- | -------------------------------------------- |\n| id             | string    | Job ID                                       |\n| status         | string    | One of: `pending`, `running`, `completed`, `failed` |\n| createdAt      | datetime  | When the job was created                     |\n| updatedAt      | datetime  | When the job status was last updated         |\n| completedAt    | datetime  | When the job completed (null if not done)    |\n| fileSize       | integer   | Exported file size in bytes (null if not completed) |\n| errorMessage   | string    | Error details if status is `failed` (null otherwise) |\n\n### Response (404 Not Found)\n\n```json\n{\n  \"error\": \"job_not_found\",\n  \"message\": \"Export job with ID 'job_123' not found\"\n}\n```\n\n### Response (500 Internal Server Error)\n\n```json\n{\n  \"error\": \"internal_error\",\n  \"message\": \"Failed to retrieve job status\"\n}\n```\n\n## Examples\n\n### Job in Progress\n\n```\nGET /internal/v1/export-jobs/job_123\n\n200 OK\n{\n  \"id\": \"job_123\",\n  \"status\": \"running\",\n  \"createdAt\": \"2026-10-30T10:00:00Z\",\n  \"updatedAt\": \"2026-10-30T10:05:30Z\",\n  \"completedAt\": null,\n  \"fileSize\": null,\n  \"errorMessage\": null\n}\n```\n\n### Job Completed\n\n```\nGET /internal/v1/export-jobs/job_456\n\n200 OK\n{\n  \"id\": \"job_456\",\n  \"status\": \"completed\",\n  \"createdAt\": \"2026-10-30T09:00:00Z\",\n  \"updatedAt\": \"2026-10-30T09:15:00Z\",\n  \"completedAt\": \"2026-10-30T09:15:00Z\",\n  \"fileSize\": 1048576,\n  \"errorMessage\": null\n}\n```\n\n### Job Failed\n\n```\nGET /internal/v1/export-jobs/job_789\n\n200 OK\n{\n  \"id\": \"job_789\",\n  \"status\": \"failed\",\n  \"createdAt\": \"2026-10-30T08:00:00Z\",\n  \"updatedAt\": \"2026-10-30T08:05:00Z\",\n  \"completedAt\": null,\n  \"fileSize\": null,\n  \"errorMessage\": \"Database connection timeout\"\n}\n```\n\n\n--- FILE: .plaesy/spec/export-job-status/openapi.yaml ---\nopenapi: 3.0.0\ninfo:\n  title: Export Job Status API\n  description: Internal API for checking export job status\n  version: 1.0.0\n  contact:\n    name: Backend Team\n\nservers:\n  - url: https://internal.example.com\n    description: Internal API\n\npaths:\n  /internal/v1/export-jobs/{jobId}:\n    get:\n      summary: Get export job status\n      description: Retrieve the current status and metadata of an export job\n      operationId: getExportJobStatus\n      parameters:\n        - name: jobId\n          in: path\n          required: true\n          description: The export job ID\n          schema:\n            type: string\n            pattern: ^job_[a-z0-9]+$\n      responses:\n        '200':\n          description: Job status retrieved successfully\n          content:\n            application/json:\n              schema:\n                $ref: '#/components/schemas/ExportJobStatus'\n        '404':\n          description: Job not found\n          content:\n            application/json:\n              schema:\n                $ref: '#/components/schemas/Error'\n        '500':\n          description: Internal server error\n          content:\n            application/json:\n              schema:\n                $ref: '#/components/schemas/Error'\n\ncomponents:\n  schemas:\n    ExportJobStatus:\n      type: object\n      required:\n        - id\n        - status\n        - createdAt\n        - updatedAt\n      properties:\n        id:\n          type: string\n          description: Unique job identifier\n          example: job_123\n        status:\n          type: string\n          enum:\n            - pending\n            - running\n            - completed\n            - failed\n          description: Current job status\n        createdAt:\n          type: string\n          format: date-time\n          description: When the job was created\n        updatedAt:\n          type: string\n          format: date-time\n          description: When the job status was last updated\n        completedAt:\n          type: string\n          format: date-time\n          nullable: true\n          description: When the job completed (null if not done)\n        fileSize:\n          type: integer\n          nullable: true\n          minimum: 0\n          description: Exported file size in bytes (null if not completed)\n        errorMessage:\n          type: string\n          nullable: true\n          description: Error details if status is failed (null otherwise)\n    \n    Error:\n      type: object\n      required:\n        - error\n        - message\n      properties:\n        error:\n          type: string\n          description: Error code\n          example: job_not_found\n        message:\n          type: string\n          description: Human-readable error message\n          example: Export job with ID 'job_123' not found\n\ntags:\n  - name: Export Jobs\n    description: Export job status operations\n\n\n--- FILE: .plaesy/spec/export-job-status/spec.md ---\n---\ntitle: Export Job Status Endpoint\ndescription: Internal endpoint for polling export job completion status\nstatus: draft\ntopic: export-job-status\n---\n\n# Export Job Status Endpoint\n\nOther services poll this endpoint to track the progress of export jobs. The endpoint returns the current status and relevant metadata for a given job ID.\n\n## Requirements\n\n| ID   | Summary                                          | Status    |\n| ---- | ------------------------------------------------ | --------- |\n| R1   | Endpoint returns job status by ID                | -         |\n| R2   | Endpoint supports polling from other services    | -         |\n| R3   | Endpoint returns status metadata                 | -         |\n| R4   | Endpoint returns 404 for unknown job IDs         | -         |\n\n### R1: Endpoint returns job status by ID\n\n**Given** a job with ID `job_123` exists  \n**When** another service calls `GET /internal/v1/export-jobs/{jobId}`  \n**Then** the response includes the job's current status\n\n### R2: Endpoint supports polling from other services\n\n**Given** a job is processing  \n**When** another service polls the endpoint every N seconds  \n**Then** each response reflects the current status and completes in <500ms\n\n### R3: Endpoint returns status metadata\n\n**Given** a completed export job  \n**When** another service calls the endpoint  \n**Then** the response includes: job ID, status, created timestamp, updated timestamp, and when applicable, file size and completion timestamp\n\n### R4: Endpoint returns 404 for unknown job IDs\n\n**Given** a job ID that does not exist  \n**When** another service calls the endpoint with that ID  \n**Then** the response is HTTP 404 with error details\n\n## Non-goals\n\n- Job creation or submission (separate endpoint)\n- Job cancellation or deletion\n- Export file download (separate endpoint)\n- Webhook notifications (polling only)\n- Job history or listing\n\n## Constraints\n\n- Internal use only; not exposed to public APIs\n- Response time SLA: <500ms p99\n- Must support concurrent polling from multiple services\n- ASSUMED — Status values: `pending`, `running`, `completed`, `failed`\n\n## Open questions\n\n1. UNKNOWN: What status values should be supported? (pending, running, completed, failed, others?)\n2. UNKNOWN: Should the response include error details when status is `failed`?\n3. UNKNOWN: How long should completed jobs remain queryable?\n4. UNKNOWN: Rate limiting requirements for polling?\n5. UNKN"
+    }
+  ]
+}

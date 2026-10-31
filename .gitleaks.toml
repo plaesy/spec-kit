@@ -1,0 +1,14 @@
+# gitleaks config for the Secret scan (NN-01, .github/workflows/ci.yml).
+# Keeps the default rules and allowlists only the paths reviewed as non-secret.
+title = "plaesy secret scan"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documentation template: curl examples use placeholder tokens against api.example.com"
+paths = ['''templates/api-documentation\.template\.md$''']
+
+[[allowlists]]
+description = "Reach cache entries: the flagged Key field is a request hash, not a credential"
+paths = ['''\.plaesy/reach/cache/.*\.cache$''']

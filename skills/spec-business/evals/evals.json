@@ -1,0 +1,16 @@
+{
+  "skill": "spec-business",
+  "description": "Checks that the spec-business skill writes an R-table spec with Given/When/Then criteria and labels unknowns.",
+  "cases": [
+    {
+      "id": "basic",
+      "query": "Write a business spec for a bakery that sells sourdough bread to offices in one city.",
+      "files": [],
+      "expected": [
+        "Writes spec.md with R rows for market, customers, value proposition, and revenue, each with a Given/When/Then criterion, and a Non-goals heading",
+        "labels unknown market size UNKNOWN or ASSUMED",
+        "writes no design or API files."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Founder"
+  short_description: "Test a business idea: verdict from the numbers"
+  default_prompt: "Use $founder to test my business idea and tell me whether the numbers make it profitable."

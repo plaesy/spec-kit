@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contract.schema.json",
+  "title": "Plaesy task contracts.json",
+  "description": "The checklist of one task. `plaesy tasks validate` runs each item's run command and judges its output against expected. Matches scripts/internal/checklist/checklist.go.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "checklist"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The task folder name: <priority>_<category>-<title>."
+    },
+    "checklist": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "run", "expected", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique within this checklist, for example AC-1."
+        },
+        "check": {
+          "type": "string",
+          "description": "What the item proves, in one sentence."
+        },
+        "run": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The shell command. Its last non-empty output line is judged against expected."
+        },
+        "expected": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^\\s*(pass|yes|true|present|zero|none|no|false|absent|all|every)\\s*$|^\\s*(all|every)\\s+\\S.*$|^\\s*[0-9]+\\s+of\\s+[0-9]+\\s*$|^\\s*(>=|≥|<=|≤|==|=|>|<)\\s*[0-9]+(\\.[0-9]+)?\\s*[A-Za-z%]*\\s*$",
+          "description": "pass|yes|true|present (exit code 0 alone); zero|none; no|false|absent; all|every (pass, or N of N); N of M; a comparison such as \">= 9\" or \"<= 2 s\". Use lowercase words."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "passed", "failed"],
+          "description": "pending until the first pass; passed while the last run passed; failed while the last run failed."
+        },
+        "histories": {
+          "type": ["array", "null"],
+          "items": { "$ref": "#/$defs/history" },
+          "description": "One entry per failed run. The CLI writes null for an item that has never run."
+        },
+        "receipt": { "$ref": "#/$defs/receipt" }
+      }
+    },
+    "history": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["at", "actual", "run"],
+      "properties": {
+        "at": { "type": "string", "format": "date-time" },
+        "actual": { "type": "string" },
+        "run": { "type": "string" }
+      }
+    },
+    "receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["output", "exit_code", "sha256"],
+      "properties": {
+        "output": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Output file of the passing run, relative to the project root."
+        },
+        "exit_code": { "type": "integer" },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

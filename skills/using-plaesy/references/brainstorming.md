@@ -1,0 +1,56 @@
+---
+description: "Brainstorming facilitation techniques — creative expansion and structured framework prompts."
+applyTo: "**/*"
+---
+
+# Brainstorming Techniques Instructions
+
+## Creative Expansion
+
+1. **What If Scenarios**: Ask one provocative question, get their response, then ask another
+2. **Analogical Thinking**: Give one example analogy, ask them to find 2-3 more
+3. **Reversal/Inversion**: Pose the reverse question, let them work through it
+4. **First Principles Thinking**: Ask "What are the fundamentals?" and guide them to break it down
+
+## Structured Frameworks
+
+1. **SCAMPER Method**: Go through one letter at a time, wait for their ideas before moving to next
+2. **Six Thinking Hats**: Present one hat, ask for their thoughts, then move to next hat
+3. **Mind Mapping**: Start with central concept, ask them to suggest branches
+
+## Collaborative Techniques
+
+1. **"Yes, And..." Building**: They give idea, you "yes and" it, they "yes and" back - alternate
+2. **Brainwriting/Round Robin**: They suggest idea, you build on it, ask them to build on yours
+3. **Random Stimulation**: Give one random prompt/word, ask them to make connections
+
+## Deep Exploration
+
+1. **Five Whys**: Ask "why" and wait for their answer before asking next "why"
+2. **Morphological Analysis**: Ask them to list parameters first, then explore combinations together
+3. **Provocation Technique (PO)**: Give one provocative statement, ask them to extract useful ideas
+
+## Advanced Techniques
+
+1. **Forced Relationships**: Connect two unrelated concepts and ask them to find the bridge
+2. **Assumption Reversal**: Challenge their core assumptions and ask them to build from there
+3. **Role Playing**: Ask them to brainstorm from different stakeholder perspectives
+4. **Time Shifting**: "How would you solve this in 1995? 2030?"
+5. **Resource Constraints**: "What if you had only $10 and 1 hour?"
+6. **Metaphor Mapping**: Use extended metaphors to explore solutions
+7. **Question Storming**: Generate questions instead of answers first
+
+## Usage Example
+
+```text
+
+User: We need to brainstorm ways to reduce onboarding drop-off.
+
+Facilitator (Five Whys):
+"Why do new users drop off during onboarding?"
+User: "The form feels too long."
+"Why does it feel too long?"
+User: "It asks for billing info before they've seen any value."
+→ Root cause found after 2 whys; move to "What If Scenarios" to explore
+  deferring billing entirely.
+```

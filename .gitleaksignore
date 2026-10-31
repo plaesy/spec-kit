@@ -1,0 +1,16 @@
+# NN-01 secret scan: reviewed false positives at base commit 7cdd774 (decision: spec-kit-open-decisions-2026-10-17).
+# curl-auth-header: documentation placeholder 'Bearer YOUR_API_KEY' in templates/api-documentation.template.md.
+# generic-api-key: cache keys in .plaesy/reach/cache/ (cached web fetch responses, no credential).
+# Fingerprints are commit-scoped, so a new leak in any later commit still fails the job.
+7cdd774bfc573853a026a7474768b1c7215f5546:.plaesy/reach/cache/1d97ce9ad5fa49928fd1d48d20761939.cache:generic-api-key:1
+7cdd774bfc573853a026a7474768b1c7215f5546:.plaesy/reach/cache/bde8ddf40d3ca719e046a283ff7f28d8.cache:generic-api-key:1
+7cdd774bfc573853a026a7474768b1c7215f5546:scripts/internal/assets/data/templates/api-documentation.template.md:curl-auth-header:409
+7cdd774bfc573853a026a7474768b1c7215f5546:scripts/internal/assets/data/templates/api-documentation.template.md:curl-auth-header:438
+7cdd774bfc573853a026a7474768b1c7215f5546:scripts/internal/assets/data/templates/api-documentation.template.md:curl-auth-header:446
+7cdd774bfc573853a026a7474768b1c7215f5546:scripts/internal/assets/data/templates/api-documentation.template.md:curl-auth-header:460
+7cdd774bfc573853a026a7474768b1c7215f5546:scripts/internal/assets/data/templates/api-documentation.template.md:curl-auth-header:76
+7cdd774bfc573853a026a7474768b1c7215f5546:templates/api-documentation.template.md:curl-auth-header:409
+7cdd774bfc573853a026a7474768b1c7215f5546:templates/api-documentation.template.md:curl-auth-header:438
+7cdd774bfc573853a026a7474768b1c7215f5546:templates/api-documentation.template.md:curl-auth-header:446
+7cdd774bfc573853a026a7474768b1c7215f5546:templates/api-documentation.template.md:curl-auth-header:460
+7cdd774bfc573853a026a7474768b1c7215f5546:templates/api-documentation.template.md:curl-auth-header:76
