@@ -1,11 +1,69 @@
 {
   "name": "spec-kit",
+  "version": "1.0.0",
+  "description": "Business validation pipeline: niche -> idea -> validation -> make money verdict",
+  "author": "Mahbub Zulkarnain",
+  "license": "MIT",
+  "repository": "https://github.com/plaesy/spec-kit",
   "plugins": [
     {
       "name": "spec-kit",
       "source": { "source": "local", "path": "./" },
       "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
-      "category": "Productivity"
+      "category": "Business",
+      "skills": [
+        "ideator",
+        "buyer-discovery",
+        "compliance-health",
+        "economics-engine",
+        "plan-compiler",
+        "assess",
+        "pipeline",
+        "youtube-automation"
+      ],
+      "entry_points": {
+        "ideator": "skills/ideator/main.py",
+        "buyer-discovery": "skills/buyer-discovery/main.py",
+        "compliance-health": "skills/compliance-health/main.py",
+        "economics-engine": "skills/economics-engine/main.py",
+        "plan-compiler": "skills/plan-compiler/main.py",
+        "assess": "skills/assess/main.py",
+        "pipeline": "skills/pipeline/main.py",
+        "youtube-automation": "skills/youtube-automation/main.py"
+      },
+      "tools": [
+        "web_search",
+        "web_fetch",
+        "bash",
+        "file_read",
+        "file_write",
+        "json_parse"
+      ],
+      "hooks": {
+        "pre-stage": "scripts/pre_stage_hook.py",
+        "post-stage": "scripts/post_stage_hook.py",
+        "pre-pipeline": "scripts/pre_pipeline_hook.py",
+        "post-pipeline": "scripts/post_pipeline_hook.py"
+      },
+      "config_schema": {
+        "type": "object",
+        "properties": {
+          "default_niche": {"type": "string"},
+          "default_budget": {"type": "number"},
+          "default_timeline": {"type": "string"},
+          "web_search_backend": {"type": "string", "enum": ["exa", "jina", "serpapi", "duckduckgo"]},
+          "llm_provider": {"type": "string", "enum": ["gemini", "groq", "openrouter", "pollinations"]},
+          "enable_youtube": {"type": "boolean", "default": false}
+        }
+      },
+      "marketplace": {
+        "name": "Spec-Kit Business Validation",
+        "description": "Complete business validation pipeline from niche to make-money verdict with YouTube automation",
+        "category": "Business",
+        "tags": ["business", "validation", "startup", "pipeline", "youtube", "automation"],
+        "icon": "📊",
+        "featured": true
+      }
     }
   ]
 }

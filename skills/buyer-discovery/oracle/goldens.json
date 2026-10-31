@@ -1,0 +1,59 @@
+{
+  "skill": "buyer-discovery",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "track_outreach_funnel",
+      "status": "passed",
+      "output": {
+        "tracker_created": true,
+        "targets_tracked": 10,
+        "segments": ["coach", "brand", "studio", "clinic", "app"],
+        "template_per_segment": true
+      }
+    },
+    {
+      "test": "record_interview_with_signals",
+      "status": "passed",
+      "output": {
+        "record_saved": true,
+        "would_pay": "YES",
+        "price_point": 29,
+        "tags": ["compliance_critical", "time_saving"]
+      }
+    },
+    {
+      "test": "count_signals_weighted",
+      "status": "passed",
+      "output": {
+        "total": 5,
+        "would_pay_yes": 4,
+        "would_pay_maybe": 1,
+        "weighted_score": 0.9,
+        "decision_maker_weight": 1.0,
+        "budget_authority_weight": 0.8
+      }
+    },
+    {
+      "test": "segment_validation_matrix",
+      "status": "passed",
+      "output": {
+        "coach": {"viable": true, "would_pay_rate": 0.75, "kill": false},
+        "brand": {"viable": true, "would_pay_rate": 1.0, "kill": false},
+        "clinic": {"viable": true, "would_pay_rate": 1.0, "kill": false},
+        "studio": {"viable": false, "would_pay_rate": 0.0, "kill": true, "reason": "would_pay_rate < 30% with >=3 conversations"},
+        "app": {"viable": true, "would_pay_rate": 1.0, "kill": false}
+      }
+    },
+    {
+      "test": "output_buyers_md_format",
+      "status": "passed",
+      "output": {
+        "format_matches": true,
+        "summary": {"conversation_count": 5, "would_pay_count": 4, "price_range": "$29-499", "top_insights": 8}
+      }
+    }
+  ],
+  "summary": {"total": 5, "passed": 5, "failed": 0, "pass_rate": 1.0}
+}

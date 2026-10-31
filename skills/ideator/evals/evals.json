@@ -1,0 +1,72 @@
+{
+  "skill": "ideator",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "generate_ideas_from_niche",
+      "description": "Generate 8-12 distinct ideas from a niche with assumptions and cheapest tests",
+      "input": {
+        "niche": "health",
+        "interests": "AI, content creation, wellness",
+        "budget": "bootstrap $5k",
+        "time": "6 weeks MVP",
+        "where_to_sell": "online global"
+      },
+      "expected_output": {
+        "options_count": {"min": 8, "max": 12},
+        "each_option_has": ["name", "description", "assumption", "cheapest_test", "label"],
+        "labels_valid": ["FACT", "INFERRED", "SPECULATIVE"],
+        "at_least_one_contrarian": true,
+        "no_duplicate_assumptions": true
+      },
+      "assertions": [
+        "options.length >= 8 && options.length <= 12",
+        "options.every(o => o.name && o.description && o.assumption && o.cheapest_test && o.label)",
+        "options.every(o => ['FACT', 'INFERRED', 'SPECULATIVE'].includes(o.label))",
+        "new Set(options.map(o => o.assumption)).size === options.length",
+        "options.some(o => o.description.includes('against') || o.description.includes('contrarian') || o.description.includes('opposite'))"
+      ]
+    },
+    {
+      "name": "write_candidate_files",
+      "description": "Write each candidate to .plaesy/ideas/<candidate-topic>/idea.md with status: candidate",
+      "input": {
+        "candidates": [
+          {"topic": "ai-health-coach", "name": "AI Health Coach", "description": "AI generates personalized health plans"},
+          {"topic": "supplement-validator", "name": "Supplement Validator", "description": "Validates supplement claims against BPOM"}
+        ]
+      },
+      "expected_output": {
+        "files_created": 2,
+        "each_file_has": ["status: candidate", "Found:", "Problem:", "Who pays:", "Why now:", "Existing sellers:", "Unknown:"]
+      },
+      "assertions": [
+        "file_exists('.plaesy/ideas/ai-health-coach/idea.md')",
+        "file_exists('.plaesy/ideas/supplement-validator/idea.md')",
+        "file_contains('.plaesy/ideas/ai-health-coach/idea.md', 'status: candidate')",
+        "file_contains('.plaesy/ideas/ai-health-coach/idea.md', 'Problem:')"
+      ]
+    },
+    {
+      "name": "update_ideas_index",
+      "description": "Add index lines to .plaesy/ideas.md for each candidate",
+      "input": {"candidates": ["ai-health-coach", "supplement-validator"]},
+      "expected_output": {"index_updated": true, "lines_added": 2},
+      "assertions": [
+        "file_contains('.plaesy/ideas.md', 'ai-health-coach')",
+        "file_contains('.plaesy/ideas.md', 'supplement-validator')",
+        "file_contains('.plaesy/ideas.md', 'status: candidate')"
+      ]
+    },
+    {
+      "name": "reject_vague_brief",
+      "description": "Escalate when brief is too vague to produce distinct options",
+      "input": {"niche": "", "interests": "", "budget": "", "time": "", "where_to_sell": ""},
+      "expected_output": {"status": "needs-escalation", "gaps_named": true},
+      "assertions": [
+        "output.STATUS === 'needs-escalation'",
+        "output.GAPS && output.GAPS.length > 0"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "skill": "founder",
+  "version": "1.0",
+  "engine": "python",
+  "goldens": [
+    {
+      "name": "board_review_three_lenses",
+      "description": "Board review produces 3 lenses (offer, defensibility, product) with votes",
+      "input": {"topic": "test-idea", "board_input": "..."},
+      "expected_output": {
+        "lenses": ["offer", "defensibility", "product"],
+        "each_lens_has": ["kill_risks", "vote"],
+        "votes_in": ["fund", "fund with conditions", "pass"],
+        "all_three_present": true
+      }
+    },
+    {
+      "name": "competitors_table_format",
+      "description": "Competitors table with do-nothing row, prices, sources, dates",
+      "input": {"topic": "test-idea"},
+      "expected_output": {
+        "first_row": "Do nothing",
+        "columns": ["Alternative", "Price (as published)", "Promise", "Source", "Accessed"],
+        "all_prices_cited_or_not_published": true,
+        "queries_min": 3
+      }
+    },
+    {
+      "name": "buyers_minimum_conversations",
+      "description": "Buyers stage requires >=5 real conversations for Profitable verdict",
+      "input": {"topic": "test-idea", "conversations": 5},
+      "expected_output": {
+        "real_conversations": {"min": 5},
+        "would_pay_yes": {"min": 3},
+        "weighted_score": {"min": 0.6},
+        "simulated_separate": true
+      }
+    },
+    {
+      "name": "pricing_segment_differentiated",
+      "description": "Pricing reflects segment willingness-to-pay from buyer conversations",
+      "input": {"segments": ["coach", "brand", "clinic"], "buyer_data": "..."},
+      "expected_output": {
+        "tiers": {"min": 3},
+        "each_tier_has": ["price", "compared_with", "buyer_evidence", "recommendation"],
+        "segment_differentiated": true
+      }
+    },
+    {
+      "name": "economics_verdict_rules",
+      "description": "Economics verdict follows exact rules: Incomplete | Not yet | Profitable",
+      "input": {"P": 100, "V": 20, "F": 2000, "S": 30, "S_basis": "5 buyers + funnel"},
+      "expected_output": {
+        "verdict": "Profitable",
+        "margin": 80,
+        "break_even": 25,
+        "margin_of_safety": 0.16666666666666666,
+        "failing_number_named_when_not_yet": true
+      }
+    },
+    {
+      "name": "plan_compilation_complete",
+      "description": "Plan compiler concatenates all 11 stages + verdict + pivot docs",
+      "input": {"topic": "test-idea"},
+      "expected_output": {
+        "verdict_at_top": true,
+        "driving_numbers": ["margin", "break_even", "expected_sales", "margin_of_safety"],
+        "board_votes_summary": true,
+        "one_page_summary": true,
+        "all_11_stages_concatenated": true,
+        "ideas_md_index_updated": true
+      }
+    },
+    {
+      "name": "pivot_documentation_when_not_yet",
+      "description": "Pivot analysis documented when verdict = Not yet",
+      "input": {"verdict": "Not yet", "failing_number": "S < B"},
+      "expected_output": {
+        "pivot_section_exists": true,
+        "original_model_documented": true,
+        "options_table": true,
+        "chosen_pivot_named": true,
+        "validation_required_listed": true
+      }
+    }
+  ]
+}

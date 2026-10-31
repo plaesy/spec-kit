@@ -1,0 +1,59 @@
+{
+  "skill": "economics-engine",
+  "timestamp": "2026-10-31T10:32:04.750809Z",
+  "total": 10,
+  "passed": 0,
+  "failed": 10,
+  "details": [
+    {
+      "name": "calculate_basic_metrics",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "calculate_churn_adjusted_ltv",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "verdict_incomplete_missing_S_basis",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "verdict_not_yet_negative_margin",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "verdict_not_yet_below_break_even",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "verdict_profitable",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "segment_analysis_multi_tier",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "sensitivity_analysis_price_down",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "sensitivity_analysis_coach_heavy_mix",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "output_economics_md_format",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    }
+  ]
+}

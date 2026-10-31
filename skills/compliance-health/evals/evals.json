@@ -1,0 +1,129 @@
+{
+  "skill": "compliance-health",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "flag_critical_claims",
+      "description": "Flag critical banned terms (cure, heal, treat, prevent disease)",
+      "input": {"copy": "Our supplement cures diabetes and prevents heart disease."},
+      "expected_output": {
+        "passed": false,
+        "flags": [{"term": "cures", "severity": "critical"}, {"term": "prevents", "severity": "critical"}],
+        "risk_score": {"min": 50}
+      },
+      "assertions": [
+        "result.passed === false",
+        "result.flags.some(f => f.term === 'cures' && f.severity === 'critical')",
+        "result.flags.some(f => f.term === 'prevents' && f.severity === 'critical')",
+        "result.risk_score >= 50"
+      ]
+    },
+    {
+      "name": "allow_structure_function_claims",
+      "description": "Allow structure/function claims with disclaimers",
+      "input": {"copy": "Vitamin D supports immune system function and bone health."},
+      "expected_output": {
+        "passed": true,
+        "flags": [],
+        "required_disclaimers": [
+          "This statement has not been evaluated by BPOM.",
+          "This product is not intended to diagnose, treat, cure, or prevent any disease."
+        ],
+        "risk_score": {"max": 30}
+      },
+      "assertions": [
+        "result.passed === true",
+        "result.flags.length === 0",
+        "result.required_disclaimers.length >= 2",
+        "result.risk_score <= 30"
+      ]
+    },
+    {
+      "name": "flag_high_risk_terms",
+      "description": "Flag high severity terms (guaranteed, clinically proven, miracle)",
+      "input": {"copy": "Clinically proven to guarantee 10kg weight loss in 30 days. Miracle fat burner!"},
+      "expected_output": {
+        "passed": false,
+        "flags": [
+          {"term": "clinically proven", "severity": "high"},
+          {"term": "guarantee", "severity": "critical"},
+          {"term": "miracle", "severity": "critical"},
+          {"term": "fat burner", "severity": "high"}
+        ],
+        "risk_score": {"min": 60}
+      },
+      "assertions": [
+        "result.passed === false",
+        "result.flags.length >= 4",
+        "result.risk_score >= 60"
+      ]
+    },
+    {
+      "name": "auto_suggest_compliant_alternatives",
+      "description": "Suggest compliant alternatives for flagged terms",
+      "input": {"copy": "This cures cancer and guarantees results."},
+      "expected_output": {
+        "flags_with_suggestions": true,
+        "suggestions": {"cures": "support", "guarantees": "remove"}
+      },
+      "assertions": [
+        "result.flags.every(f => f.suggestion && f.suggestion.length > 0)"
+      ]
+    },
+    {
+      "name": "risk_scoring_algorithm",
+      "description": "Risk scoring: critical=25, high=15, medium=10, low=5, pass if <30",
+      "input": {
+        "test_cases": [
+          {"flags": [{"severity": "critical"}], "expected_score": 25, "pass": false},
+          {"flags": [{"severity": "high"}, {"severity": "medium"}], "expected_score": 25, "pass": true},
+          {"flags": [{"severity": "critical"}, {"severity": "high"}], "expected_score": 40, "pass": false},
+          {"flags": [{"severity": "low"}, {"severity": "low"}], "expected_score": 10, "pass": true}
+        ]
+      },
+      "expected_output": {"scoring_correct": true},
+      "assertions": [
+        "test_cases.every(tc => calculate_score(tc.flags) === tc.expected_score)",
+        "test_cases.every(tc => (calculate_score(tc.flags) < 30) === tc.pass)"
+      ]
+    },
+    {
+      "name": "content_generation_integration",
+      "description": "Pre-generation filter and post-generation check",
+      "input": {
+        "prompt": "Write a post about how our supplement cures arthritis",
+        "generated_content": "Our supplement cures arthritis pain naturally."
+      },
+      "expected_output": {
+        "pre_filter_rejects": true,
+        "post_check_flags": true,
+        "user_facing_score": true
+      },
+      "assertions": [
+        "pre_filter_result.rejected === true",
+        "post_check_result.passed === false",
+        "post_check_result.risk_score >= 50"
+      ]
+    },
+    {
+      "name": "monthly_update_workflow",
+      "description": "Monitor sources, extract claims, version control, deploy",
+      "input": {
+        "sources": ["BPOM warnings", "FTC warnings", "FDA warnings"],
+        "new_claims": [{"claim": "supports joint health", "source": "FDA", "date": "2026-11-01"}],
+        "revoked_claims": [{"claim": "prevents osteoporosis", "source": "BPOM", "date": "2026-11-01"}]
+      },
+      "expected_output": {
+        "database_updated": true,
+        "version_controlled": true,
+        "ci_cd_triggered": true,
+        "audit_trail": true
+      },
+      "assertions": [
+        "workflow.database_version_incremented === true",
+        "workflow.git_commit_exists === true",
+        "workflow.regression_tests_passed === true"
+      ]
+    }
+  ]
+}

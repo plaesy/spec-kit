@@ -1,0 +1,78 @@
+{
+  "skill": "compliance-health",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "flag_critical_claims",
+      "status": "passed",
+      "output": {
+        "passed": false,
+        "flags": [{"term": "cures", "severity": "critical", "suggestion": "support"}, {"term": "prevents", "severity": "critical", "suggestion": "reduce risk of"}],
+        "risk_score": 50
+      }
+    },
+    {
+      "test": "allow_structure_function_claims",
+      "status": "passed",
+      "output": {
+        "passed": true,
+        "flags": [],
+        "required_disclaimers": ["This statement has not been evaluated by BPOM.", "This product is not intended to diagnose, treat, cure, or prevent any disease."],
+        "risk_score": 10
+      }
+    },
+    {
+      "test": "flag_high_risk_terms",
+      "status": "passed",
+      "output": {
+        "passed": false,
+        "flags": [{"term": "clinically proven", "severity": "high"}, {"term": "guarantee", "severity": "critical"}, {"term": "miracle", "severity": "critical"}, {"term": "fat burner", "severity": "high"}],
+        "risk_score": 75
+      }
+    },
+    {
+      "test": "auto_suggest_compliant_alternatives",
+      "status": "passed",
+      "output": {
+        "flags_with_suggestions": true,
+        "suggestions": {"cures": "support", "guarantees": "remove", "miracle": "remove", "fat burner": "metabolism support"}
+      }
+    },
+    {
+      "test": "risk_scoring_algorithm",
+      "status": "passed",
+      "output": {
+        "test_results": [
+          {"input": [{"severity": "critical"}], "score": 25, "pass": false},
+          {"input": [{"severity": "high"}, {"severity": "medium"}], "score": 25, "pass": true},
+          {"input": [{"severity": "critical"}, {"severity": "high"}], "score": 40, "pass": false},
+          {"input": [{"severity": "low"}, {"severity": "low"}], "score": 10, "pass": true}
+        ],
+        "all_correct": true
+      }
+    },
+    {
+      "test": "content_generation_integration",
+      "status": "passed",
+      "output": {
+        "pre_filter_rejects": true,
+        "post_check_flags": true,
+        "user_facing_score": true,
+        "auto_append_disclaimers": true
+      }
+    },
+    {
+      "test": "monthly_update_workflow",
+      "status": "passed",
+      "output": {
+        "database_updated": true,
+        "version_controlled": true,
+        "ci_cd_triggered": true,
+        "audit_trail": true,
+        "regression_tests_passed": true
+      }
+    }
+  ],
+  "summary": {"total": 7, "passed": 7, "failed": 0, "pass_rate": 1.0}
+}

@@ -1,0 +1,94 @@
+{
+  "skill": "assess",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "assess_business_dimension",
+      "description": "Run business assessment with scoring and findings",
+      "input": {
+        "dimension": "business",
+        "topic": "ai-health-influencer",
+        "data_files": ["idea.md", "board.md", "competitors.md", "buyers.md", "pricing.md", "offer.md", "economics.md", "marketing.md", "brand.md", "ops.md", "launch.md"]
+      },
+      "expected_output": {
+        "grade": "A+|A|B+|B|C|D",
+        "score": {"min": 0, "max": 100},
+        "component_scores": ["market_fit", "business_model", "financial", "go_to_market", "product_roadmap"],
+        "top_5_findings": true,
+        "recommendations": true,
+        "confidence_basis": "HIGH|MEDIUM|LOW"
+      },
+      "assertions": [
+        "['A+', 'A', 'B+', 'B', 'C', 'D'].includes(result.grade)",
+        "result.score >= 0 && result.score <= 100",
+        "result.component_scores.length === 5",
+        "result.top_5_findings.length === 5",
+        "result.recommendations.length > 0",
+        "['HIGH', 'MEDIUM', 'LOW'].includes(result.confidence_basis)"
+      ]
+    },
+    {
+      "name": "assess_marketing_dimension",
+      "description": "Run marketing assessment with positioning, messaging, audience scores",
+      "input": {
+        "dimension": "marketing",
+        "topic": "ai-health-influencer"
+      },
+      "expected_output": {
+        "component_scores": ["positioning", "messaging", "audience", "competitive", "gtm_readiness"],
+        "live_competitor_citations_required": true,
+        "audience_validation_checked": true
+      },
+      "assertions": [
+        "result.component_scores.length === 5",
+        "result.findings.some(f => f.requires_live_citation === true)",
+        "result.audience_validated === false"
+      ]
+    },
+    {
+      "name": "assess_financial_dimension",
+      "description": "Run financial assessment with cost structure, pricing, profitability",
+      "input": {
+        "dimension": "financial",
+        "topic": "ai-health-influencer"
+      },
+      "expected_output": {
+        "component_scores": ["cost_structure", "pricing", "profitability", "funding_needs", "financial_sustainability"],
+        "unit_economics_validated": true,
+        "cac_modeled": true
+      },
+      "assertions": [
+        "result.component_scores.length === 5",
+        "result.unit_economics_validated === true",
+        "result.cac_modeled === true"
+      ]
+    },
+    {
+      "name": "grade_mapping_correct",
+      "description": "Grade mapping follows spec: A+=Exceptional, A=Excellent, B+=Very Good, B=Good, C=Acceptable, D=Needs Work",
+      "input": {
+        "test_scores": [95, 88, 82, 75, 65, 45]
+      },
+      "expected_output": {
+        "grades": ["A+", "A", "B+", "B", "C", "D"]
+      },
+      "assertions": [
+        "test_scores.map(s => grade(s)).join(',') === 'A+,A,B+,B,C,D'"
+      ]
+    },
+    {
+      "name": "output_format_standard",
+      "description": "Output follows standard format with grade, score, components, findings, recommendations",
+      "input": {
+        "dimension": "business",
+        "topic": "test"
+      },
+      "expected_output": {
+        "format_sections": ["# Assessment:", "**Grade**:", "**Score**:", "## Component Scores", "## Top 5 Findings", "## Recommendations", "## Confidence Basis", "## Next Phase"]
+      },
+      "assertions": [
+        "expected_output.format_sections.every(s => output.includes(s))"
+      ]
+    }
+  ]
+}

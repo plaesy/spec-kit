@@ -1,0 +1,84 @@
+{
+  "skill": "pipeline",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "full_pipeline_niche_to_verdict",
+      "status": "passed",
+      "output": {
+        "stages_completed": 15,
+        "topic": "ai-health-influencer",
+        "verdict": "Not yet",
+        "pivot_triggered": true,
+        "plan_md_exists": true,
+        "ideas_md_updated": true,
+        "files_created": 18
+      }
+    },
+    {
+      "test": "resume_from_stage",
+      "status": "passed",
+      "output": {
+        "skipped_stages": ["idea", "board", "competitors", "buyers", "pricing", "offer"],
+        "started_from": "economics",
+        "completed_remaining": ["economics", "marketing", "brand", "ops", "launch", "plan", "assess"],
+        "handoffs_valid": true
+      }
+    },
+    {
+      "test": "pivot_decision_gate",
+      "status": "passed",
+      "output": {
+        "gate_triggered": true,
+        "options_presented": 4,
+        "options": ["B2B Only", "Coach Volume", "Hybrid (Chosen)", "Agency Partnership"],
+        "requires_user_decision": true,
+        "documented_in_plan": true,
+        "plan_includes": "## Pivot Analysis with options table"
+      }
+    },
+    {
+      "test": "handoff_between_stages",
+      "status": "passed",
+      "output": {
+        "all_handoffs_valid": true,
+        "dependencies_met": [
+          "pricing reads competitors.md + buyers.md",
+          "offer reads pricing.md + buyers.md",
+          "economics reads pricing.md + offer.md + ops.md",
+          "marketing reads buyers.md + offer.md + pricing.md",
+          "plan reads all_previous"
+        ],
+        "no_missing_dependencies": true
+      }
+    },
+    {
+      "test": "assessment_optional_stage",
+      "status": "passed",
+      "output": {
+        "assessments_run": 3,
+        "dimensions": ["business", "marketing", "financial"],
+        "assessment_files_created": [
+          "assessment-business.md",
+          "assessment-marketing.md",
+          "assessment-financial.md"
+        ],
+        "grades": {"business": "D (42)", "marketing": "C (58)", "financial": "D (35)"}
+      }
+    },
+    {
+      "test": "error_recovery_missing_input",
+      "status": "passed",
+      "output": {
+        "questions_asked": 3,
+        "records_unknown": true,
+        "continues_other_stages": true,
+        "verdict_reflects_gap": true,
+        "verdict": "Incomplete",
+        "buyers_md_includes": "UNKNOWN for real conversations"
+      }
+    }
+  ],
+  "summary": {"total": 6, "passed": 6, "failed": 0, "pass_rate": 1.0}
+}

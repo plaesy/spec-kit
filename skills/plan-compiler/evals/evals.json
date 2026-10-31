@@ -1,0 +1,105 @@
+{
+  "skill": "plan-compiler",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "compile_all_stages",
+      "description": "Compile all 11 stage files into plan.md with verdict at top",
+      "input": {
+        "topic": "test-idea",
+        "stages": ["idea", "board", "competitors", "buyers", "pricing", "offer", "economics", "marketing", "brand", "ops", "launch"]
+      },
+      "expected_output": {
+        "plan_md_created": true,
+        "verdict_at_top": true,
+        "all_stages_included": true,
+        "ideas_md_updated": true
+      },
+      "assertions": [
+        "file_exists('.plaesy/ideas/test-idea/plan.md')",
+        "file_contains('.plaesy/ideas/test-idea/plan.md', '**Verdict:**')",
+        "stages.every(s => file_contains('.plaesy/ideas/test-idea/plan.md', s + '.md'))",
+        "file_contains('.plaesy/ideas.md', 'test-idea')"
+      ]
+    },
+    {
+      "name": "extract_verdict_from_economics",
+      "description": "Read verdict and driving numbers from economics.md",
+      "input": {
+        "economics_content": "Price P = 100. Direct cost V = 20. Margin m = 80 (80%). Fixed cost F = 2000. Break-even B = 25. Expected sales S = 30. Margin of safety = 16.7%. **Verdict:** Profitable"
+      },
+      "expected_output": {
+        "verdict": "Profitable",
+        "numbers": {"margin": 80, "margin_pct": 0.8, "break_even": 25, "expected_sales": 30, "MoS": 0.167}
+      },
+      "assertions": [
+        "result.verdict === 'Profitable'",
+        "result.numbers.margin === 80",
+        "result.numbers.break_even === 25"
+      ]
+    },
+    {
+      "name": "generate_one_page_summary",
+      "description": "Auto-generate one-page summary from idea + offer + economics",
+      "input": {
+        "idea": {"what": "AI health content", "who": "coaches", "price": "$29", "where": "online"},
+        "offer": {"outcome": "compliant content", "guarantee": "30-day", "included": ["AI gen", "compliance"]},
+        "economics": {"verdict": "Profitable", "margin": 80, "B": 25, "S": 30, "MoS": 0.167}
+      },
+      "expected_output": {
+        "summary_has": ["what it is", "who for", "offer", "price", "verdict in plain words"]
+      },
+      "assertions": [
+        "summary.includes('AI health content')",
+        "summary.includes('coaches')",
+        "summary.includes('$29')",
+        "summary.includes('compliant content')",
+        "summary.includes('Profitable')"
+      ]
+    },
+    {
+      "name": "pivot_documentation",
+      "description": "Append pivot analysis when verdict = Not yet",
+      "input": {
+        "verdict": "Not yet",
+        "original_model": {"segments": ["coach", "brand", "clinic"], "P": 101, "F": 2500, "S": 18, "B": 32, "MoS": -0.778},
+        "failing_number": "S < B",
+        "pivot_options": [
+          {"name": "B2B Only", "segments": ["brand", "clinic"], "P": 250, "F": 2000, "target_S": 10, "B": 10, "MoS": 0, "verdict": "Profitable"},
+          {"name": "Hybrid", "segments": ["coach", "brand", "clinic"], "P": 140, "F": 2200, "target_S": 20, "B": 19, "MoS": 0.05, "verdict": "Profitable"}
+        ],
+        "chosen": "Hybrid",
+        "rationale": "Coach volume + B2B margin, automate compliance to reduce F",
+        "validation_required": ["compliance prototype", "B2B pipeline test", "coach inbound test"]
+      },
+      "expected_output": {
+        "pivot_section_exists": true,
+        "table_included": true,
+        "chosen_pivot_named": true,
+        "validation_listed": true
+      },
+      "assertions": [
+        "output.includes('## Pivot Analysis')",
+        "output.includes('| Option | Target Segments | P | F | Target S | B | MoS | Verdict |')",
+        "output.includes('**Chosen Pivot:** Hybrid')",
+        "output.includes('compliance prototype')"
+      ]
+    },
+    {
+      "name": "verify_required_files_exist",
+      "description": "Fail loudly if any required stage file missing",
+      "input": {
+        "topic": "incomplete-idea",
+        "existing_stages": ["idea", "board", "competitors"]
+      },
+      "expected_output": {
+        "error": "Missing required stage files: buyers, pricing, offer, economics, marketing, brand, ops, launch",
+        "verdict": "Incomplete"
+      },
+      "assertions": [
+        "result.error.includes('Missing required stage files')",
+        "result.verdict === 'Incomplete'"
+      ]
+    }
+  ]
+}

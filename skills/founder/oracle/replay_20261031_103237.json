@@ -1,0 +1,44 @@
+{
+  "skill": "founder",
+  "timestamp": "2026-10-31T10:32:37.457356Z",
+  "total": 7,
+  "passed": 0,
+  "failed": 7,
+  "details": [
+    {
+      "name": "board_review_three_lenses",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "competitors_table_format",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "buyers_minimum_conversations",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "pricing_segment_differentiated",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "economics_verdict_rules",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "plan_compilation_complete",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "pivot_documentation_when_not_yet",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    }
+  ]
+}

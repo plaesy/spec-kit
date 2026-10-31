@@ -1,0 +1,109 @@
+{
+  "skill": "economics-engine",
+  "version": "1.0",
+  "engine": "python",
+  "goldens": [
+    {
+      "name": "calculate_basic_metrics",
+      "description": "Calculate margin, break-even, margin of safety from P, V, F, S",
+      "input": {"P": 100, "V": 20, "F": 2000, "S": 30},
+      "expected_output": {
+        "margin": 80,
+        "margin_pct": 0.8,
+        "break_even": 25,
+        "margin_of_safety": 0.16666666666666666,
+        "year1_revenue": 36000,
+        "ltv": 800,
+        "months_to_be": 5
+      },
+      "tolerance": {"margin": 0, "margin_pct": 0.0001, "break_even": 0, "margin_of_safety": 0.0001}
+    },
+    {
+      "name": "calculate_churn_adjusted_ltv",
+      "description": "Calculate LTV with monthly churn",
+      "input": {"m": 80, "monthly_churn_rate": 0.1},
+      "expected_output": {"ltv": 800},
+      "tolerance": {"ltv": 0}
+    },
+    {
+      "name": "verdict_incomplete_missing_S_basis",
+      "description": "Verdict Incomplete when S has no basis",
+      "input": {"P": 100, "V": 20, "F": 2000, "S": "unknown", "S_basis": null},
+      "expected_output": {"verdict": "Incomplete", "reason_contains": "basis"}
+    },
+    {
+      "name": "verdict_not_yet_negative_margin",
+      "description": "Verdict Not yet when margin <= 0",
+      "input": {"P": 15, "V": 20, "F": 1000, "S": 100, "S_basis": "estimate"},
+      "expected_output": {"verdict": "Not yet", "failing_number_contains": "m"}
+    },
+    {
+      "name": "verdict_not_yet_below_break_even",
+      "description": "Verdict Not yet when S < B",
+      "input": {"P": 100, "V": 20, "F": 5000, "S": 20, "S_basis": "funnel math"},
+      "expected_output": {"verdict": "Not yet", "failing_number_contains": "S < B", "B": 63, "margin_of_safety": -2.15},
+      "tolerance": {"B": 0, "margin_of_safety": 0.01}
+    },
+    {
+      "name": "verdict_profitable",
+      "description": "Verdict Profitable when m > 0 and S >= B",
+      "input": {"P": 100, "V": 20, "F": 2000, "S": 30, "S_basis": "5 buyer conversations + funnel"},
+      "expected_output": {"verdict": "Profitable", "margin_of_safety": 0.16666666666666666, "basis_label": "estimate"},
+      "tolerance": {"margin_of_safety": 0.0001}
+    },
+    {
+      "name": "segment_analysis_multi_tier",
+      "description": "Analyze multi-tier pricing with per-tier break-even and cross-subsidy check",
+      "input": {
+        "tiers": [
+          {"name": "Starter", "price": 29, "vcost": 10, "mix": 0.5, "fixed_cost_alloc": 500},
+          {"name": "Pro", "price": 199, "vcost": 25, "mix": 0.3, "fixed_cost_alloc": 1000},
+          {"name": "Agency", "price": 299, "vcost": 35, "mix": 0.2, "fixed_cost_alloc": 1000}
+        ],
+        "total_F": 2500
+      },
+      "expected_output": {
+        "blended_P": 132.5,
+        "blended_V": 19.5,
+        "blended_m": 113,
+        "tier_break_evens": {"Starter": 19, "Pro": 6, "Agency": 4},
+        "cross_subsidy_check_contains": "Starter has positive margin but high volume needed; Pro/Agency margins subsidize shared fixed costs"
+      },
+      "tolerance": {"blended_P": 0.1, "blended_V": 0.1}
+    },
+    {
+      "name": "sensitivity_analysis_price_down",
+      "description": "Price sensitivity: what price drop kills profitability",
+      "input": {
+        "base": {"P": 100, "V": 20, "F": 2000, "S": 30, "CAC": 200, "churn": 0.1},
+        "variation": {"price": -0.2}
+      },
+      "expected_output": {
+        "scenario": "price_down_20%",
+        "verdict_changes": true,
+        "kill": false
+      }
+    },
+    {
+      "name": "sensitivity_analysis_coach_heavy_mix",
+      "description": "Segment mix sensitivity: coach-heavy kills blended model",
+      "input": {
+        "base": {"P": 100, "V": 20, "F": 2000, "S": 30, "CAC": 200, "churn": 0.1},
+        "variation": {"segment_mix_coach": 0.8}
+      },
+      "expected_output": {
+        "scenario": "coach_heavy_mix_80%",
+        "verdict_changes": true,
+        "kill": true
+      }
+    },
+    {
+      "name": "output_economics_md_format",
+      "description": "Output economics.md with all required sections",
+      "input": {"P": 100, "V": 20, "F": 2000, "S": 30, "S_basis": "test"},
+      "expected_output": {
+        "contains_sections": ["Price P =", "Direct cost V =", "Margin m =", "Break-even B =", "Margin of safety =", "**Verdict:**"]
+      }
+    }
+  ]
+}

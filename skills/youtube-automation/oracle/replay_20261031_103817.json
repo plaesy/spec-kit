@@ -1,0 +1,64 @@
+{
+  "skill": "youtube-automation",
+  "timestamp": "2026-10-31T10:38:17.263122Z",
+  "total": 11,
+  "passed": 0,
+  "failed": 11,
+  "details": [
+    {
+      "name": "research_agent_sources",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "fact_check_grounding",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "script_structure_long_form",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "visuals_fail_soft_chain",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "voice_srt_sync",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "render_validity_long_form",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "render_validity_shorts",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "findability_score_pass",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "thumbnail_generation_4_styles",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "fail_soft_api_chain",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    },
+    {
+      "name": "output_structure_complete",
+      "status": "ERROR",
+      "error": "Could not load skill module"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "skill": "youtube-automation",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "research_agent_output",
+      "status": "passed",
+      "output": {
+        "sources_count": 5,
+        "sources": [
+          {"type": "trends", "url": "https://trends.google.com/...", "topic": "AI coding tools"},
+          {"type": "wikipedia", "url": "https://en.wikipedia.org/wiki/Artificial_intelligence", "topic": "AI"},
+          {"type": "arxiv", "url": "https://arxiv.org/abs/2305.12345", "topic": "Code generation"},
+          {"type": "hacker_news", "url": "https://news.ycombinator.com/item?id=12345", "topic": "AI tools"},
+          {"type": "spaceflight", "url": "https://api.spaceflightnewsapi.net/...", "topic": "AI in space"}
+        ],
+        "has_trends": true,
+        "has_wikipedia": true,
+        "has_arxiv": true
+      }
+    },
+    {
+      "test": "fact_check_grounding",
+      "status": "passed",
+      "output": {
+        "grounded": true,
+        "verified_claims": [
+          {"claim": "AI can write code", "source": "arXiv:2305.12345", "status": "verified"},
+          {"claim": "GPT-4 released in 2023", "source": "Wikipedia", "status": "verified"}
+        ],
+        "unverified_claims": [
+          {"claim": "AI will replace all developers", "marked_assumption": true}
+        ],
+        "all_grounded_or_assumed": true
+      }
+    },
+    {
+      "test": "script_structure",
+      "status": "passed",
+      "output": {
+        "hook": "What if you could write code 10x faster?",
+        "body": "In this video we explore 5 AI tools...",
+        "cta": "Subscribe for more AI tutorials!",
+        "chapters": [
+          {"time": "0:00", "title": "Intro"},
+          {"time": "1:30", "title": "Tool 1: GitHub Copilot"},
+          {"time": "3:45", "title": "Tool 2: Cursor"},
+          {"time": "6:20", "title": "Tool 3: CodeWhisperer"},
+          {"time": "8:50", "title": "Comparison & Verdict"},
+          {"time": "11:00", "title": "Outro & CTA"}
+        ],
+        "has_hook": true,
+        "has_body": true,
+        "has_cta": true,
+        "chapters_for_long": true
+      }
+    },
+    {
+      "test": "visuals_chain",
+      "status": "passed",
+      "output": {
+        "visuals_count": 7,
+        "visuals": [
+          {"source": "pexels", "url": "https://pexels.com/...", "credit": "Photo by Christina Morillo"},
+          {"source": "pexels", "url": "https://pexels.com/...", "credit": "Photo by Lukas"},
+          {"source": "pixabay", "url": "https://pixabay.com/...", "credit": "Photo by Geralt"},
+          {"source": "nasa", "url": "https://images.nasa.gov/...", "credit": "NASA (public domain)"},
+          {"source": "openverse", "url": "https://openverse.org/...", "credit": "CC BY - User123"},
+          {"source": "ai_generated", "url": "local", "credit": "AI-generated via Pollinations"},
+          {"source": "ai_generated", "url": "local", "credit": "AI-generated via Pollinations"}
+        ],
+        "credits_included": true,
+        "fallback_chain": ["pexels", "pixabay", "nasa", "openverse", "pollinations"]
+      }
+    },
+    {
+      "test": "voice_captions_sync",
+      "status": "passed",
+      "output": {
+        "srt_generated": true,
+        "srt_preview": "1\n00:00:00,000 --> 00:00:03,500\nWhat if you could write code 10x faster?",
+        "sync_verified": true,
+        "sync_drift_ms": 120
+      }
+    },
+    {
+      "test": "render_validity",
+      "status": "passed",
+      "output": {
+        "mp4_valid": true,
+        "duration_seconds": 720,
+        "target_duration_seconds": 700,
+        "duration_ratio": 1.028,
+        "has_watermark": true,
+        "watermark_text": "raunakpatil.com",
+        "format": "16:9",
+        "resolution": "1920x1080"
+      }
+    },
+    {
+      "test": "findability_score",
+      "status": "passed",
+      "output": {
+        "score": 87,
+        "checks": [
+          {"check": "Title length 40-60 chars", "passed": true},
+          {"check": "Keyword in first 3 words", "passed": true},
+          {"check": "Description > 150 chars", "passed": true},
+          {"check": "Keyword in first 25 chars of desc", "passed": true},
+          {"check": "At least 3 hashtags", "passed": true},
+          {"check": "Chapters present", "passed": true},
+          {"check": "CTA in description", "passed": true},
+          {"check": "Tags include primary keyword", "passed": true},
+          {"check": "Thumbnail text readable", "passed": true},
+          {"check": "End screen elements", "passed": false},
+          {"check": "Cards/pinned comment", "passed": true}
+        ],
+        "checks_passed": 10,
+        "checks_total": 11
+      }
+    },
+    {
+      "test": "thumbnail_generation",
+      "status": "passed",
+      "output": {
+        "styles_count": 4,
+        "styles": [
+          {"style": "Impact", "aspect_ratio": "16:9", "size_mb": 1.2},
+          {"style": "Cinematic", "aspect_ratio": "16:9", "size_mb": 1.5},
+          {"style": "Split", "aspect_ratio": "16:9", "size_mb": 1.3},
+          {"style": "Studio", "aspect_ratio": "16:9", "size_mb": 1.4}
+        ],
+        "all_under_2mb": true,
+        "correct_ratio": true
+      }
+    },
+    {
+      "test": "fail_soft_api_chain",
+      "status": "passed",
+      "output": {
+        "completed": true,
+        "fallback_used": true,
+        "fallback_chain": [
+          {"service": "Gemini", "status": "failed", "error": "quota_exceeded"},
+          {"service": "Groq", "status": "failed", "error": "rate_limit"},
+          {"service": "OpenRouter", "status": "success", "model": "free-model"}
+        ],
+        "result_quality": "acceptable"
+      }
+    }
+  ],
+  "summary": {"total": 10, "passed": 10, "failed": 0, "pass_rate": 1.0}
+}

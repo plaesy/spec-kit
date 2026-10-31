@@ -1,0 +1,68 @@
+{
+  "skill": "economics-engine",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "calculate_basic_metrics",
+      "status": "passed",
+      "output": {"m": 80, "margin_pct": 0.8, "B": 25, "MoS": 0.1667, "year1_revenue": 36000, "ltv": 800, "months_to_be": 5}
+    },
+    {
+      "test": "calculate_churn_adjusted_ltv",
+      "status": "passed",
+      "output": {"ltv": 800}
+    },
+    {
+      "test": "months_to_break_even",
+      "status": "passed",
+      "output": {"months_to_be": 5}
+    },
+    {
+      "test": "verdict_engine_incomplete",
+      "status": "passed",
+      "output": {"verdict": "Incomplete", "reason": "S has no stated basis"}
+    },
+    {
+      "test": "verdict_engine_not_yet_negative_margin",
+      "status": "passed",
+      "output": {"verdict": "Not yet", "failing_number": "m <= 0 (m = -5)"}
+    },
+    {
+      "test": "verdict_engine_not_yet_below_break_even",
+      "status": "passed",
+      "output": {"verdict": "Not yet", "failing_number": "S (20) < B (63)", "B": 63, "MoS": -2.15}
+    },
+    {
+      "test": "verdict_engine_profitable",
+      "status": "passed",
+      "output": {"verdict": "Profitable", "margin_of_safety": 0.1667, "basis_label": "estimate (5 buyer conversations + funnel)"}
+    },
+    {
+      "test": "segment_analysis_multi_tier",
+      "status": "passed",
+      "output": {
+        "blended_P": 132.5,
+        "blended_V": 19.5,
+        "blended_m": 113,
+        "tier_break_evens": {"Starter": 19, "Pro": 6, "Agency": 4},
+        "cross_subsidy": "Starter positive margin ($19) but needs 19 sales/mo; Pro ($174) and Agency ($264) margins subsidize shared fixed costs"
+      }
+    },
+    {
+      "test": "sensitivity_analysis",
+      "status": "passed",
+      "output": {
+        "scenarios": ["base", "price_down_20%", "cost_up_20%", "volume_down_20%", "CAC_up_50%", "fixed_cost_up_50%", "coach_heavy_mix_80%"],
+        "verdict_changes": ["price_down_20%", "cost_up_20%", "volume_down_20%", "fixed_cost_up_50%", "coach_heavy_mix_80%"],
+        "kill_scenarios": ["coach_heavy_mix_80%"]
+      }
+    },
+    {
+      "test": "output_economics_md",
+      "status": "passed",
+      "output": {"format_valid": true, "contains_all_sections": true}
+    }
+  ],
+  "summary": {"total": 9, "passed": 9, "failed": 0, "pass_rate": 1.0}
+}

@@ -1,0 +1,126 @@
+{
+  "skill": "pipeline",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "full_pipeline_niche_to_verdict",
+      "description": "Run complete pipeline from niche to verdict with all 15 stages",
+      "input": {
+        "niche": "health",
+        "idea": "AI content engine for health coaches with compliance"
+      },
+      "expected_output": {
+        "stages_completed": 15,
+        "topic_created": true,
+        "verdict_produced": "Profitable|Not yet|Incomplete",
+        "plan_md_exists": true,
+        "ideas_md_updated": true
+      },
+      "assertions": [
+        "result.stages_completed === 15",
+        "file_exists('.plaesy/ideas/ai-health-content-engine/plan.md')",
+        "['Profitable', 'Not yet', 'Incomplete'].includes(result.verdict)",
+        "file_contains('.plaesy/ideas.md', 'ai-health-content-engine')"
+      ]
+    },
+    {
+      "name": "resume_from_stage",
+      "description": "Resume pipeline from specific stage (e.g., economics)",
+      "input": {
+        "topic": "existing-idea",
+        "resume_from": "economics",
+        "existing_stages": ["idea", "board", "competitors", "buyers", "pricing", "offer"]
+      },
+      "expected_output": {
+        "skips_completed": true,
+        "runs_from": "economics",
+        "completes_remaining": true
+      },
+      "assertions": [
+        "result.skipped_stages.includes('idea', 'board', 'competitors', 'buyers', 'pricing', 'offer')",
+        "result.started_from === 'economics'",
+        "result.completed_stages.includes('economics', 'marketing', 'brand', 'ops', 'launch', 'plan', 'assess')"
+      ]
+    },
+    {
+      "name": "pivot_decision_gate",
+      "description": "Trigger pivot decision gate when economics verdict = Not yet",
+      "input": {
+        "topic": "failing-idea",
+        "economics_verdict": "Not yet",
+        "failing_number": "S < B",
+        "pivot_options": ["narrow_segment", "reduce_fixed_cost", "raise_price", "channel_partnership"]
+      },
+      "expected_output": {
+        "gate_triggered": true,
+        "options_presented": 4,
+        "requires_user_decision": true,
+        "documented_in_plan": true
+      },
+      "assertions": [
+        "result.gate_triggered === true",
+        "result.pivot_options.length === 4",
+        "result.requires_user_decision === true",
+        "file_contains('.plaesy/ideas/failing-idea/plan.md', '## Pivot Analysis')"
+      ]
+    },
+    {
+      "name": "handoff_between_stages",
+      "description": "Each stage reads previous stage files correctly",
+      "input": {
+        "stages": [
+          {"stage": "pricing", "reads": ["competitors.md", "buyers.md"]},
+          {"stage": "offer", "reads": ["pricing.md", "buyers.md"]},
+          {"stage": "economics", "reads": ["pricing.md", "offer.md", "ops.md"]},
+          {"stage": "marketing", "reads": ["buyers.md", "offer.md", "pricing.md"]},
+          {"stage": "plan", "reads": "all_previous"}
+        ]
+      },
+      "expected_output": {
+        "all_handoffs_valid": true,
+        "no_missing_dependencies": true
+      },
+      "assertions": [
+        "stages.every(s => s.reads.every(f => file_exists(f) || f === 'all_previous'))"
+      ]
+    },
+    {
+      "name": "assessment_optional_stage",
+      "description": "Run assessment after plan compilation (stage 15)",
+      "input": {
+        "topic": "test-idea",
+        "run_assessment": true,
+        "dimensions": ["business", "marketing", "financial"]
+      },
+      "expected_output": {
+        "assessments_run": 3,
+        "assessment_files_created": ["assessment-business.md", "assessment-marketing.md", "assessment-financial.md"]
+      },
+      "assertions": [
+        "result.assessments_run === 3",
+        "result.assessment_files_created.every(f => file_exists('.plaesy/ideas/test-idea/' + f))"
+      ]
+    },
+    {
+      "name": "error_recovery_missing_input",
+      "description": "When stage fails loudly (missing input), ask <=3 questions, record UNKNOWN, continue",
+      "input": {
+        "stage": "buyers",
+        "missing": "real conversations",
+        "available": "simulated data"
+      },
+      "expected_output": {
+        "questions_asked": {"max": 3},
+        "records_unknown": true,
+        "continues_other_stages": true,
+        "verdict_reflects_gap": true
+      },
+      "assertions": [
+        "result.questions_asked <= 3",
+        "result.buyers_md.includes('UNKNOWN')",
+        "result.stages_completed_after_error >= 5",
+        "result.verdict === 'Incomplete'"
+      ]
+    }
+  ]
+}

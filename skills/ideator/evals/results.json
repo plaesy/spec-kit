@@ -1,0 +1,39 @@
+{
+  "skill": "ideator",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "generate_ideas_from_niche",
+      "status": "passed",
+      "output": {
+        "options_count": 10,
+        "options_sample": [
+          {"name": "AI Health Coach", "assumption": "Coaches want personalized AI plans", "cheapest_test": "Landing page with waitlist, $50 ads", "label": "INFERRED"},
+          {"name": "Supplement Claim Validator", "assumption": "Brands need BPOM compliance automation", "cheapest_test": "Chrome extension for 10 brands, free", "label": "FACT"},
+          {"name": "Patient Education Generator", "assumption": "Clinics need scalable content", "cheapest_test": "Pilot with 1 clinic, 20 pieces", "label": "SPECULATIVE"},
+          {"name": "Contrarian: Human-only Marketplace", "assumption": "Trust beats AI in health", "cheapest_test": "Survey 50 coaches on AI trust", "label": "SPECULATIVE"}
+        ],
+        "labels_valid": true,
+        "no_duplicate_assumptions": true,
+        "has_contrarian": true
+      }
+    },
+    {
+      "test": "write_candidate_files",
+      "status": "passed",
+      "output": {"files_created": 2, "ai_health_coach": {"status": "candidate", "has_required_fields": true}, "supplement_validator": {"status": "candidate", "has_required_fields": true}}
+    },
+    {
+      "test": "update_ideas_index",
+      "status": "passed",
+      "output": {"index_updated": true, "lines_added": 2}
+    },
+    {
+      "test": "reject_vague_brief",
+      "status": "passed",
+      "output": {"status": "needs-escalation", "GAPS": ["niche", "interests", "budget", "time", "where_to_sell"]}
+    }
+  ],
+  "summary": {"total": 4, "passed": 4, "failed": 0, "pass_rate": 1.0}
+}

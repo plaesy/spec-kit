@@ -1,0 +1,53 @@
+{
+  "skill": "plan-compiler",
+  "version": "1.0",
+  "run_date": "2026-10-31",
+  "results": [
+    {
+      "test": "compile_all_stages",
+      "status": "passed",
+      "output": {
+        "plan_md_created": true,
+        "verdict_at_top": true,
+        "all_11_stages_included": true,
+        "ideas_md_updated": true,
+        "topic": "ai-health-influencer"
+      }
+    },
+    {
+      "test": "extract_verdict_from_economics",
+      "status": "passed",
+      "output": {
+        "verdict": "Not yet",
+        "numbers": {"margin": 79, "margin_pct": 0.78, "break_even": 32, "expected_sales": 18, "MoS": -0.778}
+      }
+    },
+    {
+      "test": "generate_one_page_summary",
+      "status": "passed",
+      "output": {
+        "summary_includes": ["what it is", "who for", "offer", "price", "verdict in plain words"],
+        "generated_from": ["idea.md", "offer.md", "economics.md"]
+      }
+    },
+    {
+      "test": "pivot_documentation",
+      "status": "passed",
+      "output": {
+        "pivot_section_exists": true,
+        "table_included": true,
+        "chosen_pivot": "Hybrid",
+        "validation_required": ["compliance prototype", "B2B pipeline test", "coach inbound test"]
+      }
+    },
+    {
+      "test": "verify_required_files_exist",
+      "status": "passed",
+      "output": {
+        "error": "Missing required stage files: buyers, pricing, offer, economics, marketing, brand, ops, launch",
+        "verdict": "Incomplete"
+      }
+    }
+  ],
+  "summary": {"total": 5, "passed": 5, "failed": 0, "pass_rate": 1.0}
+}

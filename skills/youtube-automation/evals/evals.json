@@ -1,0 +1,170 @@
+{
+  "skill": "youtube-automation",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "research_agent_output",
+      "description": "Research agent produces brief with sources",
+      "input": {
+        "topic": "AI tools for developers",
+        "niche": "tech education"
+      },
+      "expected_output": {
+        "sources_count": {"min": 3},
+        "has_trends": true,
+        "has_wikipedia": true,
+        "has_arxiv": true
+      },
+      "assertions": [
+        "result.sources.length >= 3",
+        "result.sources.some(s => s.type === 'trends')",
+        "result.sources.some(s => s.type === 'wikipedia')",
+        "result.sources.some(s => s.type === 'arxiv')"
+      ]
+    },
+    {
+      "name": "fact_check_grounding",
+      "description": "Fact-check agent grounds claims in Wikipedia/arXiv",
+      "input": {
+        "claims": ["AI can write code", "GPT-4 released in 2023"],
+        "sources": ["wikipedia", "arxiv"]
+      },
+      "expected_output": {
+        "all_grounded": true,
+        "assumptions_marked": true
+      },
+      "assertions": [
+        "result.grounded === true",
+        "result.unverified_claims.every(c => c.marked_assumption === true)"
+      ]
+    },
+    {
+      "name": "script_structure",
+      "description": "Script agent produces hook, body, CTA",
+      "input": {
+        "research_brief": "...",
+        "format": "long"
+      },
+      "expected_output": {
+        "has_hook": true,
+        "has_body": true,
+        "has_cta": true,
+        "chapters_for_long": true
+      },
+      "assertions": [
+        "result.hook && result.hook.length > 0",
+        "result.body && result.body.length > 0",
+        "result.cta && result.cta.length > 0",
+        "result.chapters && result.chapters.length > 0"
+      ]
+    },
+    {
+      "name": "visuals_chain",
+      "description": "Visuals agent tries Pexels -> Pixabay -> NASA -> Openverse -> AI",
+      "input": {
+        "queries": ["AI coding", "developer tools"],
+        "format": "long"
+      },
+      "expected_output": {
+        "visuals_count": {"min": 5},
+        "credits_included": true,
+        "fallback_chain": true
+      },
+      "assertions": [
+        "result.visuals.length >= 5",
+        "result.visuals.every(v => v.credit && v.credit.length > 0)",
+        "result.fallback_used === false || result.fallback_chain.length > 0"
+      ]
+    },
+    {
+      "name": "voice_captions_sync",
+      "description": "Voice agent produces SRT with sync",
+      "input": {
+        "script": "Test script for voice",
+        "voice": "en-US-AriaNeural"
+      },
+      "expected_output": {
+        "srt_generated": true,
+        "sync_verified": true
+      },
+      "assertions": [
+        "result.srt && result.srt.length > 0",
+        "result.sync_drift_ms < 500"
+      ]
+    },
+    {
+      "name": "render_validity",
+      "description": "Render agent produces valid MP4",
+      "input": {
+        "script": "...",
+        "visuals": [],
+        "voice_srt": "...",
+        "format": "long"
+      },
+      "expected_output": {
+        "mp4_valid": true,
+        "duration_ratio": {"min": 0.9, "max": 1.1},
+        "has_watermark": true
+      },
+      "assertions": [
+        "result.mp4_valid === true",
+        "result.duration_ratio >= 0.9 && result.duration_ratio <= 1.1",
+        "result.watermark_present === true"
+      ]
+    },
+    {
+      "name": "findability_score",
+      "description": "Review agent calculates 11-point findability score",
+      "input": {
+        "title": "How AI Tools Save Developers 10 Hours/Week",
+        "description": "In this video we cover...",
+        "tags": ["AI", "coding", "productivity"],
+        "has_chapters": true,
+        "has_cta": true
+      },
+      "expected_output": {
+        "score": {"min": 80},
+        "checks_passed": {"min": 9}
+      },
+      "assertions": [
+        "result.score >= 80",
+        "result.checks_passed >= 9"
+      ]
+    },
+    {
+      "name": "thumbnail_generation",
+      "description": "Thumbnail designer produces 4 styles in correct ratios",
+      "input": {
+        "title": "Test Video",
+        "format": "long"
+      },
+      "expected_output": {
+        "styles_count": 4,
+        "ratio": "16:9",
+        "size_mb": {"max": 2}
+      },
+      "assertions": [
+        "result.styles.length === 4",
+        "result.styles.every(s => s.aspect_ratio === '16:9')",
+        "result.styles.every(s => s.size_mb < 2)"
+      ]
+    },
+    {
+      "name": "fail_soft_api_chain",
+      "description": "API chain falls back gracefully when services fail",
+      "input": {
+        "primary_fails": true,
+        "backup_fails": true,
+        "keyless_works": true
+      },
+      "expected_output": {
+        "completed": true,
+        "fallback_used": true
+      },
+      "assertions": [
+        "result.completed === true",
+        "result.fallback_chain.length >= 2"
+      ]
+    }
+  ]
+}

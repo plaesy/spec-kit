@@ -1,29 +1,19 @@
 ---
-description: "Automated validation gates shared by /implement, /assess, /optimize, /fix"
+description: "Automated validation gates shared by /implement, /assess, /optimize, /fix + Spec-Kit business validation gates"
 applyTo: "**/*"
 ---
 
 # Quality Gates
 
-**Referenced by**: `/implement`, `/assess`, `/optimize`, `/fix`, `/doc`, `/save` —
-each loads this file as `.plaesy/instructions/quality-gates.md`.
+**Referenced by**: `/implement`, `/assess`, `/optimize`, `/fix`, `/doc`, `/save`, `pipeline`, `economics-engine`, `buyer-discovery`, `youtube-automation` — each loads this file as `.plaesy/instructions/quality-gates.md`.
 
 ## Purpose
 
-A single automated checkpoint every phase runs before declaring output "done", so
-standards aren't re-implemented (and re-drifted) per prompt. Values below are
-**defaults** — a project's `.plaesy/memory/constitution.md`, when present, overrides them.
+A single automated checkpoint every phase runs before declaring output "done", so standards aren't re-implemented (and re-drifted) per prompt. Values below are **defaults** — a project's `.plaesy/memory/constitution.md`, when present, overrides them.
 
 ## Quality Thresholds
 
-**The two thresholds above are defined here and nowhere else.** A prompt that
-needs one writes `{{QUALITY_REMEDIATION_FLOOR}}` or `{{QUALITY_SKIP_OPTIMIZE}}`
-and may append the default in parentheses for readability — never the bare
-number on its own, because a bare number is a second definition waiting to
-drift. Four commands were previously
-routing on four different numbers (80, 85, 85, 90) that no file reconciled, and
-a project scoring 82 satisfied `/optimize`'s precondition while failing
-`/continue`'s optimize branch — eligible and ineligible at the same time.
+**The two thresholds above are defined here and nowhere else.** A prompt that needs one writes `{{QUALITY_REMEDIATION_FLOOR}}` or `{{QUALITY_SKIP_OPTIMIZE}}` and may append the default in parentheses for readability — never the bare number on its own, because a bare number is a second definition waiting to drift. Four commands were previously routing on four different numbers (80, 85, 85, 90) that no file reconciled, and a project scoring 82 satisfied `/optimize`'s precondition while failing `/continue`'s optimize branch — eligible and ineligible at the same time.
 
 There are two numbers, not three, and they have different jobs:
 
@@ -34,27 +24,14 @@ There are two numbers, not three, and they have different jobs:
 
 **Rules that follow from the relationship between them:**
 
-1. These gate on the **dimension score `/assess` Mode 2 reports**, not on a
-   metric the command measures for itself. A command that cannot cite a Mode 2
-   score does not apply the threshold.
-2. `/optimize` uses `{{QUALITY_REMEDIATION_FLOOR}}` as its precondition, not a
-   lower number of its own. Optimizing rubble is fixing, and a lower optimize
-   threshold is how a project ends up eligible for and ineligible for `/optimize`
-   in the same run.
-3. `/loop --quality-target` defaults to `{{QUALITY_REMEDIATION_FLOOR}}`. The loop
-   widens its axis when it reaches the target — the same rule as `/continue`'s
-   routing, not a second, quieter threshold.
-4. The two numbers are ordered. A project cannot set a skip threshold below the
-   remediation floor; if it does, the floor governs and the skip threshold is
-   ignored.
+1. These gate on the **dimension score `/assess` Mode 2 reports**, not on a metric the command measures for itself. A command that cannot cite a Mode 2 score does not apply the threshold.
+2. `/optimize` uses `{{QUALITY_REMEDIATION_FLOOR}}` as its precondition, not a lower number of its own. Optimizing rubble is fixing, and a lower optimize threshold is how a project ends up eligible for and ineligible for `/optimize` in the same run.
+3. `/loop --quality-target` defaults to `{{QUALITY_REMEDIATION_FLOOR}}`. The loop widens its axis when it reaches the target — the same rule as `/continue`'s routing, not a second, quieter threshold.
+4. The two numbers are ordered. A project cannot set a skip threshold below the remediation floor; if it does, the floor governs and the skip threshold is ignored.
 
 ### Grade bands
 
-The 0–100 scale has the same band edges in every dimension. Only the
-*description* of each band is dimension-specific, so the edges live here and
-`assess-{dimension}.md` supplies its own column. Nine files previously restated
-these edges, which is how `assess-technical.md` came to demand "score ≥80" while
-`/continue` routed on 85 for the same number.
+The 0–100 scale has the same band edges in every dimension. Only the *description* of each band is dimension-specific, so the edges live here and `assess-{dimension}.md` supplies its own column. Nine files previously restated these edges, which is how `assess-technical.md` came to demand "score ≥80" while `/continue` routed on 85 for the same number.
 
 | Score | Grade | General meaning |
 |---|---|---|
@@ -67,27 +44,126 @@ these edges, which is how `assess-technical.md` came to demand "score ≥80" whi
 
 Two bands are load-bearing beyond their letter:
 
-- **90 is `{{QUALITY_SKIP_OPTIMIZE}}`** — the first band where optimization has
-  nothing to add.
-- **85 is `{{QUALITY_REMEDIATION_FLOOR}}`** — the first band where the work is
-  optimization rather than remediation.
+- **90 is `{{QUALITY_SKIP_OPTIMIZE}}`** — the first band where optimization has nothing to add.
+- **85 is `{{QUALITY_REMEDIATION_FLOOR}}`** — the first band where the work is optimization rather than remediation.
 
-A dimension scores **0** when a blocking gate fails, and is capped at **49** when
-its mandatory audit fails. Both override the band table: a project with a red
-build is not a B, it is a zero.
+A dimension scores **0** when a blocking gate fails, and is capped at **49** when its mandatory audit fails. Both override the band table: a project with a red build is not a B, it is a zero.
+
+---
+
+## Spec-Kit Business Validation Gates (Additional)
+
+These gates apply specifically to the **spec-kit founder pipeline** (`pipeline`, `economics-engine`, `buyer-discovery`, `assess`). They are **blocking** — a stage cannot complete without passing its gate.
+
+### Gate B1: Real Buyer Conversations (Blocking)
+
+**Applies to**: `buyer-discovery` (Stage 5), `economics-engine` (Stage 9)
+
+| Requirement | Threshold | Failure Action |
+|---|---|---|
+| Minimum real conversations | **≥5** | Verdict = Incomplete; cannot proceed to economics |
+| Minimum "would pay YES" | **≥3** | Verdict = Incomplete; segment validation fails |
+| Decision maker weight | **≥0.6** (avg) | Flag segment as weak; require more founder/owner conversations |
+| Budget authority confirmed | **≥0.6** (avg) | Flag segment as weak |
+
+**Evidence required**: `buyers.md` with table format + summary showing `conversation_count`, `would_pay_count`, `weighted_score`.
+
+### Gate B2: Economics Verdict Rules (Blocking)
+
+**Applies to**: `economics-engine` (Stage 9), `plan-compiler` (Stage 14)
+
+| Verdict | Condition | Gate Result |
+|---|---|---|
+| **Incomplete** | Any input missing (P, V, F, S) OR S has no stated basis OR required stage file absent | **BLOCK** — cannot proceed to Stage 10+ |
+| **Not yet** | Margin m ≤ 0 OR Expected sales S < Break-even B | **PIVOT GATE** — must choose pivot option before proceeding |
+| **Profitable** | m > 0 AND S ≥ B AND S has stated basis | **PASS** — proceed to Stage 10 |
+
+**Required in economics.md**:
+- All 4 inputs (P, V, F, S) with sources
+- S basis explicitly stated (e.g., "5 buyer conversations + funnel math")
+- Margin calculation shown: `m = P - V`
+- Break-even: `B = ceil(F / m)`
+- Margin of safety: `(S - B) / S` (if S ≥ B)
+- Verdict with failing number named (if Not yet)
+
+### Gate B3: Pivot Decision Gate (Blocking)
+
+**Applies to**: `pipeline` (between Stage 9 and 10)
+
+**Trigger**: Economics verdict = **Not yet**
+
+**Required before proceeding to Stage 10+**:
+1. Segment analysis run (per-tier break-even, cross-subsidy check)
+2. Segment Validation Matrix run (kill segments <30% would-pay after ≥3 conversations)
+3. Four pivot options presented with projected verdicts
+4. **User decision documented** in `plan.md` → `## Pivot Analysis`
+5. Chosen pivot has validation requirements listed
+
+**Failure**: Pipeline halts at Stage 9 until decision recorded.
+
+### Gate B4: Source Citations (Blocking for Market Claims)
+
+**Applies to**: `founder: competitors.md`, `founder: marketing.md`, `assess`
+
+| Claim Type | Required | Format |
+|---|---|---|
+| Competitor price | **Yes** | `Price | Source URL | Accessed YYYY-MM-DD` |
+| Market size / TAM | **Yes** | `Figure | Source URL | Accessed YYYY-MM-DD` |
+| Competitor positioning | **Yes** | `Claim | Competitor URL | Accessed YYYY-MM-DD` |
+| Buyer willingness to pay | **Yes** | `buyers.md` row with date, role, quote |
+| "No published price" | **Allowed** | Write "not published" — never estimate |
+
+**Failure**: Claim marked `ASSUMED` in output; assessment confidence = LOW.
+
+### Gate B5: Compliance Check (Health Niche, Blocking)
+
+**Applies to**: `compliance-health` (Stage 8), content generation
+
+| Check | Threshold | Failure Action |
+|---|---|---|
+| Risk score | **< 30** for auto-publish | Content blocked; requires manual review |
+| Critical flags (cure/heal/treat/prevent) | **0 allowed** | Auto-reject |
+| Required disclaimers | **Present** | Auto-append if missing |
+| Monthly DB update | **Within 30 days** | Flag stale; block new content generation |
+
+### Gate B6: Assessment Completeness (Blocking)
+
+**Applies to**: `assess` (Stage 15)
+
+| Dimension | Mandatory Audit Items | Failure Cap |
+|---|---|---|
+| Business | Market fit, Business model, Financial, GTM, Roadmap | Score capped at 49 |
+| Marketing | Positioning, Messaging, Audience, Competitive, GTM Readiness | Score capped at 49 |
+| Financial | Cost structure, Pricing, Profitability, Funding, Sustainability | Score capped at 49 |
+
+**Output must include**: `## Overall Score`, `## Category Scores`, `## Findings` (5 min), `## Recommendations`, `## Confidence Basis`, `## Next Phase`.
+
+### Gate B7: YouTube Automation Quality (Blocking)
+
+**Applies to**: `youtube-automation` (Stage 16)
+
+| Check | Threshold | Failure Action |
+|---|---|---|
+| Research sources | **≥3** with URLs | Block; requires more research |
+| Fact-check grounding | All claims grounded or marked assumption | Block; ungrounded claims = assumption |
+| Script structure | Hook + body + CTA present | Block; incomplete script |
+| Visuals count | **≥5** images/clips | Block; insufficient visuals |
+| Visual credits | All sources credited in description | Block; missing credits |
+| Voice captions | SRT synced, no drift | Block; caption sync failed |
+| Render validity | MP4 plays, duration ±10% target | Block; corrupt/incorrect duration |
+| Findability Score | **≥80/100** | Block; optimize before publish |
+| Thumbnail size | **< 2MB**, correct aspect ratio | Block; YouTube will reject |
+| Thumbnail styles | At least 1 of 4 styles generated | Block; no thumbnail option |
+
+**Failure**: Video not published; returns to Review stage with specific fixes.
+
+---
 
 ## Placeholders
 
-`{{NAME|default}}` marks a value the agent supplies at emit time. The `|default`
-is not decoration — it is the value to use when nothing else determines it, and
-it is written so the site is readable without this file.
+`{{NAME|default}}` marks a value the agent supplies at emit time. The `|default` is not decoration — it is the value to use when nothing else determines it, and it is written so the site is readable without this file.
 
-**Substitute every placeholder before emitting the output.** A literal
-`{{CURRENT_DATE}}` reaching a user is a defect: a citation reading
-`retrieved {{CURRENT_DATE}}` is not a citation, and a gate reporting
-`{{TEST_COVERAGE_MIN|90}}%` cannot be failed or passed. `plaesy validate
-constitution` treats a surviving `{{...}}` as a hard stop, and the same rule
-applies to anything you write.
+**Substitute every placeholder before emitting the output.** A literal `{{CURRENT_DATE}}` reaching a user is a defect: a citation reading `retrieved {{CURRENT_DATE}}` is not a citation, and a gate reporting `{{TEST_COVERAGE_MIN|90}}%` cannot be failed or passed. `plaesy validate constitution` treats a surviving `{{...}}` as a hard stop, and the same rule applies to anything you write.
 
 | Placeholder | Default | Supplied from |
 |---|---|---|
@@ -96,69 +172,64 @@ applies to anything you write.
 | `{{QUALITY_REMEDIATION_FLOOR\|85}}` | 85 | `## Quality Thresholds` above |
 | `{{QUALITY_SKIP_OPTIMIZE\|90}}` | 90 | `## Quality Thresholds` above |
 
-A constitution may override a default. It may not override the *role* of a
-threshold — see rule 2 under **Quality Thresholds**.
+A constitution may override a default. It may not override the *role* of a threshold — see rule 2 under **Quality Thresholds**.
+
+---
 
 ## Closing check
 
-These two questions apply at the end of every phase. Prompts that carry a
-Self-Audit checklist reference this section rather than restating the
-questions:
+These two questions apply at the end of every phase. Prompts that carry a Self-Audit checklist reference this section rather than restating the questions:
 
-- **Ready for the next phase?** — the next phase's precondition is met, or the
-  specific thing that is missing is named. "Mostly ready" is not an answer.
+- **Ready for the next phase?** — the next phase's precondition is met, or the specific thing that is missing is named. "Mostly ready" is not an answer.
 - **Would you ship this to production?** — and if not, say what blocks it.
 
-Neither question is satisfied by having produced output. A phase that ran no
-gates cannot answer the first one affirmatively, and one that cannot answer the
-second must not report completion.
+Neither question is satisfied by having produced output. A phase that ran no gates cannot answer the first one affirmatively, and one that cannot answer the second must not report completion.
+
+---
 
 ## Gate Checklist (run in order; stop at first blocking failure)
 
-**Gate 0 — Success Contract (precondition, blocking).** Before any numbered gate runs, the task has
-a `contracts.json` checklist in its folder, and `plaesy tasks validate` has run it. A task whose
-has an item that is not `passed` is not done. Full rule and schema: `.plaesy/instructions/success-contract.md`.
-Run `plaesy tasks validate <task>` at the end of the work; the result is the contract comparison
-(Output Format below).
+**Gate 0 — Success Contract (precondition, blocking).** Before any numbered gate runs, the task has a `contracts.json` checklist in its folder, and `plaesy tasks validate` has run it. A task whose has an item that is not `passed` is not done. Full rule and schema: `.plaesy/instructions/success-contract.md`. Run `plaesy tasks validate <task>` at the end of the work; the result is the contract comparison (Output Format below).
 
 The numbered gates below keep their numbers; Gate 0 is a precondition, not a renumbering.
 
 1. **Build** — project compiles/builds cleanly. Blocking.
 2. **Tests** — full suite passes. Blocking.
 3. **Coverage** — meets `{{TEST_COVERAGE_MIN|90}}%` (or constitution override). Blocking.
-4. **Security** — no known vulnerability at or above the constitution's security bar
-   (default: Sev-High). Blocking.
+4. **Security** — no known vulnerability at or above the constitution's security bar (default: Sev-High). Blocking.
 5. **Lint/Static analysis** — no new errors introduced. Blocking.
-6. **Performance** — meets the constitution's performance target where measurable.
-   Non-blocking (flag, don't halt) unless the constitution marks it a hard stop.
-7. **Accessibility** (frontend only) — WCAG 2.2 AA. Blocking for UI work. For any
-   UI marked complete, this gate also requires a **click-through pass**: run/build
-   it, click every interactive element (buttons, links, forms, tabs, modals,
-   toggles, nav) one at a time, and confirm each produces its real effect — a
-   dead control (does nothing) is a gate failure, not a cosmetic note. Exercise
-   every shipped theme and the mobile breakpoints during the pass. Report the
-   click-through as an evidence list, element by element (e.g. "Signup -> opens
-   /signup, no console errors"), in the Output Format below — a PASS claimed
-   without that list is not a PASS. If the deliverable cannot be run (a static
-   mockup or chat-only output), say so explicitly and verify each element by
-   code inspection instead of claiming it was clicked. (Convention: anti-slop
-   R-35 "Verify Before You Deliver", github.com/miqdadbadjuber/anti-slop,
-   retrieved 2026-09-29.) For the layout part of this gate, the measurable procedure
-   (renders at 1440, 768 and 390 px with fail conditions) is in
-   `.plaesy/instructions/frontend-design.md` under "Verify with renders".
-8. **Documentation** — public interfaces documented per constitution's doc bar.
-   Non-blocking (route to `/doc`).
-9. **Cleanup** — temporary/scratch files (test scripts, throwaway helpers) created
-   during iteration removed before marking complete. Non-blocking (flag, don't
-   halt) unless the constitution marks it a hard stop. (Anthropic Claude
-   prompting best practices, retrieved 2026-09-25.)
+6. **Performance** — meets the constitution's performance target where measurable. Non-blocking (flag, don't halt) unless the constitution marks it a hard stop.
+7. **Accessibility** (frontend only) — WCAG 2.2 AA. Blocking for UI work. For any UI marked complete, this gate also requires a **click-through pass**: run/build it, click every interactive element (buttons, links, forms, tabs, modals, toggles, nav) one at a time, and confirm each produces its real effect — a dead control (does nothing) is a gate failure, not a cosmetic note. Exercise every shipped theme and the mobile breakpoints during the pass. Report the click-through as an evidence list, element by element (e.g. "Signup -> opens /signup, no console errors"), in the Output Format below — a PASS claimed without that list is not a PASS. If the deliverable cannot be run (a static mockup or chat-only output), say so explicitly and verify each element by code inspection instead of claiming it was clicked. (Convention: anti-slop R-35 "Verify Before You Deliver", github.com/miqdadbadjuber/anti-slop, retrieved 2026-09-29.) For the layout part of this gate, the measurable procedure (renders at 1440, 768 and 390 px with fail conditions) is in `.plaesy/instructions/frontend-design.md` under "Verify with renders".
+8. **Documentation** — public interfaces documented per constitution's doc bar. Non-blocking (route to `/doc`).
+9. **Cleanup** — temporary/scratch files (test scripts, throwaway helpers) created during iteration removed before marking complete. Non-blocking (flag, don't halt) unless the constitution marks it a hard stop. (Anthropic Claude prompting best practices, retrieved 2026-09-25.)
 
-## Verifier Separation (Required for /implement)
+---
 
-The agent that writes the implementation must not be the sole judge of gate 1–5.
-Before marking implementation complete, a **fresh review pass** — a new agent
-invocation with no prior implementation context, given only the spec/constitution and
-the diff — checks:
+## Spec-Kit Gate Checklist (run for pipeline stages)
+
+**Gate S1 — Idea Discovery** (Stage 1): ≥8 distinct options, each with assumption + cheapest test + FACT/INFERRED/SPECULATIVE label. At least one contrarian option. No duplicate assumptions.
+
+**Gate S2 — Board Review** (Stage 3): 3 reviewers × 1 lens each (offer, defensibility, product). Each names kill risks + votes fund/fund with conditions/pass.
+
+**Gate S3 — Competitors** (Stage 4): ≥3 web queries, "do nothing" row included, all prices cited with URL+date or "not published".
+
+**Gate S4 — Buyers** (Stage 5): **≥5 real conversations** (Gate B1). Simulated buyers in separate section labeled "simulated, not demand".
+
+**Gate S5 — Economics** (Stage 9): All 4 inputs present, S has basis, verdict calculated per rules (Gate B2).
+
+**Gate S6 — Pivot Gate** (Stage 9→10): If Not yet, pivot decision documented (Gate B3).
+
+**Gate S7 — Plan Compilation** (Stage 14): All 11 stage files exist, verdict at top, ideas.md index updated.
+
+**Gate S8 — Assessment** (Stage 15): All mandatory audit items per dimension (Gate B6).
+
+**Gate S9 — YouTube Automation** (Stage 16): Research ≥3 sources, fact-check grounded, script complete, visuals ≥5 with credits, voice SRT synced, render valid, findability ≥80, thumbnail <2MB correct ratio, at least 1 style (Gate B7).
+
+---
+
+## Verifier Separation (Required for /implement and Spec-Kit Pipeline)
+
+The agent that writes the implementation must not be the sole judge of gate 1–5. Before marking implementation complete, a **fresh review pass** — a new agent invocation with no prior implementation context, given only the spec/constitution and the diff — checks:
 
 - Does the diff satisfy every acceptance criterion in the spec?
 - Does it violate any constitution non-negotiable?
@@ -168,51 +239,22 @@ Findings from this pass are treated as gate failures, not suggestions.
 
 ### Adversarial Verifier Pattern (Concrete Procedure)
 
-The section above specifies *when* to spawn a fresh review pass before marking
-implementation complete; this section specifies *how* to frame that pass as an
-adversarial check rather than a neutral review that tends to rubber-stamp.
-
 **Procedure** (spawn fresh — brief adversarially — bound inputs — cap iterations):
 
-1. **Spawn fresh** — invoke a new agent/subagent with no prior implementation
-   context. Do not carry over the implementer's conversation history,
-   chain-of-thought, or self-report. Provide only the spec, the constitution,
-   and the diff.
-2. **Brief adversarially** — instruct the verifier to "assume this diff has at
-   least one defect; find it." A neutral "please review" brief tends to
-   confirmation-bias; adversarial framing does not (Anthropic, "Building
-   Effective Agents": the evaluator-optimizer split outperforms same-call
-   generation+evaluation, retrieved 2026-09-25).
-3. **Bound inputs** — provide only: (a) the specification's acceptance
-   criteria, (b) the project constitution's non-negotiables, (c) the diff.
-   Re-derive claims from these sources; do not trust the implementer's
-   self-report as evidence.
-4. **Blocking findings** — a finding that contradicts an acceptance criterion
-   or violates a constitution non-negotiable is a **gate failure**, not a
-   suggestion. Do not proceed past quality gates until every blocking finding
-   is resolved. Anything else (style, optional refactors, "could be simpler")
-   goes in a separate non-blocking list. A reviewer told to find defects will
-   usually report some even when the work is sound, and acting on all of them
-   produces extra abstraction and defensive code (Anthropic, Claude Code best
-   practices, https://code.claude.com/docs/en/best-practices, retrieved 2026-10-17).
-5. **Iteration cap** — allow at most one re-implement + re-verify cycle before
-   escalating to `.plaesy/instructions/error-recovery.md`. Prevents infinite
-   verify-fail loops where the implementer patches surface symptoms without
-   addressing the root cause.
-6. **One pass, not a debate loop** — the adversarial verifier performs a single
-   bounded scan; it does not iterate with the implementer to hash out
-   disagreements. (Per 2026-09-25 research, the evaluator-optimizer pattern
-   performs best as discrete passes, not extended multi-agent debate.)
+1. **Spawn fresh** — invoke a new agent/subagent with no prior implementation context. Do not carry over the implementer's conversation history, chain-of-thought, or self-report. Provide only the spec, the constitution, and the diff.
+2. **Brief adversarially** — instruct the verifier to "assume this diff has at least one defect; find it." A neutral "please review" brief tends to confirmation-bias; adversarial framing does not (Anthropic, "Building Effective Agents": the evaluator-optimizer split outperforms same-call generation+evaluation, retrieved 2026-09-25).
+3. **Bound inputs** — provide only: (a) the specification's acceptance criteria, (b) the project constitution's non-negotiables, (c) the diff. Re-derive claims from these sources; do not trust the implementer's self-report as evidence.
+4. **Blocking findings** — a finding that contradicts an acceptance criterion or violates a constitution non-negotiable is a **gate failure**, not a suggestion. Do not proceed past quality gates until every blocking finding is resolved. Anything else (style, optional refactors, "could be simpler") goes in a separate non-blocking list. A reviewer told to find defects will usually report some even when the work is sound, and acting on all of them produces extra abstraction and defensive code (Anthropic, Claude Code best practices, https://code.claude.com/docs/en/best-practices, retrieved 2026-10-17).
+5. **Iteration cap** — allow at most one re-implement + re-verify cycle before escalating to `.plaesy/instructions/error-recovery.md`. Prevents infinite verify-fail loops where the implementer patches surface symptoms without addressing the root cause.
+6. **One pass, not a debate loop** — the adversarial verifier performs a single bounded scan; it does not iterate with the implementer to hash out disagreements. (Per 2026-09-25 research, the evaluator-optimizer pattern performs best as discrete passes, not extended multi-agent debate.)
 
-This pattern generalizes beyond `/implement` code diffs — a `/fix:business`
-pricing correction or `/fix:legal` compliance amendment should also receive a
-fresh adversarial re-check against the original finding before being marked
-resolved (see `.plaesy/instructions/dimension-mapping.md`).
+This pattern generalizes beyond `/implement` code diffs — a `/fix:business` pricing correction, `/fix:legal` compliance amendment, or **pipeline stage output** should also receive a fresh adversarial re-check against the original finding before being marked resolved (see `.plaesy/instructions/dimension-mapping.md`).
+
+---
 
 ## Output Format
 
-```text
-
+```
 QUALITY GATES: [PASS/BLOCKED]
 0. Success Contract: [PASS/FAIL] (N checks passed; N still blocked)
 1. Build:          [PASS/FAIL]
@@ -226,27 +268,40 @@ QUALITY GATES: [PASS/BLOCKED]
 8. Documentation:  [PASS/FLAG]
 9. Cleanup:        [PASS/FLAG]
 Verifier pass:     [PASS/FAIL] (see findings)
-(first blocking failure: [gate number and name], or none — the checklist
- stops at the first blocking failure, so at most one may be reported)
+(first blocking failure: [gate number and name], or none — the checklist stops at the first blocking failure, so at most one may be reported)
+```
+
+### Spec-Kit Pipeline Output Format (additional)
+
+```
+SPEC-KIT GATES: [PASS/BLOCKED]
+S1. Idea Discovery:    [PASS/FAIL] (N options, labels valid, contrarian present)
+S2. Board Review:      [PASS/FAIL] (3 lenses, kill risks named, votes recorded)
+S3. Competitors:       [PASS/FAIL] (≥3 queries, do nothing row, citations valid)
+S4. Buyers:            [PASS/FAIL] (conversations=X, would_pay=Y, weighted=Z%)
+S5. Economics:         [PASS/FAIL] (verdict: Incomplete|Not yet|Profitable)
+S6. Pivot Gate:        [PASS/FAIL/N-A] (if Not yet: decision documented)
+S7. Plan Compilation:  [PASS/FAIL] (all stages, verdict at top, index updated)
+S8. Assessment:        [PASS/FAIL] (dimensions assessed, grades reported)
+S9. YouTube Automation: [PASS/FAIL/N-A] (findability≥80, thumbnail<2MB, render valid)
+(first blocking failure: [gate number and name], or none)
 ```
 
 ### Contract comparison (required, part of Gate 0)
 
-Every check of the task appears in this table: first the `passed` checks, then the `blocked` ones.
-`plaesy tasks validate` writes the same list into `contracts.json`.
+Every check of the task appears in this table: first the `passed` checks, then the `blocked` ones. `plaesy tasks validate` writes the same list into `contracts.json`.
 
 | Check | What it proves | Target | Actual | Result | Evidence |
 |---|---|---|---|---|---|
 | C1 | [check] | [target] | [value] | passed / blocked | cmd:[method] |
 
-A completion claim is invalid while any checklist item is not `passed`. Report the first blocked check by its
-id, then stop.
+A completion claim is invalid while any checklist item is not `passed`. Report the first blocked check by its id, then stop.
+
+---
 
 ## Deterministic Enforcement (Optional, Recommended)
 
-The gates above are pass/fail criteria evaluated by the agent; this section
-notes how to make them machine-enforced via Git pre-commit / CI hooks so they
-cannot be bypassed by a careless commit or a "just make it pass" rush.
+The gates above are pass/fail criteria evaluated by the agent; this section notes how to make them machine-enforced via Git pre-commit / CI hooks so they cannot be bypassed by a careless commit or a "just make it pass" rush.
 
 **Hookable gates** (enforce via pre-commit or CI before merge):
 
@@ -260,14 +315,14 @@ cannot be bypassed by a careless commit or a "just make it pass" rush.
 - **Coverage** (Gate 3) — requires runtime measurement against `{{TEST_COVERAGE_MIN}}`.
 - **Performance** (Gate 6) — requires environment-specific baselines.
 - **Accessibility** (Gate 7) — requires runtime/UI inspection.
+- **Spec-Kit Gates** — require agent judgment on business validation (buyer conversations, verdict logic, pivot decisions).
 
-**Recommended minimum**: any repository that wants deterministic enforcement
-should wire Gates 1, 2, 4, 5 into hooks; the remaining gates (3, 6, 7) and the
-Verifier Separation pass remain agent-reported per the Output Format above.
+**Recommended minimum**: any repository that wants deterministic enforcement should wire Gates 1, 2, 4, 5 into hooks; the remaining gates (3, 6, 7) and the Verifier Separation pass remain agent-reported per the Output Format above.
+
+---
 
 ## On Failure
 
-- Blocking failure → halt, report which gate + why, route per
-  `.plaesy/instructions/error-recovery.md`.
-- Non-blocking flag → continue, but surface in the phase's completion report so
-  `/assess` picks it up.
+- Blocking failure → halt, report which gate + why, route per `.plaesy/instructions/error-recovery.md`.
+- Non-blocking flag → continue, but surface in the phase's completion report so `/assess` picks it up.
+- **Spec-Kit blocking failure** → halt pipeline at current stage, report specific gate (S1-S8 or B1-B6), do not proceed until resolved.

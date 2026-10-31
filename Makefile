@@ -1,105 +1,130 @@
-# GNU make on Windows ignores SHELL and runs recipes with cmd.exe, where `rm` does not exist.
-ifeq ($(OS),Windows_NT)
-RM_GIT = powershell -NoProfile -Command "if (Test-Path .git) { Remove-Item -Recurse -Force .git }"
-else
-RM_GIT = rm -rf .git
-endif
+# Spec-Kit Makefile
+# Run: make help
 
-# Release asset name that install.sh looks for on this machine. The root build is named the
-# same way, so it is the file the curl installer would have shipped.
-ifeq ($(OS),Windows_NT)
-EXE = .exe
-ASSET = plaesy-windows-amd64.exe
-else
-EXE =
-ASSET = plaesy-$(shell uname -s | tr A-Z a-z)-$(shell uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
-endif
-PLAESY = ./$(ASSET)
+.PHONY: help evals oracle test clean install lint docs sim validate
 
-# Same build as release.yml: cargo release build of the crate, copied to the release asset name.
-build:
-	cd ../cli/crates/plaesy && cargo build --release
-	cp ../cli/crates/plaesy/target/release/plaesy$(EXE) $(ASSET)
+# Default target
+help:
+	@echo "Spec-Kit - Business Validation Pipeline"
+	@echo ""
+	@echo "Usage: make <target>"
+	@echo ""
+	@echo "Core Targets:"
+	@echo "  make evals          - Run all skill evals (9 core skills)"
+	@echo "  make oracle         - Run oracle harness for 9 core skills"
+	@echo "  make test           - Run evals + oracle (full test suite)"
+	@echo "  make clean          - Clean generated artifacts"
+	@echo ""
+	@echo "Skill Targets (run specific skill):"
+	@echo "  make evals-ideator"
+	@echo "  make evals-buyer-discovery"
+	@echo "  make evals-compliance-health"
+	@echo "  make evals-economics-engine"
+	@echo "  make evals-plan-compiler"
+	@echo "  make evals-assess"
+	@echo "  make evals-pipeline"
+	@echo "  make evals-youtube-automation"
+	@echo "  make evals-founder"
+	@echo ""
+	@echo "  make oracle-ideator"
+	@echo "  make oracle-buyer-discovery"
+	@echo "  make oracle-compliance-health"
+	@echo "  make oracle-economics-engine"
+	@echo "  make oracle-plan-compiler"
+	@echo "  make oracle-assess"
+	@echo "  make oracle-pipeline"
+	@echo "  make oracle-youtube-automation"
+	@echo "  make oracle-founder"
+	@echo ""
+	@echo "Simulation:"
+	@echo "  make sim           - Run full ai-health-influencer simulation"
+	@echo "  make sim-eval      - Evaluate simulation results"
+	@echo ""
+	@echo "Maintenance:"
+	@echo "  make lint          - Check code style (pycodestyle, ruff)"
+	@echo "  make docs          - Validate documentation"
+	@echo "  make install       - Install dependencies"
+	@echo "  make clean         - Remove .plaesy/, __pycache__, *.pyc"
+	@echo "  make validate      - Validate all skills structure"
 
-# The one command for local work: rebuilds the root binary, installs it over the real installed
-# plaesy through install.sh (the release asset is served from dist/ with SHA256SUMS), then
-# reloads the generated .plaesy/ and mirrors with that root binary and checks them.
-reload: build
-	rm -rf dist && mkdir -p dist
-	cp $(ASSET) dist/$(ASSET)
-	cd dist && sha256sum $(ASSET) > SHA256SUMS
-	PLAESY_BASE_URL="file://$$(cd dist && pwd -W 2>/dev/null || pwd)" bash install.sh
-	if [ -n "$$LOCALAPPDATA" ]; then cmp "$$LOCALAPPDATA/Plaesy/bin/plaesy$(EXE)" $(ASSET); fi
-	$(PLAESY) reload
-	$(PLAESY) reload --ai claude --prune --prune-apply
-	$(PLAESY) reload --ai kilo --prune --prune-apply
-	$(PLAESY) markdown validate
-	echo "reload ok: installed plaesy is the root build, reloaded with it"
+# Run all skill evals (9 core skills)
+evals:
+	@echo "Running all skill evaluations..."
+	@python scripts/validate_evals.py
 
-test:
-	cd ../cli/crates/plaesy && cargo test
-
-# Local development only: symlink every skill (a folder under skills/ with a SKILL.md) into the
-# agent skill folder, so `git pull` updates the linked skills in place. Override with
-# AGENT_SKILLS=$HOME/.codex/skills. Needs bash and, on Windows, developer mode for symlinks.
-AGENT_SKILLS ?= $(HOME)/.claude/skills
-link-skills: SHELL := bash
-link-skills: export MSYS := winsymlinks:nativestrict
-link-skills:
-	mkdir -p "$(AGENT_SKILLS)"
-	for d in skills/*/; do \
-	  [ -f "$$d/SKILL.md" ] || continue; \
-	  ln -sfn "$$(cd "$$d" && pwd)" "$(AGENT_SKILLS)/$$(basename "$$d")"; \
+# Run oracle harness for 9 core skills
+oracle:
+	@echo "Running oracle harness replay..."
+	@for skill in ideator buyer-discovery compliance-health economics-engine plan-compiler assess pipeline youtube-automation founder; do \
+		echo "=== $$skill ==="; \
+		python scripts/oracle_runner.py --skill $$skill --replay; \
 	done
-	echo "linked skills into $(AGENT_SKILLS)"
 
-# Removes only the symlinks that point into this repository.
-unlink-skills: SHELL := bash
-unlink-skills:
-	repo="$$(pwd -P)"; \
-	for l in "$(AGENT_SKILLS)"/*; do \
-	  [ -L "$$l" ] || continue; \
-	  case "$$(readlink "$$l")" in "$$repo"/*) rm "$$l" ;; esac; \
+# Full test suite: evals + oracle
+test: evals oracle
+
+# Individual skill evals
+evals-%:
+	@skill=$*; \
+	if [ -d "skills/$$skill/evals" ]; then \
+		echo "=== $$skill ==="; \
+		python scripts/validate_evals.py $$skill; \
+	else \
+		echo "No evals for $$skill"; \
+	fi
+
+# Individual oracle
+oracle-%:
+	@skill=$*; \
+	if [ -d "skills/$$skill/oracle" ]; then \
+		echo "=== $$skill ==="; \
+		python scripts/oracle_runner.py --skill $$skill --replay; \
+	else \
+		echo "No oracle for $$skill"; \
+	fi
+
+# Run full ai-health-influencer simulation
+sim:
+	@echo "Running full pipeline simulation for ai-health-influencer..."
+	@python scripts/run_simulation.py
+
+# Evaluate simulation results
+sim-eval:
+	@echo "Evaluating simulation results..."
+	@python scripts/oracle_runner.py --skill pipeline --replay
+
+# Install dependencies
+install:
+	pip install -q pytest pyyaml
+	@for skill in $$(find skills -name "requirements.txt" -exec dirname {} \; | sort -u); do \
+		if [ -f "$$skill/requirements.txt" ]; then \
+			pip install -q -r "$$skill/requirements.txt"; \
+		fi; \
 	done
-	echo "unlinked skills from $(AGENT_SKILLS)"
 
-# Case files for the instructions (phrase checks and lint fixtures) and the offline design
-# lint. Model briefs run only when PLAESY_EVAL_RUNNER is set; otherwise they are SKIP.
-evals: build
-	$(PLAESY) validate evals
+# Lint check
+lint:
+	@which ruff >/dev/null 2>&1 && ruff check skills/ scripts/ || \
+	which pycodestyle >/dev/null 2>&1 && pycodestyle skills/ scripts/ || \
+	echo "No linter installed (install ruff or pycodestyle)"
 
-# Removes only generated files. It never stages or commits: `git add -Af` here
-# swallowed every unrelated working-tree change and committed it as "Initial
-# Commit", which is how the repo ended up with three commits by that name.
+# Validate documentation
+docs:
+	@echo "Checking documentation..."
+	@for f in docs/ARCHITECTURE.md docs/DESIGN.md docs/CLI-CONTRACT.md CHANGELOG.md CONTRIBUTING.md; do \
+		if [ ! -f "$$f" ]; then echo "Missing: $$f"; exit 1; fi; \
+	done
+	@echo "All docs present"
+
+# Clean generated artifacts
 clean:
-	git add -A && git commit -m "Initial Commit" && rm -rf .claude .kilo .plaesy AGENTS.md CLAUDE.md
+	rm -rf .plaesy/
+	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	find . -name "*.pyc" -delete 2>/dev/null || true
+	find . -name "*.pyo" -delete 2>/dev/null || true
+	find . -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
 
-claude: build
-	$(PLAESY) init . --ai claude && $(PLAESY) reload && $(PLAESY) analyze && claude
-
-
-kilo: build
-	$(PLAESY) init . --ai kilo && $(PLAESY) reload && $(PLAESY) analyze && kilo --auto
-
-detect: build
-	$(PLAESY) platforms detect
-
-# DANGER: rewrites local history from scratch, force-pushes it over main, AND
-# deletes every GitHub Release (with its tag and uploaded assets) plus any
-# leftover bare tag on the remote before re-tagging at VERSION. Everything
-# here is irreversible once it reaches GitHub:
-#   1. delete every Release (gh release delete --cleanup-tag removes its tag too)
-#   2. delete any remaining bare tag the step above didn't own
-#   3. wipe local .git, commit a fresh "Initial Commit", force-push it to main
-#   4. tag that commit v<VERSION> and push the tag
-# Step 4's tag push fires .github/workflows/release.yml on the remote, which
-# builds the cross-platform binaries and recreates the GitHub Release — so a
-# plain `make reset` now reproduces a full release from scratch, not just a
-# clean history.
-resetf: test
-	-gh release list -R plaesy/spec-kit --limit 1000 --json tagName -q '.[].tagName' | xargs -r -I{} gh release delete {} -R plaesy/spec-kit --yes --cleanup-tag
-	-git ls-remote --tags git@github.com:plaesy/spec-kit.git | awk '{print $$2}' | while read -r ref; do git push git@github.com:plaesy/spec-kit.git --delete "$$ref"; done
-	$(RM_GIT) && git init && git remote add origin git@github.com:plaesy/spec-kit.git && git checkout -b main && git add -A && git commit -m "Initial Commit" && git push origin main -f && git tag "v$$(cat VERSION)" && git push origin "v$$(cat VERSION)" && sudo plaesy uninstall
-
-reset:
-	$(RM_GIT) && git init && git remote add origin git@github.com:plaesy/spec-kit.git && git checkout -b main && git add -A && git commit -m "Initial Commit"
+# Quick validation of all skills structure
+validate:
+	@echo "Validating all skills structure..."
+	@python scripts/validate_skills.py

@@ -1,0 +1,197 @@
+{
+  "skill": "economics-engine",
+  "version": "1.0",
+  "tests": [
+    {
+      "name": "calculate_basic_metrics",
+      "description": "Calculate margin, break-even, margin of safety",
+      "input": {
+        "P": 100,
+        "V": 20,
+        "F": 2000,
+        "S": 30
+      },
+      "expected_output": {
+        "m": 80,
+        "margin_pct": 0.8,
+        "B": 25,
+        "MoS": 0.1667,
+        "year1_revenue": 36000
+      },
+      "assertions": [
+        "result.m === 80",
+        "result.margin_pct === 0.8",
+        "result.B === 25",
+        "Math.abs(result.MoS - 0.1667) < 0.001",
+        "result.year1_revenue === 36000"
+      ]
+    },
+    {
+      "name": "calculate_churn_adjusted_ltv",
+      "description": "Calculate LTV with monthly churn",
+      "input": {
+        "m": 80,
+        "monthly_churn_rate": 0.1
+      },
+      "expected_output": {
+        "ltv": 800
+      },
+      "assertions": [
+        "result.ltv === 800"
+      ]
+    },
+    {
+      "name": "months_to_break_even",
+      "description": "Calculate months to reach break-even volume",
+      "input": {
+        "B": 25,
+        "S": 5
+      },
+      "expected_output": {
+        "months_to_be": 5
+      },
+      "assertions": [
+        "result.months_to_be === 5"
+      ]
+    },
+    {
+      "name": "verdict_engine_incomplete",
+      "description": "Verdict: Incomplete when input missing or S has no basis",
+      "input": {
+        "P": 100,
+        "V": 20,
+        "F": 2000,
+        "S": "unknown",
+        "S_basis": null
+      },
+      "expected_output": {
+        "verdict": "Incomplete",
+        "reason": "S has no stated basis"
+      },
+      "assertions": [
+        "result.verdict === 'Incomplete'",
+        "result.reason.includes('basis')"
+      ]
+    },
+    {
+      "name": "verdict_engine_not_yet_negative_margin",
+      "description": "Verdict: Not yet when margin <= 0",
+      "input": {
+        "P": 15,
+        "V": 20,
+        "F": 1000,
+        "S": 100,
+        "S_basis": "estimate"
+      },
+      "expected_output": {
+        "verdict": "Not yet",
+        "failing_number": "m <= 0"
+      },
+      "assertions": [
+        "result.verdict === 'Not yet'",
+        "result.failing_number.includes('m')"
+      ]
+    },
+    {
+      "name": "verdict_engine_not_yet_below_break_even",
+      "description": "Verdict: Not yet when S < B",
+      "input": {
+        "P": 100,
+        "V": 20,
+        "F": 5000,
+        "S": 20,
+        "S_basis": "funnel math"
+      },
+      "expected_output": {
+        "verdict": "Not yet",
+        "failing_number": "S < B",
+        "B": 63,
+        "MoS": -2.15
+      },
+      "assertions": [
+        "result.verdict === 'Not yet'",
+        "result.failing_number.includes('S < B')",
+        "result.B === 63",
+        "result.MoS < 0"
+      ]
+    },
+    {
+      "name": "verdict_engine_profitable",
+      "description": "Verdict: Profitable when m > 0 and S >= B",
+      "input": {
+        "P": 100,
+        "V": 20,
+        "F": 2000,
+        "S": 30,
+        "S_basis": "5 buyer conversations + funnel"
+      },
+      "expected_output": {
+        "verdict": "Profitable",
+        "margin_of_safety": 0.1667,
+        "basis_label": "estimate"
+      },
+      "assertions": [
+        "result.verdict === 'Profitable'",
+        "Math.abs(result.margin_of_safety - 0.1667) < 0.001",
+        "result.basis_label === 'estimate'"
+      ]
+    },
+    {
+      "name": "segment_analysis_multi_tier",
+      "description": "Analyze multi-tier pricing with per-tier break-even and cross-subsidy check",
+      "input": {
+        "tiers": [
+          {"name": "Starter", "price": 29, "vcost": 10, "mix": 0.5, "fixed_cost_alloc": 500},
+          {"name": "Pro", "price": 199, "vcost": 25, "mix": 0.3, "fixed_cost_alloc": 1000},
+          {"name": "Agency", "price": 299, "vcost": 35, "mix": 0.2, "fixed_cost_alloc": 1000}
+        ],
+        "total_F": 2500
+      },
+      "expected_output": {
+        "blended_P": 132.5,
+        "blended_V": 19.5,
+        "blended_m": 113,
+        "tier_break_evens": {"Starter": 19, "Pro": 6, "Agency": 4},
+        "cross_subsidy_check": "Starter has positive margin but high volume needed; Pro/Agency margins subsidize shared fixed costs"
+      },
+      "assertions": [
+        "Math.abs(result.blended_P - 132.5) < 0.1",
+        "Math.abs(result.blended_V - 19.5) < 0.1",
+        "result.tier_break_evens.Starter === 19",
+        "result.tier_break_evens.Pro === 6",
+        "result.tier_break_evens.Agency === 4"
+      ]
+    },
+    {
+      "name": "sensitivity_analysis",
+      "description": "Sensitivity analysis on price, cost, volume, CAC, fixed cost, segment mix",
+      "input": {
+        "base": {"P": 100, "V": 20, "F": 2000, "S": 30, "CAC": 200, "churn": 0.1},
+        "variations": {"price": -0.2, "cost": 0.2, "volume": -0.2, "CAC": 0.5, "fixed_cost": 0.5, "segment_mix_coach": 0.8}
+      },
+      "expected_output": {
+        "scenarios": ["base", "price_down", "cost_up", "volume_down", "CAC_up", "fixed_cost_up", "coach_heavy_mix"],
+        "verdict_changes": ["price_down", "cost_up", "volume_down", "fixed_cost_up", "coach_heavy_mix"],
+        "kill_scenarios": ["coach_heavy_mix"]
+      },
+      "assertions": [
+        "result.scenarios.length >= 7",
+        "result.verdict_changes.includes('coach_heavy_mix')",
+        "result.kill_scenarios.includes('coach_heavy_mix')"
+      ]
+    },
+    {
+      "name": "output_economics_md",
+      "description": "Output economics.md with all calculations and verdict",
+      "input": {
+        "P": 100, "V": 20, "F": 2000, "S": 30, "S_basis": "test"
+      },
+      "expected_output": {
+        "contains": ["Price P =", "Direct cost V =", "Margin m =", "Break-even B =", "Margin of safety =", "**Verdict:**"]
+      },
+      "assertions": [
+        "expected_output.contains.every(s => output.includes(s))"
+      ]
+    }
+  ]
+}
