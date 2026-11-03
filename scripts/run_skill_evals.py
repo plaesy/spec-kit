@@ -200,8 +200,11 @@ def main():
     kept = []
     if results_file.exists():
         previous = json.loads(results_file.read_text(encoding="utf-8")).get("results", [])
-        ran = {r["id"] for r in results}
-        kept = [r for r in previous if r["id"] not in ran]
+        def result_id(item):
+            # Current runner uses `id`; legacy result files used `test`.
+            return item.get("id", item.get("test"))
+        ran = {result_id(r) for r in results}
+        kept = [r for r in previous if result_id(r) not in ran]
     out = {
         "skill": skill_dir.name,
         "run_date": date.today().isoformat(),

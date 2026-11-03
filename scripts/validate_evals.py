@@ -26,10 +26,19 @@ def validate_skill_evals(skill_name):
     with open(results_path) as f:
         results = json.load(f)
     
-    # Check that all tests in evals have corresponding results
-    eval_tests = {t['name'] for t in evals.get('tests', [])}
-    result_tests = {r['test'] for r in results.get('results', [])}
-    
+    # Accept the repository's two historical schemas, but normalize them to IDs.
+    # New files should use `cases`; legacy files may still use `tests`.
+    def case_id(item):
+        value = item.get('id', item.get('name', item.get('test')))
+        return value.replace('_', '-') if isinstance(value, str) else value
+
+    eval_items = evals.get('cases', evals.get('tests', []))
+    eval_tests = {case_id(item) for item in eval_items}
+    result_tests = {case_id(item) for item in results.get('results', [])}
+    if None in eval_tests or None in result_tests:
+        print(f"INVALID CASE ID: {skill_name}")
+        return False
+
     missing = eval_tests - result_tests
     if missing:
         print(f"MISSING RESULTS: {skill_name}: {missing}")
@@ -44,7 +53,7 @@ def validate_skill_evals(skill_name):
     # Check all results have status = passed
     for r in results.get('results', []):
         if r.get('status') != 'passed':
-            print(f"FAILED: {skill_name}/{r['test']}: status={r.get('status')}")
+            print(f"FAILED: {skill_name}/{r.get('test', r.get('id'))}: status={r.get('status')}")
             return False
     
     summary = results.get('summary', {})

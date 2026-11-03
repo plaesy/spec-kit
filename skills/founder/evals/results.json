@@ -2,14 +2,26 @@
   "skill": "founder",
   "version": "1.0",
   "run_date": "2026-10-31",
+  "runner": "deterministic",
   "results": [
     {
       "test": "board_review_three_lenses",
       "status": "passed",
       "output": {
-        "lenses": ["offer", "defensibility", "product"],
-        "each_lens_has": ["kill_risks", "vote"],
-        "votes_in": ["fund", "fund with conditions", "pass"],
+        "lenses": [
+          "offer",
+          "defensibility",
+          "product"
+        ],
+        "each_lens_has": [
+          "kill_risks",
+          "vote"
+        ],
+        "votes_in": [
+          "fund",
+          "fund with conditions",
+          "pass"
+        ],
         "all_three_present": true
       }
     },
@@ -18,7 +30,13 @@
       "status": "passed",
       "output": {
         "first_row": "Do nothing",
-        "columns": ["Alternative", "Price (as published)", "Promise", "Source", "Accessed"],
+        "columns": [
+          "Alternative",
+          "Price (as published)",
+          "Promise",
+          "Source",
+          "Accessed"
+        ],
         "all_prices_cited_or_not_published": true,
         "queries_min": 3
       }
@@ -37,7 +55,12 @@
       "status": "passed",
       "output": {
         "tiers": 3,
-        "each_tier_has": ["price", "compared_with", "buyer_evidence", "recommendation"],
+        "each_tier_has": [
+          "price",
+          "compared_with",
+          "buyer_evidence",
+          "recommendation"
+        ],
         "segment_differentiated": true
       }
     },
@@ -57,7 +80,12 @@
       "status": "passed",
       "output": {
         "verdict_at_top": true,
-        "driving_numbers": ["margin", "break_even", "expected_sales", "MoS"],
+        "driving_numbers": [
+          "margin",
+          "break_even",
+          "expected_sales",
+          "MoS"
+        ],
         "board_votes_summary": true,
         "one_page_summary": true,
         "all_11_stages_concatenated": true,
@@ -71,9 +99,120 @@
         "pivot_section_exists": true,
         "table_included": true,
         "chosen_pivot": "Hybrid",
-        "validation_required": ["compliance prototype", "B2B pipeline test", "coach inbound test"]
+        "validation_required": [
+          "compliance prototype",
+          "B2B pipeline test",
+          "coach inbound test"
+        ]
+      }
+    },
+    {
+      "id": "profitable-with-basis",
+      "test": "profitable-with-basis",
+      "status": "passed",
+      "method": "deterministic",
+      "checks": [
+        "contribution margin = 49 - 12 = 37",
+        "break-even = ceil(600 / 37) = 17",
+        "sales basis is explicitly evidence/estimate",
+        "verdict is Profitable",
+        "unsourced market claims are labeled ASSUMED"
+      ],
+      "facts": {
+        "margin": 37,
+        "break_even": 17,
+        "verdict": "Profitable"
+      }
+    },
+    {
+      "id": "not-yet-below-break-even",
+      "test": "not-yet-below-break-even",
+      "status": "passed",
+      "method": "deterministic",
+      "checks": [
+        "contribution margin = 20 - 15 = 5",
+        "break-even = 600 / 5 = 120",
+        "expected sales 40 is below break-even 120",
+        "verdict is Not yet",
+        "sales 40 is labeled estimate"
+      ],
+      "facts": {
+        "margin": 5,
+        "break_even": 120,
+        "verdict": "Not yet"
+      }
+    },
+    {
+      "id": "incomplete-missing-fixed-cost",
+      "test": "incomplete-missing-fixed-cost",
+      "status": "passed",
+      "method": "deterministic",
+      "checks": [
+        "contribution margin = 35 - 8 = 27",
+        "break-even is not computed without fixed cost",
+        "no real customers and no sales basis are recorded",
+        "verdict is Incomplete",
+        "no invented demand is presented"
+      ],
+      "facts": {
+        "margin": 27,
+        "break_even": null,
+        "verdict": "Incomplete"
+      }
+    },
+    {
+      "id": "not-yet-negative-margin",
+      "test": "not-yet-negative-margin",
+      "status": "passed",
+      "method": "deterministic",
+      "checks": [
+        "contribution margin = 10 - 12 = -2",
+        "negative margin is explicitly stated",
+        "break-even is not meaningful with negative margin",
+        "verdict is Not yet",
+        "sales estimate is not treated as evidence"
+      ],
+      "facts": {
+        "margin": -2,
+        "break_even": null,
+        "verdict": "Not yet"
+      }
+    },
+    {
+      "id": "no-simulated-demand",
+      "test": "no-simulated-demand",
+      "status": "passed",
+      "method": "deterministic",
+      "checks": [
+        "simulated answers are refused as real demand",
+        "real conversations are proposed instead",
+        "buy rate is not written as customer evidence"
+      ],
+      "facts": {
+        "verdict": "Refuse simulated demand"
+      }
+    },
+    {
+      "id": "idea-discovery-no-idea",
+      "test": "idea-discovery-no-idea",
+      "status": "passed",
+      "method": "deterministic",
+      "checks": [
+        "at most three missing-information questions are allowed",
+        "at least three sources must be searched and opened",
+        "three candidate folders and ideas index entry are required",
+        "market claims require sources or ASSUMED labels",
+        "user chooses the candidate; agent does not preselect one"
+      ],
+      "facts": {
+        "verdict": "Candidate discovery"
       }
     }
   ],
-  "summary": {"total": 6, "passed": 6, "failed": 0, "pass_rate": 1.0}
+  "summary": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "pass_rate": 1.0
+  }
 }

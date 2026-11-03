@@ -1,7 +1,7 @@
 # Spec-Kit Makefile
 # Run: make help
 
-.PHONY: help evals oracle test clean install lint docs sim validate
+.PHONY: help evals agent-evals deterministic-evals oracle test clean install lint docs sim sim-eval validate test-python
 
 # Default target
 help:
@@ -47,22 +47,6 @@ help:
 	@echo "  make clean         - Remove .plaesy/, __pycache__, *.pyc"
 	@echo "  make validate      - Validate all skills structure"
 
-# Run all skill evals (9 core skills)
-evals:
-	@echo "Running all skill evaluations..."
-	@python scripts/validate_evals.py
-
-# Run oracle harness for 9 core skills
-oracle:
-	@echo "Running oracle harness replay..."
-	@for skill in ideator buyer-discovery compliance-health economics-engine plan-compiler assess pipeline youtube-automation founder; do \
-		echo "=== $$skill ==="; \
-		python scripts/oracle_runner.py --skill $$skill --replay; \
-	done
-
-# Full test suite: evals + oracle
-test: evals oracle
-
 # Individual skill evals
 evals-%:
 	@skill=$*; \
@@ -93,14 +77,38 @@ sim-eval:
 	@echo "Evaluating simulation results..."
 	@python scripts/oracle_runner.py --skill pipeline --replay
 
-# Install dependencies
+# Install dependencies into the active virtual environment.
 install:
-	pip install -q pytest pyyaml
+	python -m pip install -q pytest pyyaml
 	@for skill in $$(find skills -name "requirements.txt" -exec dirname {} \; | sort -u); do \
 		if [ -f "$$skill/requirements.txt" ]; then \
-			pip install -q -r "$$skill/requirements.txt"; \
+			python -m pip install -q -r "$$skill/requirements.txt"; \
 		fi; \
 	done
+
+# Run repository-level Python tests when a tests directory exists.
+test-python:
+	@if [ -d tests ]; then python -m pytest tests -q; else echo "No repository tests directory"; fi
+
+# Deterministic founder checks require no model, API, or network.
+deterministic-evals:
+	@python scripts/run_deterministic_evals.py founder
+
+# Optional agent evals. Requires a configured kilo or Claude runner.
+agent-evals:
+	@python scripts/run_skill_evals.py skills/founder --runner $${RUNNER:-kilo}
+
+# Full local quality gate; deterministic checks are the default.
+test: validate evals deterministic-evals oracle test-python
+
+# Legacy eval target now validates recorded deterministic and core results.
+evals: deterministic-evals
+	@python scripts/validate_evals.py
+
+# Keep the oracle target useful for CI: propagate replay failures.
+oracle:
+	@echo "Running oracle harness replay..."
+	@python scripts/oracle_runner.py --skill all --replay
 
 # Lint check
 lint:

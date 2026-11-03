@@ -13,6 +13,7 @@ import sys
 import argparse
 import subprocess
 import importlib.util
+import tempfile
 from pathlib import Path
 from typing import Dict, Any, List
 from datetime import datetime
@@ -36,14 +37,15 @@ class OracleHarness:
             data = json.load(f)
         return data.get("goldens", [])
     
-    def record(self, golden: Dict) -> Dict:
-        """Run a golden test and record the actual output as vector."""
+    def record(self, golden: Dict, persist: bool = True) -> Dict:
+        """Run a golden test and optionally persist its execution vector."""
         print(f"Recording: {golden['name']}")
-        
-        # Import the skill module dynamically
+
+        # Import the skill module dynamically. Declarative skills have no
+        # executable oracle and are reported as SKIP rather than as failures.
         skill_module = self._load_skill_module()
         if not skill_module:
-            return {"error": "Could not load skill module"}
+            return {"skip": "No executable skill module found"}
         
         # Find the handler function
         handler = getattr(skill_module, golden.get("handler", "run"), None)
@@ -69,13 +71,17 @@ class OracleHarness:
             "tolerance": golden.get("tolerance", {})
         }
         
-        # Save vector
-        vector_file = self.vectors_dir / f"{golden['name']}.json"
-        with open(vector_file, "w") as f:
-            json.dump(vector, f, indent=2)
-        
-        print(f"  Saved vector to {vector_file}")
+        # Save vectors only in explicit record mode. Replay must be read-only.
+        if persist:
+            vector_file = self.vectors_dir / f"{golden['name']}.json"
+            with open(vector_file, "w") as f:
+                json.dump(vector, f, indent=2)
+            print(f"  Saved vector to {vector_file}")
         return vector
+
+    def _replay_dir(self) -> Path:
+        """Return an ignored temporary directory for replay artifacts."""
+        return Path(tempfile.gettempdir()) / "spec-kit-oracle" / self.skill_name
     
     def replay(self) -> Dict:
         """Replay all goldens against current implementation."""
@@ -94,8 +100,18 @@ class OracleHarness:
         
         for golden in goldens:
             print(f"Replaying: {golden['name']}")
-            vector = self.record(golden)
-            
+            vector = self.record(golden, persist=False)
+
+            if "skip" in vector:
+                results.setdefault("skipped", 0)
+                results["skipped"] += 1
+                results["details"].append({
+                    "name": golden["name"],
+                    "status": "SKIP",
+                    "reason": vector["skip"]
+                })
+                continue
+
             if "error" in vector:
                 results["failed"] += 1
                 results["details"].append({
@@ -104,7 +120,7 @@ class OracleHarness:
                     "error": vector["error"]
                 })
                 continue
-            
+
             # Compare actual vs expected
             passed, diff = self._compare_outputs(
                 golden["expected_output"],
@@ -125,12 +141,16 @@ class OracleHarness:
                 })
                 print(f"  FAIL: {diff}")
         
-        # Save replay results
-        replay_file = self.oracle_dir / f"replay_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.json"
+        # Save replay results outside the repository. Replays are evidence, not
+        # source artifacts, and must never dirty the working tree.
+        replay_dir = self._replay_dir()
+        replay_dir.mkdir(parents=True, exist_ok=True)
+        replay_file = replay_dir / f"replay_{datetime.utcnow().strftime('%Y%m%d_%H%M%S_%f')}.json"
         with open(replay_file, "w") as f:
             json.dump(results, f, indent=2)
-        
-        print(f"\nResults: {results['passed']}/{results['total']} passed")
+
+        skipped = results.get("skipped", 0)
+        print(f"\nResults: {results['passed']}/{results['total']} passed; {skipped} skipped")
         print(f"Saved replay to {replay_file}")
         return results
     
@@ -191,12 +211,14 @@ def main():
     
     if args.skill == "all":
         skills = [d.name for d in SKILLS_DIR.iterdir() if d.is_dir() and (d / "oracle" / "goldens.json").exists()]
+        failed = False
         for skill in skills:
             print(f"\n=== {skill} ===")
             harness = OracleHarness(skill)
             if args.replay:
-                harness.replay()
-        return
+                result = harness.replay()
+                failed = failed or result.get("failed", 0) > 0
+        return 1 if failed else 0
     
     harness = OracleHarness(args.skill)
     
